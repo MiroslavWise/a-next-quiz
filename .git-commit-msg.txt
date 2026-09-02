@@ -1,12 +1,3 @@
-0.1.7
+0.1.8
 
-- React Compiler и typedRoutes в конфиге
-- Layout вместо client template в (app)
-- QueryClient через useState на запрос
-- PageProps вместо useParams на динамике
-- Сегментные error и loading для start/admin
-- robots и sitemap через app metadata
-- Стили в global-error
-- next/image для крупных иллюстраций
-- Убран debug dump сокета на /start
-- Типы Route для Link под typedRoutes
+- remotePatterns для картинок Supabase Storage
