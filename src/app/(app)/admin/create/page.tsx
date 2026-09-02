@@ -8,7 +8,7 @@ import CreateQuiz from "@/components/forms/CreateQuiz"
 
 export default function AdminQuizCreate() {
   return (
-    <div className="flex h-full w-full flex-col pt-5">
+    <div className="flex w-full flex-col pt-5">
       <div className="flex w-full flex-row items-center justify-between gap-4 py-4">
         <Button asChild variant="outline" size="icon">
           <Link href="/admin" className="inline-flex items-center gap-1.5">

@@ -111,7 +111,7 @@ export default function AdminReportDetails() {
     )
 
   return (
-    <div className="flex h-full w-full flex-col pt-5">
+    <div className="flex w-full flex-col pt-5">
       <header className="flex w-full flex-row items-center justify-between gap-2 py-4">
         <Button asChild variant="outline" size="icon" aria-label="К списку отчётов">
           <Link href="/admin/reports">

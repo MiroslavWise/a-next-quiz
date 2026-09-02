@@ -51,7 +51,7 @@ function IconNote({ icon, children, className }: PropsWithChildren<{ icon: React
 
 function PhaseCard({ phase, title, description }: { phase: string; title: string; description: string }) {
   return (
-    <div className="border-border bg-background rounded-xl border p-4">
+    <div className="border-border bg-background rounded-xl border p-3 sm:p-4">
       <div className="mb-1 flex min-w-0 flex-wrap items-center gap-2">
         <span className="shrink-0 rounded-md border border-white/15 bg-white/8 px-2 py-0.5 font-mono text-[0.65rem] font-semibold tracking-wider text-white/70 uppercase">
           {phase}
@@ -65,7 +65,7 @@ function PhaseCard({ phase, title, description }: { phase: string; title: string
 
 function SkillMechanicsCard({ skill }: { skill: GameSkillDefinition }) {
   return (
-    <article className="border-border bg-background flex min-w-0 flex-col rounded-xl border p-4">
+    <article className="border-border bg-background flex min-w-0 flex-col rounded-xl border p-3 sm:p-4">
       <div className="flex min-w-0 items-start gap-3">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 text-(--accent-orb)">
           <GameSkillIcon skillId={skill.id} className="size-5" />
@@ -399,19 +399,17 @@ function ElementMechanicsCard({ card }: { card: GameElementCard }) {
 
 export default function GameMechanicsContent() {
   return (
-    <main className="text-foreground flex h-full w-full flex-col items-center px-0 lg:px-4">
-      <section className="container mx-auto flex h-full w-full max-w-5xl flex-col px-4 py-8">
-        <div className="flex w-full min-w-0 flex-col pt-5 pb-24">
-          <AppPageHeaders
-            title="Механика игры"
-            description="Как проходит викторина, очки и бонусы"
-            toolbarTitle="Правила и бонусы"
-            accent="four"
-            backAriaLabel="На главную"
-            toolbarClassName="mb-4"
-          />
+    <div className="flex w-full min-w-0 flex-col">
+      <AppPageHeaders
+        title="Механика игры"
+        description="Как проходит викторина, очки и бонусы"
+        toolbarTitle="Правила и бонусы"
+        accent="four"
+        backAriaLabel="На главную"
+        toolbarClassName="mb-4"
+      />
 
-          <div className="flex min-w-0 flex-col gap-8">
+      <div className="flex min-w-0 flex-col gap-6 sm:gap-8">
             <MechanicsSection title="Как проходит игра">
               <p>
                 Ведущий создаёт сессию отчёта по квизу и делится кодом подключения. Участники входят в лобби, затем игра проходит через
@@ -753,9 +751,7 @@ export default function GameMechanicsContent() {
                 </li>
               </ul>
             </MechanicsSection>
-          </div>
-        </div>
-      </section>
-    </main>
+      </div>
+    </div>
   )
 }

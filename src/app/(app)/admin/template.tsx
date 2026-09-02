@@ -1,7 +1,9 @@
 "use client"
 
+import { PropsWithChildren } from "react"
+
 import AdminContext from "@/providers/admin-context"
 
-export default function AdminTemplate({ children }: { children: React.ReactNode }) {
+export default function AdminTemplate({ children }: PropsWithChildren) {
   return <AdminContext>{children}</AdminContext>
 }

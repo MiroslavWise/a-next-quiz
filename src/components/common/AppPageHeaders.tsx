@@ -73,7 +73,7 @@ function AppPageHeaders({
 
       <header
         className={cn(
-          "border-border -mx-4 flex w-[calc(100%+2rem)] items-center justify-between gap-4 border-y p-4 bg-background",
+          "border-border flex w-full items-center justify-between gap-4 border-y py-4",
           toolbarClassName,
         )}
       >

@@ -48,7 +48,7 @@ export default function AdminQuizQuestionChange() {
 
   if (error)
     return (
-      <div className="flex h-full w-full flex-col gap-4 pt-5">
+      <div className="flex w-full flex-col gap-4 pt-5">
         <header className="flex items-center gap-2 py-4">
           <Button asChild variant="outline" size="icon">
             <Link href={`/admin/quiz/${id}`}>
@@ -71,7 +71,7 @@ export default function AdminQuizQuestionChange() {
     )
 
   return (
-    <div className="flex h-full w-full flex-col gap-4 pt-5">
+    <div className="flex w-full flex-col gap-4 pt-5">
       <header className="flex items-center gap-2 py-4">
         <Button asChild variant="outline" size="icon">
           <Link href={`/admin/quiz/${id}`}>

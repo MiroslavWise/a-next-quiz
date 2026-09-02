@@ -134,7 +134,7 @@ export default function AdminQuizDetails() {
 
   if (isLoading) {
     return (
-      <div className="flex h-full w-full flex-col">
+      <div className="flex w-full flex-col">
         <header className="flex w-full flex-row items-center justify-between gap-2 py-4">
           <div className="flex flex-row items-center gap-2">
             <Skeleton className="size-9 rounded-lg" />
@@ -155,7 +155,7 @@ export default function AdminQuizDetails() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex w-full flex-col">
       <header className="flex flex-col gap-3 py-3">
         <div className="flex w-full flex-row items-center justify-between gap-2">
           <Button asChild variant="outline" size="icon">
