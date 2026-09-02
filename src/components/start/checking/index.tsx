@@ -150,7 +150,12 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
 
   return (
     <>
-      <div className={cn("flex h-full w-full flex-col gap-3 overflow-x-hidden px-3 pt-8", canConfirm && "pb-28")}>
+      <div
+        className={cn(
+          "flex h-full min-h-0 w-full flex-col gap-3 overflow-x-hidden overflow-y-auto overscroll-contain px-3 pt-8 [-webkit-overflow-scrolling:touch]",
+          canConfirm && "pb-28",
+        )}
+      >
         <header className="glass-start-liquid-palette relative shrink-0 overflow-hidden rounded-2xl border border-(--accent-orb)/40 p-4 sm:p-5">
           <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden rounded-t-2xl bg-white/8" aria-hidden>
             <div

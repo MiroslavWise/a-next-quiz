@@ -5,23 +5,10 @@ import { Loader2, Lock, RotateCw } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { getRank } from "@/api/rank"
-import {
-  activateReportSkill,
-  getReportMySkills,
-  type IReportMySkillsResponse,
-  type SkillId,
-  type SkillStatus,
-} from "@/api/reports"
+import { activateReportSkill, getReportMySkills, type IReportMySkillsResponse, type SkillId, type SkillStatus } from "@/api/reports"
 import { ApiRequestError } from "@/api/errors"
 import Button from "@/components/ui/button"
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer"
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { GAME_SKILLS, getGameSkillDefinition } from "@/enum/game-skill"
 import { GameSkillIcon } from "@/lib/game-skill-icons"
 import { cn } from "@/lib/utils"
@@ -126,13 +113,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
             ))}
           </div>
         ) : skillsQuery.isError ? (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => void skillsQuery.refetch()}
-            disabled={skillsQuery.isFetching}
-          >
+          <Button type="button" variant="outline" size="sm" onClick={() => void skillsQuery.refetch()} disabled={skillsQuery.isFetching}>
             <RotateCw className={cn("size-3.5", skillsQuery.isFetching && "animate-spin")} aria-hidden />
             Повторить загрузку способностей
           </Button>
@@ -212,9 +193,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                   type="button"
                   size="lg"
                   onClick={() => selectedSkillId && activation.mutate(selectedSkillId)}
-                  disabled={
-                    selectedStatus !== "available" || activationPending || selectedPvpBlocked || selectedPvpRankPending
-                  }
+                  disabled={selectedStatus !== "available" || activationPending || selectedPvpBlocked || selectedPvpRankPending}
                 >
                   {activationPending ? <Loader2 className="animate-spin" aria-hidden /> : null}
                   {selectedStatus === "active"
@@ -225,7 +204,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                         ? "Недоступно в топ-3"
                         : selectedPvpRankPending
                           ? "Проверяем место…"
-                      : "Активировать"}
+                          : "Активировать"}
                 </Button>
               </DrawerFooter>
             </>

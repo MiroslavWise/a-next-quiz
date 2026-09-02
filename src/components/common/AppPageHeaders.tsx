@@ -84,8 +84,8 @@ function AppPageHeaders({
           )}
         >
           <Button asChild variant="outline" size="icon" aria-label={backAriaLabel} className={styles.backButton}>
-            <Link href={backTo}>
-              <ArrowLeft className="size-3.5" />
+            <Link href={backTo} aria-label={backAriaLabel} scroll>
+              <ArrowLeft className="size-3.5" aria-hidden />
             </Link>
           </Button>
           <div className="flex flex-col gap-2">

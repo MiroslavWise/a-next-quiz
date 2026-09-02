@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { Loader2Icon, X } from "lucide-react"
-import { useQueryClient } from "@tanstack/react-query"
 import { useShallow } from "zustand/react/shallow"
 import { Controller, useForm } from "react-hook-form"
+import { useQueryClient } from "@tanstack/react-query"
 
 import Input from "@/components/ui/input"
 import Button from "@/components/ui/button"
@@ -12,17 +12,17 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { cn } from "@/lib/utils"
+import { useAuthJwtClaims } from "@/lib/jwt"
+import { patchUserProfile } from "@/api/user"
 import type { IUser } from "@/interface/user"
+import { setUserQueryCache } from "@/queries/user"
 import { BG_OPTIONS, BG_OPTIONS_MANAGERS } from "./bg"
 import { USER_AVATAR_OPTIONS } from "./avatar-options"
 import { useAuth, dispatchSetUser } from "@/stores/auth"
-import { patchUserProfile } from "@/api/user"
-import { setUserQueryCache } from "@/queries/user"
 import { dispatchCloseUpdateInfo, useUpdateInfo } from "@/stores/update-info"
 import { resolverUpdateUserFormData, type UpdateUserFormData } from "@/schemas/update-user"
 
 import styles from "./style.module.css"
-import { useAuthJwtClaims } from "@/lib/jwt"
 
 function UpdateInfoUser() {
   const queryClient = useQueryClient()
@@ -85,10 +85,7 @@ function UpdateInfoUser() {
 
   return (
     <div
-      className={cn(
-        styles.wrapper,
-        "fixed inset-0 z-50 flex items-start justify-center overflow-y-auto overscroll-contain p-4",
-      )}
+      className={cn(styles.wrapper, "fixed inset-0 z-50 flex items-start justify-center overflow-y-auto overscroll-contain p-4")}
       role="dialog"
       aria-modal="true"
       aria-labelledby="update-user-title"

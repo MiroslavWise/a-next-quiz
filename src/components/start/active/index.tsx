@@ -229,14 +229,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                     </Suspense>
                   ) : null}
                   {statusQuestion === "GAME" && (
-                    <ComponentsTitleQuestion
-                      activeIndex={activeIndex}
-                      {...question!}
-                      start={data?.start}
-                      time={question?.time ?? 0}
-                      showTimer={isObserverLikeLeader}
-                      showParticipantRing={!isObserverLikeLeader}
-                    />
+                    <ComponentsTitleQuestion {...question!} start={data?.start} time={question?.time ?? 0} />
                   )}
                   {isQuestionEnded && !isObserverLikeLeader && (
                     <PlayerResultsSection reportId={reportId} tgId={tgId} activeIndex={activeIndex} />

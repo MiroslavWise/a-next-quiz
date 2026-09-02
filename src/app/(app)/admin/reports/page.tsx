@@ -14,8 +14,8 @@ export default function AdminReportsPage() {
         description="Список сохранённых отчётов"
         toolbarTitle="Все отчёты"
         accent="one"
-        backAriaLabel="Назад к админке"
-        backTo="/admin"
+        backTo="/"
+        backAriaLabel="На главную"
       />
       <div className="flex w-full flex-col py-4">
         <ReportsListPanel />

@@ -85,9 +85,7 @@ function DataPointsLeader({
         "bg-background/60 flex flex-col overflow-hidden border border-white/12 shadow-2xl ring-1 shadow-black/50 ring-white/5 backdrop-blur-xl transition-[opacity,visibility] duration-300 ease-out",
         // телефон: плавающий оверлей
         "top-button-fixed fixed right-4 z-115 max-h-[50vh] w-full max-w-72 rounded-xl",
-        showDataPointsLeader
-          ? "pointer-events-auto visible opacity-100"
-          : "pointer-events-none invisible opacity-0",
+        showDataPointsLeader ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0",
         // планшет+: колонка 1/3, всегда видна
         "md:pointer-events-auto md:visible md:static md:top-auto md:right-auto md:z-10 md:mr-4 md:h-full md:max-h-none md:min-h-0 md:w-1/3 md:max-w-none md:shrink-0 md:self-stretch md:border-0 md:bg-transparent md:pt-12 md:pb-4 md:opacity-100 md:shadow-none md:ring-0",
       )}
@@ -100,7 +98,10 @@ function DataPointsLeader({
         onKeyDown={(e) => e.stopPropagation()}
       >
         <header className="flex shrink-0 flex-row items-center justify-between py-1.5">
-          <h3 id="data-points-leader-title" className="flex min-w-0 items-center gap-2 truncate text-sm font-semibold text-white lg:text-base">
+          <h3
+            id="data-points-leader-title"
+            className="flex min-w-0 items-center gap-2 truncate text-sm font-semibold text-white lg:text-base"
+          >
             <span className="truncate">Таблица лидеров</span>
             {isBackgroundRefreshing && (
               <span

@@ -18,6 +18,7 @@ export default function AdminQuizzesPage() {
         description="Управление квизами"
         toolbarTitle="Список квизов"
         accent="two"
+        backTo="/"
         backAriaLabel="На главную"
         toolbarAction={
           <Button asChild variant="outline" aria-label="Создать новый квиз">

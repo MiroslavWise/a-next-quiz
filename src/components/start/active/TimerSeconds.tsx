@@ -2,6 +2,7 @@ import type { CSSProperties } from "react"
 
 import { cn } from "@/lib/utils"
 
+import { formatCountdown } from "../hooks/use-question-countdown"
 import waveSt from "../styles/timer-waves.module.scss"
 
 interface IProps {
@@ -25,6 +26,9 @@ function TimerSeconds({ remainingSeconds, compact = false }: IProps) {
   return (
     <div
       key={remainingSeconds}
+      role="timer"
+      aria-live="polite"
+      aria-label={`Осталось ${formatCountdown(remainingSeconds)}`}
       className={cn(
         "flex items-center justify-center rounded-full",
         compact ? "size-6 lg:size-7" : "size-7",

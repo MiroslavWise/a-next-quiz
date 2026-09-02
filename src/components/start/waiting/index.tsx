@@ -196,7 +196,12 @@ function StatusWaiting(props: IProps) {
 
   return (
     <>
-      <div className={cn("flex h-full min-h-0 w-full flex-col gap-2.5 overflow-x-hidden px-3 pt-8", isLeader && "pb-28")}>
+      <div
+        className={cn(
+          "flex h-full min-h-0 w-full flex-col gap-2.5 overflow-x-hidden overflow-y-auto overscroll-contain px-3 pt-8 [-webkit-overflow-scrolling:touch]",
+          isLeader && "pb-28",
+        )}
+      >
         <header className={cn("glass-start-liquid-palette relative shrink-0 rounded-xl p-3 sm:p-4", styles.header)}>
           <span className={styles.headerScan} aria-hidden />
           <span className={styles.headerSliceA} aria-hidden />

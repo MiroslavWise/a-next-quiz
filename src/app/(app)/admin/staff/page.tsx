@@ -16,8 +16,8 @@ export default function AdminStaffPage() {
         description="Администраторы и менеджеры из конфигурации сервера"
         toolbarTitle="Роли"
         accent="three"
-        backTo="/admin"
-        backAriaLabel="Назад к админке"
+        backTo="/"
+        backAriaLabel="На главную"
       />
       <div className="flex w-full flex-col gap-8 py-4">
         <StaffRolesPanel />

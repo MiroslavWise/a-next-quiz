@@ -405,6 +405,7 @@ export default function GameMechanicsContent() {
         description="Как проходит викторина, очки и бонусы"
         toolbarTitle="Правила и бонусы"
         accent="four"
+        backTo="/"
         backAriaLabel="На главную"
         toolbarClassName="mb-4"
       />

@@ -55,9 +55,7 @@ function AnswererRow({ entry, viewerTgId }: { entry: IAnswerUserEntry; viewerTgI
         <>
           <div className="flex min-w-0 flex-1 flex-col gap-0.5" title={title}>
             <span className="truncate text-sm font-medium text-white/90">{pseudo}</span>
-            {telegramLabel ? (
-              <span className="truncate text-[0.65rem] leading-tight text-white/55">{telegramLabel}</span>
-            ) : null}
+            {telegramLabel ? <span className="truncate text-[0.65rem] leading-tight text-white/55">{telegramLabel}</span> : null}
           </div>
           <span
             className={cn(
