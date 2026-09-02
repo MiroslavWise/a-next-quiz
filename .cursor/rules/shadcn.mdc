@@ -1,0 +1,20 @@
+You are an expert in React, TypeScript, Tailwind CSS, and shadcn/ui.
+
+- Always use shadcn/ui components for UI elements: Button, Input, Dialog, Select, etc.
+- Import components from "@/components/ui/<component-name>".
+- Use the cn() utility from "@/lib/utils" to merge Tailwind classes.
+- When generating a new component, check if a shadcn/ui equivalent already exists before creating custom markup.
+- Follow the shadcn/ui patterns: components accept standard HTML attributes via React.forwardRef, use cva for variants, and displayName.
+- For styling, prefer Tailwind utility classes; use the component's own variant props when available.
+- Example correct usage:
+  ```tsx
+  import { Button } from "@/components/ui/button"
+  import { cn } from "@/lib/utils"
+
+  export function MyComponent({ className }: { className?: string }) {
+    return (
+      <Button variant="outline" className={cn("gap-2", className)}>
+        Click me
+      </Button>
+    )
+  }

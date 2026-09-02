@@ -1,0 +1,46 @@
+.button {
+  animation: orb-color-flow 12s ease-in-out infinite alternate;
+  background-color: color-mix(in srgb, var(--orb-bg-one) 10%, transparent);
+  border-color: color-mix(in srgb, var(--orb-border-one) 45%, transparent);
+  color: var(--orb-border-one);
+
+  &:hover {
+    box-shadow: 0 0 18px color-mix(in srgb, currentColor 18%, transparent);
+  }
+}
+
+.buttonIcon {
+  border-color: color-mix(in srgb, currentColor 35%, transparent);
+}
+
+@keyframes orb-color-flow {
+  0% {
+    background-color: color-mix(in srgb, var(--orb-bg-one) 10%, transparent);
+    border-color: color-mix(in srgb, var(--orb-border-one) 45%, transparent);
+    color: var(--orb-border-one);
+  }
+  33% {
+    background-color: color-mix(in srgb, var(--orb-bg-two) 10%, transparent);
+    border-color: color-mix(in srgb, var(--orb-border-two) 45%, transparent);
+    color: var(--orb-border-two);
+  }
+  66% {
+    background-color: color-mix(in srgb, var(--orb-bg-three) 10%, transparent);
+    border-color: color-mix(in srgb, var(--orb-border-three) 45%, transparent);
+    color: var(--orb-border-three);
+  }
+  100% {
+    background-color: color-mix(in srgb, var(--orb-bg-four) 10%, transparent);
+    border-color: color-mix(in srgb, var(--orb-border-four) 45%, transparent);
+    color: var(--orb-border-four);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    animation: none;
+    background-color: color-mix(in srgb, var(--orb-bg-four) 10%, transparent);
+    border-color: color-mix(in srgb, var(--orb-border-four) 45%, transparent);
+    color: var(--orb-border-four);
+  }
+}

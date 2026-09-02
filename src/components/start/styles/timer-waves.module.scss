@@ -1,0 +1,80 @@
+.timerCircle {
+  --wave-max-scale: 1.8;
+
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 120;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  &.panicMode {
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background-color: inherit;
+      z-index: -1;
+      pointer-events: none;
+      will-change: transform, opacity;
+      animation: heartBeatWave 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+    }
+
+    &::after {
+      animation-delay: 0.15s;
+    }
+  }
+}
+
+.timerCircleCompact {
+  top: 0.5rem;
+  left: 0.5rem;
+
+  @media (min-width: 1024px) {
+    top: 1rem;
+    left: 1rem;
+  }
+}
+
+/** Разовые расходящиеся волны (активация способности и т.п.). */
+.waveBurst {
+  --wave-max-scale: 2.4;
+  --wave-color: color-mix(in srgb, var(--accent-orb) 55%, transparent);
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 9999px;
+  pointer-events: none;
+  overflow: visible;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background-color: var(--wave-color);
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation: heartBeatWave 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+  }
+
+  &::after {
+    animation-delay: 0.15s;
+  }
+}
+
+@keyframes heartBeatWave {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(var(--wave-max-scale, 2.8));
+    opacity: 0;
+  }
+}

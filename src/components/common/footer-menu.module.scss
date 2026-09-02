@@ -1,0 +1,131 @@
+.menuLink {
+  --icon-glitch-duration: 6.1s;
+  --icon-glitch-delay: -1.6s;
+
+  &:nth-child(1) {
+    --icon-glitch-duration: 5.9s;
+    --icon-glitch-delay: -1.37s;
+  }
+
+  &:nth-child(2) {
+    --icon-glitch-duration: 6.7s;
+    --icon-glitch-delay: -2.84s;
+  }
+
+  &:nth-child(3) {
+    --icon-glitch-duration: 5.4s;
+    --icon-glitch-delay: -0.91s;
+  }
+
+  &:nth-child(4) {
+    --icon-glitch-duration: 6.3s;
+    --icon-glitch-delay: -3.16s;
+  }
+}
+
+.menuIcon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    position: relative;
+    z-index: 1;
+    animation: footer-icon-glitch var(--icon-glitch-duration) var(--icon-glitch-delay) infinite steps(1, end);
+    will-change: transform, filter;
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 12% 18%;
+    border-radius: 1px;
+    background: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    will-change: transform, clip-path, opacity;
+  }
+
+  &::before {
+    animation: footer-icon-ghost-a var(--icon-glitch-duration) var(--icon-glitch-delay) infinite steps(1, end);
+  }
+
+  &::after {
+    animation: footer-icon-ghost-b calc(var(--icon-glitch-duration) * 1.09) calc(var(--icon-glitch-delay) + 0.11s) infinite steps(1, end);
+  }
+}
+
+@keyframes footer-icon-glitch {
+  0%,
+  90%,
+  100% {
+    transform: translate(0);
+    filter: none;
+  }
+  91% {
+    transform: translate(-1.5px, 0.5px) skewX(-4deg);
+    filter: drop-shadow(-2px 0 color-mix(in srgb, currentColor 55%, transparent));
+  }
+  92% {
+    transform: translate(1.5px, -0.5px) skewX(3deg);
+    filter: drop-shadow(2px 0 color-mix(in srgb, currentColor 45%, transparent));
+  }
+  93% {
+    transform: translate(0);
+    filter: none;
+  }
+}
+
+@keyframes footer-icon-ghost-a {
+  0%,
+  89%,
+  100% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 100% 0);
+  }
+  90% {
+    opacity: 0.55;
+    transform: translate(-2px, 1px);
+    clip-path: inset(10% 0 58% 0);
+  }
+  91% {
+    opacity: 0;
+  }
+}
+
+@keyframes footer-icon-ghost-b {
+  0%,
+  87%,
+  100% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(100% 0 0 0);
+  }
+  88% {
+    opacity: 0.45;
+    transform: translate(2px, -1px);
+    clip-path: inset(52% 0 18% 0);
+  }
+  89% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menuIcon {
+    svg {
+      animation: none;
+      filter: none;
+    }
+
+    &::before,
+    &::after {
+      animation: none;
+      content: none;
+    }
+  }
+}

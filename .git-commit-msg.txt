@@ -1,1 +1,8 @@
-0.1.3
+0.1.4
+
+- Перенос SPA викторины в Next.js 16 App Router
+- Клиентские template.tsx для TMA-авторизации и admin
+- SSR-страница механики игры с metadata и JSON-LD
+- Главная как Server Component с клиентскими островами
+- Env NEXT_PUBLIC_*, стили TMA, публичные ассеты
+- Деплой под Vercel вместо Firebase Hosting

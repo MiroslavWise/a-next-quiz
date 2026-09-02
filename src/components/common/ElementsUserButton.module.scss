@@ -1,0 +1,39 @@
+.promptButton {
+  animation: elements-user-button-glow 5s ease-in-out infinite;
+}
+
+@keyframes elements-user-button-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 14px 2px rgb(255 0 0 / 0.42),
+      0 0 4px 1px rgb(255 0 0 / 0.28);
+  }
+
+  25% {
+    box-shadow:
+      0 0 14px 2px rgb(6 182 212 / 0.42),
+      0 0 4px 1px rgb(6 182 212 / 0.28);
+  }
+
+  50% {
+    box-shadow:
+      0 0 14px 2px rgb(28 140 71 / 0.42),
+      0 0 4px 1px rgb(28 140 71 / 0.28);
+  }
+
+  75% {
+    box-shadow:
+      0 0 14px 2px rgb(118 227 214 / 0.42),
+      0 0 4px 1px rgb(118 227 214 / 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promptButton {
+    animation: none;
+    box-shadow:
+      0 0 10px 1px rgb(255 255 255 / 0.22),
+      0 0 4px 1px rgb(255 255 255 / 0.12);
+  }
+}

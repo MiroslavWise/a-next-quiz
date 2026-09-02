@@ -47,3 +47,7 @@ next-env.d.ts
 /.history
 /.history/
 /.history/*
+
+docs/*
+docs/
+docs

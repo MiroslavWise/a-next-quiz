@@ -1,0 +1,41 @@
+---
+description: Менеджер пакетов проекта — только pnpm (не npm, не yarn)
+alwaysApply: true
+---
+
+# Менеджер пакетов: pnpm
+
+В этом репозитории зависимости и скрипты запускаются **только через pnpm**.
+
+## Использовать
+
+- `pnpm install` — установка зависимостей
+- `pnpm install --frozen-lockfile` — чистая установка (CI)
+- `pnpm add <pkg>` / `pnpm remove <pkg>` — добавление и удаление пакетов
+- `pnpm run <script>` / `pnpm <script>` — скрипты из `package.json`
+- `pnpm dlx` — одноразовые CLI (если нужно)
+
+Lockfile: **`pnpm-lock.yaml`**. После изменения зависимостей коммить **`package.json`** и **`pnpm-lock.yaml`**.
+
+## Не использовать
+
+- `npm install` / `npm ci` как основной менеджер (кроме случаев внутри скриптов вроде `npm version` в `git`)
+- `yarn`, `yarn install`, `yarn add`
+
+## CI
+
+GitHub Actions / Vercel: `pnpm install --frozen-lockfile && pnpm run build`.
+
+## Примеры
+
+```bash
+# ✅
+pnpm install
+pnpm add motion
+pnpm run dev
+pnpm run typecheck
+
+# ❌
+npm install motion
+yarn add motion
+```
