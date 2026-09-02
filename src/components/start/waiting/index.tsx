@@ -3,6 +3,7 @@
 import SessionCodeCopyButton from "./SessionCodeCopyButton"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useRef, useState, lazy, Suspense, useCallback } from "react"
+import Image from "next/image"
 import { QrCode } from "lucide-react"
 
 import UsersWaiting from "./UsersWaiting"
@@ -247,8 +248,8 @@ function StatusWaiting(props: IProps) {
             </div>
             {coverUrl ? (
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start sm:gap-4">
-                <div className="aspect-square w-full max-w-28 shrink-0 overflow-hidden rounded-xl border border-white/20 bg-white/6 sm:w-28 sm:max-w-none">
-                  <img src={coverUrl} alt="" className="size-full object-cover" loading="lazy" decoding="async" />
+                <div className="relative aspect-square w-full max-w-28 shrink-0 overflow-hidden rounded-xl border border-white/20 bg-white/6 sm:w-28 sm:max-w-none">
+                  <Image src={coverUrl} alt="" fill sizes="7rem" className="object-cover" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1.5 text-center sm:text-left">
                   <h2

@@ -1,6 +1,11 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
+  reactCompiler: true,
+  typedRoutes: true,
+  experimental: {
+    turbopackRustReactCompiler: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -11,6 +16,21 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "**.run.app",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "t.me",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.telegram.org",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.telegram-cdn.org",
         pathname: "/**",
       },
     ],

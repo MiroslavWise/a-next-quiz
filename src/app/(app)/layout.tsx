@@ -1,9 +1,7 @@
-"use client"
-
 import { type PropsWithChildren } from "react"
 
 import MainContext from "@/providers/main-context"
 
-export default function AppTemplate({ children }: PropsWithChildren) {
+export default function AppLayout({ children }: PropsWithChildren) {
   return <MainContext>{children}</MainContext>
 }

@@ -1,9 +1,0 @@
-User-agent: *
-Allow: /game-mechanics
-Allow: /og/
-Allow: /element/
-Disallow: /admin
-Disallow: /start
-Disallow: /my-game-result
-
-Sitemap: https://a-next-quiz.vercel.app/sitemap.xml

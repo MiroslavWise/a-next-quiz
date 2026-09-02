@@ -1,4 +1,5 @@
 import Link from "next/link"
+import type { Route } from "next"
 import { BrainIcon, ClipboardListIcon, ListChecksIcon, UsersIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -29,7 +30,12 @@ function FooterMenu() {
 FooterMenu.displayName = "FooterMenu"
 export default FooterMenu
 
-const LINKS_FOOTER_MENU = [
+const LINKS_FOOTER_MENU: {
+  label: string
+  icon: typeof ListChecksIcon
+  href: Route
+  textClass: string
+}[] = [
   {
     label: "Отчёты",
     icon: ListChecksIcon,

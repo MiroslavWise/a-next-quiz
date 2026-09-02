@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 import TimerSeconds from "./TimerSeconds"
 
 import { cn } from "@/lib/utils"
@@ -28,8 +30,14 @@ function ComponentsTitleQuestion({ title, start, time = 0, imageUrl, image_url }
         <TimerSeconds remainingSeconds={remainingSeconds} compact />
         <div className="relative flex w-full flex-col items-center justify-center gap-2 p-2.5 pt-4.5">
           {thumbUrl ? (
-            <div className="mx-auto aspect-video w-full max-w-[min(100%,15rem)] shrink-0 overflow-hidden rounded-lg border border-(--accent-orb)/40 bg-white/6 sm:max-w-[min(100%,22rem)] lg:max-w-[min(100%,27rem)]">
-              <img src={thumbUrl} alt={titleText} className="aspect-video size-full object-cover" loading="lazy" decoding="async" />
+            <div className="relative mx-auto aspect-video w-full max-w-[min(100%,15rem)] shrink-0 overflow-hidden rounded-lg border border-(--accent-orb)/40 bg-white/6 sm:max-w-[min(100%,22rem)] lg:max-w-[min(100%,27rem)]">
+              <Image
+                src={thumbUrl}
+                alt={titleText}
+                fill
+                sizes="(max-width: 640px) 15rem, (max-width: 1024px) 22rem, 27rem"
+                className="object-cover"
+              />
             </div>
           ) : null}
           <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-0">

@@ -1,4 +1,5 @@
 import type { CSSProperties, PropsWithChildren, ReactNode } from "react"
+import Image from "next/image"
 import { Brain, Clock, Crown, Gift, ListChecks, Sparkles, Target, Trophy, Users, Zap } from "lucide-react"
 
 import AppPageHeaders from "@/components/common/AppPageHeaders"
@@ -356,7 +357,7 @@ function ElementMechanicsCard({ card }: { card: GameElementCard }) {
           )}
           style={isAvatar ? undefined : { borderColor: `${accent}66`, backgroundColor: `${accent}18` }}
         >
-          <img src={card.iconSrc} alt="" className="size-10 object-contain" width={40} height={40} />
+          <Image src={card.iconSrc} alt="" className="size-10 object-contain" width={40} height={40} />
         </div>
         <div className="min-w-0 flex-1 pt-0.5">
           <div className="flex flex-wrap items-center gap-2">
