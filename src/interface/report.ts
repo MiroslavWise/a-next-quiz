@@ -19,5 +19,7 @@ export interface IReport {
   quiz: {
     id: string
     name: string
+    /** Публичная ссылка на обложку; `null`, если нет — см. `GET /reports`, `GET /my-games`. */
+    imageUrl: string | null
   } | null
 }

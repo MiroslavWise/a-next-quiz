@@ -46,11 +46,24 @@ export default function ReportsListPanel() {
         {reports.map((report) => (
           <Item key={report.id} variant="outline" asChild role="listitem" className="bg-background w-full">
             <Link href={`/admin/reports/${report.id}`}>
-              <ItemMedia variant="image">
-                <div className="bg-muted flex size-8 items-center justify-center rounded-full">
-                  <FileBarChart className="text-muted-foreground size-4" />
-                </div>
-              </ItemMedia>
+              {report.quiz?.imageUrl ? (
+                <ItemMedia variant="image">
+                  <img
+                    src={report.quiz.imageUrl}
+                    alt={report.quiz.name}
+                    className="size-8 object-cover"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                  />
+                </ItemMedia>
+              ) : (
+                <ItemMedia variant="image">
+                  <div className="bg-muted flex size-8 items-center justify-center rounded-full">
+                    <FileBarChart className="text-muted-foreground size-4" />
+                  </div>
+                </ItemMedia>
+              )}
               <ItemContent>
                 <ItemTitle className="line-clamp-1 truncate">Отчёт #{report?.id}</ItemTitle>
                 <ItemDescription className="font-mono text-xs">{report?.quiz?.name}</ItemDescription>

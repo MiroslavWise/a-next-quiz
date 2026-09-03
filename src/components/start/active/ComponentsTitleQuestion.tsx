@@ -69,7 +69,7 @@ function ComponentsTitleQuestion({
     return (
       <div className="flex w-full flex-col items-center gap-2 text-center">
         <p className="text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>
-        <h2 className="max-w-[22rem] text-xl leading-snug font-semibold text-balance text-white sm:text-2xl">{titleText}</h2>
+        <h2 className="max-w-88 text-xl leading-snug font-semibold text-balance text-white sm:text-2xl">{titleText}</h2>
         <p className="text-xs font-medium text-faithful/90">Правильный ответ</p>
       </div>
     )
