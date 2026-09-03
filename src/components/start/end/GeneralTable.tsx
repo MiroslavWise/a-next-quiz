@@ -55,11 +55,11 @@ function GeneralTable({ reportId, tgId, showLeaderboard, prizes, elementAvatarId
     )
 
   return sortedLeaderboard.length > 0 ? (
-    <div className="mt-4 flex w-full flex-col items-center justify-center gap-4 lg:max-h-[calc(100vh-14rem)] lg:min-h-0 lg:items-stretch lg:gap-6">
+    <div className="flex w-full flex-col items-center justify-center gap-4 lg:max-h-[calc(100vh-14rem)] lg:min-h-0 lg:items-stretch lg:gap-6">
       {prizes.length > 0 ? (
         <p className="w-full text-center text-xs text-white/55">
           Призовые места:{" "}
-          <span className="font-semibold text-amber-200/90">
+          <span className="font-semibold text-(--accent-orb)">
             {prizes
               .toSorted((a, b) => a - b)
               .map(prizePlaceLabel)
@@ -86,9 +86,10 @@ function GeneralTable({ reportId, tgId, showLeaderboard, prizes, elementAvatarId
                   reportId={reportId}
                   isPrizePlace={isPrizePlace}
                   isRandomPrize={randomWinners.has(Number(item.telegram_id))}
+                  gameTone
                 />
                 {item.questions?.length ? (
-                  <ul className="ml-1 space-y-1.5 border-l border-white/15 pl-3">
+                  <ul className="ml-1 space-y-1.5 border-l border-(--accent-orb)/25 pl-3">
                     {sortedQuestions(item.questions).map((q) => (
                       <li key={`${item.telegram_id}-${q.question_id}-${q.index}`}>
                         <StatusEndQuestionRow q={q} />
@@ -103,7 +104,7 @@ function GeneralTable({ reportId, tgId, showLeaderboard, prizes, elementAvatarId
       </div>
     </div>
   ) : (
-    <p className="mt-4 text-sm text-white/55">Нет данных по очкам</p>
+    <p className="text-sm text-white/55">Нет данных по очкам</p>
   )
 }
 

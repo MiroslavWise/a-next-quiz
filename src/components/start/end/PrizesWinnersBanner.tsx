@@ -22,18 +22,14 @@ function placeLabel(winner: IPrizesUsers) {
 }
 
 function placeAccentClass(winner: IPrizesUsers) {
-  if (winner.place === 1) return "text-amber-300"
-  if (winner.place === 2) return "text-slate-200"
-  if (winner.place === 3) return "text-orange-300"
-  return "text-amber-200/90"
+  if (winner.place === 1) return "text-(--accent-orb)"
+  return "text-white/70"
 }
 
 function placeRowClass(winner: IPrizesUsers) {
-  if (winner.place === 1) return "border-amber-400/45 bg-amber-500/12"
-  if (winner.place === 2) return "border-slate-300/35 bg-white/6"
-  if (winner.place === 3) return "border-orange-400/35 bg-orange-500/10"
-  if (isRandomPrizeEntry(winner)) return "border-emerald-300/25 bg-emerald-700/6"
-  return "border-amber-300/25 bg-white/5"
+  if (winner.place === 1) return "glass-start-slab glass-start-slab-selected"
+  if (isRandomPrizeEntry(winner)) return "glass-start-slab glass-start-slab-faithful"
+  return "glass-start-slab"
 }
 
 function PrizeWinnerRow({
@@ -60,9 +56,9 @@ function PrizeWinnerRow({
   return (
     <li
       className={cn(
-        "flex items-center gap-3 rounded-xl border px-3 py-2.5",
+        "flex items-center gap-3 rounded-2xl px-3 py-2.5",
         placeRowClass(winner),
-        itsMe && "ring-1 ring-rose-400/35",
+        itsMe && "glass-start-slab-selected",
       )}
     >
       <div className="relative shrink-0">
@@ -75,10 +71,10 @@ function PrizeWinnerRow({
           element={data?.element}
           isGameAvatar={isGameAvatar}
           photoOverlay="always"
-          className={cn(itsMe ? "ring-2 ring-rose-400/35" : undefined)}
+          className={cn(itsMe ? "ring-2 ring-(--accent-orb)/40" : undefined)}
         />
         <span
-          className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full border border-amber-200/70 bg-linear-to-br from-amber-300 to-amber-600 shadow-[0_0_10px_rgba(251,191,36,0.45)]"
+          className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/80 shadow-[0_0_10px_color-mix(in_srgb,var(--accent-orb)_45%,transparent)]"
           aria-hidden
         >
           <PrizeLottie className="size-4" />
@@ -88,7 +84,7 @@ function PrizeWinnerRow({
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-white/92" title={pseudo}>
           {pseudo}
-          {itsMe ? <span className="ml-1.5 text-[0.65rem] font-medium text-rose-200/85">(вы)</span> : null}
+          {itsMe ? <span className="ml-1.5 text-[0.65rem] font-medium text-(--accent-orb)">(вы)</span> : null}
         </p>
         {telegramLabel ? (
           <p className="truncate text-xs text-white/55" title={telegramLabel}>
@@ -104,7 +100,7 @@ function PrizeWinnerRow({
       </div>
 
       <div className="flex shrink-0 items-center gap-1.5 text-sm font-bold text-white/90 tabular-nums">
-        <PickaxeIcon points={winner.points} className="size-3.5 text-amber-200/80" />
+        <PickaxeIcon points={winner.points} className="size-3.5 text-(--accent-orb)" />
         {winner.points.toLocaleString("ru-RU")}
       </div>
     </li>
@@ -117,7 +113,7 @@ function PrizesWinnersBanner({ reportId, tgId, elementAvatarId }: IProps) {
   if (isLoading) {
     return (
       <section
-        className="mb-4 w-full rounded-xl border border-amber-400/35 bg-linear-to-b from-amber-500/12 via-amber-950/10 to-transparent p-3 sm:p-4"
+        className="glass-start-liquid-palette mb-0 w-full rounded-2xl p-3 sm:p-4"
         aria-busy="true"
         aria-label="Призёры"
       >
@@ -137,13 +133,10 @@ function PrizesWinnersBanner({ reportId, tgId, elementAvatarId }: IProps) {
   const sectionTitle = hasRankedPrizes ? "Призовые места" : "Случайный приз"
 
   return (
-    <section
-      className="mb-4 w-full rounded-xl border border-amber-400/45 bg-linear-to-b from-amber-500/14 via-amber-950/12 to-black/10 p-3 shadow-[0_0_24px_rgba(251,191,36,0.08)] sm:p-4"
-      aria-label="Призёры"
-    >
+    <section className="glass-start-liquid-palette w-full rounded-2xl p-3 sm:p-4" aria-label="Призёры">
       <header className="mb-3 flex items-center gap-2">
-        <TrophyIcon className="size-4 text-amber-300" aria-hidden />
-        <h3 className="text-sm font-bold tracking-[0.18em] text-amber-100 uppercase">{sectionTitle}</h3>
+        <TrophyIcon className="size-4 text-(--accent-orb)" aria-hidden />
+        <h3 className="text-[0.7rem] font-medium tracking-[0.18em] text-(--accent-orb)/85">{sectionTitle}</h3>
       </header>
       <ul className="space-y-2">
         {sortedWinners.map((winner) => (

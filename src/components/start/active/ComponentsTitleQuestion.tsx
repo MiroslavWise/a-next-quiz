@@ -39,7 +39,7 @@ function RoundMeta({ reportId, tgId, activeIndex }: { reportId?: string; tgId?: 
   const streak = Math.max(0, Number(data?.streak ?? 0) || 0)
 
   return (
-    <p className="text-center text-[0.7rem] font-medium tracking-[0.18em] text-(--accent-orb)/85">
+    <p className="glass-start-meta">
       {theme.label.toLowerCase()}
       <span className="mx-1.5 text-white/35">·</span>
       серия {streak}

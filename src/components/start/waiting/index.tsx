@@ -22,6 +22,7 @@ import { useAuthJwtClaims } from "@/lib/jwt"
 import { useUserByTgId } from "@/queries/user"
 import { TELEGRAM_BOT_USERNAME } from "@/config/env"
 import { dispatchUpdateInfo } from "@/stores/update-info"
+import { PHASE_SHELL_CLASS } from "@/components/start/lib/phase-shell"
 import { LOBBY_ICON_BUTTON_CLASS } from "@/components/start/waiting/lobby-icon-button"
 import { addMemberToReport, getReportUsers, updateToStartReport, type IReportByIdResponse } from "@/api/reports"
 import { useSocketEventEffect, type LastSocketEventByType } from "@/hooks/socket-event-by-type"
@@ -50,7 +51,7 @@ function PrizesPickerSkeleton({ usersCount }: { usersCount: number }) {
         <>
           <div className="flex scrollbar-thin gap-1.5 overflow-x-auto overscroll-x-contain pb-0.5 [-webkit-overflow-scrolling:touch]">
             {Array.from({ length: usersCount }, (_, index) => (
-              <Skeleton key={index} className="size-9 shrink-0 rounded-xl border border-white/12 bg-white/8" />
+              <Skeleton key={index} className="glass-start-slab size-9 shrink-0 rounded-xl" />
             ))}
           </div>
           <Skeleton className="h-3 w-36 rounded-md bg-white/8" />
@@ -68,13 +69,7 @@ const waitingToolbarBtn = cn(
 
 const waitingToolbarIconBtn = cn(waitingToolbarBtn, "w-7")
 
-const WAITING_STATUS_LABEL = "Ожидание"
-const WAITING_STATUS_LETTER_COLORS = [
-  styles.statusLetterOne,
-  styles.statusLetterTwo,
-  styles.statusLetterThree,
-  styles.statusLetterFour,
-] as const
+const WAITING_STATUS_LABEL = "ожидание"
 
 interface IProps {
   tgId: number
@@ -197,58 +192,36 @@ function StatusWaiting(props: IProps) {
 
   return (
     <>
-      <div
-        className={cn(
-          "flex h-full min-h-0 w-full flex-col gap-2.5 overflow-x-hidden overflow-y-auto overscroll-contain px-3 pt-8 [-webkit-overflow-scrolling:touch]",
-          isLeader ? "pb-28" : "pb-16",
-        )}
-      >
-        <header className={cn("glass-start-liquid-palette relative shrink-0 rounded-2xl p-3 sm:p-4", styles.header)}>
+      <div className={PHASE_SHELL_CLASS}>
+        <p className="glass-start-meta" role="status">
+          {WAITING_STATUS_LABEL}
+        </p>
+        <header className={cn("glass-start-liquid-palette relative shrink-0 rounded-2xl p-3.5 sm:p-4", styles.header)}>
           <span className={styles.headerScan} aria-hidden />
           <span className={styles.headerSliceA} aria-hidden />
           <span className={styles.headerSliceB} aria-hidden />
-          <div className={cn("space-y-2.5", styles.headerContent)}>
-            <div className="flex flex-row items-center justify-between gap-2">
-              <p
-                className={cn("text-[0.58rem] font-semibold tracking-[0.2em] uppercase", styles.statusLabel)}
-                role="status"
-                aria-label={WAITING_STATUS_LABEL}
-              >
-                {[...WAITING_STATUS_LABEL].map((letter, index) => (
-                  <span
-                    key={`${letter}-${index}`}
-                    className={cn(styles.statusLetter, WAITING_STATUS_LETTER_COLORS[index % WAITING_STATUS_LETTER_COLORS.length])}
-                    data-text={letter}
-                    aria-hidden
-                  >
-                    {letter}
-                  </span>
-                ))}
-              </p>
-              <div className="flex flex-row items-center gap-2">
-                {code ? (
-                  <>
-                    <SessionCodeCopyButton
-                      code={code}
-                      textToCopy={url}
-                      className={cn(waitingToolbarBtn, "gap-1 px-2 font-mono text-[0.68rem] tracking-[0.28em] tabular-nums")}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setIsQrCodeOpen(true)}
-                      className={waitingToolbarIconBtn}
-                      aria-label="Показать QR-код на весь экран"
-                      title="Показать QR-код на весь экран"
-                    >
-                      <QrCode className="size-3.5 text-white/65" aria-hidden />
-                    </button>
-                  </>
-                ) : null}
+          <div className={cn("space-y-3", styles.headerContent)}>
+            {code ? (
+              <div className="flex flex-row items-center justify-end gap-2">
+                <SessionCodeCopyButton
+                  code={code}
+                  textToCopy={url}
+                  className={cn(waitingToolbarBtn, "gap-1 px-2 font-mono text-[0.68rem] tracking-[0.28em] tabular-nums")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setIsQrCodeOpen(true)}
+                  className={waitingToolbarIconBtn}
+                  aria-label="Показать QR-код на весь экран"
+                  title="Показать QR-код на весь экран"
+                >
+                  <QrCode className="size-3.5 text-white/65" aria-hidden />
+                </button>
               </div>
-            </div>
+            ) : null}
             {coverUrl ? (
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start sm:gap-4">
-                <div className="relative aspect-square w-full max-w-28 shrink-0 overflow-hidden rounded-xl border border-white/20 bg-white/6 sm:w-28 sm:max-w-none">
+                <div className="relative aspect-square w-full max-w-28 shrink-0 overflow-hidden rounded-xl border border-(--accent-orb)/40 bg-white/6 sm:w-28 sm:max-w-none">
                   <Image src={coverUrl} alt="" fill sizes="7rem" className="object-cover" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1.5 text-center sm:text-left">
@@ -288,7 +261,7 @@ function StatusWaiting(props: IProps) {
           <div className="flex w-full shrink-0 flex-col gap-2">
             {showElementPickPrompt && (
               <Suspense
-                fallback={<Skeleton className="h-17 w-full shrink-0 rounded-xl border border-white/12 bg-white/6 sm:h-18" aria-hidden />}
+                fallback={<Skeleton className="h-17 w-full shrink-0 rounded-2xl sm:h-18" aria-hidden />}
               >
                 <ElementPickPromptBanner />
               </Suspense>
@@ -315,7 +288,7 @@ function StatusWaiting(props: IProps) {
                     pseudo={myDisplayName}
                     photoUrl={me?.photo_url}
                     element={me?.element}
-                    className={cn(meInUsers ? "border-emerald-400/35" : "border-amber-400/80")}
+                    className={cn(meInUsers ? "border-(--accent-orb)/40" : "border-white/25")}
                   />
                   <div className="min-w-0 flex-1 space-y-0.5">
                     <div className="flex min-w-0 items-baseline gap-2">
@@ -326,8 +299,8 @@ function StatusWaiting(props: IProps) {
                           className={cn(
                             "shrink-0 rounded border px-1 py-px text-[0.6rem] leading-none font-semibold tracking-wide uppercase",
                             meInUsers
-                              ? "border-emerald-400/35 bg-emerald-500/12 text-emerald-200/90"
-                              : "border-amber-400/40 bg-amber-500/12 text-amber-100/85",
+                              ? "border-(--accent-orb)/40 bg-(--accent-orb)/12 text-(--accent-orb)"
+                              : "border-white/20 bg-white/8 text-white/70",
                           )}
                         >
                           {meInUsers ? "Игрок" : "Наблюдатель"}
@@ -363,7 +336,7 @@ function StatusWaiting(props: IProps) {
         <Suspense
           fallback={
             <Skeleton
-              className="h-16 w-full max-w-[calc(100vw-2rem)] shrink-0 rounded-xl border border-emerald-300/20 bg-emerald-500/6 sm:h-17"
+              className="h-16 w-full max-w-[calc(100vw-2rem)] shrink-0 rounded-2xl sm:h-17"
               aria-hidden
             />
           }
@@ -371,13 +344,13 @@ function StatusWaiting(props: IProps) {
           <RandomPrizeLobbyBanner />
         </Suspense>
         <UsersWaiting users={users!} tgId={tgId!} reportId={data.id} lastByType={lastByType} isLeader={isLeader} />
-        {!isLeader ? <div className="spacer-bottom-game" aria-hidden /> : null}
-        {isLeader && (
-          <Suspense fallback={null}>
-            <WaitingLeaderStartFooter onStart={handleStart} loading={loading} disabled={!canStart} hint="Нужен хотя бы один игрок" />
-          </Suspense>
-        )}
+        <div className={isLeader ? "spacer-bottom-next" : "spacer-bottom-game"} aria-hidden />
       </div>
+      {isLeader && (
+        <Suspense fallback={null}>
+          <WaitingLeaderStartFooter onStart={handleStart} loading={loading} disabled={!canStart} hint="Нужен хотя бы один игрок" />
+        </Suspense>
+      )}
       {code ? (
         <Suspense fallback={null}>
           <FullscreenQrCode open={isQrCodeOpen} onOpenChange={setIsQrCodeOpen} url={url} sessionCode={code} />

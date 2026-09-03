@@ -1,5 +1,8 @@
 import Spinner from "@/components/ui/spinner"
 
+import { cn } from "@/lib/utils"
+import { PHASE_FOOTER_CLASS, PHASE_FOOTER_PRIMARY_CLASS } from "@/components/start/lib/phase-shell"
+
 export interface WaitingLeaderStartFooterProps {
   onStart: () => void
   loading: boolean
@@ -11,10 +14,10 @@ export interface WaitingLeaderStartFooterProps {
 
 export default function WaitingLeaderStartFooter({ onStart, loading, disabled = false, hint }: WaitingLeaderStartFooterProps) {
   return (
-    <footer className="bottom-next from-background via-background/92 fixed right-0 left-0 z-50 shrink-0 bg-linear-to-t to-transparent p-4 pt-8 backdrop-blur-[2px] sm:p-5 sm:pt-10 xl:absolute xl:-bottom-12 xl:-left-4 xl:bg-none xl:pt-4 xl:backdrop-blur-none">
+    <footer className={PHASE_FOOTER_CLASS}>
       <button
         type="button"
-        className="glass-start-btn-primary-palette flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+        className={cn(PHASE_FOOTER_PRIMARY_CLASS, "disabled:cursor-not-allowed disabled:opacity-50")}
         onClick={onStart}
         disabled={loading || disabled}
       >

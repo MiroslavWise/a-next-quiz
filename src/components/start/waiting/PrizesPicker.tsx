@@ -138,12 +138,10 @@ function PrizesPickerContent({ reportId, prizes, usersCount }: Omit<PrizesPicker
                   aria-label={placeLabel(place)}
                   onClick={() => togglePlace(place)}
                   className={cn(
-                    "flex size-9 shrink-0 items-center justify-center rounded-xl border text-sm font-semibold tabular-nums transition-colors",
+                    "flex size-9 shrink-0 items-center justify-center rounded-xl text-sm font-semibold tabular-nums transition-colors",
                     "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/40",
                     "disabled:cursor-not-allowed disabled:opacity-60",
-                    isActive
-                      ? "border-amber-300/45 bg-amber-500/20 text-amber-50"
-                      : "border-white/15 bg-white/8 text-white/80 hover:border-white/25 hover:bg-white/12",
+                    isActive ? "glass-start-slab-selected" : "glass-start-slab hover:border-(--accent-orb)/50",
                   )}
                 >
                   {place}

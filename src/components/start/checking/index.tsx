@@ -2,10 +2,12 @@
 
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { CheckCircle2, Loader2, ShieldCheck, Timer, UserRoundCheck } from "lucide-react"
+import { CheckCircle2, Loader2, UserRoundCheck } from "lucide-react"
 
 import Skeleton from "@/components/ui/skeleton"
 import { UserAvatar } from "@/components/common/UserAvatar"
+import TimerSeconds from "@/components/start/active/TimerSeconds"
+import { PHASE_FOOTER_CLASS, PHASE_FOOTER_PRIMARY_CLASS, PHASE_SHELL_CLASS } from "@/components/start/lib/phase-shell"
 
 import { cn } from "@/lib/utils"
 import { useUserByTgId } from "@/queries/user"
@@ -127,7 +129,6 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
   const progress = totalToConfirm > 0 ? Math.min(1, confirmedCount / totalToConfirm) : 0
   const selfConfirmed = confirmedSet.has(tgId)
   const timeUp = remainingSeconds <= 0
-  const timeProgress = Math.max(0, Math.min(1, remainingSeconds / CHECKING_WINDOW_SECONDS))
 
   const handleConfirm = useCallback(() => {
     if (!reportId || submitting || selfConfirmed || timeUp) return
@@ -143,76 +144,43 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
       .finally(() => setSubmitting(false))
   }, [reportId, submitting, selfConfirmed, timeUp, applyConfirmedFromHttp])
 
-  const ringStyle = useMemo(
-    () => ({ background: `conic-gradient(var(--accent-orb, #818cf8) ${progress * 360}deg, rgba(255,255,255,0.10) 0deg)` }),
-    [progress],
-  )
-
   return (
     <>
-      <div
-        className={cn(
-          "flex h-full min-h-0 w-full flex-col gap-3 overflow-x-hidden overflow-y-auto overscroll-contain px-3 pt-8 [-webkit-overflow-scrolling:touch]",
-          canConfirm ? "pb-28" : "pb-16",
-        )}
-      >
-        <header className="glass-start-liquid-palette relative shrink-0 overflow-hidden rounded-2xl border border-(--accent-orb)/40 p-4 sm:p-5">
-          <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden rounded-t-2xl bg-white/8" aria-hidden>
-            <div
-              className="h-full w-full origin-left rounded-full bg-(--accent-orb)/85"
-              style={{ transform: `scaleX(${timeProgress})` }}
-            />
-          </div>
-          <div className="flex flex-row items-start justify-between gap-3">
-            <div className="min-w-0 space-y-1.5">
-              <div className="flex items-center gap-1.5 text-[0.58rem] font-semibold tracking-[0.2em] text-(--accent-orb)/90 uppercase">
-                <ShieldCheck className="size-3.5 shrink-0" aria-hidden />
-                <span>Подтверждение участия</span>
-              </div>
-              <h2 className="text-xl font-semibold tracking-tight text-balance text-white sm:text-2xl">
+      <div className={PHASE_SHELL_CLASS}>
+        <div className="relative flex w-full flex-col items-center gap-3">
+          <p className="glass-start-meta">подтверждение участия</p>
+          <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={CHECKING_WINDOW_SECONDS} />
+          <div className="glass-start-liquid-palette relative isolate flex w-full flex-col rounded-2xl text-white">
+            <div className="relative flex w-full flex-col gap-3 p-3.5 sm:p-4">
+              <h2 className="text-center text-xl leading-snug font-semibold text-balance text-white sm:text-2xl">
                 {data?.quiz?.name ?? "Готовимся к старту"}
               </h2>
-              <p className="max-w-prose text-xs leading-relaxed text-pretty text-white/60 sm:text-sm">
+              <p className="text-center text-sm leading-relaxed text-pretty text-white/65">
                 {canConfirm
                   ? "Нажмите «Участвую», чтобы остаться в игре. Кто не подтвердит — выбывает."
                   : isLeader
                     ? "Ждём, пока участники подтвердят участие. Игра начнётся автоматически."
                     : "Идёт подтверждение участников. Вы наблюдаете за игрой."}
               </p>
-            </div>
-
-            <div className="relative grid size-16 shrink-0 place-items-center sm:size-18" role="timer" aria-live="polite">
-              <div className="absolute inset-0 rounded-full p-0.75 transition-[background] duration-300" style={ringStyle}>
-                <div className="size-full rounded-full bg-black/55 backdrop-blur-md" />
-              </div>
-              <div className="relative z-10 flex flex-col items-center leading-none">
-                <Timer className="mb-0.5 size-3 text-white/45" aria-hidden />
-                <span className="font-mono text-lg font-bold text-white tabular-nums sm:text-xl">{remainingSeconds}</span>
-                <span className="text-[0.5rem] font-medium tracking-wider text-white/40 uppercase">сек</span>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between text-[0.7rem] font-medium text-white/65">
+                  <span className="inline-flex items-center gap-1.5">
+                    <UserRoundCheck className="size-3.5 text-faithful/80" aria-hidden />
+                    Подтвердили
+                  </span>
+                  <span className="font-mono tabular-nums">
+                    <span className="text-faithful">{confirmedCount}</span>
+                    <span className="mx-0.5 text-white/30">/</span>
+                    <span className="text-white/70">{totalToConfirm}</span>
+                  </span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                  <div className="h-full w-full origin-left rounded-full bg-faithful" style={{ transform: `scaleX(${progress})` }} />
+                </div>
               </div>
             </div>
           </div>
-
-          <div className="mt-4 space-y-1.5">
-            <div className="flex items-center justify-between text-[0.7rem] font-medium text-white/65">
-              <span className="inline-flex items-center gap-1.5">
-                <UserRoundCheck className="size-3.5 text-faithful/80" aria-hidden />
-                Подтвердили
-              </span>
-              <span className="font-mono tabular-nums">
-                <span className="text-faithful">{confirmedCount}</span>
-                <span className="mx-0.5 text-white/30">/</span>
-                <span className="text-white/70">{totalToConfirm}</span>
-              </span>
-            </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-              <div
-                className="h-full w-full origin-left rounded-full bg-faithful"
-                style={{ transform: `scaleX(${progress})` }}
-              />
-            </div>
-          </div>
-        </header>
+        </div>
 
         <section className="relative w-full flex-1 py-1" aria-label={`Участники: ${gridUsers.length}`}>
           {gridUsers.length === 0 ? (
@@ -228,38 +196,36 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
             </div>
           )}
         </section>
-        {!canConfirm ? <div className="spacer-bottom-game" aria-hidden /> : null}
+        <div className={canConfirm ? "spacer-bottom-next" : "spacer-bottom-game"} aria-hidden />
       </div>
 
-      {/* Нижняя панель действия — только для участника, который ещё не подтвердил */}
       {canConfirm && (
-        <div className="bottom-next fixed inset-x-0 z-40 px-3 pt-6 pb-3">
-          <div className="pointer-events-auto mx-auto w-full max-w-md">
-            {selfConfirmed ? (
-              <div className="glass-start-slab-faithful flex items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold text-faithful">
-                <CheckCircle2 className="size-5 shrink-0" aria-hidden />
-                Вы подтвердили участие — ждём остальных
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={handleConfirm}
-                disabled={submitting || timeUp}
-                className={cn(
-                  "glass-start-btn-faithful-palette group flex w-full items-center justify-center gap-2.5 px-5 py-3.5 text-base font-semibold transition-all active:scale-[0.98]",
-                  "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-faithful/60",
-                  "disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100",
-                )}
-              >
-                {submitting ? (
-                  <Loader2 className="size-5 shrink-0 animate-spin" aria-hidden />
-                ) : (
-                  <UserRoundCheck className="size-5 shrink-0 transition-transform group-hover:scale-110" aria-hidden />
-                )}
-                {timeUp ? "Время вышло" : submitting ? "Подтверждаем…" : "Участвую"}
-              </button>
-            )}
-          </div>
+        <div className={PHASE_FOOTER_CLASS}>
+          {selfConfirmed ? (
+            <div className="glass-start-slab-faithful flex min-h-15 items-center justify-center gap-2 rounded-2xl px-5 text-sm font-semibold text-white">
+              <CheckCircle2 className="size-5 shrink-0" aria-hidden />
+              Вы подтвердили участие — ждём остальных
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleConfirm}
+              disabled={submitting || timeUp}
+              className={cn(
+                PHASE_FOOTER_PRIMARY_CLASS,
+                "gap-2.5 text-base transition-all active:scale-[0.98]",
+                "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)/60",
+                "disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100",
+              )}
+            >
+              {submitting ? (
+                <Loader2 className="size-5 shrink-0 animate-spin" aria-hidden />
+              ) : (
+                <UserRoundCheck className="size-5 shrink-0" aria-hidden />
+              )}
+              {timeUp ? "Время вышло" : submitting ? "Подтверждаем…" : "Участвую"}
+            </button>
+          )}
         </div>
       )}
     </>

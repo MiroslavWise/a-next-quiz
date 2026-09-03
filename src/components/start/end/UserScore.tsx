@@ -27,16 +27,8 @@ function placeLabel(rank: number) {
 }
 
 function rankPodiumClass(rank: number) {
-  if (rank === 1) {
-    return "border-amber-300/50 bg-gradient-to-b from-amber-400/35 via-amber-500/15 to-amber-950/25 text-amber-50"
-  }
-  if (rank === 2) {
-    return "border-slate-200/45 bg-gradient-to-b from-slate-200/28 via-slate-400/12 to-slate-950/30 text-slate-50"
-  }
-  if (rank === 3) {
-    return "border-orange-400/45 bg-gradient-to-b from-orange-400/25 via-amber-800/12 to-amber-950/28 text-orange-50"
-  }
-  return "border-white/12 bg-white/[0.07] text-white/90"
+  if (rank === 1) return "glass-start-slab-selected"
+  return ""
 }
 
 function normalizeMyScore(raw: IReportUserPoints | number | undefined | null): IReportUserPoints | null {
@@ -72,28 +64,22 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
     )
 
   return myScore ? (
-    <div className="mt-4 space-y-4">
+    <div className="space-y-4">
       {isRandomPrizeWinner ? (
-        <div
-          className="glass-start-slab-faithful flex flex-col items-center gap-2 rounded-2xl p-4 text-center text-emerald-50"
-          role="status"
-        >
+        <div className="glass-start-slab-faithful flex flex-col items-center gap-2 rounded-2xl p-4 text-center text-white" role="status">
           <PrizeLottie className="size-16 sm:size-20" />
           <p className="text-sm font-semibold xl:text-base">Вы получаете случайный приз!</p>
         </div>
       ) : null}
       {isPrizeWinner && myScore.rank != null ? (
-        <div
-          className="flex flex-col items-center gap-2 rounded-2xl border border-amber-300/40 bg-amber-500/18 p-4 text-center text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.16)]"
-          role="status"
-        >
+        <div className="glass-start-slab-selected flex flex-col items-center gap-2 rounded-2xl p-4 text-center text-white" role="status">
           <PrizeLottie className="size-16 sm:size-20" />
           <p className="text-sm font-semibold xl:text-base">Вы получаете приз за {placeLabel(myScore.rank)}</p>
         </div>
       ) : null}
       {myScore.rank != null && (
         <div className={cn("glass-start-slab flex flex-col items-center rounded-2xl px-5 py-4 text-center", rankPodiumClass(myScore.rank))}>
-          <span className="text-[0.65rem] font-semibold tracking-[0.2em] text-white/70 uppercase">Место</span>
+          <span className="text-[0.65rem] font-semibold tracking-[0.2em] text-(--accent-orb)/85 uppercase">Место</span>
           <span className="mt-1 text-5xl leading-none font-black tabular-nums">{myScore.rank}</span>
           <span className="mt-2 text-sm font-semibold text-white/85">{placeLabel(myScore.rank)}</span>
         </div>
@@ -118,7 +104,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
       ) : null}
     </div>
   ) : (
-    <p className="mt-4 text-sm text-white/55">Нет данных по очкам</p>
+    <p className="text-sm text-white/55">Нет данных по очкам</p>
   )
 }
 

@@ -13,7 +13,7 @@ import { getRank } from "@/api/rank"
 import { useRankBonuses } from "../hooks/use-rank-bonuses"
 import { useElementEffectsRank } from "../hooks/use-element-effects-rank"
 import { useSkillEffectsRank } from "../hooks/use-skill-effects-rank"
-import { getStreakTier, LUCKY_BONUS_PERCENT } from "@/lib/game-streak-tiers"
+import { LUCKY_BONUS_PERCENT } from "@/lib/game-streak-tiers"
 import { formatQuizPoints, isNegativeQuizPoints, quizPointsToneClass } from "@/lib/quiz-points"
 
 export interface IComponentWithRankProps {
@@ -145,8 +145,6 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
   const endElementEffects = useElementEffectsRank({ activeIndex, data })
   const endSkillEffects = useSkillEffectsRank({ activeIndex, data })
 
-  const tier = getStreakTier(streak)
-
   if (isFetching && !data) {
     return <div className="glass-start-liquid-palette h-24 w-full animate-pulse rounded-2xl xl:h-28" />
   }
@@ -154,41 +152,49 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
   if (!data) return null
 
   const totalPoints = Number(data.total_points ?? 0)
-  const hasNegativeTotal = isNegativeQuizPoints(totalPoints)
+  const hasNegativeTotal = !isTopThree && isNegativeQuizPoints(totalPoints)
 
   return (
     <section className="glass-start-liquid-palette relative w-full rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4 xl:px-7 xl:py-5">
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0 space-y-1">
-          {rankDelta !== 0 && typeof rank === "number" && rankFrom != null ? (
-            <p
-              className={cn(
-                "text-lg font-bold tracking-tight",
-                rankDelta > 0 ? "text-faithful" : "text-[#FF8A4C]",
+          {isTopThree ? (
+            <>
+              <p className="flex items-center gap-2 text-lg font-bold tracking-tight text-(--accent-orb)">
+                <Crown className="size-5 shrink-0" aria-hidden />
+                Вы в топе
+              </p>
+              <p className="text-sm leading-snug text-white/75">{topMessage}</p>
+            </>
+          ) : (
+            <>
+              {rankDelta !== 0 && typeof rank === "number" && rankFrom != null ? (
+                <p
+                  className={cn(
+                    "text-lg font-bold tracking-tight",
+                    rankDelta > 0 ? "text-faithful" : "text-[#FF8A4C]",
+                  )}
+                >
+                  {rankDelta > 0 ? `+${rankDelta}` : rankDelta} место
+                </p>
+              ) : (
+                <p className="text-lg font-bold tracking-tight text-white">{rank ? `#${rank}` : "—"}</p>
               )}
-            >
-              {rankDelta > 0 ? `+${rankDelta}` : rankDelta} место
-            </p>
-          ) : (
-            <p className="text-lg font-bold tracking-tight text-white">{rank ? `#${rank}` : "—"}</p>
-          )}
-          {rankFrom != null && typeof rank === "number" && rankFrom !== rank ? (
-            <p className="text-sm font-semibold text-white/80 tabular-nums">
-              {rankFrom} → {rank}
-            </p>
-          ) : null}
-          {!isTopThree ? (
-            <p className="flex items-center gap-1.5 text-xs text-white/70">
-              до предыдущего
-              <span className="inline-flex items-center gap-1 font-semibold text-(--accent-orb)">
-                <Suspense fallback={<span>0</span>}>
-                  <CountText count={Math.max(0, data.points_to_prev)} />
-                </Suspense>
-                <PickaxeIcon tone="neutral" className="size-3.5" />
-              </span>
-            </p>
-          ) : (
-            <p className="text-[0.65rem] font-medium tracking-[0.12em] text-white/45 uppercase">{tier.title}</p>
+              {rankFrom != null && typeof rank === "number" && rankFrom !== rank ? (
+                <p className="text-sm font-semibold text-white/80 tabular-nums">
+                  {rankFrom} → {rank}
+                </p>
+              ) : null}
+              <p className="flex items-center gap-1.5 text-xs text-white/70">
+                до предыдущего
+                <span className="inline-flex items-center gap-1 font-semibold text-(--accent-orb)">
+                  <Suspense fallback={<span>0</span>}>
+                    <CountText count={Math.max(0, data.points_to_prev)} />
+                  </Suspense>
+                  <PickaxeIcon tone="neutral" className="size-3.5" />
+                </span>
+              </p>
+            </>
           )}
         </div>
         <StreakRing streak={streak} />
@@ -244,15 +250,6 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
         >
           <p className="mb-1.5 text-[0.6rem] font-semibold tracking-[0.14em] text-white/50 uppercase">Способности</p>
           <ElementEffectsList effects={endSkillEffects} variant="strip" />
-        </div>
-      ) : null}
-
-      {isTopThree ? (
-        <div className="mt-3 rounded-xl border border-(--accent-orb)/35 bg-(--accent-orb)/15 px-3.5 py-3 text-white/95 xl:px-5 xl:py-4">
-          <p className="flex items-start gap-2 text-sm font-medium sm:text-[0.95rem] xl:gap-2.5 xl:text-base">
-            <Crown className="mt-0.5 size-4 shrink-0 text-(--accent-orb) xl:mt-1 xl:size-5" />
-            <span>{topMessage}</span>
-          </p>
         </div>
       ) : null}
     </section>

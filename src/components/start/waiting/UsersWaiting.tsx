@@ -198,7 +198,11 @@ function UserWaiting({
   const bg = data?.bg
   const isObserver = type === "observer"
   const shouldPulse = highlighted && !isObserver ? highlighted : highlighted
-  const avatarClass = shouldPulse ? "border-emerald-300/70 animate-pulse" : isObserver ? "border-amber-400" : "border-white/20"
+  const avatarClass = shouldPulse
+    ? "border-(--accent-orb) ring-2 ring-(--accent-orb)/30 animate-pulse"
+    : isObserver
+      ? "border-white/25"
+      : "border-(--accent-orb)/35"
   const canRemoveFromReport = isLeader
 
   function openRemoveUserPopup() {
@@ -256,7 +260,7 @@ function UserWaiting({
               className={avatarClass}
             />
           </div>
-          <p className={cn("max-w-16 truncate text-[0.65rem] leading-none sm:max-w-20", isObserver ? "text-cyan-700" : "text-white/90")}>
+          <p className={cn("max-w-16 truncate text-[0.65rem] leading-none sm:max-w-20", isObserver ? "text-white/55" : "text-white/90")}>
             {data?.pseudo ?? ""}
           </p>
         </>

@@ -27,26 +27,29 @@ function FullscreenQrCode({ open, onOpenChange, url, sessionCode }: FullscreenQr
 
   return (
     <div
-      className="fixed inset-0 z-100 flex min-h-svh flex-col items-center justify-center bg-slate-950 p-5 text-center text-white"
+      className="fixed inset-0 z-100 flex min-h-svh flex-col items-center justify-center bg-black/80 p-5 text-center text-white backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-labelledby="fullscreen-qr-title"
       onClick={() => onOpenChange(false)}
     >
-      <div className="flex w-full max-w-2xl flex-col items-center gap-5">
-        <div className="flex items-center gap-2 text-white/75">
+      <div
+        className="glass-start-liquid-palette flex w-full max-w-lg flex-col items-center gap-5 rounded-2xl p-5 sm:p-6"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-center gap-2 text-(--accent-orb)/85">
           <QrCode className="size-5" aria-hidden />
-          <h2 id="fullscreen-qr-title" className="text-lg font-semibold sm:text-xl">
+          <h2 id="fullscreen-qr-title" className="text-lg font-semibold text-white sm:text-xl">
             Присоединиться к игре
           </h2>
         </div>
-        <div className="rounded-3xl bg-white p-4 shadow-2xl sm:p-6">
+        <div className="rounded-2xl bg-white p-4 sm:p-5">
           <QRCodeSVG
             value={url}
             size={640}
             level="M"
             includeMargin
-            className="h-auto w-[min(76vw,76svh)] max-w-full"
+            className="h-auto w-[min(68vw,68svh)] max-w-full"
             title="QR-код для присоединения к игре"
           />
         </div>

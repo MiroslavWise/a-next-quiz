@@ -31,9 +31,15 @@ interface IProps extends IReportUserPoints {
   reportId?: string | number
   isPrizePlace?: boolean
   isRandomPrize?: boolean
+  /** Стеклянный тон квиза (экран END), без amber/emerald админ-карточки. */
+  gameTone?: boolean
 }
 
-function rankBadgeClass(rank: number, reducedEffects: boolean) {
+function rankBadgeClass(rank: number, reducedEffects: boolean, gameTone: boolean) {
+  if (gameTone) {
+    if (rank === 1) return "border-(--accent-orb)/55 bg-(--accent-orb)/20 text-white"
+    return "border-(--accent-orb)/30 bg-(--accent-orb)/10 text-white/85"
+  }
   if (rank === 1) {
     return "border-amber-400/55 bg-amber-500/35 text-amber-50"
   }
@@ -95,6 +101,7 @@ function ItemUserReportPoints({
   reportId,
   isPrizePlace = false,
   isRandomPrize = false,
+  gameTone = false,
 }: IProps) {
   const showDataUsers = useShowDataUser()
   const score = reportUserTotalPoints({ points, total_points })
@@ -122,7 +129,7 @@ function ItemUserReportPoints({
 
   if (isLoading) {
     return (
-      <Item variant="outline" size="sm" role="listitem" className="justify-between">
+      <Item variant="outline" size="sm" role="listitem" className={cn("justify-between", gameTone && "glass-start-slab rounded-2xl")}>
         <div className="flex min-w-0 items-center gap-3">
           <Skeleton className="size-11 rounded-full" />
           <div className="flex flex-col gap-1.5">
@@ -137,7 +144,11 @@ function ItemUserReportPoints({
 
   const scorePanel = reportId ? (
     <div
-      className={cn("border-border bg-card/40 overflow-hidden rounded-b-xl border border-t-0 px-3 py-3", !scoreOpen && "hidden")}
+      className={cn(
+        "border-border bg-card/40 overflow-hidden rounded-b-xl border border-t-0 px-3 py-3",
+        gameTone && "glass-start-slab rounded-t-none border-white/10",
+        !scoreOpen && "hidden",
+      )}
       id={`user-score-${String(telegram_id)}`}
       role="region"
       aria-label="Детализация очков"
@@ -184,13 +195,20 @@ function ItemUserReportPoints({
     <div
       className={cn(
         "relative space-y-0",
-        isPrizePlace && "rounded-xl border-2 border-amber-400/70 bg-amber-500/8",
-        isRandomPrize && !isPrizePlace && "rounded-xl border-2 border-emerald-400/45 bg-emerald-500/8",
+        isPrizePlace && (gameTone ? "rounded-2xl ring-1 ring-(--accent-orb)/45" : "rounded-xl border-2 border-amber-400/70 bg-amber-500/8"),
+        isRandomPrize &&
+          !isPrizePlace &&
+          (gameTone ? "rounded-2xl ring-1 ring-faithful/45" : "rounded-xl border-2 border-emerald-400/45 bg-emerald-500/8"),
       )}
     >
       {isPrizePlace ? (
         <div
-          className="pointer-events-none absolute -top-2 -left-2 z-10 flex size-8 items-center justify-center rounded-full border-2 border-amber-300/80 bg-linear-to-br from-amber-400 to-amber-600"
+          className={cn(
+            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-8 items-center justify-center rounded-full border-2",
+            gameTone
+              ? "border-(--accent-orb)/50 bg-(--accent-orb)/80"
+              : "border-amber-300/80 bg-linear-to-br from-amber-400 to-amber-600",
+          )}
           aria-hidden
         >
           <Suspense fallback={null}>
@@ -199,7 +217,12 @@ function ItemUserReportPoints({
         </div>
       ) : isRandomPrize ? (
         <div
-          className="pointer-events-none absolute -top-2 -left-2 z-10 flex size-8 items-center justify-center rounded-full border-2 border-emerald-300/70 bg-linear-to-br from-emerald-400 to-emerald-600"
+          className={cn(
+            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-8 items-center justify-center rounded-full border-2",
+            gameTone
+              ? "border-faithful/60 bg-faithful/80"
+              : "border-emerald-300/70 bg-linear-to-br from-emerald-400 to-emerald-600",
+          )}
           aria-hidden
         >
           <Suspense fallback={null}>
@@ -213,8 +236,9 @@ function ItemUserReportPoints({
         role="listitem"
         className={cn(
           "bg-card/60 flex flex-row flex-nowrap items-center justify-between gap-2",
+          gameTone && "glass-start-slab rounded-2xl bg-transparent text-white",
           reportId && scoreOpen && "rounded-b-none border-b-0",
-          isPrizePlace && "border-transparent bg-transparent",
+          isPrizePlace && !gameTone && "border-transparent bg-transparent",
         )}
       >
         <div className="flex min-w-0 flex-1 items-center gap-3 overflow-hidden">
@@ -222,7 +246,11 @@ function ItemUserReportPoints({
             <div
               className={cn(
                 "flex size-8 items-center justify-center rounded-lg border text-xs font-bold tabular-nums",
-                isPrizePlace ? "border-amber-400/55 bg-amber-500/30 text-amber-50" : rankBadgeClass(rank, reducedEffects),
+                isPrizePlace
+                  ? gameTone
+                    ? "border-(--accent-orb)/55 bg-(--accent-orb)/20 text-white"
+                    : "border-amber-400/55 bg-amber-500/30 text-amber-50"
+                  : rankBadgeClass(rank, reducedEffects, gameTone),
               )}
               aria-label={isPrizePlace ? `Призовое место ${rank}` : `Место ${rank}`}
             >
@@ -232,11 +260,16 @@ function ItemUserReportPoints({
           <UserAvatar variant="report" avatar={avatar} bg={bg} pseudo={pseudo} photoUrl={data?.photo_url} reducedEffects={reducedEffects} />
           <div className="min-w-0 flex-1 overflow-hidden">
             <div className="flex min-w-0 items-center gap-1.5 overflow-hidden">
-              <p className="text-foreground min-w-0 truncate text-sm font-semibold" title={pseudo}>
+              <p className={cn("min-w-0 truncate text-sm font-semibold", gameTone ? "text-white" : "text-foreground")} title={pseudo}>
                 {pseudo}
                 {isRandomPrize ? (
                   <span
-                    className="ml-2 inline-block rounded bg-emerald-600/10 px-2 py-0.5 text-[0.65rem] font-medium text-emerald-700 dark:text-emerald-200"
+                    className={cn(
+                      "ml-2 inline-block rounded px-2 py-0.5 text-[0.65rem] font-medium",
+                      gameTone
+                        ? "bg-faithful/20 text-white"
+                        : "bg-emerald-600/10 text-emerald-700 dark:text-emerald-200",
+                    )}
                     title={`Розыгрыш среди игроков вне призовых мест с ${RANDOM_PRIZE_MIN_CORRECT_PERCENT}%+ верных ответов`}
                   >
                     случайный приз
@@ -245,7 +278,7 @@ function ItemUserReportPoints({
               </p>
             </div>
             {adminSubtitle && showDataUsers ? (
-              <span className="text-muted-foreground block truncate text-xs font-normal" title={adminSubtitle}>
+              <span className={cn("block truncate text-xs font-normal", gameTone ? "text-white/55" : "text-muted-foreground")} title={adminSubtitle}>
                 ({adminSubtitle})
               </span>
             ) : null}
@@ -253,7 +286,7 @@ function ItemUserReportPoints({
         </div>
         <div className="flex shrink-0 items-center gap-1 self-center">
           <div className="grid grid-cols-[minmax(0,1fr)_0.875rem] items-center gap-1.5">
-            <span className={cn("text-foreground text-sm font-semibold whitespace-nowrap", quizPointsToneClass(score, "text-foreground", "text-rose-600 dark:text-rose-400"))}>
+            <span className={cn("text-sm font-semibold whitespace-nowrap", quizPointsToneClass(score, gameTone ? "text-white" : "text-foreground", "text-rose-600 dark:text-rose-400"))}>
               {formatQuizPoints(score)}
             </span>
             <PickaxeIcon points={score} className="size-3.5" />
@@ -263,7 +296,7 @@ function ItemUserReportPoints({
               type="button"
               variant="ghost"
               size="icon"
-              className="size-8 shrink-0"
+              className={cn("size-8 shrink-0", gameTone && "text-white hover:bg-white/8")}
               aria-expanded={scoreOpen}
               aria-controls={`user-score-${String(telegram_id)}`}
               aria-label={scoreOpen ? "Скрыть детализацию очков" : "Показать детализацию очков"}

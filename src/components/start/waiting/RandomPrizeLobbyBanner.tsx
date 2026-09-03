@@ -12,15 +12,15 @@ function RandomPrizeLobbyBanner() {
     >
       <div className="flex items-start gap-3">
         <span
-          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-emerald-300/35 bg-emerald-500/15 sm:size-11"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 sm:size-11"
           aria-hidden
         >
           <PrizeLottie className="size-6" />
         </span>
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold tracking-tight text-emerald-50 sm:text-[0.95rem]">Случайный приз</h2>
-            <Sparkles className="size-3.5 shrink-0 text-emerald-200/80" aria-hidden />
+            <h2 className="text-sm font-semibold tracking-tight text-white sm:text-[0.95rem]">Случайный приз</h2>
+            <Sparkles className="size-3.5 shrink-0 text-(--accent-orb)" aria-hidden />
           </div>
           <p className="text-[0.68rem] leading-snug text-white/60 sm:text-xs">
             После игры среди участников,{" "}

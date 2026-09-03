@@ -24,7 +24,7 @@ function ElementPickPromptBanner() {
     >
       <span className="flex w-full items-center gap-3">
         <span
-          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 sm:size-11"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 sm:size-11"
           aria-hidden
         >
           <DotLottieReact src="/lottie/elements.lottie" loop autoplay backgroundColor="transparent" className="size-5 shrink-0" />

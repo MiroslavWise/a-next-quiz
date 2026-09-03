@@ -5,15 +5,14 @@ import { lazy, Suspense } from "react"
 import { HomeIcon } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 
-import Button from "@/components/ui/button"
 import Spinner from "@/components/ui/spinner"
 const UserScore = lazy(() => import("./UserScore"))
 const GeneralTable = lazy(() => import("./GeneralTable"))
 const PrizesWinnersBanner = lazy(() => import("./PrizesWinnersBanner"))
 
-import { cn } from "@/lib/utils"
 import { useAuthJwtClaims } from "@/lib/jwt"
 import { getReportMyRole, type IReportByIdResponse } from "@/api/reports"
+import { PHASE_SHELL_CLASS } from "@/components/start/lib/phase-shell"
 
 interface IProps {
   data: IReportByIdResponse
@@ -42,26 +41,21 @@ function StatusEnd({ data, tgId }: IProps) {
     )
 
   return (
-    <div className="flex h-full max-h-screen w-full flex-col items-center gap-4 overflow-x-hidden overflow-y-auto px-4 pt-12 pb-20 [-webkit-overflow-scrolling:touch]">
+    <div className={PHASE_SHELL_CLASS}>
+      <p className="glass-start-meta">игра завершена</p>
       <Suspense fallback={null}>
-        <div className="container w-full">
-          <PrizesWinnersBanner reportId={data.id} tgId={tgId} elementAvatarId={data.element_avatar_id ?? null} />
-        </div>
+        <PrizesWinnersBanner reportId={data.id} tgId={tgId} elementAvatarId={data.element_avatar_id ?? null} />
       </Suspense>
-      <section
-        className={cn(
-          "container",
-          showLeaderboard ? "py-4 sm:py-5" : "glass-start-liquid-palette rounded-2xl p-4 sm:p-5",
-        )}
-      >
-        <header className={cn("flex items-center justify-between gap-3", showLeaderboard && "mb-2")}>
+      <section className="glass-start-liquid-palette w-full rounded-2xl p-3.5 sm:p-4">
+        <header className="mb-3 flex items-center justify-between gap-3">
           <h2 className="text-base font-semibold text-white">{showLeaderboard ? "Таблица рейтинга" : "Ваш результат"}</h2>
-          <Button asChild variant="outline" size="sm" className="border-white/15 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white">
-            <Link href="/">
-              <HomeIcon className="size-3.5" aria-hidden />
-              На главную
-            </Link>
-          </Button>
+          <Link
+            href="/"
+            className="glass-start-slab inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-white transition-colors hover:border-(--accent-orb)/50"
+          >
+            <HomeIcon className="size-3.5" aria-hidden />
+            На главную
+          </Link>
         </header>
         <Suspense fallback={null}>
           {showLeaderboard ? (
@@ -77,6 +71,7 @@ function StatusEnd({ data, tgId }: IProps) {
           )}
         </Suspense>
       </section>
+      <div className="spacer-bottom-game" aria-hidden />
     </div>
   )
 }
