@@ -421,7 +421,7 @@ export default function GameMechanicsContent() {
                 <PhaseCard
                   phase="WAITING"
                   title="Лобби"
-                  description="Участники подключаются по коду, ведущий настраивает призовые места. Можно отправлять эмоции в комнату. Ведущий не числится в списке игроков."
+                  description="Участники подключаются по коду или QR, ведущий настраивает призовые места. Игроки могут выбрать стихию до старта. Ведущий не числится в списке игроков."
                 />
                 <PhaseCard
                   phase="CHECKING"
@@ -530,7 +530,7 @@ export default function GameMechanicsContent() {
 
             <MechanicsSection title="Стихии и аватар игры">
               <p>
-                Перед игрой можно выбрать стихию — она даёт уникальные бонусы и штрафы к очкам. Без выбора (
+                В лобби до старта раунда можно выбрать стихию — она даёт уникальные бонусы и штрафы к очкам. Без выбора (
                 <code className="text-xs">element = null</code>) действует только базовая механика: speed, streak и Lucky.
               </p>
               <p className="text-xs text-white/55">
@@ -600,8 +600,9 @@ export default function GameMechanicsContent() {
                   <strong className="text-foreground">{STREAK_BONUS_MAX_PERCENT}%</strong>.
                 </IconNote>
                 <p>
-                  Бонус серии считается как процент от очков текущего ответа и уже входит в итог. После начисления на экране кратко
-                  всплывает баннер «Бонус за серию» с процентом и суммой.
+                  Бонус серии считается как процент от очков текущего ответа и уже входит в итог. После ответа он виден в разбивке{" "}
+                  <code className="text-xs">element_effects</code> (id <code className="text-xs">streak_bonus</code>) — в блоке рейтинга и в
+                  финальной статистике.
                 </p>
                 <p className="text-xs text-white/55">
                   Пример: при 5 верных подряд — +{streakBonusPercent(5)}% к очкам текущего ответа; при 8 и более — потолок{" "}
@@ -618,8 +619,8 @@ export default function GameMechanicsContent() {
                   <strong className="text-amber-200">+{LUCKY_BONUS_PERCENT}%</strong> от базовых очков вопроса (округление вниз).
                 </IconNote>
                 <p className="mt-2 text-sm text-white/80">
-                  Пока розыгрыш не завершён, участнику вне топ-3 показывается тизер «Случайный бонус в розыгрыше». Победителю — анимация
-                  «Повезло!» и всплывающее уведомление в комнате для всех. Очки уже включены в сумму ответа.
+                  Победителю после закрытия вопроса показывается блок «Повезло!» в рейтинге; всем в комнате — всплывающая карточка по
+                  событию <code className="text-[0.65rem]">lucky-bonus</code>. Очки уже включены в сумму ответа.
                 </p>
                 <p className="mt-2 text-xs text-white/55">
                   На вопросе с бонусом <code className="text-[0.65rem]">LUCKY_PLUS</code> к базовому проценту Lucky добавляется ещё{" "}
@@ -717,15 +718,16 @@ export default function GameMechanicsContent() {
                   На карточке вопроса во время фазы <code className="text-xs">GAME</code> показываются назначенные бонусы вопроса — с
                   иконкой и полным описанием правила.
                 </li>
-                <li>Участники могут отправлять эмоции в комнату — они видны всем как анимация на экране.</li>
               </ul>
             </MechanicsSection>
 
             <MechanicsSection title="Подключение и синхронизация">
               <p>
                 Состояние игры приходит через Socket.IO (<code className="text-xs">quiz:event</code>): смена фаз, новый вопрос, конец
-                вопроса, ответы других игроков, бонусы <code className="text-xs">streak-bonus</code> и{" "}
-                <code className="text-xs">lucky-bonus</code>, вход и выход участников.
+                вопроса, ответы других игроков, событие <code className="text-xs">lucky-bonus</code>, вход и выход участников. Личные бонусы
+                серии и разбивка очков — в ответе API <code className="text-xs">my-rank</code>. Активации способностей для ведущего и
+                наблюдателей — в <code className="text-xs">quiz:staff-event</code> (
+                <code className="text-xs">skill-activated</code>).
               </p>
               <p>
                 Критичные события дублируются с задержкой (~2 с) для «догона» клиентов после обрыва связи. При переподключении клиент заново
