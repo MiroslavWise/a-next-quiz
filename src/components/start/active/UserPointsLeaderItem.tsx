@@ -75,9 +75,13 @@ function UserPointsLeaderItem({
   return (
     <li
       data-flip-id={String(telegram_id)}
+      title={isGameAvatar ? "Аватар игры" : undefined}
       className={cn(
         "bg-background relative flex flex-col gap-1 rounded-md px-2 py-1.5",
         isPrizePlace ? "border border-amber-400/40 bg-amber-500/12 ring-1 ring-amber-400/25" : "bg-white/5",
+        isGameAvatar && "shadow-[0_0_16px_rgba(255,255,255,0.42),0_0_1px_rgba(255,255,255,0.95)]",
+        isGameAvatar && !isPrizePlace && "border border-white/50 bg-white/12 ring-1 ring-white/40",
+        isGameAvatar && isPrizePlace && "ring-white/55",
       )}
     >
       <div

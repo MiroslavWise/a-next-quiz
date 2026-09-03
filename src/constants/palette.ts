@@ -47,8 +47,9 @@ export const ELEMENT_THEMES: Record<ElementThemeId, ElementTheme> = {
   AVATAR: {
     id: "AVATAR",
     label: "Аватар игры",
-    accent: "#FBBF24",
-    orbs: ["#FF4040", "#06B6D4", "#22C55E", "#76E3D6"],
+    /** Белый акцент — стеклянные плашки; orb — четыре цвета стихий. */
+    accent: "#FFFFFF",
+    orbs: ["#FF0000", "#06B6D4", "#1C8C47", "#76E3D6"],
   },
 }
 

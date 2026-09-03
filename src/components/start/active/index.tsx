@@ -26,6 +26,8 @@ import { type LastSocketEventByType } from "@/hooks/socket-event-by-type"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import { useQuizStaffSocketIO } from "@/hooks/useQuizStaffSocketIO"
 
+import { useElementThemeSession } from "@/stores/element-theme-session"
+
 import { useActiveQuestion } from "../hooks/use-active-question"
 import { useNextQuestion } from "../hooks/use-next-question"
 import { useShuffledAnswers } from "../hooks/use-shuffled-answers"
@@ -116,11 +118,18 @@ function PlayerResultsSection(props: IComponentWithRankProps) {
 }
 
 function DotsQuestionsSection(props: IDotsQuestionsProps) {
+  const isGameAvatar = useElementThemeSession((s) => s.isGameAvatar)
   return (
     <Suspense
       fallback={
         <div className="bg-background/95 absolute top-0 left-4 isolate z-10 flex -translate-y-1/2 items-center justify-center rounded-full p-0.5 shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_8px_20px_rgba(0,0,0,0.24)]">
-          <div className="flex max-w-full flex-row items-center gap-1.5 rounded-full border border-white/15 bg-(--accent-orb)/90 px-2 py-1 shadow-lg shadow-black/20 backdrop-blur-md">
+          <div
+            className={
+              isGameAvatar
+                ? "flex max-w-full flex-row items-center gap-1.5 rounded-full border border-white/30 bg-white/18 px-2 py-1 shadow-lg shadow-black/20 backdrop-blur-md"
+                : "flex max-w-full flex-row items-center gap-1.5 rounded-full border border-white/15 bg-(--accent-orb)/90 px-2 py-1 shadow-lg shadow-black/20 backdrop-blur-md"
+            }
+          >
             {Array.from({ length: props.totalQuestions }).map((_, index) => (
               <Skeleton key={index + "dots-questions-item" + "-skeleton"} className="size-2 rounded-full" />
             ))}

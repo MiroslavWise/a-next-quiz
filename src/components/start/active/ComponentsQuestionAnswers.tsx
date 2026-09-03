@@ -11,6 +11,7 @@ import { getAuthTelegramId } from "@/lib/jwt"
 import { isGetAnimeUser } from "@/lib/is-user"
 import { type IAnswer } from "@/interface/answer"
 import { indexToString } from "@/lib/index-to-string"
+import { useElementThemeSession } from "@/stores/element-theme-session"
 import { getReportsAnswersCorrectCounts, type IAnswerUserEntry, type IReportQuestionAnswerCounts } from "@/api/reports"
 
 import styles from "../styles/optimal.module.scss"
@@ -137,6 +138,8 @@ function AnswerOptionsList({
   const tgId = getAuthTelegramId()
   const results = phase === "results"
   const isAnime = isGetAnimeUser(tgId)
+  const isGameAvatar = useElementThemeSession((s) => s.isGameAvatar)
+  const avatarAnswerGlass = audience === "player" && isGameAvatar
   const [expandedAnswerId, setExpandedAnswerId] = useState<string | null>(null)
 
   return (
@@ -161,7 +164,7 @@ function AnswerOptionsList({
           const isCorrect = !!answer?.check
           const isSelected = selectedAnswerId === answer.id
           const isSubmitting = submittingAnswerId === answer.id
-          const str = indexToString(index) + " text-white"
+          const str = cn(indexToString(index, { glass: avatarAnswerGlass }), "text-white")
 
           return (
             <li key={answer.id} className="relative w-full">
