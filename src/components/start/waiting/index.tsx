@@ -32,7 +32,7 @@ import styles from "./waiting.module.scss"
 const REPORT_USERS_REFETCH_DEBOUNCE_MS = 2_500
 
 const PRIZES_PICKER_SECTION_CLASS =
-  "glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 space-y-2.5 overflow-hidden rounded-xl border border-white/12 p-3 sm:p-4"
+  "glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 space-y-2.5 overflow-hidden rounded-2xl p-3 sm:p-4"
 
 function PrizesPickerSkeleton({ usersCount }: { usersCount: number }) {
   return (
@@ -61,9 +61,9 @@ function PrizesPickerSkeleton({ usersCount }: { usersCount: number }) {
 }
 
 const waitingToolbarBtn = cn(
-  "inline-flex h-7 shrink-0 items-center justify-center rounded-md border border-white/15 bg-white/8",
-  "transition-colors hover:border-white/25 hover:bg-white/12",
-  "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/40",
+  "inline-flex h-7 shrink-0 items-center justify-center rounded-lg border border-(--accent-orb)/30 bg-(--accent-orb)/10",
+  "transition-colors hover:border-(--accent-orb)/50 hover:bg-(--accent-orb)/16",
+  "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)/50",
 )
 
 const waitingToolbarIconBtn = cn(waitingToolbarBtn, "w-7")
@@ -200,10 +200,10 @@ function StatusWaiting(props: IProps) {
       <div
         className={cn(
           "flex h-full min-h-0 w-full flex-col gap-2.5 overflow-x-hidden overflow-y-auto overscroll-contain px-3 pt-8 [-webkit-overflow-scrolling:touch]",
-          isLeader && "pb-28",
+          isLeader ? "pb-28" : "pb-16",
         )}
       >
-        <header className={cn("glass-start-liquid-palette relative shrink-0 rounded-xl p-3 sm:p-4", styles.header)}>
+        <header className={cn("glass-start-liquid-palette relative shrink-0 rounded-2xl p-3 sm:p-4", styles.header)}>
           <span className={styles.headerScan} aria-hidden />
           <span className={styles.headerSliceA} aria-hidden />
           <span className={styles.headerSliceB} aria-hidden />
@@ -294,7 +294,7 @@ function StatusWaiting(props: IProps) {
               </Suspense>
             )}
             <section
-              className="glass-start-liquid-palette flex min-w-0 w-full flex-row items-center justify-between gap-1.5 overflow-hidden rounded-xl border border-white/12 p-2.5 sm:p-3"
+              className="glass-start-liquid-palette flex min-w-0 w-full flex-row items-center justify-between gap-1.5 overflow-hidden rounded-2xl p-2.5 sm:p-3"
               aria-label={meInUsers ? "Ваш профиль в игре" : "Ваш профиль наблюдателя"}
             >
                 <button
@@ -371,6 +371,7 @@ function StatusWaiting(props: IProps) {
           <RandomPrizeLobbyBanner />
         </Suspense>
         <UsersWaiting users={users!} tgId={tgId!} reportId={data.id} lastByType={lastByType} isLeader={isLeader} />
+        {!isLeader ? <div className="spacer-bottom-game" aria-hidden /> : null}
         {isLeader && (
           <Suspense fallback={null}>
             <WaitingLeaderStartFooter onStart={handleStart} loading={loading} disabled={!canStart} hint="Нужен хотя бы один игрок" />

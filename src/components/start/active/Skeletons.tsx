@@ -26,7 +26,7 @@ export function LeaderNextQuestionFooterSkeleton() {
 
 export function ActiveChartsSkeleton() {
   return (
-    <div className="glass-start-liquid-palette w-full rounded-xl border border-(--accent-orb)/40 p-4 sm:p-5 xl:rounded-xl xl:p-6">
+    <div className="glass-start-liquid-palette w-full rounded-2xl p-4 sm:p-5 xl:p-6">
       <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-6 xl:mt-5 xl:gap-8">
         <div className="relative">
           <Skeleton className="size-28 rounded-full border border-(--accent-orb)/40 lg:size-36 2xl:size-66" />
@@ -47,7 +47,7 @@ export function ActiveChartsSkeleton() {
 
 export function WithRankSkeleton() {
   return (
-    <div className="glass-start-liquid-palette flex min-h-46 w-full flex-col items-center justify-center gap-4 rounded-xl border border-white/10 px-4 py-5 text-center sm:min-h-52 sm:px-5 xl:min-h-58 xl:rounded-2xl xl:px-6">
+    <div className="glass-start-liquid-palette flex min-h-46 w-full flex-col items-center justify-center gap-4 rounded-2xl px-4 py-5 text-center sm:min-h-52 sm:px-5 xl:min-h-58 xl:px-6">
       <Skeleton className="size-16 rounded-full bg-white/12 sm:size-18 xl:size-20" />
       <div className="flex w-full max-w-sm flex-col items-center gap-2">
         <Skeleton className="h-5 w-40 rounded-md bg-white/12" />
@@ -75,6 +75,7 @@ export function DefaultActiveSkeleton() {
           </li>
         ))}
       </ul>
+      <div className="spacer-bottom-game" aria-hidden />
     </div>
   )
 }

@@ -42,7 +42,7 @@ function StatusEnd({ data, tgId }: IProps) {
     )
 
   return (
-    <div className="flex h-full max-h-screen w-full flex-col items-center gap-4 overflow-x-hidden overflow-y-auto px-4 pt-12 pb-12 [-webkit-overflow-scrolling:touch]">
+    <div className="flex h-full max-h-screen w-full flex-col items-center gap-4 overflow-x-hidden overflow-y-auto px-4 pt-12 pb-20 [-webkit-overflow-scrolling:touch]">
       <Suspense fallback={null}>
         <div className="container w-full">
           <PrizesWinnersBanner reportId={data.id} tgId={tgId} elementAvatarId={data.element_avatar_id ?? null} />
@@ -51,7 +51,7 @@ function StatusEnd({ data, tgId }: IProps) {
       <section
         className={cn(
           "container",
-          showLeaderboard ? "py-4 sm:py-5" : "glass-start-liquid-palette rounded-xl border border-white/15 p-4 sm:p-5",
+          showLeaderboard ? "py-4 sm:py-5" : "glass-start-liquid-palette rounded-2xl p-4 sm:p-5",
         )}
       >
         <header className={cn("flex items-center justify-between gap-3", showLeaderboard && "mb-2")}>

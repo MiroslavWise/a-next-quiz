@@ -39,7 +39,7 @@ function ActiveCharts({ reportId, tgId, index, title }: IProps) {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="glass-start-liquid-palette w-full rounded-xl border border-(--accent-orb)/40 p-4 lg:rounded-2xl lg:p-6">
+      <div className="glass-start-liquid-palette w-full rounded-2xl p-4 lg:p-6">
         {isLoading ? (
           <div className="flex min-h-36 items-center justify-center lg:min-h-44">
             <Spinner className="size-5 lg:size-6" />
@@ -61,20 +61,20 @@ function ActiveCharts({ reportId, tgId, index, title }: IProps) {
               </div>
             </div>
             <ul className="w-full min-w-0 space-y-2 text-sm lg:text-base xl:space-y-2.5 2xl:text-xl">
-              <li className="bg-faithful flex items-center justify-between rounded-lg px-3 py-2 text-white/95 xl:rounded-xl xl:px-4 xl:py-2.5">
+              <li className="glass-start-slab-faithful flex items-center justify-between rounded-xl px-3 py-2 text-white/95 xl:px-4 xl:py-2.5">
                 <span>Верно</span>
                 <span className="font-semibold tabular-nums">
                   {right} ({rightPercent.toFixed(0)}%)
                 </span>
               </li>
-              <li className="bg-unfaithful flex items-center justify-between rounded-lg px-3 py-2 text-white/95 xl:rounded-xl xl:px-4 xl:py-2.5">
+              <li className="glass-start-slab-unfaithful flex items-center justify-between rounded-xl px-3 py-2 text-white/95 xl:px-4 xl:py-2.5">
                 <span>Не верно</span>
                 <span className="font-semibold tabular-nums">
                   {wrong} ({wrongPercent.toFixed(0)}%)
                 </span>
               </li>
               <li className="flex min-w-0 flex-col gap-1.5">
-                <div className="flex items-center justify-between rounded-lg bg-(--accent-orb) px-3 py-2 text-white/95 xl:rounded-xl xl:px-4 xl:py-2.5">
+                <div className="glass-start-slab flex items-center justify-between rounded-xl px-3 py-2 text-white/95 xl:px-4 xl:py-2.5">
                   <span>Пропуск / воздержались</span>
                   <span className="font-semibold tabular-nums">
                     {abstained} ({abstainedPercent.toFixed(0)}%)
@@ -85,8 +85,8 @@ function ActiveCharts({ reportId, tgId, index, title }: IProps) {
           </div>
         )}
       </div>
-      <div className="glass-start-liquid-palette flex w-full items-center justify-center rounded-xl border border-(--accent-orb)/40 p-4 lg:rounded-xl lg:p-6">
-        <p className="max-w-[90%] text-center font-mono text-base leading-relaxed font-medium text-balance whitespace-pre-wrap text-[#c7d2fe] xl:text-xl 2xl:text-2xl">
+      <div className="glass-start-liquid-palette flex w-full items-center justify-center rounded-2xl p-4 lg:p-6">
+        <p className="max-w-[90%] text-center text-base leading-relaxed font-medium text-balance whitespace-pre-wrap text-white xl:text-xl 2xl:text-2xl">
           {title ?? ""}
         </p>
       </div>

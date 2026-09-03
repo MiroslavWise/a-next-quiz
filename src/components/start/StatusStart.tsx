@@ -17,7 +17,7 @@ function StatusStart({ refetch }: { refetch: () => void }) {
   return (
     <div className="relative flex h-dvh w-full flex-1 items-center justify-center px-4 py-10 pt-12">
       <div
-        className="glass-start-liquid-palette w-full max-w-sm space-y-5 overflow-hidden px-6 py-8 text-center sm:max-w-md sm:px-8 sm:py-10"
+        className="glass-start-liquid-palette w-full max-w-sm space-y-5 overflow-hidden rounded-2xl px-6 py-8 text-center sm:max-w-md sm:px-8 sm:py-10"
         role="status"
         aria-live="polite"
       >

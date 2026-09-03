@@ -57,7 +57,7 @@ function UsersWaiting({ users: initialUsers = { users: [], observers: [] }, tgId
       aria-label={users.length ? `Игроки: ${users.length}` : undefined}
     >
       {totalUsers.length === 0 ? (
-        <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-white/15 bg-white/4 px-4 py-10 text-center">
+        <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-(--accent-orb)/25 bg-(--accent-orb)/6 px-4 py-10 text-center">
           <Users className="size-10 text-white/25" aria-hidden />
           <p
             className={cn("text-sm", waitingStyles.emptyHint)}

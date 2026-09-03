@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils"
 
 interface IProps {
   id: string
-  letter: string
   isAnime: boolean
   results: boolean
   description: string
@@ -27,7 +26,6 @@ interface IProps {
 function ItemButtonAnswer({
   playerInputsLocked,
   id,
-  letter,
   isAnime,
   activeIndex,
   results,
@@ -57,16 +55,6 @@ function ItemButtonAnswer({
     >
       {showBurst ? <span className="answer-burst" aria-hidden /> : null}
       <span className="relative z-10 flex items-center gap-3">
-        <span
-          className={cn(
-            "flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-semibold",
-            results && isCorrect
-              ? "border-faithful/70 bg-faithful/20 text-faithful"
-              : "border-(--accent-orb)/40 bg-(--accent-orb)/12 text-white/90",
-          )}
-        >
-          {letter}
-        </span>
         <span className="min-w-0 flex-1">{description}</span>
         {isSubmitting ? (
           <>

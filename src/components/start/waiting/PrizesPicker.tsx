@@ -106,7 +106,7 @@ function PrizesPickerContent({ reportId, prizes, usersCount }: Omit<PrizesPicker
 
   return (
     <section
-      className="glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 space-y-2.5 overflow-hidden rounded-xl border border-white/12 p-3 sm:p-4"
+      className="glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 space-y-2.5 overflow-hidden rounded-2xl p-3 sm:p-4"
       aria-label="Призовые места"
     >
       <div className="flex items-start justify-between gap-2">

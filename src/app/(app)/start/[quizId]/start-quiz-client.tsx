@@ -188,7 +188,7 @@ export default function StartQuizClient({ quizId }: { quizId: string }) {
             ? cn(
                 "flex h-full min-h-0 w-full flex-col overflow-y-auto",
                 // У staff место под fixed-кнопку — spacer в ActiveQuestions (`.spacer-bottom-next`).
-                !isAdminManager && "pb-12",
+                !isAdminManager && "pb-4",
               )
             : "h-full w-full"
         }

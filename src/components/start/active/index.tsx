@@ -284,8 +284,11 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                 {!isObserverLikeLeader && statusQuestion === "GAME" && question?.id ? (
                   <GameSkills reportId={reportId} tgId={tgId} activeIndex={activeIndex} questionId={question.id} />
                 ) : null}
-                {/* Spacer в потоке скролла: padding-bottom на flex часто не даёт прокрутку в WebView. */}
-                {showStaffBottomFooter ? <div className="spacer-bottom-next" aria-hidden /> : null}
+                {showStaffBottomFooter ? (
+                  <div className="spacer-bottom-next" aria-hidden />
+                ) : (
+                  <div className="spacer-bottom-game" aria-hidden />
+                )}
               </div>
               {isLeader ? (
                 <Suspense fallback={<LeaderNextQuestionFooterSkeleton />}>

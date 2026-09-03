@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils"
 import { getAuthTelegramId } from "@/lib/jwt"
 import { isGetAnimeUser } from "@/lib/is-user"
 import { type IAnswer } from "@/interface/answer"
-import { indexToAnswerLetter } from "@/lib/index-to-string"
 import { getReportsAnswersCorrectCounts, type IAnswerUserEntry, type IReportQuestionAnswerCounts } from "@/api/reports"
 
 const answerOptionGlassBase =
@@ -152,17 +151,15 @@ function AnswerOptionsList({
       }
     >
       <ul className="flex w-full flex-col gap-2">
-        {renderedAnswers.map((answer, index: number) => {
+        {renderedAnswers.map((answer) => {
           const isCorrect = !!answer?.check
           const isSelected = selectedAnswerId === answer.id
           const isSubmitting = submittingAnswerId === answer.id
-          const letter = indexToAnswerLetter(index)
 
           return (
             <li key={answer.id} className="relative w-full">
               {audience === "leader" ? (
                 <ItemSubAnswer
-                  letter={letter}
                   id={answer.id}
                   results={results}
                   getCount={getCount}
@@ -179,7 +176,6 @@ function AnswerOptionsList({
                 />
               ) : (
                 <ItemButtonAnswer
-                  letter={letter}
                   id={answer.id}
                   results={results}
                   isAnime={isAnime}

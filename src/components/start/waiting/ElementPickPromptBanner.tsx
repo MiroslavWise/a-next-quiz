@@ -16,8 +16,8 @@ function ElementPickPromptBanner() {
       title="Выберите стихию"
       aria-label="Выберите стихию — открыть выбор"
       className={cn(
-        "glass-start-liquid-palette group w-full shrink-0 rounded-xl border border-white/18 p-3 text-left sm:p-3.5",
-        "cursor-pointer transition-colors hover:border-white/28 hover:bg-white/6",
+        "glass-start-liquid-palette group w-full shrink-0 rounded-2xl p-3 text-left sm:p-3.5",
+        "cursor-pointer transition-colors hover:bg-white/6",
         "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/40",
         promptStyles.promptButton,
       )}

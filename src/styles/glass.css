@@ -68,25 +68,34 @@
 }
 
 .glass-start-btn-primary-palette {
-  border-radius: 0.875rem;
-  border: 1px solid color-mix(in srgb, var(--accent-orb) 36%, rgba(255, 255, 255, 0.12));
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent-orb) 52%, rgba(0, 0, 0, 0.38)),
-    color-mix(in srgb, var(--accent-orb) 34%, rgba(0, 0, 0, 0.52))
-  );
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent-orb) 42%, rgba(255, 255, 255, 0.14));
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--accent-orb) 18%, transparent) 0%, transparent 42%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-orb) 48%, rgba(0, 0, 0, 0.38)),
+      color-mix(in srgb, var(--accent-orb) 28%, rgba(0, 0, 0, 0.55))
+    );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-orb) 18%, transparent),
+    0 0 24px color-mix(in srgb, var(--accent-orb) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   color: oklch(0.99 0 0);
+  backdrop-filter: blur(14px);
 }
 
 .glass-start-btn-faithful-palette {
-  border-radius: 0.875rem;
+  border-radius: 1rem;
   border: 1px solid color-mix(in srgb, var(--faithful) 55%, rgba(255, 255, 255, 0.14));
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--faithful) 90%, rgba(0, 0, 0, 0.08)),
     color-mix(in srgb, var(--faithful) 74%, rgba(0, 0, 0, 0.24))
   );
-  box-shadow: 0 10px 28px color-mix(in srgb, var(--faithful) 30%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--faithful) 28%, transparent),
+    0 10px 28px color-mix(in srgb, var(--faithful) 30%, transparent);
   color: oklch(0.99 0 0);
 }
 

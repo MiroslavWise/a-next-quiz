@@ -82,17 +82,17 @@ function DataPointsLeader({
   return (
     <div
       className={cn(
-        "bg-background/60 flex flex-col overflow-hidden border border-white/12 shadow-2xl ring-1 shadow-black/50 ring-white/5 backdrop-blur-xl transition-[opacity,visibility] duration-300 ease-out",
+        "flex flex-col overflow-hidden transition-[opacity,visibility] duration-300 ease-out",
         // телефон: плавающий оверлей
-        "top-button-fixed fixed right-4 z-115 max-h-[50vh] w-full max-w-72 rounded-xl",
+        "top-button-fixed fixed right-4 z-115 max-h-[50vh] w-full max-w-72",
         showDataPointsLeader ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0",
         // планшет+: колонка 1/3, всегда видна
-        "md:pointer-events-auto md:visible md:static md:top-auto md:right-auto md:z-10 md:mr-4 md:h-full md:max-h-none md:min-h-0 md:w-1/3 md:max-w-none md:shrink-0 md:self-stretch md:border-0 md:bg-transparent md:pt-12 md:pb-4 md:opacity-100 md:shadow-none md:ring-0",
+        "md:pointer-events-auto md:visible md:static md:top-auto md:right-auto md:z-10 md:mr-4 md:h-full md:max-h-none md:min-h-0 md:w-1/3 md:max-w-none md:shrink-0 md:self-stretch md:pt-12 md:pb-4 md:opacity-100",
       )}
       role="presentation"
     >
       <section
-        className="flex min-h-0 flex-1 flex-col overflow-hidden p-2 md:rounded-xl md:border md:border-white/12 md:bg-background/60 md:p-3 md:shadow-2xl md:ring-1 md:shadow-black/50 md:ring-white/5 md:backdrop-blur-xl"
+        className="glass-start-liquid-palette flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl p-2 md:p-3"
         role="region"
         aria-labelledby="data-points-leader-title"
         onKeyDown={(e) => e.stopPropagation()}

@@ -75,7 +75,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
     <div className="mt-4 space-y-4">
       {isRandomPrizeWinner ? (
         <div
-          className="flex flex-col items-center gap-2 rounded-xl border border-emerald-300/35 bg-emerald-500/12 p-4 text-center text-emerald-50"
+          className="glass-start-slab-faithful flex flex-col items-center gap-2 rounded-2xl p-4 text-center text-emerald-50"
           role="status"
         >
           <PrizeLottie className="size-16 sm:size-20" />
@@ -84,7 +84,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
       ) : null}
       {isPrizeWinner && myScore.rank != null ? (
         <div
-          className="flex flex-col items-center gap-2 rounded-xl border border-amber-300/40 bg-amber-500/18 p-4 text-center text-amber-50"
+          className="flex flex-col items-center gap-2 rounded-2xl border border-amber-300/40 bg-amber-500/18 p-4 text-center text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.16)]"
           role="status"
         >
           <PrizeLottie className="size-16 sm:size-20" />
@@ -92,7 +92,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
         </div>
       ) : null}
       {myScore.rank != null && (
-        <div className={cn("flex flex-col items-center rounded-xl border px-5 py-4 text-center", rankPodiumClass(myScore.rank))}>
+        <div className={cn("glass-start-slab flex flex-col items-center rounded-2xl px-5 py-4 text-center", rankPodiumClass(myScore.rank))}>
           <span className="text-[0.65rem] font-semibold tracking-[0.2em] text-white/70 uppercase">Место</span>
           <span className="mt-1 text-5xl leading-none font-black tabular-nums">{myScore.rank}</span>
           <span className="mt-2 text-sm font-semibold text-white/85">{placeLabel(myScore.rank)}</span>

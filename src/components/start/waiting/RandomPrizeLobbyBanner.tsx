@@ -7,7 +7,7 @@ import { RANDOM_PRIZE_MIN_CORRECT_PERCENT } from "@/lib/report-prizes"
 function RandomPrizeLobbyBanner() {
   return (
     <section
-      className="glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 rounded-xl border border-emerald-300/30 bg-linear-to-b from-emerald-500/12 via-emerald-950/10 to-transparent p-3 shadow-[0_0_20px_rgba(52,211,153,0.06)] sm:p-4"
+      className="glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 rounded-2xl p-3 sm:p-4"
       aria-label="Случайный приз"
     >
       <div className="flex items-start gap-3">

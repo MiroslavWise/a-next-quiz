@@ -9,7 +9,7 @@ import { useAnswerOrderBy } from "../../hooks/use-answer-order-by"
 import styles from "../../styles/optimal.module.scss"
 
 export const footerActionSlotClass: HTMLAttributes<HTMLDivElement>["className"] =
-  "glass-start-btn-primary-palette flex h-fit w-full shrink-0 items-center justify-center px-4 min-h-15"
+  "glass-start-btn-primary-palette flex h-fit w-full shrink-0 items-center justify-center rounded-2xl px-4 min-h-15"
 
 export interface AnswersCollectionProgressProps {
   answeredCount: number
@@ -24,7 +24,8 @@ export default function AnswersCollectionProgress({ answeredCount, participantsT
   return (
     <div
       className={cn(
-        "relative h-15 w-full justify-center gap-1.5 rounded-xl bg-(--accent-orb)/15 px-4",
+        "relative h-15 w-full justify-center gap-1.5 rounded-2xl px-4",
+        "glass-start-slab",
         styles.progressbar,
         "after:bg-inherit after:text-right after:text-xs after:text-white",
       )}

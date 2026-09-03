@@ -6,7 +6,6 @@ import type { IAnswerUserEntry } from "@/api/reports"
 
 interface IProps {
   id: string
-  letter: string
   answerOptionGlassBase: string
   results: boolean
   endTintClass: string
@@ -25,7 +24,6 @@ interface IProps {
 
 function ItemSubAnswer({
   id,
-  letter,
   answerOptionGlassBase,
   results,
   endTintClass,
@@ -54,19 +52,7 @@ function ItemSubAnswer({
         )}
       >
         {showCountBar && <GetCount fraction={getCount(id)} />}
-        <span className="relative z-1 flex min-w-0 flex-1 items-center gap-3">
-          <span
-            className={cn(
-              "flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-semibold",
-              results && isCorrectAnswer
-                ? "border-faithful/70 bg-faithful/20 text-faithful"
-                : "border-(--accent-orb)/40 bg-(--accent-orb)/12 text-white/90",
-            )}
-          >
-            {letter}
-          </span>
-          <span className="min-w-0 flex-1">{description}</span>
-        </span>
+        <span className="relative z-1 min-w-0 flex-1">{description}</span>
         {showLiveTally ? (
           <span
             className="relative z-1 inline-flex min-w-6 shrink-0 items-center justify-center rounded-md bg-black/40 px-1.5 py-0.5 text-xs font-semibold text-white tabular-nums"

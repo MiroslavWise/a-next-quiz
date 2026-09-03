@@ -53,7 +53,7 @@ function PodiumUserCard({
 
   if (isLoading) {
     return (
-      <div className={cn("min-w-0 rounded-xl border px-4 py-3", rankCardClass(user.rank))}>
+      <div className={cn("min-w-0 rounded-2xl border px-4 py-3", rankCardClass(user.rank))}>
         <Skeleton className="mx-auto h-3 w-14 rounded-md" />
         <Skeleton className="mx-auto mt-2 size-9 rounded-full" />
         <Skeleton className="mx-auto mt-2 h-4 w-24 rounded-md" />
@@ -68,7 +68,7 @@ function PodiumUserCard({
   return (
     <article
       className={cn(
-        "relative min-w-0 overflow-hidden rounded-xl border px-4 py-3 text-center shadow-xl ring-1 ring-white/5",
+        "relative min-w-0 overflow-hidden rounded-2xl border px-4 py-3 text-center shadow-xl ring-1 ring-white/5",
         "before:pointer-events-none before:absolute before:inset-0 before:bg-linear-to-br before:from-white/14 before:via-transparent before:to-black/20",
         rankCardClass(user.rank),
       )}

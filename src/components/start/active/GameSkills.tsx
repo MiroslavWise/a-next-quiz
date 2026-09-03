@@ -192,9 +192,11 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
               <DrawerFooter>
                 <Button
                   type="button"
+                  variant="ghost"
                   size="lg"
                   onClick={() => selectedSkillId && activation.mutate(selectedSkillId)}
                   disabled={selectedStatus !== "available" || activationPending || selectedPvpBlocked || selectedPvpRankPending}
+                  className="glass-start-btn-primary-palette h-11 w-full rounded-2xl text-white hover:bg-transparent"
                 >
                   {activationPending ? <Loader2 className="animate-spin" aria-hidden /> : null}
                   {selectedStatus === "active"

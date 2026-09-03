@@ -153,7 +153,7 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
       <div
         className={cn(
           "flex h-full min-h-0 w-full flex-col gap-3 overflow-x-hidden overflow-y-auto overscroll-contain px-3 pt-8 [-webkit-overflow-scrolling:touch]",
-          canConfirm && "pb-28",
+          canConfirm ? "pb-28" : "pb-16",
         )}
       >
         <header className="glass-start-liquid-palette relative shrink-0 overflow-hidden rounded-2xl border border-(--accent-orb)/40 p-4 sm:p-5">
@@ -216,7 +216,7 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
 
         <section className="relative w-full flex-1 py-1" aria-label={`Участники: ${gridUsers.length}`}>
           {gridUsers.length === 0 ? (
-            <div className="flex h-full min-h-48 flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-white/15 bg-white/4 px-4 py-10 text-center">
+            <div className="flex h-full min-h-48 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-(--accent-orb)/25 bg-(--accent-orb)/6 px-4 py-10 text-center">
               <UserRoundCheck className="size-10 text-white/25" aria-hidden />
               <p className="max-w-xs text-sm text-white/50">Список участников пуст.</p>
             </div>
@@ -228,6 +228,7 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
             </div>
           )}
         </section>
+        {!canConfirm ? <div className="spacer-bottom-game" aria-hidden /> : null}
       </div>
 
       {/* Нижняя панель действия — только для участника, который ещё не подтвердил */}
@@ -235,7 +236,7 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
         <div className="bottom-next fixed inset-x-0 z-40 px-3 pt-6 pb-3">
           <div className="pointer-events-auto mx-auto w-full max-w-md">
             {selfConfirmed ? (
-              <div className="glass-start-liquid-palette flex items-center justify-center gap-2 rounded-xl border border-faithful/40 bg-faithful/10 px-5 py-3.5 text-sm font-semibold text-faithful">
+              <div className="glass-start-slab-faithful flex items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold text-faithful">
                 <CheckCircle2 className="size-5 shrink-0" aria-hidden />
                 Вы подтвердили участие — ждём остальных
               </div>

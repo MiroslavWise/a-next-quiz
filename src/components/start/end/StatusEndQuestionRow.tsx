@@ -12,10 +12,10 @@ function StatusEndQuestionRow({ q }: { q: IReportQuestionScore }) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 rounded-xl border px-3 py-2 text-sm",
-        variant === "muted" && "border-white/10 bg-white/5 text-white/45 grayscale",
-        variant === "ok" && "border-emerald-400/60 bg-emerald-500/30 text-emerald-50",
-        variant === "bad" && "border-rose-400/60 bg-rose-600/40 text-rose-50",
+        "flex flex-col gap-2 px-3 py-2 text-sm",
+        variant === "muted" && "glass-start-slab-muted rounded-2xl",
+        variant === "ok" && "glass-start-slab-faithful rounded-2xl",
+        variant === "bad" && "glass-start-slab-unfaithful rounded-2xl",
       )}
     >
       <div className="flex flex-row items-center justify-between gap-3">
