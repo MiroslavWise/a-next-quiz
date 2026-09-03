@@ -1,7 +1,7 @@
 import type { NextConfig } from "next"
 
-/** Браузер — сутки, CDN Vercel — 30 дней; без immutable, чтобы новый деплой подхватился. */
-const PUBLIC_ASSET_CACHE = "public, max-age=86400, s-maxage=2592000, stale-while-revalidate=604800"
+/** Браузер и CDN Vercel — 30 дней; без immutable, чтобы новый деплой подхватился. */
+const PUBLIC_ASSET_CACHE = "public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=604800"
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
