@@ -1,12 +1,18 @@
 import type { NextConfig } from "next"
 
+/** Браузер — сутки, CDN Vercel — 30 дней; без immutable, чтобы новый деплой подхватился. */
+const PUBLIC_ASSET_CACHE = "public, max-age=86400, s-maxage=2592000, stale-while-revalidate=604800"
+
 const nextConfig: NextConfig = {
   reactCompiler: true,
   typedRoutes: true,
+  poweredByHeader: false,
   experimental: {
     turbopackRustReactCompiler: true,
   },
   images: {
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
@@ -39,6 +45,24 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/**",
       },
     ],
+  },
+  async headers() {
+    const cacheControl = { key: "Cache-Control", value: PUBLIC_ASSET_CACHE }
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+      { source: "/lottie/:path*", headers: [cacheControl] },
+      { source: "/avatars/:path*", headers: [cacheControl] },
+      { source: "/element/:path*", headers: [cacheControl] },
+      { source: "/webp/:path*", headers: [cacheControl] },
+      { source: "/og/:path*", headers: [cacheControl] },
+      { source: "/favicon.ico", headers: [cacheControl] },
+    ]
   },
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "a-next-quiz",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -53,5 +53,8 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@10.25.0"
+  "packageManager": "pnpm@10.25.0",
+  "engines": {
+    "node": ">=20.9.0"
+  }
 }
