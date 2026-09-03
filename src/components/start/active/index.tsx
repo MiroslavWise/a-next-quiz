@@ -26,8 +26,6 @@ import { type LastSocketEventByType } from "@/hooks/socket-event-by-type"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import { useQuizStaffSocketIO } from "@/hooks/useQuizStaffSocketIO"
 
-import { useElementThemeSession } from "@/stores/element-theme-session"
-
 import { useActiveQuestion } from "../hooks/use-active-question"
 import { useNextQuestion } from "../hooks/use-next-question"
 import { useShuffledAnswers } from "../hooks/use-shuffled-answers"
@@ -118,18 +116,11 @@ function PlayerResultsSection(props: IComponentWithRankProps) {
 }
 
 function DotsQuestionsSection(props: IDotsQuestionsProps) {
-  const isGameAvatar = useElementThemeSession((s) => s.isGameAvatar)
   return (
     <Suspense
       fallback={
-        <div className="bg-background/95 absolute top-0 left-4 isolate z-10 flex -translate-y-1/2 items-center justify-center rounded-full p-0.5 shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_8px_20px_rgba(0,0,0,0.24)]">
-          <div
-            className={
-              isGameAvatar
-                ? "flex max-w-full flex-row items-center gap-1.5 rounded-full border border-white/30 bg-white/18 px-2 py-1 shadow-lg shadow-black/20 backdrop-blur-md"
-                : "flex max-w-full flex-row items-center gap-1.5 rounded-full border border-white/15 bg-(--accent-orb)/90 px-2 py-1 shadow-lg shadow-black/20 backdrop-blur-md"
-            }
-          >
+        <div className="flex w-full flex-col items-center gap-1.5" aria-hidden>
+          <div className="flex items-center justify-center gap-1.5">
             {Array.from({ length: props.totalQuestions }).map((_, index) => (
               <Skeleton key={index + "dots-questions-item" + "-skeleton"} className="size-2 rounded-full" />
             ))}
@@ -211,17 +202,11 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
               <div
                 className={
                   isObserverLikeLeader
-                    ? "relative flex h-full min-h-0 w-full min-w-0 flex-col gap-2 overflow-y-auto overscroll-contain px-4 pt-12 [-webkit-overflow-scrolling:touch] md:w-2/3 md:pr-2"
-                    : "relative flex h-full w-full flex-col gap-2 px-4 pt-12"
+                    ? "relative flex h-full min-h-0 w-full min-w-0 flex-col gap-3 overflow-y-auto overscroll-contain px-4 pt-4 [-webkit-overflow-scrolling:touch] md:w-2/3 md:pr-2"
+                    : "relative flex h-full w-full flex-col gap-3 px-4 pt-4"
                 }
               >
-                <div className="relative w-full">
-                  <DotsQuestionsSection
-                    activeIndex={activeIndex + 1}
-                    showResults={!isObserverLikeLeader}
-                    myPassedQuestions={myPassedQuestions}
-                    totalQuestions={questions?.length ?? 0}
-                  />
+                <div className="relative flex w-full flex-col items-center gap-3">
                   {isObserverLikeLeader ? (
                     <Suspense fallback={null}>
                       <LeaderTopSection
@@ -237,17 +222,41 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                       />
                     </Suspense>
                   ) : null}
-                  {statusQuestion === "GAME" && (
-                    <ComponentsTitleQuestion {...question!} start={data?.start} time={question?.time ?? 0} />
+                  {statusQuestion === "GAME" || (isQuestionEnded && !isObserverLikeLeader) ? (
+                    <ComponentsTitleQuestion
+                      {...question!}
+                      start={data?.start}
+                      time={question?.time ?? 0}
+                      reportId={reportId}
+                      tgId={tgId}
+                      activeIndex={activeIndex}
+                      ended={isQuestionEnded && !isObserverLikeLeader}
+                      showMeta={!isObserverLikeLeader}
+                    >
+                      {!isQuestionEnded ? (
+                        <>
+                          <DotsQuestionsSection
+                            activeIndex={activeIndex + 1}
+                            showResults={!isObserverLikeLeader}
+                            myPassedQuestions={myPassedQuestions}
+                            totalQuestions={questions?.length ?? 0}
+                          />
+                          <QuestionBonuses bonuses={question?.bonuses} />
+                        </>
+                      ) : null}
+                    </ComponentsTitleQuestion>
+                  ) : (
+                    <>
+                      <DotsQuestionsSection
+                        activeIndex={activeIndex + 1}
+                        showResults={!isObserverLikeLeader}
+                        myPassedQuestions={myPassedQuestions}
+                        totalQuestions={questions?.length ?? 0}
+                      />
+                      <QuestionBonuses bonuses={question?.bonuses} />
+                    </>
                   )}
-                  {isQuestionEnded && !isObserverLikeLeader && (
-                    <PlayerResultsSection reportId={reportId} tgId={tgId} activeIndex={activeIndex} />
-                  )}
-                  <QuestionBonuses bonuses={question?.bonuses} />
                 </div>
-                {!isObserverLikeLeader && statusQuestion === "GAME" && question?.id ? (
-                  <GameSkills reportId={reportId} tgId={tgId} activeIndex={activeIndex} questionId={question.id} />
-                ) : null}
                 {isObserverLikeLeader && (statusQuestion === "GAME" || statusQuestion === "END") ? (
                   <StaffGameSkills bySkillId={bySkillId} tgId={tgId} isQuestionEnded={isQuestionEnded} />
                 ) : null}
@@ -269,6 +278,12 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                   liveCountsByAnswerId={round.countsByAnswerId}
                   participantsTotal={participantsTotal}
                 />
+                {isQuestionEnded && !isObserverLikeLeader && (
+                  <PlayerResultsSection reportId={reportId} tgId={tgId} activeIndex={activeIndex} />
+                )}
+                {!isObserverLikeLeader && statusQuestion === "GAME" && question?.id ? (
+                  <GameSkills reportId={reportId} tgId={tgId} activeIndex={activeIndex} questionId={question.id} />
+                ) : null}
                 {/* Spacer в потоке скролла: padding-bottom на flex часто не даёт прокрутку в WebView. */}
                 {showStaffBottomFooter ? <div className="spacer-bottom-next" aria-hidden /> : null}
               </div>

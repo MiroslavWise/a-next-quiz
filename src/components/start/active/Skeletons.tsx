@@ -59,17 +59,19 @@ export function WithRankSkeleton() {
 
 export function DefaultActiveSkeleton() {
   return (
-    <div className="flex h-full w-full flex-col gap-2 px-4">
-      <div className="flex flex-row items-center gap-2">
-        <Skeleton className="h-10 w-30 rounded-xl border border-white/10 bg-white/10 sm:h-11 sm:w-34" />
+    <div className="flex h-full w-full flex-col items-center gap-3 px-4 pt-4">
+      <Skeleton className="h-3 w-28 rounded-md bg-white/10" />
+      <Skeleton className="size-28 rounded-full border border-white/10 bg-white/8 sm:size-32" />
+      <div className="flex items-center gap-1.5">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <Skeleton key={i} className="size-2 rounded-full bg-white/10" />
+        ))}
       </div>
-      <div className="flex min-h-60 w-full items-center justify-center">
-        <Skeleton className="h-full min-h-30 w-full max-w-2xl rounded-xl border border-white/10 bg-white/10 sm:min-h-34" />
-      </div>
+      <Skeleton className="h-20 w-full rounded-2xl border border-white/10 bg-white/8" />
       <ul className="flex w-full flex-col gap-2">
         {Array.from({ length: 4 }).map((_, i) => (
           <li key={i} className="w-full">
-            <Skeleton className="h-13 w-full rounded-xl border border-white/10 bg-white/10 sm:h-14" />
+            <Skeleton className="h-13 w-full rounded-2xl border border-white/10 bg-white/8 sm:h-14" />
           </li>
         ))}
       </ul>

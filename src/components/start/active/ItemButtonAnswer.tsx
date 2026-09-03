@@ -1,6 +1,7 @@
 "use client"
 
 import { DotLottieReact } from "@lottiefiles/dotlottie-react"
+import { Check, Lock } from "lucide-react"
 
 import Spinner from "@/components/ui/spinner"
 
@@ -8,12 +9,13 @@ import { cn } from "@/lib/utils"
 
 interface IProps {
   id: string
-  str: string
+  letter: string
   isAnime: boolean
   results: boolean
   description: string
   activeIndex: number
   isSelected: boolean
+  isCorrect: boolean
   endTintClass: string
   isSubmitting: boolean
   playerInputsLocked: boolean
@@ -25,18 +27,21 @@ interface IProps {
 function ItemButtonAnswer({
   playerInputsLocked,
   id,
-  str,
+  letter,
   isAnime,
   activeIndex,
   results,
   handleAnswer,
   isSelected,
+  isCorrect,
   isSubmitting,
   description,
   endTintClass,
   answerOptionGlassBase,
   playerHasSubmittedThisRound,
 }: IProps) {
+  const showBurst = results && isCorrect && isSelected
+
   return (
     <button
       type="button"
@@ -45,13 +50,24 @@ function ItemButtonAnswer({
       aria-busy={isSubmitting}
       className={cn(
         answerOptionGlassBase,
-        "text-left transition-all duration-200 select-none disabled:cursor-not-allowed",
-        results ? cn(endTintClass, "opacity-100!") : cn(str, "disabled:opacity-70", isSelected && "ring-2 ring-white/70"),
+        "relative isolate overflow-hidden text-left transition-all duration-200 select-none disabled:cursor-not-allowed",
+        results ? endTintClass : cn(isSelected && "glass-start-slab-selected"),
       )}
       aria-pressed={isSelected}
     >
-      <span className="flex items-center justify-between gap-1.5 xl:gap-3">
-        <span>{description}</span>
+      {showBurst ? <span className="answer-burst" aria-hidden /> : null}
+      <span className="relative z-10 flex items-center gap-3">
+        <span
+          className={cn(
+            "flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-semibold",
+            results && isCorrect
+              ? "border-faithful/70 bg-faithful/20 text-faithful"
+              : "border-(--accent-orb)/40 bg-(--accent-orb)/12 text-white/90",
+          )}
+        >
+          {letter}
+        </span>
+        <span className="min-w-0 flex-1">{description}</span>
         {isSubmitting ? (
           <>
             {isAnime ? (
@@ -67,8 +83,10 @@ function ItemButtonAnswer({
               <Spinner className="size-4 shrink-0 xl:size-5" />
             )}
           </>
+        ) : results && isCorrect ? (
+          <Check className="size-4.5 shrink-0 text-faithful" aria-hidden />
         ) : playerHasSubmittedThisRound && isSelected && !results ? (
-          <span className="shrink-0 text-xs font-semibold text-white/90 xl:text-sm">Вы уже ответили</span>
+          <Lock className="size-4 shrink-0 text-(--accent-orb)" aria-label="Ответ зафиксирован" />
         ) : null}
       </span>
     </button>

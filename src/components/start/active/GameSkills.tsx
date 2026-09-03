@@ -141,7 +141,8 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                   className={cn(
                     "relative rounded-full border-white/15 bg-black/25 text-white/80",
                     "hover:border-(--accent-orb)/55 hover:bg-(--accent-orb)/15 hover:text-white",
-                    isActive && "border-(--accent-orb)/70 bg-(--accent-orb)/25 text-white ring-2 ring-(--accent-orb)/35",
+                    isActive &&
+                      "border-(--accent-orb) bg-(--accent-orb)/25 text-white shadow-[0_0_22px_color-mix(in_srgb,var(--accent-orb)_55%,transparent)] ring-2 ring-(--accent-orb)/45",
                     isUsed && "border-white/8 bg-white/4 text-white/35 grayscale",
                     isPvpBlocked && "border-white/8 bg-white/4 text-white/30 grayscale",
                   )}

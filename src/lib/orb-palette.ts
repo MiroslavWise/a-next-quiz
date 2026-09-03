@@ -8,7 +8,7 @@ const ORB_BORDER_VARS = ["--orb-border-one", "--orb-border-two", "--orb-border-t
 export function applyElementTheme(themeId: ElementThemeId): void {
   if (typeof document === "undefined") return
 
-  const { orbs, accent } = elementThemeById(themeId)
+  const { orbs, accent, highlight, surface, deep } = elementThemeById(themeId)
   const root = document.documentElement
 
   ORB_BG_VARS.forEach((name, index) => {
@@ -18,4 +18,7 @@ export function applyElementTheme(themeId: ElementThemeId): void {
     root.style.setProperty(name, orbs[index])
   })
   root.style.setProperty("--accent-orb", accent)
+  root.style.setProperty("--element-highlight", highlight)
+  root.style.setProperty("--element-surface", surface)
+  root.style.setProperty("--element-deep", deep)
 }

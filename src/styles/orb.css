@@ -100,10 +100,10 @@ body {
     radial-gradient(closest-side circle at center, color-mix(in srgb, var(--orb-bg-three) 74%, transparent), transparent 72%),
     radial-gradient(closest-side circle at center, color-mix(in srgb, var(--orb-bg-four) 74%, transparent), transparent 72%);
   background-size:
-    32vmin 32vmin,
-    32vmin 32vmin,
-    32vmin 32vmin,
-    32vmin 32vmin;
+    44vmin 44vmin,
+    40vmin 40vmin,
+    48vmin 48vmin,
+    36vmin 36vmin;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position:

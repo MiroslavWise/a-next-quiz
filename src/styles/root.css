@@ -9,6 +9,9 @@
   --orb-bg-four: #6e7d8f;
   --orb-border-four: #6e7d8f;
   --accent-orb: #b8c4d0;
+  --element-highlight: #e2e8f0;
+  --element-surface: #121418;
+  --element-deep: #2a3038;
 
   --radius: 0.625rem;
   --background: oklch(0.145 0 0);

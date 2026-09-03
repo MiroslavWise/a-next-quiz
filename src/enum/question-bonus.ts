@@ -124,7 +124,7 @@ export const ALL_ELEMENTS_BOOST_COMPARISON: readonly AllElementsBoostRow[] = [
   {
     name: "Огонь",
     iconSrc: "/element/fire.svg",
-    accentColor: "#FF0000",
+    accentColor: "#E85D2A",
     normal: "Speed ×1.15; первый верный +10% base; ошибка −8%",
     boosted: "×1.22; +13%; −11%",
   },

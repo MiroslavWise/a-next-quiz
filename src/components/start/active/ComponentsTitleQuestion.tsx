@@ -1,34 +1,92 @@
+import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
+import type { ReactNode } from "react"
 
 import TimerSeconds from "./TimerSeconds"
 
-import { cn } from "@/lib/utils"
+import { getRank } from "@/api/rank"
+import { elementThemeById, resolveElementThemeId } from "@/constants/palette"
 import type { IQuestion } from "@/interface/question"
+import { cn } from "@/lib/utils"
+import { useAuth } from "@/stores/auth"
+import { useElementThemeSession } from "@/stores/element-theme-session"
 
 import { useQuestionCountdown } from "../hooks/use-question-countdown"
 
 interface IProps extends Partial<IQuestion> {
   start?: unknown
+  reportId?: string
+  tgId?: number
+  activeIndex?: number
+  ended?: boolean
+  showMeta?: boolean
+  children?: ReactNode
 }
 
-const ROUND_CLASS = "rounded-xl xl:rounded-2xl"
+const ROUND_CLASS = "rounded-2xl xl:rounded-3xl"
 
-function ComponentsTitleQuestion({ title, start, time = 0, imageUrl, image_url }: IProps) {
+function RoundMeta({ reportId, tgId, activeIndex }: { reportId?: string; tgId?: number; activeIndex?: number }) {
+  const element = useAuth((s) => s.user?.element)
+  const isGameAvatar = useElementThemeSession((s) => s.isGameAvatar)
+  const theme = elementThemeById(resolveElementThemeId(element, isGameAvatar))
+
+  const { data } = useQuery({
+    queryKey: ["rank", reportId, tgId, activeIndex],
+    queryFn: () => getRank(reportId!),
+    enabled: !!reportId && !!tgId,
+  })
+
+  const streak = Math.max(0, Number(data?.streak ?? 0) || 0)
+
+  return (
+    <p className="text-center text-[0.7rem] font-medium tracking-[0.18em] text-(--accent-orb)/85">
+      {theme.label.toLowerCase()}
+      <span className="mx-1.5 text-white/35">·</span>
+      серия {streak}
+    </p>
+  )
+}
+
+function ComponentsTitleQuestion({
+  title,
+  start,
+  time = 0,
+  imageUrl,
+  image_url,
+  reportId,
+  tgId,
+  activeIndex,
+  ended = false,
+  showMeta = true,
+  children,
+}: IProps) {
   const thumbUrl = imageUrl ?? image_url
-  const { remainingSeconds } = useQuestionCountdown({ start, time })
+  const { remainingSeconds, totalSeconds } = useQuestionCountdown({ start, time })
 
   const titleText = title ?? "Ожидаем текст вопроса..."
 
+  if (ended) {
+    return (
+      <div className="flex w-full flex-col items-center gap-2 text-center">
+        <p className="text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>
+        <h2 className="max-w-[22rem] text-xl leading-snug font-semibold text-balance text-white sm:text-2xl">{titleText}</h2>
+        <p className="text-xs font-medium text-faithful/90">Правильный ответ</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="w-full">
+    <div className="flex w-full flex-col items-center gap-3">
+      {showMeta ? <RoundMeta reportId={reportId} tgId={tgId} activeIndex={activeIndex} /> : null}
+      <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} />
+      {children}
       <div
         className={cn(
-          "glass-start-liquid-palette relative isolate flex w-full flex-col items-center border border-(--accent-orb)/40 text-center text-[#c7d2fe] transition-all duration-300",
+          "glass-start-liquid-palette relative isolate flex w-full flex-col items-center border text-center text-white transition-all duration-300",
           ROUND_CLASS,
         )}
       >
-        <TimerSeconds remainingSeconds={remainingSeconds} compact />
-        <div className="relative flex w-full flex-col items-center justify-center gap-2 p-2.5 pt-4.5">
+        <div className="relative flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4">
           {thumbUrl ? (
             <div className="relative mx-auto aspect-video w-full max-w-[min(100%,15rem)] shrink-0 overflow-hidden rounded-lg border border-(--accent-orb)/40 bg-white/6 sm:max-w-[min(100%,22rem)] lg:max-w-[min(100%,27rem)]">
               <Image
@@ -40,12 +98,10 @@ function ComponentsTitleQuestion({ title, start, time = 0, imageUrl, image_url }
               />
             </div>
           ) : null}
-          <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-0">
-            <div className="relative z-10 flex min-h-14 items-center justify-center text-center">
-              <p className="max-w-[92%] font-mono text-base leading-snug font-medium text-balance whitespace-pre-wrap text-[#c7d2fe] sm:text-lg lg:text-xl lg:leading-normal">
-                {titleText}
-              </p>
-            </div>
+          <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
+            <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
+              {titleText}
+            </p>
           </div>
         </div>
       </div>

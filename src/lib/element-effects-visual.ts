@@ -11,7 +11,7 @@ export type ElementEffectVisual = {
 }
 
 const ELEMENT_ACCENT: Record<EUserElement, string> = {
-  [EUserElement.FIRE]: "#FF0000",
+  [EUserElement.FIRE]: "#E85D2A",
   [EUserElement.WATER]: "#06B6D4",
   [EUserElement.EARTH]: "#1C8C47",
   [EUserElement.AIR]: "#76E3D6",
@@ -58,7 +58,7 @@ for (const card of GAME_ELEMENT_CARDS) {
 for (const effect of [...GAME_AVATAR_CARD.bonuses, ...GAME_AVATAR_CARD.penalties]) {
   const penaltyIds = new Set(GAME_AVATAR_CARD.penalties.map((item) => item.id))
   effectVisualById.set(effect.id, {
-    accentColor: "#FFFFFF",
+    accentColor: "#F5F5F5",
     iconSrc: GAME_AVATAR_ICON_SRC,
     tone: penaltyIds.has(effect.id) ? "penalty" : "bonus",
   })
@@ -76,7 +76,7 @@ function visualFromIdPrefix(id: string): ElementEffectVisual | null {
   if (prefix === "WATER") return { accentColor: ELEMENT_ACCENT[EUserElement.WATER], iconSrc: "/element/water.svg", tone: "bonus" }
   if (prefix === "EARTH") return { accentColor: ELEMENT_ACCENT[EUserElement.EARTH], iconSrc: "/element/earth.svg", tone: "bonus" }
   if (prefix === "AIR") return { accentColor: ELEMENT_ACCENT[EUserElement.AIR], iconSrc: "/element/air.svg", tone: "bonus" }
-  if (prefix === "AVATAR") return { accentColor: "#FFFFFF", iconSrc: GAME_AVATAR_ICON_SRC, tone: "bonus" }
+  if (prefix === "AVATAR") return { accentColor: "#F5F5F5", iconSrc: GAME_AVATAR_ICON_SRC, tone: "bonus" }
   return null
 }
 

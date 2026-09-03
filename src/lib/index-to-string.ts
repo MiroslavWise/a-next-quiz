@@ -1,5 +1,11 @@
 import { cn } from "@/lib/utils"
 
+export const ANSWER_LETTERS = ["А", "Б", "В", "Г"] as const
+
+export function indexToAnswerLetter(index: number): string {
+  return ANSWER_LETTERS[index] ?? String(index + 1)
+}
+
 const obj = {
   0: "one",
   1: "two",

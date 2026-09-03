@@ -1,12 +1,70 @@
 .glass-start-liquid-palette {
-  border: 1px solid color-mix(in srgb, var(--accent-orb) 30%, rgba(255, 255, 255, 0.14));
+  border: 1px solid color-mix(in srgb, var(--accent-orb) 42%, rgba(255, 255, 255, 0.14));
   background:
     linear-gradient(155deg, color-mix(in srgb, var(--accent-orb) 22%, transparent) 0%, transparent 38%),
     linear-gradient(
       215deg,
-      color-mix(in srgb, var(--accent-orb) 44%, rgba(0, 0, 0, 0.42)),
-      color-mix(in srgb, var(--accent-orb) 15%, rgba(0, 0, 0, 0.6))
+      color-mix(in srgb, var(--accent-orb) 28%, var(--element-surface, #06141a)),
+      color-mix(in srgb, var(--element-deep, #0e3a44) 55%, rgba(0, 0, 0, 0.62))
     );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-orb) 16%, transparent),
+    0 0 28px color-mix(in srgb, var(--accent-orb) 22%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+}
+
+.glass-start-slab {
+  border: 1px solid color-mix(in srgb, var(--accent-orb) 36%, rgba(255, 255, 255, 0.12));
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--accent-orb) 14%, transparent) 0%, transparent 44%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--element-surface, #06141a) 72%, rgba(0, 0, 0, 0.5)),
+      color-mix(in srgb, var(--element-deep, #0e3a44) 48%, rgba(0, 0, 0, 0.64))
+    );
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--accent-orb) 16%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  color: oklch(0.99 0 0);
+}
+
+.glass-start-slab-selected {
+  border-color: color-mix(in srgb, var(--accent-orb) 78%, white 12%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-orb) 40%, transparent),
+    0 0 28px color-mix(in srgb, var(--accent-orb) 48%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.glass-start-slab-faithful {
+  border-color: color-mix(in srgb, var(--faithful) 78%, white 10%);
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--faithful) 28%, transparent) 0%, transparent 48%),
+    linear-gradient(180deg, color-mix(in srgb, var(--faithful) 22%, rgba(0, 0, 0, 0.45)), rgba(0, 0, 0, 0.55));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--faithful) 35%, transparent),
+    0 0 32px color-mix(in srgb, var(--faithful) 42%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.glass-start-slab-unfaithful {
+  border-color: color-mix(in srgb, var(--unfaithful) 70%, white 8%);
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--unfaithful) 22%, transparent) 0%, transparent 48%),
+    linear-gradient(180deg, color-mix(in srgb, var(--unfaithful) 16%, rgba(0, 0, 0, 0.5)), rgba(0, 0, 0, 0.58));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--unfaithful) 28%, transparent),
+    0 0 24px color-mix(in srgb, var(--unfaithful) 32%, transparent);
+}
+
+.glass-start-slab-muted {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--element-surface, #121418) 55%, rgba(0, 0, 0, 0.55));
+  box-shadow: none;
+  color: rgba(255, 255, 255, 0.42);
+  filter: grayscale(0.35);
 }
 
 .glass-start-btn-primary-palette {
@@ -34,4 +92,47 @@
 
 .glass-start-btn-faithful-palette:hover:not(:disabled) {
   filter: brightness(1.06);
+}
+
+.answer-burst {
+  pointer-events: none;
+  position: absolute;
+  inset: -18% -8%;
+  z-index: 0;
+  overflow: visible;
+}
+
+.answer-burst::before,
+.answer-burst::after {
+  content: "";
+  position: absolute;
+  inset: 18% 8%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--faithful) 55%, transparent) 0%, transparent 68%);
+  animation: answer-burst-pulse 0.9s ease-out both;
+}
+
+.answer-burst::after {
+  inset: 8% -4%;
+  animation-delay: 0.08s;
+  opacity: 0.7;
+}
+
+@keyframes answer-burst-pulse {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .answer-burst::before,
+  .answer-burst::after {
+    animation: none;
+    opacity: 0.35;
+  }
 }

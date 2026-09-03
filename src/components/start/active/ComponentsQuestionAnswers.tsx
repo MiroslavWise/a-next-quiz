@@ -10,19 +10,14 @@ import { cn } from "@/lib/utils"
 import { getAuthTelegramId } from "@/lib/jwt"
 import { isGetAnimeUser } from "@/lib/is-user"
 import { type IAnswer } from "@/interface/answer"
-import { indexToString } from "@/lib/index-to-string"
-import { useElementThemeSession } from "@/stores/element-theme-session"
+import { indexToAnswerLetter } from "@/lib/index-to-string"
 import { getReportsAnswersCorrectCounts, type IAnswerUserEntry, type IReportQuestionAnswerCounts } from "@/api/reports"
 
-import styles from "../styles/optimal.module.scss"
-
 const answerOptionGlassBase =
-  "w-full rounded-xl border px-4 py-3 text-sm font-medium sm:px-5 sm:py-3.5 sm:text-base lg:text-lg xl:rounded-2xl xl:px-6 xl:py-4"
+  "glass-start-slab w-full rounded-2xl px-3.5 py-3 text-sm font-medium sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
 
 function leaderAnswerEndTintClass(isCorrect: boolean) {
-  return isCorrect
-    ? "border-emerald-200 bg-emerald-500 text-white ring-2 ring-emerald-300/90 [background-image:none]"
-    : "border-white/12 bg-white/[0.07] text-white/45 grayscale [background-image:none] ring-0"
+  return isCorrect ? "glass-start-slab-faithful text-white" : "glass-start-slab-muted"
 }
 
 function playerAnswerEndTintClass(
@@ -31,10 +26,10 @@ function playerAnswerEndTintClass(
   selectedAnswerId: string | null,
   userPickWasCorrect: boolean,
 ): string {
-  const muted = "border-white/12 bg-white/[0.07] text-white/45 grayscale [background-image:none] ring-0"
-  const brightCorrect = "border-emerald-200 bg-emerald-500 text-white ring-2 ring-emerald-300/90 [background-image:none]"
-  const brightWrong = "border-rose-200 bg-rose-600 text-white ring-2 ring-rose-400/80 [background-image:none]"
-  const softCorrect = "border-emerald-500/40 bg-emerald-400/20 text-emerald-100 [background-image:none] ring-0"
+  const muted = "glass-start-slab-muted"
+  const brightCorrect = "glass-start-slab-faithful text-white"
+  const brightWrong = "glass-start-slab-unfaithful text-white"
+  const softCorrect = "border-faithful/40 bg-faithful/15 text-faithful"
 
   if (!selectedAnswerId) {
     return isCorrect ? softCorrect : muted
@@ -138,19 +133,16 @@ function AnswerOptionsList({
   const tgId = getAuthTelegramId()
   const results = phase === "results"
   const isAnime = isGetAnimeUser(tgId)
-  const isGameAvatar = useElementThemeSession((s) => s.isGameAvatar)
-  const avatarAnswerGlass = audience === "player" && isGameAvatar
   const [expandedAnswerId, setExpandedAnswerId] = useState<string | null>(null)
 
   return (
     <Suspense
       fallback={
-        <ul className={cn("flex w-full flex-col gap-2", styles.answers)}>
+        <ul className={cn("flex w-full flex-col gap-2")}>
           {Array.from({ length: 4 }).map((_, i) => (
             <li
               key={i}
-              className="relative w-full rounded-xl px-4 py-3 text-sm font-medium text-transparent opacity-90 sm:px-5 sm:py-3.5 sm:text-base lg:text-lg xl:rounded-2xl xl:px-6 xl:py-4"
-              data-index={i}
+              className="glass-start-slab relative w-full rounded-2xl px-3.5 py-3 text-sm font-medium text-transparent opacity-90 sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
               aria-hidden
             >
               --||--
@@ -164,13 +156,13 @@ function AnswerOptionsList({
           const isCorrect = !!answer?.check
           const isSelected = selectedAnswerId === answer.id
           const isSubmitting = submittingAnswerId === answer.id
-          const str = cn(indexToString(index, { glass: avatarAnswerGlass }), "text-white")
+          const letter = indexToAnswerLetter(index)
 
           return (
             <li key={answer.id} className="relative w-full">
               {audience === "leader" ? (
                 <ItemSubAnswer
-                  str={str}
+                  letter={letter}
                   id={answer.id}
                   results={results}
                   getCount={getCount}
@@ -187,11 +179,12 @@ function AnswerOptionsList({
                 />
               ) : (
                 <ItemButtonAnswer
-                  str={str}
+                  letter={letter}
                   id={answer.id}
                   results={results}
                   isAnime={isAnime}
                   isSelected={isSelected}
+                  isCorrect={isCorrect}
                   activeIndex={activeIndex}
                   isSubmitting={isSubmitting}
                   handleAnswer={handleAnswer}

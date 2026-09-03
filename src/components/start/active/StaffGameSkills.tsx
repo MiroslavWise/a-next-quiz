@@ -98,7 +98,8 @@ function StaffSkillButton({
         className={cn(
           "relative z-10 size-9 rounded-full border-white/15 bg-black/25 text-white/80",
           "hover:border-(--accent-orb)/55 hover:bg-(--accent-orb)/15 hover:text-white",
-          hasActivations && "border-(--accent-orb)/70 bg-(--accent-orb)/25 text-white ring-2 ring-(--accent-orb)/35",
+          hasActivations &&
+            "border-(--accent-orb) bg-(--accent-orb)/25 text-white shadow-[0_0_22px_color-mix(in_srgb,var(--accent-orb)_55%,transparent)] ring-2 ring-(--accent-orb)/45",
         )}
       >
         <GameSkillIcon skillId={definition.id} className="size-4.5" />

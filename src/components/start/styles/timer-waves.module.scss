@@ -1,41 +1,26 @@
-.timerCircle {
+.timerRingPulse {
   --wave-max-scale: 1.8;
 
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 120;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  inset: 0;
+  z-index: 0;
+  border-radius: 9999px;
+  pointer-events: none;
 
-  &.panicMode {
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 9999px;
-      background-color: inherit;
-      z-index: -1;
-      pointer-events: none;
-      will-change: transform, opacity;
-      animation: heartBeatWave 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
-    }
-
-    &::after {
-      animation-delay: 0.15s;
-    }
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 6%;
+    border-radius: 9999px;
+    background-color: color-mix(in srgb, var(--unfaithful) 35%, transparent);
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation: heartBeatWave 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
   }
-}
 
-.timerCircleCompact {
-  top: 0.5rem;
-  left: 0.5rem;
-
-  @media (min-width: 1024px) {
-    top: 1rem;
-    left: 1rem;
+  &::after {
+    animation-delay: 0.15s;
   }
 }
 

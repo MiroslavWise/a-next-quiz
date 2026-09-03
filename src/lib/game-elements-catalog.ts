@@ -32,7 +32,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     description: "Быстрые рывки и награда первому верно ответившему. Ошибка обжигает.",
     uiHint: "Ответь верно первым — получи искру (ошибки до вас не мешают). Ошибся — потеряешь 8% стоимости вопроса.",
     iconSrc: "/element/fire.svg",
-    accentColor: "#FF0000",
+    accentColor: "#E85D2A",
     bonuses: [
       { id: "fire_speed", title: "Жар", short: "Speed ×1.15", detail: "Speed-очки за верный ответ умножаются на 1.15." },
       { id: "fire_spark", title: "Искра", short: "+10% base", detail: "Первый верный ответ на вопросе: +10% base (ошибки до вас не мешают)." },
@@ -100,7 +100,7 @@ export const GAME_AVATAR_CARD: GameElementCard = {
   description: "Случайный игрок после CHECKING. Стихия игрока не действует.",
   uiHint: "Тебя выбрала игра. Ты силён везде понемногу, но ошибки и потолок серии напоминают: ты не бог, а проводник.",
   iconSrc: "/element/elements.svg",
-  accentColor: "#FFFFFF",
+  accentColor: "#F5F5F5",
   wide: true,
   bonuses: [
     { id: "avatar_first", title: "Первенство", short: "+8% base", detail: "Первый верный ответ на вопросе: +8% base (ошибки до вас не мешают)." },
