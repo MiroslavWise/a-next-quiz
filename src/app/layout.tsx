@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next"
+import { Analytics } from '@vercel/analytics/next'
 
 import QueryProvider from "@/providers/query"
 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="ru" className="dark h-full">
       <body className="min-h-full">
         <QueryProvider>{children}</QueryProvider>
+        <Analytics />
       </body>
     </html>
   )

@@ -167,24 +167,6 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
               <p className="text-sm leading-snug text-white/75">{topMessage}</p>
             </>
           ) : (
-            <>
-              {rankDelta !== 0 && typeof rank === "number" && rankFrom != null ? (
-                <p
-                  className={cn(
-                    "text-lg font-bold tracking-tight",
-                    rankDelta > 0 ? "text-faithful" : "text-[#FF8A4C]",
-                  )}
-                >
-                  {rankDelta > 0 ? `+${rankDelta}` : rankDelta} место
-                </p>
-              ) : (
-                <p className="text-lg font-bold tracking-tight text-white">{rank ? `#${rank}` : "—"}</p>
-              )}
-              {rankFrom != null && typeof rank === "number" && rankFrom !== rank ? (
-                <p className="text-sm font-semibold text-white/80 tabular-nums">
-                  {rankFrom} → {rank}
-                </p>
-              ) : null}
               <p className="flex items-center gap-1.5 text-xs text-white/70">
                 до предыдущего
                 <span className="inline-flex items-center gap-1 font-semibold text-(--accent-orb)">
@@ -194,7 +176,6 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
                   <PickaxeIcon tone="neutral" className="size-3.5" />
                 </span>
               </p>
-            </>
           )}
         </div>
         <StreakRing streak={streak} />
