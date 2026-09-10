@@ -11,9 +11,6 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-/** Ближе к Cloud Run europe-west1, чем дефолтный iad1. */
-export const preferredRegion = "fra1"
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
