@@ -6,14 +6,14 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 import Skeleton from "@/components/ui/skeleton"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 import PrizeLottie from "@/components/lottie/PrizeLottie"
-import UserAnswerStatusDots from "./UserAnswerStatusDots"
+import UserAnswerStatusBars from "./UserAnswerStatusBars"
 const RatingScale = lazy(() => import("../webp/rating-scale"))
 import { UserAvatar, userProfileAdminSubtitle } from "@/components/common/UserAvatar"
 
 import { cn } from "@/lib/utils"
 import { useUserByTgId } from "@/queries/user"
 import { useShowDataUser } from "@/hooks/use-show-data-user"
-import type { TUsersAnswerStatusFromApi } from "@/api/reports"
+import type { IUsersAnswerStatusEntry } from "@/api/reports"
 import { formatQuizPoints, isNegativeQuizPoints } from "@/lib/quiz-points"
 
 interface IProps {
@@ -29,7 +29,7 @@ interface IProps {
   elementAvatarId?: number | null
   totalQuestions?: number
   activeIndex?: number
-  answerStatusByIndex?: Map<number, TUsersAnswerStatusFromApi>
+  answerEntriesByIndex?: Map<number, IUsersAnswerStatusEntry>
 }
 
 function UserPointsLeaderItem({
@@ -45,7 +45,7 @@ function UserPointsLeaderItem({
   elementAvatarId,
   totalQuestions = 0,
   activeIndex,
-  answerStatusByIndex,
+  answerEntriesByIndex,
 }: IProps) {
   const showDataUsers = useShowDataUser()
   const { data, isLoading } = useUserByTgId(telegram_id, { enabled: !!tgId && !!telegram_id })
@@ -174,9 +174,9 @@ function UserPointsLeaderItem({
         </div>
       </div>
       {showAnswerDots && (
-        <UserAnswerStatusDots
+        <UserAnswerStatusBars
           totalQuestions={totalQuestions}
-          statusByIndex={answerStatusByIndex}
+          entriesByIndex={answerEntriesByIndex}
           activeIndex={activeIndex}
           isQuestionEnded={isQuestionEnded}
         />

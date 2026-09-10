@@ -62,7 +62,7 @@ function DataPointsLeader({
 
   const { matrix } = useUsersAnswersStatus({ reportId, tgId, lastByType })
 
-  const answerStatusByTelegramId = useMemo(() => {
+  const answerEntriesByTelegramId = useMemo(() => {
     const map = new Map<number, ReturnType<typeof statusesByIndexForUser>>()
     for (const item of sortedData) {
       const tgKey = normalizeTelegramId(item.telegram_id)
@@ -129,7 +129,7 @@ function DataPointsLeader({
             const isPrizePlace = prizes.includes(rank)
             const tgKey = normalizeTelegramId(item.telegram_id)
             const answerOrder = Number.isFinite(tgKey) ? answerOrderByTelegramId.get(tgKey) : undefined
-            const answerStatusByIndex = Number.isFinite(tgKey) ? answerStatusByTelegramId.get(tgKey) : undefined
+            const answerEntriesByIndex = Number.isFinite(tgKey) ? answerEntriesByTelegramId.get(tgKey) : undefined
             return (
               <UserPointsLeaderItem
                 key={item.telegram_id}
@@ -145,7 +145,7 @@ function DataPointsLeader({
                 elementAvatarId={elementAvatarId}
                 totalQuestions={totalQuestions}
                 activeIndex={activeIndex}
-                answerStatusByIndex={answerStatusByIndex}
+                answerEntriesByIndex={answerEntriesByIndex}
               />
             )
           })}

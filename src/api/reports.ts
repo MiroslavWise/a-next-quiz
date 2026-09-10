@@ -560,8 +560,15 @@ export type TUsersAnswerStatusFromApi =
   | EUsersAnswerStatus.WRONG
   | EUsersAnswerStatus.SKIPPED
 
-/** Матрица `{ [telegram_id]: { [index]: correct|wrong|skipped } }`. */
-export type IReportUsersAnswersStatus = Record<string, Record<string, TUsersAnswerStatusFromApi>>
+/** Запись по одному закрытому вопросу: результат и начисленные очки (`points_awarded`). */
+export interface IUsersAnswerStatusEntry {
+  result: TUsersAnswerStatusFromApi
+  /** Итоговые очки за вопрос; может быть отрицательным. */
+  points: number
+}
+
+/** Матрица `{ [telegram_id]: { [index]: { result, points } } }`. */
+export type IReportUsersAnswersStatus = Record<string, Record<string, IUsersAnswerStatusEntry>>
 
 const API_ANSWER_STATUSES = new Set<string>([
   EUsersAnswerStatus.CORRECT,
@@ -578,10 +585,23 @@ function normalizeUsersAnswersStatus(raw: unknown): IReportUsersAnswersStatus {
       result[telegramId] = {}
       continue
     }
-    const row: Record<string, TUsersAnswerStatusFromApi> = {}
-    for (const [indexKey, status] of Object.entries(byIndex as Record<string, unknown>)) {
-      if (typeof status === "string" && API_ANSWER_STATUSES.has(status)) {
-        row[indexKey] = status as TUsersAnswerStatusFromApi
+    const row: Record<string, IUsersAnswerStatusEntry> = {}
+    for (const [indexKey, value] of Object.entries(byIndex as Record<string, unknown>)) {
+      // Новый формат: объект `{ result, points }`.
+      if (value && typeof value === "object" && !Array.isArray(value)) {
+        const obj = value as Record<string, unknown>
+        const resultStatus =
+          typeof obj.result === "string" && API_ANSWER_STATUSES.has(obj.result)
+            ? obj.result
+            : undefined
+        if (!resultStatus) continue
+
+        const points =
+          typeof obj.points === "number" && Number.isFinite(obj.points) ? obj.points : 0
+        row[indexKey] = { result: resultStatus as TUsersAnswerStatusFromApi, points }
+      } else if (typeof value === "string" && API_ANSWER_STATUSES.has(value)) {
+        // Старый формат: строка результата. Очков нет — показываем 0.
+        row[indexKey] = { result: value as TUsersAnswerStatusFromApi, points: 0 }
       }
     }
     result[telegramId] = row

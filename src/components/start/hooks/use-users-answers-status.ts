@@ -6,7 +6,7 @@ import {
   getReportUsersAnswersStatus,
   EUsersAnswerStatus,
   type IReportUsersAnswersStatus,
-  type TUsersAnswerStatusFromApi,
+  type IUsersAnswerStatusEntry,
 } from "@/api/reports"
 import { useSocketEventEffect, type LastSocketEventByType } from "@/hooks/socket-event-by-type"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
@@ -74,12 +74,12 @@ export function useUsersAnswersStatus({ reportId, tgId, lastByType }: IUseUsersA
   }
 }
 
-/** Срез статусов одного участника: ключ — индекс вопроса (number). */
+/** Срез статусов и очков одного участника: ключ — индекс вопроса (number). */
 export function statusesByIndexForUser(
   matrix: IReportUsersAnswersStatus | undefined,
   telegramId: string | number,
-): Map<number, TUsersAnswerStatusFromApi> {
-  const map = new Map<number, TUsersAnswerStatusFromApi>()
+): Map<number, IUsersAnswerStatusEntry> {
+  const map = new Map<number, IUsersAnswerStatusEntry>()
   if (!matrix) return map
 
   const tgKey = normalizeTelegramId(telegramId)
@@ -92,15 +92,15 @@ export function statusesByIndexForUser(
 
   if (!row) return map
 
-  for (const [indexKey, status] of Object.entries(row)) {
+  for (const [indexKey, entry] of Object.entries(row)) {
     const index = Number(indexKey)
     if (!Number.isFinite(index)) continue
     if (
-      status === EUsersAnswerStatus.CORRECT ||
-      status === EUsersAnswerStatus.WRONG ||
-      status === EUsersAnswerStatus.SKIPPED
+      entry.result === EUsersAnswerStatus.CORRECT ||
+      entry.result === EUsersAnswerStatus.WRONG ||
+      entry.result === EUsersAnswerStatus.SKIPPED
     ) {
-      map.set(index, status)
+      map.set(index, entry)
     }
   }
 
