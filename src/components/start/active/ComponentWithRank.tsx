@@ -167,8 +167,8 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
               <p className="text-sm leading-snug text-white/75">{topMessage}</p>
             </>
           ) : (
-              <p className="flex items-center gap-1.5 text-xs text-white/70">
-                до предыдущего
+              <p className="flex items-center gap-1.5 text-xs text-white/70" title={`до следующего: ${Math.max(0, data.points_to_prev)}`}>
+                до следующего
                 <span className="inline-flex items-center gap-1 font-semibold text-(--accent-orb)">
                   <Suspense fallback={<span>0</span>}>
                     <CountText count={Math.max(0, data.points_to_prev)} />
