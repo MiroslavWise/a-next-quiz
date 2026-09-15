@@ -38,7 +38,7 @@ function ItemSubAnswer({
   onStackExpandedChange,
 }: IProps) {
   const showLiveTally = liveCount != null
-  const showCountBar = results || showLiveTally
+  const showCountBar = results //|| showLiveTally
   const showStack = results && !!answerers?.length && !!viewerTgId
 
   return (

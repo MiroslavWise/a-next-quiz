@@ -257,7 +257,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                     </>
                   )}
                 </div>
-                {isObserverLikeLeader && (statusQuestion === "GAME" || statusQuestion === "END") ? (
+                {isObserverLikeLeader && (["GAME", "END"].includes(statusQuestion)) ? (
                   <StaffGameSkills bySkillId={bySkillId} tgId={tgId} isQuestionEnded={isQuestionEnded} />
                 ) : null}
                 <ComponentsQuestionAnswers
