@@ -3,9 +3,9 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { useState, Suspense, lazy, memo, type ReactNode } from "react"
 
+import GameSkills from "./GameSkills"
 import Skeleton from "@/components/ui/skeleton"
 import QuestionBonuses from "./QuestionBonuses"
-import GameSkills from "./GameSkills"
 import StaffGameSkills from "./StaffGameSkills"
 import type { IDotsQuestionsProps } from "./DotsQuestions"
 const DotsQuestions = lazy(() => import("./DotsQuestions"))
@@ -257,7 +257,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                     </>
                   )}
                 </div>
-                {isObserverLikeLeader && (["GAME", "END"].includes(statusQuestion)) ? (
+                {isObserverLikeLeader && ["GAME", "END"].includes(statusQuestion!) ? (
                   <StaffGameSkills bySkillId={bySkillId} tgId={tgId} isQuestionEnded={isQuestionEnded} />
                 ) : null}
                 <ComponentsQuestionAnswers
