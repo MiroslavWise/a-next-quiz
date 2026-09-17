@@ -35,7 +35,7 @@ const QUESTION_BONUS_DETAILS: Record<QuestionBonus, string> = {
   [QuestionBonus.LUCKY_PLUS]: "Lucky-бонус увеличен на +5% от базовых очков вопроса.",
   [QuestionBonus.FIRST_ANSWERER_LOSE_ELEMENT]: "Первый ответивший (любой клик, даже неверный) теряет бонус своей стихии на этом вопросе. Не путать с «Искрой» и «Первенством» — там нужен первый верный ответ.",
   [QuestionBonus.WRONG_ANSWER_DISABLE_ELEMENT]:
-    "При неверном ответе или пропуске стихия отключается на этот вопрос. Не действует на аватара игры — у него остаются бонусы и штрафы аватара (в т.ч. «Трещина» −3% base).",
+    "При неверном ответе или пропуске стихия отключается на этот вопрос. Не действует на аватара игры — у него остаются бонусы и шансовый «Разлом».",
   [QuestionBonus.REVERSE_SCORING]:
     "После обычного расчёта (speed, стихия, серия): верный ответ — −5% от base вопроса; неверный ответ или пропуск — +10% от base. Стихии и speed не отменяются — это дополнительная поправка. End-бонусы (топ-3, Lucky и т.д.) считаются от уже записанного points_awarded.",
   [QuestionBonus.ALL_ELEMENTS_BOOST]:
@@ -125,14 +125,14 @@ export const ALL_ELEMENTS_BOOST_COMPARISON: readonly AllElementsBoostRow[] = [
     name: "Огонь",
     iconSrc: "/element/fire.svg",
     accentColor: "#E85D2A",
-    normal: "Speed ×1.15; первый верный +10% base; ошибка −8%",
+    normal: "Speed ×1.15; первый верный +10% base; шанс Ожога −13%",
     boosted: "×1.22; +13%; −11%",
   },
   {
     name: "Вода",
     iconSrc: "/element/water.svg",
     accentColor: "#06B6D4",
-    normal: "Верный +5% к ответу; +5×N; ошибка −4×N",
+    normal: "Верный +5% к ответу; +5×N; шанс Водоворота −18% и пул",
     boosted: "+8%; +7×N; −6×N",
   },
   {

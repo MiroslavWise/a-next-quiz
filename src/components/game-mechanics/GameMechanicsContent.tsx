@@ -478,7 +478,8 @@ export default function GameMechanicsContent() {
                   Рейтинг строится по итоговой сумме speed-очков, серии, стихий, бонусов вопроса и способностей. При равенстве выше тот, у
                   кого меньше{" "}
                   <code className="text-xs">telegram_id</code>. Итоговая сумма (<code className="text-xs">total_points</code>) и очки за
-                  отдельный вопрос могут уйти <strong className="text-foreground">ниже нуля</strong> — штрафы стихий (ожог, рябь, трещина и
+                  отдельный вопрос могут уйти <strong className="text-foreground">ниже нуля</strong> — штрафы стихий (ожог, водоворот, обвал,
+                  сквозняк и разлом) и
                   т.д.) суммируются без нижнего предела.
                 </IconNote>
                 <IconNote icon={<Target className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
