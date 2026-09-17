@@ -1,5 +1,1 @@
-0.1.27
-
-- Синхронизирован актуальный `docs/API.md` с backend после обновления дебаффов стихий.
-- Обновлены карточки FIRE/WATER/EARTH/AIR и аватара: новые chance debuffs, SHIELD/GAMBIT и whirlpool END-пул.
-- Удалены устаревшие `water_ripple` и `avatar_crack` из frontend-каталога и описаний.
+0.1.28

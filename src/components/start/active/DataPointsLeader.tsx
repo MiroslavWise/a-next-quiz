@@ -87,12 +87,12 @@ function DataPointsLeader({
         "top-button-fixed fixed right-4 z-115 max-h-[50vh] w-full max-w-72",
         showDataPointsLeader ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0",
         // планшет+: колонка 1/3, всегда видна
-        "md:pointer-events-auto md:visible md:static md:top-auto md:right-auto md:z-10 md:mr-4 md:h-full md:max-h-none md:min-h-0 md:w-1/3 md:max-w-none md:shrink-0 md:self-stretch md:pt-12 md:pb-4 md:opacity-100",
+        "md:pointer-events-auto md:visible md:static md:top-auto md:right-auto md:z-10 md:mr-4 md:h-full md:max-h-none md:min-h-0 md:w-1/3 md:max-w-none md:shrink-0 md:self-stretch md:pb-4 md:opacity-100",
       )}
       role="presentation"
     >
       <section
-        className="glass-start-liquid-palette flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl p-2 md:p-3"
+        className="glass-start-liquid-palette flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl p-2 shadow-none md:p-3"
         role="region"
         aria-labelledby="data-points-leader-title"
         onKeyDown={(e) => e.stopPropagation()}
