@@ -38,8 +38,8 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
       { id: "fire_spark", title: "Искра", short: "+10% base", detail: "Первый верный ответ на вопросе: +10% base (ошибки до вас не мешают)." },
     ],
     shortcomings: [
-      { id: "fire_burn", title: "Ожог", short: "17% → −13%", detail: "При любом исходе: 17% шанс −13% base и −2 к серии; GAMBIT повышает отрицательное начисление до −16%." },
-      { id: "fire_ash", title: "Пепел", short: "15% → гасит бонусы", detail: "При любом исходе: 15% шанс отключить положительные усиления строки и её END-бонусы." },
+      { id: "fire_burn", title: "Ожог", short: "17% → −13%", detail: "17% шанс −13% base и −2 к серии; GAMBIT повышает отрицательное начисление до −16%." },
+      { id: "fire_ash", title: "Пепел", short: "15% → гасит бонусы", detail: "15% шанс отключить положительные усиления строки и её END-бонусы." },
     ],
   },
   {
@@ -56,7 +56,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
       { id: "water_empathy", title: "Эмпатия", short: "+5×N", detail: "Верный ответ: +5 очков за каждого игрока в игре." },
     ],
     shortcomings: [
-      { id: "water_whirlpool", title: "Водоворот", short: "16% → −18% + пул", detail: "При любом исходе: 16% шанс −18% base (GAMBIT −22.5%) и пул ×1.5 для других верных на END." },
+      { id: "water_whirlpool", title: "Водоворот", short: "16% → −18% + пул", detail: "16% шанс −18% base (GAMBIT −22.5%) и пул ×1.5 для других верных на END." },
     ],
   },
   {
@@ -73,7 +73,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
       { id: "earth_patience", title: "Терпение", short: "+17% base", detail: "Верный ответ последним: +17% от base points вопроса." },
     ],
     shortcomings: [
-      { id: "earth_collapse", title: "Обвал", short: "17% → −15%", detail: "При любом исходе: 17% шанс −15% base и −2 к серии; GAMBIT повышает отрицательное начисление до −18%." },
+      { id: "earth_collapse", title: "Обвал", short: "17% → −15%", detail: "17% шанс −15% base и −2 к серии; GAMBIT повышает отрицательное начисление до −18%." },
     ],
   },
   {
@@ -92,7 +92,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
       { id: "air_streak", title: "Лёгкий ветер", short: "Streak 4%→42%", detail: "Серия: +4% за шаг, максимум 42%." },
     ],
     shortcomings: [
-      { id: "air_draft", title: "Сквозняк", short: "18% → −14%", detail: "При любом исходе: 18% шанс −14% base и −1 к серии; GAMBIT повышает отрицательное начисление до −17.5%." },
+      { id: "air_draft", title: "Сквозняк", short: "18% → −14%", detail: "18% шанс −14% base и −1 к серии; GAMBIT повышает отрицательное начисление до −17.5%." },
     ],
   },
 ]
@@ -114,7 +114,7 @@ export const GAME_AVATAR_CARD: GameElementCard = {
     { id: "avatar_presence", title: "Присутствие", short: "+1×N", detail: "В конце вопроса: +1 за игрока, даже без ответа." },
     { id: "avatar_streak_cap", title: "Потолок серии", short: "Streak max 30%", detail: "Серия как у всех (+5%), но не выше 30%." },
   ],
-  shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "При любом исходе: 16% шанс −25% base и −2 к серии; GAMBIT повышает отрицательное начисление до −31%." }],
+  shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "16% шанс −25% base и −2 к серии; GAMBIT повышает отрицательное начисление до −31%." }],
 }
 
 export const GAME_AVATAR_ICON_SRC = GAME_AVATAR_CARD.iconSrc
