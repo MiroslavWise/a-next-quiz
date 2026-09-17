@@ -119,9 +119,9 @@ function ElementPickerOption({ card, selected, onSelect }: { card: GameElementCa
         {card.uiHint}
       </blockquote>
 
-      <div className={cn("mt-1.5 grid min-w-0 gap-1.5", card.penalties.length > 0 ? "grid-cols-1 min-[400px]:grid-cols-2" : "grid-cols-1")}>
+      <div className={cn("mt-1.5 grid min-w-0 gap-1.5", card.shortcomings.length > 0 ? "grid-cols-1 min-[400px]:grid-cols-2" : "grid-cols-1")}>
         <ElementEffectListCompact title="Бонусы" effects={card.bonuses} variant="bonus" accentColor={accent} />
-        <ElementEffectListCompact title="Штрафы" effects={card.penalties} variant="penalty" accentColor={accent} />
+        <ElementEffectListCompact title="Недостатки" effects={card.shortcomings} variant="penalty" accentColor={accent} />
       </div>
     </button>
   )
@@ -191,7 +191,7 @@ function ElementsUser() {
               {profile?.element ? "Сменить стихию" : "Выберите стихию"}
             </h2>
             <p className="text-muted-foreground text-[0.65rem] leading-snug">
-              Необязательно, но даёт бонусы и штрафы в игре. Ошибка или пропуск могут отнять очки — итоговая сумма может стать
+              Необязательно, но даёт бонусы и недостатки в игре. Любой исход может изменить очки — итоговая сумма может стать
               отрицательной. Можно изменить до старта раунда.
             </p>
           </div>

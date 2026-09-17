@@ -19,7 +19,7 @@ export type GameElementCard = {
   /** Акцент карточки; для аватара — белый. */
   accentColor: string
   bonuses: GameElementEffect[]
-  penalties: GameElementEffect[]
+  shortcomings: GameElementEffect[]
   wide?: boolean
 }
 
@@ -29,17 +29,17 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     name: "Огонь",
     tagline: "Риск и скорость",
     archetype: "Атакующий, импульсивный",
-    description: "Быстрые рывки и награда первому верно ответившему. Ошибка обжигает.",
-    uiHint: "Ответь верно первым — получи искру. При ошибке возможны Ожог −13% и Пепел, который гасит бонусы строки.",
+    description: "Быстрые рывки и награда первому верно ответившему. Ожог может сработать при любом исходе.",
+    uiHint: "Ответь верно первым — получи искру. При любом исходе возможны Ожог и Пепел, который гасит бонусы строки.",
     iconSrc: "/element/fire.svg",
     accentColor: "#E85D2A",
     bonuses: [
       { id: "fire_speed", title: "Жар", short: "Speed ×1.15", detail: "Speed-очки за верный ответ умножаются на 1.15." },
       { id: "fire_spark", title: "Искра", short: "+10% base", detail: "Первый верный ответ на вопросе: +10% base (ошибки до вас не мешают)." },
     ],
-    penalties: [
-      { id: "fire_burn", title: "Ожог", short: "20% → −13%", detail: "При ошибке или пропуске: 20% шанс −13% base и −2 к серии; GAMBIT повышает штраф до −16%." },
-      { id: "fire_ash", title: "Пепел", short: "15% → гасит бонусы", detail: "При ошибке или пропуске: 15% шанс отключить положительные усиления строки и её END-бонусы." },
+    shortcomings: [
+      { id: "fire_burn", title: "Ожог", short: "17% → −13%", detail: "При любом исходе: 17% шанс −13% base и −2 к серии; GAMBIT повышает отрицательное начисление до −16%." },
+      { id: "fire_ash", title: "Пепел", short: "15% → гасит бонусы", detail: "При любом исходе: 15% шанс отключить положительные усиления строки и её END-бонусы." },
     ],
   },
   {
@@ -48,15 +48,15 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     tagline: "Стабильность и эмпатия",
     archetype: "Гибкая, поддерживающая",
     description: "Бонус за верный ответ и очки за каждого в зале.",
-    uiHint: "Чем больше зал — тем больше эмпатия. При ошибке возможен водоворот, который кормит других верно ответивших на END.",
+    uiHint: "Чем больше зал — тем больше эмпатия. При любом исходе возможен водоворот, который кормит других верно ответивших на END.",
     iconSrc: "/element/water.svg",
     accentColor: "#06B6D4",
     bonuses: [
       { id: "water_flow", title: "Течение", short: "+5% к ответу", detail: "Верный ответ: +5% к очкам ответа поверх streak (35%+5%=40%)." },
       { id: "water_empathy", title: "Эмпатия", short: "+5×N", detail: "Верный ответ: +5 очков за каждого игрока в игре." },
     ],
-    penalties: [
-      { id: "water_whirlpool", title: "Водоворот", short: "20% → −18% + пул", detail: "При ошибке или пропуске: 20% шанс −18% base (GAMBIT −22.5%) и пул ×1.5 для других верных на END." },
+    shortcomings: [
+      { id: "water_whirlpool", title: "Водоворот", short: "16% → −18% + пул", detail: "При любом исходе: 16% шанс −18% base (GAMBIT −22.5%) и пул ×1.5 для других верных на END." },
     ],
   },
   {
@@ -72,8 +72,8 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
       { id: "earth_streak", title: "Корни", short: "Streak 6%→45%", detail: "Серия: +6% за шаг, максимум 45%." },
       { id: "earth_patience", title: "Терпение", short: "+17% base", detail: "Верный ответ последним: +17% от base points вопроса." },
     ],
-    penalties: [
-      { id: "earth_collapse", title: "Обвал", short: "20% → −15%", detail: "При ошибке или пропуске: 20% шанс −15% base и −2 к серии; GAMBIT повышает штраф до −18%." },
+    shortcomings: [
+      { id: "earth_collapse", title: "Обвал", short: "17% → −15%", detail: "При любом исходе: 17% шанс −15% base и −2 к серии; GAMBIT повышает отрицательное начисление до −18%." },
     ],
   },
   {
@@ -91,8 +91,8 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
       { id: "air_gust_double", title: "Усиленный порыв", short: "20% → +14%", detail: "Если порыв сработал: 20% шанс удвоить до +14% base." },
       { id: "air_streak", title: "Лёгкий ветер", short: "Streak 4%→42%", detail: "Серия: +4% за шаг, максимум 42%." },
     ],
-    penalties: [
-      { id: "air_draft", title: "Сквозняк", short: "20% → −14%", detail: "При ошибке или пропуске: 20% шанс −14% base и −1 к серии; GAMBIT повышает штраф до −17.5%." },
+    shortcomings: [
+      { id: "air_draft", title: "Сквозняк", short: "18% → −14%", detail: "При любом исходе: 18% шанс −14% base и −1 к серии; GAMBIT повышает отрицательное начисление до −17.5%." },
     ],
   },
 ]
@@ -114,7 +114,7 @@ export const GAME_AVATAR_CARD: GameElementCard = {
     { id: "avatar_presence", title: "Присутствие", short: "+1×N", detail: "В конце вопроса: +1 за игрока, даже без ответа." },
     { id: "avatar_streak_cap", title: "Потолок серии", short: "Streak max 30%", detail: "Серия как у всех (+5%), но не выше 30%." },
   ],
-  penalties: [{ id: "avatar_rift", title: "Разлом", short: "25% → −25%", detail: "При ошибке или пропуске: 25% шанс −25% base и −2 к серии; GAMBIT повышает штраф до −31%." }],
+  shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "При любом исходе: 16% шанс −25% base и −2 к серии; GAMBIT повышает отрицательное начисление до −31%." }],
 }
 
 export const GAME_AVATAR_ICON_SRC = GAME_AVATAR_CARD.iconSrc

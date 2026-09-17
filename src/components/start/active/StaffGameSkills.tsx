@@ -137,7 +137,7 @@ function StaffGameSkills({ bySkillId, tgId, isQuestionEnded = false }: StaffGame
         )}
         aria-label="Способности участников"
       >
-        <div className="glass-start-liquid-palette relative flex flex-wrap items-center justify-center gap-2 overflow-visible rounded-full border border-white/12 p-2 shadow-lg shadow-black/15">
+        <div className="glass-start-liquid-palette relative flex flex-wrap items-center justify-center gap-2 overflow-visible rounded-full border border-white/12 p-2 shadow-none">
           {GAME_SKILLS.map((definition) => (
             <StaffSkillButton
               key={definition.id}

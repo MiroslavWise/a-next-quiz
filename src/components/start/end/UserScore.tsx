@@ -90,7 +90,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
           <PickaxeIcon points={totalPoints} className="size-5 shrink-0" />
         </div>
         {isNegativeQuizPoints(totalPoints) ? (
-          <p className="mt-2 text-xs leading-snug text-rose-200/85">Сумма ниже нуля — учтены штрафы стихий за ошибки и пропуски.</p>
+          <p className="mt-2 text-xs leading-snug text-rose-200/85">Сумма ниже нуля — учтены отрицательные эффекты недостатков стихий.</p>
         ) : null}
       </div>
       {myScore.questions && myScore.questions.length > 0 ? (

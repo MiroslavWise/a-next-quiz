@@ -81,7 +81,7 @@ function ComponentsTitleQuestion({
       {children}
       <div
         className={cn(
-          "glass-start-liquid-palette relative isolate flex w-full flex-col items-center border text-center text-white transition-all duration-300",
+          "glass-start-liquid-palette relative isolate flex w-full flex-col items-center border text-center text-white shadow-none transition-all duration-300",
           ROUND_CLASS,
         )}
       >

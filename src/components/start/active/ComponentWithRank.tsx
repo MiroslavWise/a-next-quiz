@@ -205,7 +205,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
             </span>
           </div>
           <p className="mt-1.5 text-[0.65rem] leading-snug text-rose-200/90 xl:text-xs">
-            Сумма ниже нуля — учтены штрафы стихий за ошибки и пропуски.
+            Сумма ниже нуля — учтены отрицательные эффекты недостатков стихий.
           </p>
         </div>
       ) : null}

@@ -32,7 +32,7 @@ function ElementPickPromptBanner() {
         <span className="min-w-0 flex-1 space-y-0.5">
           <span className="block text-sm font-semibold tracking-tight text-white sm:text-[0.95rem]">Выберите стихию</span>
           <span className="block text-[0.68rem] leading-snug text-white/58 sm:text-xs">
-            Огонь, вода, земля или воздух — дают бонусы и штрафы к очкам. Можно сменить до старта раунда.
+            Огонь, вода, земля или воздух — дают бонусы и недостатки к очкам. Можно сменить до старта раунда.
           </span>
         </span>
         <ChevronRight

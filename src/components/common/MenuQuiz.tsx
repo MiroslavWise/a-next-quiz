@@ -5,8 +5,14 @@ import { postEvent, type PopupButton } from "@tma.js/sdk"
 import { EllipsisVertical, PencilLine, Play, Trash } from "lucide-react"
 
 import Button from "../ui/button"
-import Separator from "../ui/separator"
-import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu"
 
 import { useAuthJwtClaims } from "@/lib/jwt"
 import type { IQuiz } from "@/interface/quiz"
@@ -40,34 +46,36 @@ function MenuQuiz({ id, name, handleStart }: IProps) {
   }
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <EllipsisVertical className="size-4" />
+          <EllipsisVertical className="size-4" aria-hidden />
         </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <div className="mx-auto flex w-full max-w-sm flex-col gap-2 px-4 pb-8">
-          <Button variant="outline" className="flex w-full items-center justify-start" onClick={handleStart} size="default">
-            <Play className="size-4" /> Начать квиз
-          </Button>
-          <Button variant="outline" className="flex w-full items-center justify-start" disabled size="default">
-            <PencilLine className="size-4" /> Редактировать
-          </Button>
-          <Separator />
-          {isAdmin ? (
-            <Button
-              variant="destructive"
-              className="text-destructive flex w-full items-center justify-start"
-              onClick={handleDeleteQuiz}
-              size="default"
-            >
-              <Trash className="size-4" /> Удалить
-            </Button>
-          ) : null}
-        </div>
-      </DrawerContent>
-    </Drawer>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-52" align="end">
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={handleStart}>
+            <Play className="size-4" />
+            Начать квиз
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled>
+            <PencilLine className="size-4" />
+            Редактировать
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        {isAdmin ? (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem variant="destructive" onClick={handleDeleteQuiz}>
+                <Trash className="size-4" />
+                Удалить
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </>
+        ) : null}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 

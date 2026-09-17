@@ -356,7 +356,7 @@ export interface IReportQuestionScore {
   is_right?: boolean
   /** Пропуск / воздержание (`users_answers.abstained`); после END может быть `true` при `is_right: false`. */
   abstained?: boolean
-  /** Итог за вопрос (`points_awarded`); может быть отрицательным (штрафы при ошибке или пропуске). */
+  /** Итог за вопрос (`points_awarded`); может быть отрицательным из-за недостатков стихии. */
   /** Текст вопроса (если отдаёт API) */
   title?: string
   /** Разбивка очков по эффектам стихии за вопрос — см. docs/API.md. */
@@ -365,7 +365,7 @@ export interface IReportQuestionScore {
 
 export interface IReportUserPoints {
   telegram_id: string | number
-  /** Итоговые очки за квиз (приоритет над `points`); может быть отрицательным — штрафы стихий без нижнего предела. */
+  /** Итоговые очки за квиз (приоритет над `points`); могут быть отрицательными из-за недостатков стихий. */
   total_points?: number
   rank?: number
   /** Изменение места относительно предыдущего раунда: prev_rank - current_rank */

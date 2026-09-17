@@ -13,10 +13,10 @@ import { type IAnswer } from "@/interface/answer"
 import { getReportsAnswersCorrectCounts, type IAnswerUserEntry, type IReportQuestionAnswerCounts } from "@/api/reports"
 
 const answerOptionGlassBase =
-  "glass-start-slab w-full rounded-2xl px-3.5 py-3 text-sm font-medium sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
+  "glass-start-slab w-full rounded-2xl px-3.5 py-3 text-sm font-medium shadow-none sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
 
 function leaderAnswerEndTintClass(isCorrect: boolean) {
-  return isCorrect ? "glass-start-slab-faithful text-white" : "glass-start-slab-muted"
+  return isCorrect ? "glass-start-slab-faithful shadow-none text-white" : "glass-start-slab-muted"
 }
 
 function playerAnswerEndTintClass(
@@ -25,9 +25,9 @@ function playerAnswerEndTintClass(
   selectedAnswerId: string | null,
   userPickWasCorrect: boolean,
 ): string {
-  const muted = "glass-start-slab-muted"
-  const brightCorrect = "glass-start-slab-faithful text-white"
-  const brightWrong = "glass-start-slab-unfaithful text-white"
+  const muted = "glass-start-slab-muted shadow-none"
+  const brightCorrect = "glass-start-slab-faithful shadow-none text-white"
+  const brightWrong = "glass-start-slab-unfaithful shadow-none text-white"
   const softCorrect = "border-faithful/40 bg-faithful/15 text-faithful"
 
   if (!selectedAnswerId) {
@@ -141,7 +141,7 @@ function AnswerOptionsList({
           {Array.from({ length: 4 }).map((_, i) => (
             <li
               key={i}
-              className="glass-start-slab relative w-full rounded-2xl px-3.5 py-3 text-sm font-medium text-transparent opacity-90 sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
+              className="glass-start-slab relative w-full rounded-2xl px-3.5 py-3 text-sm font-medium text-transparent opacity-90 shadow-none sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
               aria-hidden
             >
               --||--

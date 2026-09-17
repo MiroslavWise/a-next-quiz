@@ -118,7 +118,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
             Повторить загрузку способностей
           </Button>
         ) : (
-          <div className="glass-start-liquid-palette flex flex-wrap items-center justify-center gap-1.5 rounded-full border border-white/12 p-1.5 shadow-lg shadow-black/15">
+          <div className="glass-start-liquid-palette flex flex-wrap items-center justify-center gap-1.5 rounded-full border border-white/12 p-1.5 shadow-none">
             {GAME_SKILLS.map((definition) => {
               const state = skillsQuery.data?.skills.find((skill) => skill.id === definition.id)
               const status = state?.status ?? "available"

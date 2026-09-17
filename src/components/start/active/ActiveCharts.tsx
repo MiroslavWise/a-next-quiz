@@ -39,7 +39,7 @@ function ActiveCharts({ reportId, tgId, index, title }: IProps) {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="glass-start-liquid-palette w-full rounded-2xl p-4 lg:p-6">
+      <div className="glass-start-liquid-palette w-full rounded-2xl p-4 shadow-none lg:p-6">
         {isLoading ? (
           <div className="flex min-h-36 items-center justify-center lg:min-h-44">
             <Spinner className="size-5 lg:size-6" />
@@ -85,7 +85,7 @@ function ActiveCharts({ reportId, tgId, index, title }: IProps) {
           </div>
         )}
       </div>
-      <div className="glass-start-liquid-palette flex w-full items-center justify-center rounded-2xl p-4 lg:p-6">
+      <div className="glass-start-liquid-palette flex w-full items-center justify-center rounded-2xl p-4 shadow-none lg:p-6">
         <p className="max-w-[90%] text-center text-base leading-relaxed font-medium text-balance whitespace-pre-wrap text-white xl:text-xl 2xl:text-2xl">
           {title ?? ""}
         </p>

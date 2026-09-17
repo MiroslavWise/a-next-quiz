@@ -11,7 +11,7 @@ export function isNegativeQuizPoints(points: number): boolean {
 /** Золотая кирка — очки ≥ 0. */
 export const PICKAXE_ICON_POSITIVE_CLASS = "text-[#FFD700] drop-shadow-[0_0_3px_rgba(255,215,0,0.5)]"
 
-/** Алокрасная кирка — штрафы и отрицательный итог. */
+/** Алокрасная кирка — отрицательные начисления и итог. */
 export const PICKAXE_ICON_NEGATIVE_CLASS = "text-[#FF2400] drop-shadow-[0_0_4px_rgba(255,36,0,0.7)]"
 
 /** Серебряная кирка — нейтральный контекст (например, «до следующего места»). */

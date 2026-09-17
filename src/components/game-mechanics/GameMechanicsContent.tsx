@@ -390,9 +390,9 @@ function ElementMechanicsCard({ card }: { card: GameElementCard }) {
         {card.uiHint}
       </blockquote>
 
-      <div className={cn("relative mt-3 grid min-w-0 gap-3", card.penalties.length > 0 ? "sm:grid-cols-2" : "grid-cols-1")}>
+      <div className={cn("relative mt-3 grid min-w-0 gap-3", card.shortcomings.length > 0 ? "sm:grid-cols-2" : "grid-cols-1")}>
         <ElementEffectList title="Бонусы" effects={card.bonuses} variant="bonus" accentColor={accent} />
-        <ElementEffectList title="Штрафы" effects={card.penalties} variant="penalty" accentColor={accent} />
+        <ElementEffectList title="Недостатки" effects={card.shortcomings} variant="penalty" accentColor={accent} />
       </div>
     </article>
   )
@@ -478,7 +478,7 @@ export default function GameMechanicsContent() {
                   Рейтинг строится по итоговой сумме speed-очков, серии, стихий, бонусов вопроса и способностей. При равенстве выше тот, у
                   кого меньше{" "}
                   <code className="text-xs">telegram_id</code>. Итоговая сумма (<code className="text-xs">total_points</code>) и очки за
-                  отдельный вопрос могут уйти <strong className="text-foreground">ниже нуля</strong> — штрафы стихий (ожог, водоворот, обвал,
+                  отдельный вопрос могут уйти <strong className="text-foreground">ниже нуля</strong> — отрицательные эффекты недостатков стихий (ожог, водоворот, обвал,
                   сквозняк и разлом) и
                   т.д.) суммируются без нижнего предела.
                 </IconNote>
@@ -531,7 +531,7 @@ export default function GameMechanicsContent() {
 
             <MechanicsSection title="Стихии и аватар игры">
               <p>
-                В лобби до старта раунда можно выбрать стихию — она даёт уникальные бонусы и штрафы к очкам. Без выбора (
+                В лобби до старта раунда можно выбрать стихию — она даёт уникальные бонусы и недостатки к очкам. Без выбора (
                 <code className="text-xs">element = null</code>) действует только базовая механика: speed, streak и Lucky.
               </p>
               <p className="text-xs text-white/55">
@@ -711,7 +711,7 @@ export default function GameMechanicsContent() {
                 </li>
                 <li>
                   После закрытия вопроса показывается статистика: верно / неверно / воздержались. Пропуск до END — отдельная категория в UI;
-                  после закрытия вопроса он экономически считается ошибкой (те же штрафы и сброс серии), но в статистике остаётся отдельной
+                  после закрытия вопроса он экономически считается ошибкой (те же недостатки и сброс серии), но в статистике остаётся отдельной
                   категорией «воздержались».
                 </li>
                 <li>Одноразовую способность можно открыть, изучить и активировать как до ответа, так и после него — до закрытия вопроса.</li>

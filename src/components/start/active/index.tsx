@@ -202,7 +202,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
               <div
                 className={
                   isObserverLikeLeader
-                    ? "relative flex h-full min-h-0 w-full min-w-0 flex-col gap-3 overflow-y-auto overscroll-contain px-4 pt-4 [-webkit-overflow-scrolling:touch] md:w-2/3 md:pr-2"
+                    ? "relative flex h-full min-h-0 w-full min-w-0 flex-col gap-3 overflow-y-auto overscroll-contain px-4 pt-4 [-webkit-overflow-scrolling:touch] md:w-2/3 md:pr-2 md:pt-0"
                     : "relative flex h-full w-full flex-col gap-3 px-4 pt-4"
                 }
               >

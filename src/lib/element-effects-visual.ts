@@ -45,22 +45,22 @@ const GENERIC_VISUALS: Record<string, ElementEffectVisual> = {
 const effectVisualById = new Map<string, ElementEffectVisual>()
 
 for (const card of GAME_ELEMENT_CARDS) {
-  const penaltyIds = new Set(card.penalties.map((item) => item.id))
-  for (const effect of [...card.bonuses, ...card.penalties]) {
+  const shortcomingIds = new Set(card.shortcomings.map((item) => item.id))
+  for (const effect of [...card.bonuses, ...card.shortcomings]) {
     effectVisualById.set(effect.id, {
       accentColor: card.accentColor,
       iconSrc: card.iconSrc,
-      tone: penaltyIds.has(effect.id) ? "penalty" : "bonus",
+      tone: shortcomingIds.has(effect.id) ? "penalty" : "bonus",
     })
   }
 }
 
-for (const effect of [...GAME_AVATAR_CARD.bonuses, ...GAME_AVATAR_CARD.penalties]) {
-  const penaltyIds = new Set(GAME_AVATAR_CARD.penalties.map((item) => item.id))
+for (const effect of [...GAME_AVATAR_CARD.bonuses, ...GAME_AVATAR_CARD.shortcomings]) {
+  const shortcomingIds = new Set(GAME_AVATAR_CARD.shortcomings.map((item) => item.id))
   effectVisualById.set(effect.id, {
     accentColor: "#F5F5F5",
     iconSrc: GAME_AVATAR_ICON_SRC,
-    tone: penaltyIds.has(effect.id) ? "penalty" : "bonus",
+    tone: shortcomingIds.has(effect.id) ? "penalty" : "bonus",
   })
 }
 
