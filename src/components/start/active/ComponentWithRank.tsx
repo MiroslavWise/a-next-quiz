@@ -167,15 +167,29 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
               <p className="text-sm leading-snug text-white/75">{topMessage}</p>
             </>
           ) : (
-              <p className="flex items-center gap-1.5 text-xs text-white/70" title={`до следующего: ${Math.max(0, data.points_to_prev)}`}>
-                до следующего
-                <span className="inline-flex items-center gap-1 font-semibold text-(--accent-orb)">
-                  <Suspense fallback={<span>0</span>}>
-                    <CountText count={Math.max(0, data.points_to_prev)} />
-                  </Suspense>
-                  <PickaxeIcon tone="neutral" className="size-3.5" />
-                </span>
-              </p>
+              <div className="flex items-center gap-3">
+                <div
+                  className="grid size-12 shrink-0 place-items-center rounded-xl border border-(--accent-orb)/35 bg-(--accent-orb)/10 shadow-[0_0_18px_rgba(45,212,191,0.1)]"
+                  title={rank != null && rank > 0 ? `Ваше место: ${rank}` : "Место пока не определено"}
+                >
+                  <div className="text-center leading-none">
+                    <span className="block text-[0.5rem] font-semibold tracking-[0.16em] text-white/45 uppercase">место</span>
+                    <span className="mt-1 block text-xl font-bold tabular-nums text-(--accent-orb)">{rank != null && rank > 0 ? rank : "—"}</span>
+                  </div>
+                </div>
+                <div className="min-w-0 space-y-0.5">
+                  <p className="text-sm font-semibold text-white/85">Ваша позиция</p>
+                  <p className="flex items-center gap-1.5 text-xs text-white/60" title={`до следующего: ${Math.max(0, data.points_to_prev)}`}>
+                    до следующего
+                    <span className="inline-flex items-center gap-1 font-semibold text-(--accent-orb)">
+                      <Suspense fallback={<span>0</span>}>
+                        <CountText count={Math.max(0, data.points_to_prev)} />
+                      </Suspense>
+                      <PickaxeIcon tone="neutral" className="size-3.5" />
+                    </span>
+                  </p>
+                </div>
+              </div>
           )}
         </div>
         <StreakRing streak={streak} />
