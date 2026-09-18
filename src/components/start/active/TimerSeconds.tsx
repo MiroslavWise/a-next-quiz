@@ -54,8 +54,8 @@ function TimerSeconds({ remainingSeconds, totalSeconds }: IProps) {
           className="transition-[stroke-dashoffset,stroke] duration-300 ease-linear"
           style={{
             filter: isPanic
-              ? "drop-shadow(0 0 6px color-mix(in srgb, var(--unfaithful) 80%, transparent))"
-              : "drop-shadow(0 0 8px color-mix(in srgb, var(--accent-orb) 75%, transparent))",
+              ? "drop-shadow(0 0 2px color-mix(in srgb, var(--unfaithful) 80%, transparent))"
+              : "drop-shadow(0 0 2px color-mix(in srgb, var(--accent-orb) 75%, transparent))",
           }}
         />
       </svg>
