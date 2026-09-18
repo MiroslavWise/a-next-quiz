@@ -1,6 +1,9 @@
 import Image from "next/image"
+import { motion } from "motion/react"
 import { AnimateView } from "motion/react-animate-view"
 import { useState, startTransition, useEffect } from "react"
+
+import { generateRandomSquares } from "../lib/image"
 
 interface IProps {
   thumbUrl: string
@@ -9,11 +12,20 @@ interface IProps {
 
 function ImageThumb({ thumbUrl, titleText }: IProps) {
   const [isVisible, setIsVisible] = useState(false)
+  const [clipPath, setClipPath] = useState("")
+  const [targetClip, setTargetClip] = useState("")
 
   useEffect(() => {
+    const { full, collapsed } = generateRandomSquares(25)
+
+    setClipPath(collapsed)
+    setTargetClip(full)
+
     requestAnimationFrame(() => {
       startTransition(() => {
         setIsVisible(true)
+
+        setTimeout(() => setClipPath(full), 50)
       })
     })
   }, [])
@@ -23,13 +35,25 @@ function ImageThumb({ thumbUrl, titleText }: IProps) {
       {isVisible && (
         <AnimateView
           enter={{
-            clipPath: ["circle(0% at 50% 50%)", "circle(75% at 50% 50%)"],
-            transition: { duration: 0.6, ease: "easeOut" },
+            clipPath: [clipPath, targetClip],
+            transition: {
+              duration: 0.8,
+              ease: "easeOut",
+              delay: 0.2,
+            },
           }}
           exit={{
-            clipPath: ["circle(75% at 50% 50%)", "circle(0% at 50% 50%)"],
+            clipPath: [targetClip, clipPath],
             transition: { duration: 0.4, ease: "easeIn" },
           }}
+          // enter={{
+          //   clipPath: ["circle(0% at 50% 50%)", "circle(75% at 50% 50%)"],
+          //   transition: { duration: 0.6, ease: "easeOut" },
+          // }}
+          // exit={{
+          //   clipPath: ["circle(75% at 50% 50%)", "circle(0% at 50% 50%)"],
+          //   transition: { duration: 0.4, ease: "easeIn" },
+          // }}
         >
           <Image
             fill

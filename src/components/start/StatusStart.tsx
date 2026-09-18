@@ -19,7 +19,6 @@ function StatusStart({ refetch }: { refetch: () => void }) {
 
   return (
     <div className="relative flex h-full min-h-0 w-full flex-col items-center justify-center gap-3 px-4 pt-4">
-      <p className="glass-start-meta">старт</p>
       <div className="relative isolate flex size-28 items-center justify-center sm:size-32" aria-hidden>
         <svg viewBox="0 0 100 100" className="absolute inset-0 size-full -rotate-90">
           <circle cx="50" cy="50" r={RING_RADIUS} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="4.5" />
@@ -32,9 +31,6 @@ function StatusStart({ refetch }: { refetch: () => void }) {
             strokeWidth="4.5"
             strokeLinecap="round"
             strokeDasharray={RING_CIRCUMFERENCE}
-            style={{
-              filter: "drop-shadow(0 0 8px color-mix(in srgb, var(--accent-orb) 75%, transparent))",
-            }}
           />
         </svg>
         <DotLottieReact
