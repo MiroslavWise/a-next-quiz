@@ -111,8 +111,8 @@ export const GAME_AVATAR_CARD: GameElementCard = {
     { id: "avatar_first", title: "Первенство", short: "+8% base", detail: "Первый верный ответ на вопросе: +8% base (ошибки до вас не мешают)." },
     { id: "avatar_aura", title: "Аура", short: "+7% base", detail: "Каждый верный ответ: +7% base." },
     { id: "avatar_lucky", title: "Судьба", short: "Lucky 18%", detail: "Lucky: 18% base (×1.5)." },
-    { id: "avatar_presence", title: "Присутствие", short: "+1×N", detail: "В конце вопроса: +1 за игрока, даже без ответа." },
-    { id: "avatar_streak_cap", title: "Потолок серии", short: "Streak max 30%", detail: "Серия как у всех (+5%), но не выше 30%." },
+    { id: "avatar_presence", title: "Присутствие", short: "+7×N", detail: "В конце вопроса: +7 за каждого верно ответившего." },
+    { id: "avatar_streak_cap", title: "Потолок серии", short: "Streak 6%→36%", detail: "Серия: +6% за шаг, максимум 36%." },
   ],
   shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "16% шанс −25% base и −2 к серии; GAMBIT повышает отрицательное начисление до −31%." }],
 }
