@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import QueryProvider from "@/providers/query"
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full">
         <QueryProvider>{children}</QueryProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
