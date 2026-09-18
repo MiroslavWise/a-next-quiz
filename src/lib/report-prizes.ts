@@ -6,7 +6,7 @@ import type { IPrizesUsers } from "@/api/reports"
  */
 export const RANDOM_PRIZE_MIN_CORRECT_PERCENT = 55
 
-/** Случайный приз в `GET /report/{id}/prizes-users`: `place: 0` и `is_random: true`. */
+/** Случайный в `GET /report/{id}/prizes-users`: `place: 0` и `is_random: true`. */
 export function isRandomPrizeEntry(winner: Pick<IPrizesUsers, "place" | "is_random">): boolean {
   return winner.place === 0 && winner.is_random === true
 }
