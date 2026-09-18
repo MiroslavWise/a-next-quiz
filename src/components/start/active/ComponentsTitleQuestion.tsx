@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import type { ReactNode } from "react"
+import { useQuery } from "@tanstack/react-query"
 
 import TimerSeconds from "./TimerSeconds"
 
@@ -12,6 +12,7 @@ import { useAuth } from "@/stores/auth"
 import { useElementThemeSession } from "@/stores/element-theme-session"
 
 import { useQuestionCountdown } from "../hooks/use-question-countdown"
+import ImageThumb from "./ImageThumb"
 
 interface IProps extends Partial<IQuestion> {
   start?: unknown
@@ -86,17 +87,7 @@ function ComponentsTitleQuestion({
         )}
       >
         <div className="relative flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4">
-          {thumbUrl ? (
-            <div className="relative mx-auto aspect-video w-full max-w-[min(100%,15rem)] shrink-0 overflow-hidden rounded-lg border border-(--accent-orb)/40 bg-white/6 sm:max-w-[min(100%,22rem)] lg:max-w-[min(100%,27rem)]">
-              <Image
-                src={thumbUrl}
-                alt={titleText}
-                fill
-                sizes="(max-width: 640px) 15rem, (max-width: 1024px) 22rem, 27rem"
-                className="object-cover"
-              />
-            </div>
-          ) : null}
+          {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
           <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
             <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
               {titleText}
