@@ -222,7 +222,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                       />
                     </Suspense>
                   ) : null}
-                  {statusQuestion === "GAME" || (isQuestionEnded && !isObserverLikeLeader) ? (
+                  {collectingAnswers || (isQuestionEnded && !isObserverLikeLeader) ? (
                     <ComponentsTitleQuestion
                       {...question!}
                       start={data?.start}
@@ -233,7 +233,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                       ended={isQuestionEnded && !isObserverLikeLeader}
                       showMeta={!isObserverLikeLeader}
                     >
-                      {!isQuestionEnded ? (
+                      {!isQuestionEnded && (
                         <>
                           <DotsQuestionsSection
                             activeIndex={activeIndex + 1}
@@ -243,7 +243,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                           />
                           <QuestionBonuses bonuses={question?.bonuses} />
                         </>
-                      ) : null}
+                      )}
                     </ComponentsTitleQuestion>
                   ) : (
                     <>
@@ -281,7 +281,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                 {isQuestionEnded && !isObserverLikeLeader && (
                   <PlayerResultsSection reportId={reportId} tgId={tgId} activeIndex={activeIndex} />
                 )}
-                {!isObserverLikeLeader && statusQuestion === "GAME" && question?.id ? (
+                {!isObserverLikeLeader && collectingAnswers && question?.id ? (
                   <GameSkills reportId={reportId} tgId={tgId} activeIndex={activeIndex} questionId={question.id} />
                 ) : null}
                 {showStaffBottomFooter ? (

@@ -66,14 +66,25 @@ function ComponentsTitleQuestion({
 
   const titleText = title ?? "Ожидаем текст вопроса..."
 
-  if (ended) {
+  if (ended)
     return (
-      <div className="flex w-full flex-col items-center gap-2 text-center">
+      <div
+        className={cn(
+          "glass-start-liquid-palette relative isolate flex w-full flex-col items-center border text-center text-white shadow-none transition-all duration-300 mt-6",
+          ROUND_CLASS,
+        )}
+      >
         <p className="text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>
-        <h2 className="max-w-88 text-xl leading-snug font-semibold text-balance text-white sm:text-2xl">{titleText}</h2>
+        <div className="relative flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4">
+          {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
+          <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
+            <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
+              {titleText}
+            </p>
+          </div>
+        </div>
       </div>
     )
-  }
 
   return (
     <div className="flex w-full flex-col items-center gap-3">
