@@ -51,3 +51,5 @@ next-env.d.ts
 docs/*
 docs/
 docs
+.vercel
+.env*
