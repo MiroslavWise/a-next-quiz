@@ -17,6 +17,13 @@ jobs:
         with:
           node-version: "22.16.0"
 
+      # 👇 ДОБАВЬТЕ ЭТОТ ШАГ
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.25.0"
+          run_install: false
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
