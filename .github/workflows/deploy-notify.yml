@@ -46,7 +46,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{
               "chat_id": "${{ secrets.TELEGRAM_CHAT_ID }}",
-              "text": "✅ *Деплой успешен!*\nПроект: `${{ github.repository }}`\nURL: ${{ steps.deploy.outputs.url }}",
+              "text": "✅ *Деплой успешен!*",
               "parse_mode": "Markdown"
             }'
 
