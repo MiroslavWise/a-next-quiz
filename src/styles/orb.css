@@ -1,4 +1,4 @@
-@keyframes orb-drift {
+/* @keyframes orb-drift {
   0% {
     background-position:
       5% 15%,
@@ -90,11 +90,11 @@
       15% 90%,
       90% 80%;
   }
-}
+} */
 
 body {
   background-color: #09090b;
-  background-image:
+  /* background-image:
     radial-gradient(closest-side circle at center, color-mix(in srgb, var(--orb-bg-one) 74%, transparent), transparent 72%),
     radial-gradient(closest-side circle at center, color-mix(in srgb, var(--orb-bg-two) 74%, transparent), transparent 72%),
     radial-gradient(closest-side circle at center, color-mix(in srgb, var(--orb-bg-three) 74%, transparent), transparent 72%),
@@ -111,11 +111,11 @@ body {
     90% 28%,
     22% 92%,
     82% 86%;
-  animation: orb-drift 65s ease-in-out infinite;
+  animation: orb-drift 65s ease-in-out infinite; */
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body {
+  /* body {
     animation: none;
-  }
+  } */
 }
