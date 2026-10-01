@@ -22,18 +22,20 @@ const LeaderNextQuestionFooter = lazy(() => import("./footer/LeaderNextQuestionF
 import { ActiveChartsSkeleton, DefaultActiveSkeleton, LeaderNextQuestionFooterSkeleton, WithRankSkeleton } from "./Skeletons"
 
 import { EReportStatus } from "@/enum/report"
-import { type LastSocketEventByType } from "@/hooks/socket-event-by-type"
+import ContextInfoSkill from "./ContextInfoSkill"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import { useQuizStaffSocketIO } from "@/hooks/useQuizStaffSocketIO"
+import { type LastSocketEventByType } from "@/hooks/socket-event-by-type"
 
-import { useActiveQuestion } from "../hooks/use-active-question"
 import { useNextQuestion } from "../hooks/use-next-question"
+import { useActiveQuestion } from "../hooks/use-active-question"
 import { useShuffledAnswers } from "../hooks/use-shuffled-answers"
+import { useSkillActivations } from "../hooks/use-skill-activations"
 import { useMyPassedQuestions } from "../hooks/use-my-passed-questions"
 import { useReportParticipation } from "../hooks/use-report-participation"
 import { useActiveQuestionSync } from "../hooks/use-active-question-sync"
 import { useAnswerRound, type AnswerRound, type IUseAnswerRoundParams } from "../hooks/use-answer-round"
-import { useSkillActivations } from "../hooks/use-skill-activations"
+import ComponentInfoSkill from "./ComponentInfoSkill"
 
 interface IProps {
   reportId: string
@@ -56,7 +58,7 @@ interface ActiveQuestionRoundProps extends IUseAnswerRoundParams {
  */
 function ActiveQuestionRound({ children, ...params }: ActiveQuestionRoundProps) {
   const round = useAnswerRound(params)
-  return children(round)
+  return <>{children(round)}</>
 }
 
 /**
@@ -179,7 +181,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
     return <DefaultActiveSkeleton />
 
   return (
-    <>
+    <ContextInfoSkill reportId={reportId} tgId={tgId} activeIndex={activeIndex} questionId={question?.id}>
       <ActiveQuestionRound
         key={questionRoundKey}
         activeIndex={activeIndex}
@@ -339,10 +341,11 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
           )
         }}
       </ActiveQuestionRound>
+      <ComponentInfoSkill />
       <Suspense fallback={null}>
         <LuckyBonusFloat lastByType={lastByType} tgId={tgId} activeIndex={activeIndex} isQuestionEnded={isQuestionEnded} />
       </Suspense>
-    </>
+    </ContextInfoSkill>
   )
 }
 

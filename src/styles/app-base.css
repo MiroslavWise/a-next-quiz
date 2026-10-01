@@ -87,6 +87,92 @@ main {
   max-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 4.5rem);
 }
 
+/**
+ * /start: на весь экран, вертикальная промотка.
+ * Сверху запас под кнопки Mini App (закрыть / меню) и safe-area.
+ */
+main.start-shell {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  height: 100svh;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: #fff;
+  padding-top: 3rem;
+  padding-top: calc(constant(safe-area-inset-top) + 3rem);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 3rem);
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+}
+
+.start-shell-inner {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+/**
+ * Карточка способности: не bottom-sheet, плавает над контентом.
+ * Боковые и нижние отступы + safe-area (Android nav / home indicator).
+ * `.skill-info-card-art` — слот под фоновую картинку снизу с затемнением вверх.
+ */
+.skill-info-card {
+  position: fixed;
+  z-index: 50;
+  left: 1rem;
+  left: max(1rem, constant(safe-area-inset-left));
+  left: max(1rem, env(safe-area-inset-left, 0px));
+  right: 1rem;
+  right: max(1rem, constant(safe-area-inset-right));
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: 1rem;
+  bottom: calc(constant(safe-area-inset-bottom) + 1rem);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+  isolation: isolate;
+  overflow: hidden;
+  max-height: min(56svh, 26rem);
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--accent-orb) 36%, rgba(255, 255, 255, 0.14));
+  background:
+    linear-gradient(165deg, color-mix(in srgb, var(--accent-orb) 16%, transparent) 0%, transparent 42%),
+    color-mix(in srgb, var(--element-surface, #06141a) 38%, rgba(0, 0, 0, 0.32));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-orb) 14%, transparent),
+    0 16px 40px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(18px);
+}
+
+.skill-info-card-art {
+  pointer-events: none;
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 0;
+  height: min(58%, 14rem);
+}
+
+.skill-info-card-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--element-deep, #0e3a44) 70%, rgba(0, 0, 0, 0.72)) 0%,
+    color-mix(in srgb, var(--element-deep, #0e3a44) 22%, transparent) 52%,
+    transparent 100%
+  );
+}
+
 html,
 body {
   scrollbar-width: none; /* Firefox */

@@ -1,14 +1,14 @@
 import { type PropsWithChildren } from "react"
 
 /**
- * Оболочка /start: один scroll-container на весь экран
- * (как admin / game-mechanics). Внутренние фазы могут
- * дополнительно скроллить свои колонки (GAME / staff).
+ * Оболочка /start: полноэкранный scroll-container.
+ * Верхний отступ — кнопки Telegram Mini App и safe-area;
+ * внутренние фазы могут дополнительно скроллить свои колонки (GAME / staff).
  */
 export default function StartLayout({ children }: PropsWithChildren) {
   return (
-    <main className="relative flex h-full min-h-0 w-full flex-col items-center overflow-y-auto overscroll-contain px-0 text-white lg:px-4">
-      <section className="relative z-10 mx-auto flex h-full min-h-0 w-full flex-1 flex-col">{children}</section>
+    <main className="start-shell">
+      <section className="start-shell-inner">{children}</section>
     </main>
   )
 }

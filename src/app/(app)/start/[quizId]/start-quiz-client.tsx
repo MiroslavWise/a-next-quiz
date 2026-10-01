@@ -190,7 +190,7 @@ export default function StartQuizClient({ quizId }: { quizId: string }) {
                 // У staff место под fixed-кнопку — spacer в ActiveQuestions (`.spacer-bottom-next`).
                 !isAdminManager && "pb-4",
               )
-            : "h-full w-full"
+            : "flex min-h-full w-full flex-col"
         }
       >
         {status === EReportStatus.WAITING ? (
