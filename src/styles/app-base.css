@@ -88,28 +88,31 @@ main {
 }
 
 /**
- * /start: на весь экран, вертикальная промотка.
- * Сверху запас под кнопки Mini App (закрыть / меню) и safe-area.
+ * /start: один scroll на весь экран.
+ * Верхний спейсер — часть прокрутки: на старте даёт отступ под кнопки Mini App.
  */
 main.start-shell {
   position: relative;
-  display: flex;
+  display: block;
   width: 100%;
-  min-height: 0;
   height: 100svh;
-  flex: 1;
-  flex-direction: column;
-  align-items: stretch;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
   color: #fff;
-  padding-top: 3rem;
-  padding-top: calc(constant(safe-area-inset-top) + 3rem);
-  padding-top: calc(env(safe-area-inset-top, 0px) + 3rem);
-  padding-right: 0;
-  padding-bottom: 0;
-  padding-left: 0;
+  padding: 0;
+}
+
+.start-shell-top {
+  flex-shrink: 0;
+  width: 100%;
+  pointer-events: none;
+  height: 3.25rem;
+  height: calc(constant(safe-area-inset-top) + 3.25rem);
+  height: calc(
+    env(safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px) +
+      var(--tg-safe-area-inset-top, 0px) + 3.25rem
+  );
 }
 
 .start-shell-inner {
@@ -117,8 +120,6 @@ main.start-shell {
   z-index: 10;
   display: flex;
   width: 100%;
-  min-height: 100%;
-  flex: 1 1 auto;
   flex-direction: column;
 }
 
@@ -141,16 +142,8 @@ main.start-shell {
   bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
   isolation: isolate;
   overflow: hidden;
-  max-height: min(56svh, 26rem);
+  max-height: min(56svh, 28rem);
   border-radius: 1.25rem;
-  border: 1px solid color-mix(in srgb, var(--accent-orb) 36%, rgba(255, 255, 255, 0.14));
-  background:
-    linear-gradient(165deg, color-mix(in srgb, var(--accent-orb) 16%, transparent) 0%, transparent 42%),
-    color-mix(in srgb, var(--element-surface, #06141a) 38%, rgba(0, 0, 0, 0.32));
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent-orb) 14%, transparent),
-    0 16px 40px rgba(0, 0, 0, 0.38);
-  backdrop-filter: blur(18px);
 }
 
 .skill-info-card-art {

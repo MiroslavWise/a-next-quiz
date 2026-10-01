@@ -154,3 +154,59 @@
     opacity: 0.35;
   }
 }
+
+.glass3d {
+  --filter-glass3d: blur(3px) brightness(0.75) saturate(5);
+  --color-glass3d: color-mix(in srgb, var(--element-deep) 42%, color-mix(in srgb, var(--accent-orb) 22%, transparent));
+  --noise-glass3d: url("https://www.transparenttextures.com/patterns/egg-shell.png");
+  --shade-glass3d: color-mix(in srgb, var(--element-deep) 88%, black);
+  --shine-glass3d: color-mix(in srgb, var(--accent-orb) 35%, white);
+
+  position: relative;
+  z-index: 4;
+  box-shadow:
+    0 0 0.75px color-mix(in srgb, var(--shade-glass3d) 20%, transparent),
+    0.7px 0.8px 1.2px -0.4px color-mix(in srgb, var(--shade-glass3d) 10%, transparent),
+    1.3px 1.5px 2.2px -0.8px color-mix(in srgb, var(--shade-glass3d) 10%, transparent),
+    2.3px 2.6px 3.9px -1.2px color-mix(in srgb, var(--shade-glass3d) 10%, transparent),
+    3.9px 4.4px 6.6px -1.7px color-mix(in srgb, var(--shade-glass3d) 10%, transparent),
+    6.5px 7.2px 10.9px -2.1px color-mix(in srgb, var(--shade-glass3d) 10%, transparent),
+    8px 9px 14px -2.5px color-mix(in srgb, var(--shade-glass3d) 20%, transparent);
+}
+
+.glass3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+  background-color: var(--color-glass3d);
+  background-image: var(--noise-glass3d);
+  background-repeat: repeat;
+  background-size: 100px;
+  -webkit-backdrop-filter: var(--filter-glass3d);
+  backdrop-filter: var(--filter-glass3d);
+}
+
+.glass3d::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 2px 2px 1px -3px color-mix(in srgb, var(--shine-glass3d) 80%, transparent),
+    inset 4px 4px 2px -6px color-mix(in srgb, var(--shine-glass3d) 30%, transparent),
+    inset 1.5px 1.5px 1.5px -0.75px color-mix(in srgb, var(--shine-glass3d) 15%, transparent),
+    inset 1.5px 1.5px 0.25px color-mix(in srgb, var(--shine-glass3d) 3%, transparent),
+    inset 0 0 0.25px 0.5px color-mix(in srgb, var(--shine-glass3d) 3%, transparent);
+}
+
+.glass3d > * {
+  position: relative;
+  z-index: 6;
+}

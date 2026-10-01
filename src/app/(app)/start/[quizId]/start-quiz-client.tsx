@@ -186,11 +186,11 @@ export default function StartQuizClient({ quizId }: { quizId: string }) {
         className={
           phaseKey === "game"
             ? cn(
-                "flex h-full min-h-0 w-full flex-col overflow-y-auto",
+                "flex w-full flex-col md:h-full md:min-h-0",
                 // У staff место под fixed-кнопку — spacer в ActiveQuestions (`.spacer-bottom-next`).
                 !isAdminManager && "pb-4",
               )
-            : "flex min-h-full w-full flex-col"
+            : "flex w-full flex-col"
         }
       >
         {status === EReportStatus.WAITING ? (

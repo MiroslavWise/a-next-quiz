@@ -1,9 +1,7 @@
 import { cn } from "@/lib/utils"
 
-/** Колонка фазы квиза — те же отступы и скролл, что у GAME. */
-export const PHASE_SHELL_CLASS = cn(
-  "flex h-full min-h-0 w-full flex-col gap-3 overflow-x-hidden overflow-y-auto overscroll-contain px-4 pt-4 [-webkit-overflow-scrolling:touch]",
-)
+/** Колонка фазы квиза — поток в общем скролле /start. */
+export const PHASE_SHELL_CLASS = cn("flex w-full flex-col gap-3 overflow-x-hidden px-4")
 
 /** Нижняя панель действия — как футер GAME. */
 export const PHASE_FOOTER_CLASS = "bottom-next fixed inset-x-0 z-50 shrink-0 p-4 sm:p-5"
