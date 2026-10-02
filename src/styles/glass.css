@@ -213,5 +213,5 @@
 
 .glass3d > .skill-info-card-art {
   position: absolute;
-  z-index: 1;
+  z-index: 4;
 }

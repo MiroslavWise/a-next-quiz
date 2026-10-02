@@ -151,7 +151,29 @@ main.start-shell {
   position: absolute;
   inset: auto 0 0 0;
   z-index: 0;
-  height: min(58%, 14rem);
+  height: min(62%, 16rem);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+}
+
+.skill-info-card-art[data-skill="BOOST"] {
+  background-image: url("/skills/boost.avif");
+}
+.skill-info-card-art[data-skill="SHIELD"] {
+  background-image: url("/skills/shield.avif");
+}
+.skill-info-card-art[data-skill="THIEF"] {
+  background-image: url("/skills/thief.avif");
+}
+.skill-info-card-art[data-skill="GAMBIT"] {
+  background-image: url("/skills/gambit.avif");
+}
+.skill-info-card-art[data-skill="TIDE"] {
+  background-image: url("/skills/tide.avif");
+}
+.skill-info-card-art[data-skill="FOG"] {
+  background-image: url("/skills/fog.avif");
 }
 
 .skill-info-card-art::after {
@@ -160,9 +182,9 @@ main.start-shell {
   inset: 0;
   background: linear-gradient(
     to top,
-    color-mix(in srgb, var(--element-deep, #0e3a44) 70%, rgba(0, 0, 0, 0.72)) 0%,
-    color-mix(in srgb, var(--element-deep, #0e3a44) 22%, transparent) 52%,
-    transparent 100%
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0.28) 34%,
+    color-mix(in srgb, var(--element-deep, #06141a) 78%, black) 100%
   );
 }
 
