@@ -40,6 +40,17 @@ const GENERIC_VISUALS: Record<string, ElementEffectVisual> = {
   skill_tide: { accentColor: "#22d3ee", iconSrc: null, tone: "bonus" },
   skill_fog: { accentColor: "#f87171", iconSrc: null, tone: "penalty" },
   skill_fog_cast: { accentColor: "#94a3b8", iconSrc: null, tone: "neutral" },
+  skill_boost_resonance: { accentColor: ELEMENT_ACCENT[EUserElement.FIRE], iconSrc: "/element/fire.svg", tone: "bonus" },
+  earth_firmness: { accentColor: ELEMENT_ACCENT[EUserElement.EARTH], iconSrc: "/element/earth.svg", tone: "bonus" },
+  earth_shield_refund: { accentColor: ELEMENT_ACCENT[EUserElement.EARTH], iconSrc: "/element/earth.svg", tone: "bonus" },
+  earth_monolith: { accentColor: ELEMENT_ACCENT[EUserElement.EARTH], iconSrc: "/element/earth.svg", tone: "neutral" },
+  water_ebb: { accentColor: ELEMENT_ACCENT[EUserElement.WATER], iconSrc: "/element/water.svg", tone: "neutral" },
+  air_lucky_steal: { accentColor: ELEMENT_ACCENT[EUserElement.AIR], iconSrc: "/element/air.svg", tone: "bonus" },
+  air_lucky_stolen: { accentColor: ELEMENT_ACCENT[EUserElement.AIR], iconSrc: "/element/air.svg", tone: "penalty" },
+  avatar_phase_fire: { accentColor: ELEMENT_ACCENT[EUserElement.FIRE], iconSrc: "/element/fire.svg", tone: "bonus" },
+  avatar_phase_water: { accentColor: ELEMENT_ACCENT[EUserElement.WATER], iconSrc: "/element/water.svg", tone: "bonus" },
+  avatar_phase_earth: { accentColor: ELEMENT_ACCENT[EUserElement.EARTH], iconSrc: "/element/earth.svg", tone: "bonus" },
+  avatar_phase_air: { accentColor: ELEMENT_ACCENT[EUserElement.AIR], iconSrc: "/element/air.svg", tone: "bonus" },
 }
 
 const effectVisualById = new Map<string, ElementEffectVisual>()
@@ -81,7 +92,7 @@ function visualFromIdPrefix(id: string): ElementEffectVisual | null {
 }
 
 export function getElementEffectVisual(effect: Pick<IElementEffect, "id" | "points">): ElementEffectVisual {
-  const known = effectVisualById.get(effect.id) ?? GENERIC_VISUALS[effect.id]
+  const known = GENERIC_VISUALS[effect.id] ?? effectVisualById.get(effect.id)
   if (known) {
     return known.tone === "neutral" ? known : { ...known, tone: toneFromPoints(effect.points) }
   }

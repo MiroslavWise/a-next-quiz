@@ -181,6 +181,17 @@ export interface ISkillState {
   status: SkillStatus
   active_index?: number
   used_at_index?: number
+  /** Способность в резонансе со стихией игрока (см. docs/API.md «Резонансы»). */
+  resonance?: boolean
+}
+
+export type ElementPhase = "FIRE" | "WATER" | "EARTH" | "AIR"
+
+/** Персональные стихийные состояния на активном вопросе (`my-skills.element_state`). */
+export interface IElementState {
+  fire_burning: boolean
+  earth_monolith: boolean
+  avatar_phase: ElementPhase | null
 }
 
 export interface ISkillEffect {
@@ -196,6 +207,9 @@ export interface ISkillEffect {
     | "skill_tide"
     | "skill_fog"
     | "skill_fog_cast"
+    | "skill_boost_resonance"
+    | "earth_firmness"
+    | "earth_shield_refund"
   title: string
   points: number
   status?: string
@@ -209,6 +223,7 @@ export interface IReportMySkillsResponse {
   active_index: number
   active_skill?: SkillId
   skills: ISkillState[]
+  element_state?: IElementState
 }
 
 export interface IActivateReportSkillResponse {
@@ -216,6 +231,8 @@ export interface IActivateReportSkillResponse {
   active_index: number
   activated_at: string
   target_telegram_id?: string
+  /** FOG аватара (резонанс): обе цели тумана. */
+  target_telegram_ids?: string[]
   skill_effects?: ISkillEffect[]
   skills: ISkillState[]
 }

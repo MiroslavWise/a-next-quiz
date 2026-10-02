@@ -1,11 +1,14 @@
 import { motion } from "motion/react"
 import type { ReactNode } from "react"
 import { useQuery } from "@tanstack/react-query"
+import { Sparkles } from "lucide-react"
 
+import ElementStateChips from "./ElementStateChips"
 import TimerSeconds from "./TimerSeconds"
 
 import { getRank } from "@/api/rank"
 import { elementThemeById, resolveElementThemeId } from "@/constants/palette"
+import { QuestionBonus } from "@/enum/question-bonus"
 import type { IQuestion } from "@/interface/question"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/stores/auth"
@@ -59,10 +62,12 @@ function ComponentsTitleQuestion({
   activeIndex,
   ended = false,
   showMeta = true,
+  bonuses,
   children,
 }: IProps) {
   const thumbUrl = imageUrl ?? image_url
   const { remainingSeconds, totalSeconds } = useQuestionCountdown({ start, time })
+  const elementsBoosted = !ended && !!bonuses?.includes(QuestionBonus.ALL_ELEMENTS_BOOST)
 
   const titleText = title ?? "Ожидаем текст вопроса..."
 
@@ -72,6 +77,7 @@ function ComponentsTitleQuestion({
         <>
           {showMeta ? <RoundMeta reportId={reportId} tgId={tgId} activeIndex={activeIndex} /> : null}
           <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} />
+          {showMeta ? <ElementStateChips reportId={reportId} activeIndex={activeIndex} /> : null}
           {children}
         </>
       )}
@@ -79,8 +85,21 @@ function ComponentsTitleQuestion({
         className={cn(
           "glass-start-liquid-palette relative isolate flex w-full flex-col items-center border text-center text-white shadow-none transition-all duration-300",
           ROUND_CLASS,
+          elementsBoosted && "border-(--accent-orb)/60 shadow-[0_0_28px_color-mix(in_srgb,var(--accent-orb)_30%,transparent)]",
         )}
       >
+        {elementsBoosted ? (
+          <>
+            <span
+              className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
+              aria-hidden
+            />
+            <p className="mt-2.5 inline-flex items-center gap-1 rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/15 px-2.5 py-0.5 text-[0.65rem] font-semibold tracking-[0.12em] text-white uppercase">
+              <Sparkles className="size-3 text-(--accent-orb)" aria-hidden />
+              Стихии усилены
+            </p>
+          </>
+        ) : null}
         {ended && (
           <motion.p
             initial={{ opacity: 0, scale: 0.92, filter: "blur(4px)" }}

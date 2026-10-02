@@ -1,4 +1,5 @@
-import type { EUserElement } from "@/enum/element"
+import type { SkillId } from "@/api/reports"
+import { EUserElement } from "@/enum/element"
 
 /** Цвета акцента — из SVG в `public/element/` (см. docs/API.md, раздел «Стихии»). */
 export type GameElementEffect = {
@@ -29,16 +30,27 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     name: "Огонь",
     tagline: "Риск и скорость",
     archetype: "Атакующий, импульсивный",
-    description: "Быстрые рывки и награда первому верно ответившему. Ожог может сработать при любом исходе.",
-    uiHint: "Ответь верно первым — получи искру. При любом исходе возможны Ожог и Пепел, который гасит бонусы строки.",
+    description: "Быстрые рывки и награда первому верно ответившему. Серия разжигает Горение. Ожог может сработать при любом исходе.",
+    uiHint: "Ответь верно первым — получи искру. Серия 3+ включает Горение: очки за скорость тают быстрее, но верный ответ даёт +15%.",
     iconSrc: "/element/fire.svg",
     accentColor: "#E85D2A",
     bonuses: [
       { id: "fire_speed", title: "Жар", short: "Speed ×1.15", detail: "Speed-очки за верный ответ умножаются на 1.15." },
       { id: "fire_spark", title: "Искра", short: "+10% base", detail: "Первый верный ответ на вопросе: +10% base (ошибки до вас не мешают)." },
+      {
+        id: "fire_burning",
+        title: "Горение",
+        short: "Серия 3+ → +15%",
+        detail: "При серии 3+ speed-очки падают так, будто таймер на 20% короче, но верный ответ даёт +15% base. Пепел гасит бонус.",
+      },
     ],
     shortcomings: [
-      { id: "fire_burn", title: "Ожог", short: "17% → −13%", detail: "17% шанс −13% base и −2 к серии; GAMBIT повышает отрицательное начисление до −16%." },
+      {
+        id: "fire_burn",
+        title: "Ожог",
+        short: "17% → −13%",
+        detail: "17% шанс −13% base и −2 к серии; при ответе в первые 3 секунды только −10%. GAMBIT: −16% (быстрый ответ −12%).",
+      },
       { id: "fire_ash", title: "Пепел", short: "15% → гасит бонусы", detail: "15% шанс отключить положительные усиления строки и её END-бонусы." },
     ],
   },
@@ -48,12 +60,18 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     tagline: "Стабильность и эмпатия",
     archetype: "Гибкая, поддерживающая",
     description: "Бонус за верный ответ и очки за каждого в зале.",
-    uiHint: "Чем больше зал — тем больше эмпатия. При любом исходе возможен водоворот, который кормит других верно ответивших на END.",
+    uiHint: "Чем больше зал — тем больше эмпатия (до 60). Если зал в целом прав, твоя ошибка лишь немного сбавит серию.",
     iconSrc: "/element/water.svg",
     accentColor: "#06B6D4",
     bonuses: [
       { id: "water_flow", title: "Течение", short: "+5% к ответу", detail: "Верный ответ: +5% к очкам ответа поверх streak (35%+5%=40%)." },
-      { id: "water_empathy", title: "Эмпатия", short: "+5×N", detail: "Верный ответ: +5 очков за каждого игрока в игре." },
+      { id: "water_empathy", title: "Эмпатия", short: "+5×N (≤60)", detail: "Верный ответ: +5 очков за каждого игрока в игре, максимум 60." },
+      {
+        id: "water_ebb",
+        title: "Защитный прилив",
+        short: "Серия −1",
+        detail: "Ошибка или пропуск, когда верно ответило больше половины зала: серия уменьшается на 1 вместо сброса.",
+      },
     ],
     shortcomings: [
       { id: "water_whirlpool", title: "Водоворот", short: "16% → −18% + пул", detail: "16% шанс −18% base (GAMBIT −22.5%) и пул ×1.5 для других верных на END." },
@@ -71,6 +89,12 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     bonuses: [
       { id: "earth_streak", title: "Корни", short: "Streak 6%→45%", detail: "Серия: +6% за шаг, максимум 45%." },
       { id: "earth_patience", title: "Терпение", short: "+17% base", detail: "Верный ответ последним: +17% от base points вопроса." },
+      {
+        id: "earth_monolith",
+        title: "Монолит",
+        short: "Каждые 3 подряд",
+        detail: "Каждые 3 верных подряд дают иммунитет к Обвалу на следующем вопросе.",
+      },
     ],
     shortcomings: [
       { id: "earth_collapse", title: "Обвал", short: "17% → −15%", detail: "17% шанс −15% base и −2 к серии; GAMBIT повышает отрицательное начисление до −18%." },
@@ -87,7 +111,18 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     accentColor: "#76E3D6",
     bonuses: [
       { id: "air_lucky", title: "Везунчик", short: "Lucky 24%", detail: "При выигрыше Lucky: 24% base вместо 12%." },
-      { id: "air_gust", title: "Порыв", short: "40% → +7%", detail: "Любой исход (верный, неверный, пропуск): 40% шанс +7% base." },
+      {
+        id: "air_gust",
+        title: "Порыв",
+        short: "40% → +7%",
+        detail: "Любой исход (верный, неверный, пропуск): 40% шанс +7% base. Под GAMBIT шанс 70%; на вопросе «Обратный счёт» порывов нет.",
+      },
+      {
+        id: "air_lucky_steal",
+        title: "Попутный ветер",
+        short: "Lucky: −3% лидеру",
+        detail: "Выиграв Lucky, крадёшь 3% base у лидера рейтинга. Щит лидера блокирует кражу.",
+      },
       { id: "air_gust_double", title: "Усиленный порыв", short: "20% → +14%", detail: "Если порыв сработал: 20% шанс удвоить до +14% base." },
       { id: "air_streak", title: "Лёгкий ветер", short: "Streak 4%→42%", detail: "Серия: +4% за шаг, максимум 42%." },
     ],
@@ -113,11 +148,50 @@ export const GAME_AVATAR_CARD: GameElementCard = {
     { id: "avatar_lucky", title: "Судьба", short: "Lucky 18%", detail: "Lucky: 18% base (×1.5)." },
     { id: "avatar_presence", title: "Присутствие", short: "+7×N", detail: "В конце вопроса: +7 за каждого верно ответившего." },
     { id: "avatar_streak_cap", title: "Потолок серии", short: "Streak 6%→36%", detail: "Серия: +6% за шаг, максимум 36%." },
+    {
+      id: "avatar_phase",
+      title: "Фаза стихии",
+      short: "Каждый 3-й вопрос",
+      detail: "На каждом 3-м вопросе — главный бонус случайной стихии: Жар (speed ×1.15), Течение (+5%), Корни (серия до 45%) или Порыв (40% → +7%).",
+    },
   ],
   shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "16% шанс −25% base и −2 к серии; GAMBIT повышает отрицательное начисление до −31%." }],
 }
 
 export const GAME_AVATAR_ICON_SRC = GAME_AVATAR_CARD.iconSrc
+
+export type ResonanceElementId = EUserElement | "AVATAR"
+
+export type GameSkillResonance = {
+  element: ResonanceElementId
+  title: string
+  detail: string
+}
+
+/** Резонансы способностей со стихией игрока — см. docs/API.md «Резонансы». */
+export const GAME_SKILL_RESONANCES: Partial<Record<SkillId, GameSkillResonance>> = {
+  BOOST: { element: EUserElement.FIRE, title: "Резонанс жара", detail: "Огонь: верный ответ дополнительно получает +5% speed-очков." },
+  SHIELD: {
+    element: EUserElement.EARTH,
+    title: "Твёрдость",
+    detail: "Земля: верный ответ +10% base, а щит возвращает половину заблокированных штрафов.",
+  },
+  THIEF: {
+    element: EUserElement.AIR,
+    title: "Обходной ветер",
+    detail: "Воздух: если цель под щитом, кража уходит следующему игроку топ-3 без щита.",
+  },
+  TIDE: { element: EUserElement.WATER, title: "Полный прилив", detail: "Вода: потолок +15% снят — +1.5% за каждого верно ответившего без ограничения." },
+  FOG: { element: "AVATAR", title: "Двойной туман", detail: "Аватар: туман накрывает сразу двух игроков из топ-3." },
+}
+
+export function getResonanceAccent(element: ResonanceElementId): string {
+  return element === "AVATAR" ? GAME_AVATAR_CARD.accentColor : (GAME_ELEMENT_VISUAL_BY_ID[element]?.accentColor ?? GAME_AVATAR_CARD.accentColor)
+}
+
+export function getResonanceIconSrc(element: ResonanceElementId): string {
+  return element === "AVATAR" ? GAME_AVATAR_CARD.iconSrc : (GAME_ELEMENT_VISUAL_BY_ID[element]?.iconSrc ?? GAME_AVATAR_CARD.iconSrc)
+}
 
 export const GAME_ELEMENT_VISUAL_BY_ID = Object.fromEntries(
   GAME_ELEMENT_CARDS.map((card) => [card.id, { iconSrc: card.iconSrc, accentColor: card.accentColor, name: card.name }]),

@@ -5,7 +5,14 @@ import { Brain, Clock, Crown, Gift, ListChecks, Sparkles, Target, Trophy, Users,
 import AppPageHeaders from "@/components/common/AppPageHeaders"
 
 import { GAME_SKILLS, type GameSkillDefinition } from "@/enum/game-skill"
-import { GAME_AVATAR_CARD, GAME_ELEMENT_CARDS, type GameElementCard } from "@/lib/game-elements-catalog"
+import {
+  GAME_AVATAR_CARD,
+  GAME_ELEMENT_CARDS,
+  GAME_SKILL_RESONANCES,
+  getResonanceAccent,
+  getResonanceIconSrc,
+  type GameElementCard,
+} from "@/lib/game-elements-catalog"
 import { GameSkillIcon } from "@/lib/game-skill-icons"
 import { RANDOM_PRIZE_MIN_CORRECT_PERCENT } from "@/lib/report-prizes"
 import { cn } from "@/lib/utils"
@@ -88,6 +95,44 @@ function SkillMechanicsCard({ skill }: { skill: GameSkillDefinition }) {
         </p>
       ) : null}
     </article>
+  )
+}
+
+function ResonanceList() {
+  return (
+    <ul className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
+      {GAME_SKILLS.map((skill) => {
+        const resonance = GAME_SKILL_RESONANCES[skill.id]
+        if (!resonance) return null
+        const accent = getResonanceAccent(resonance.element)
+
+        return (
+          <li
+            key={skill.id}
+            className="flex min-w-0 items-start gap-3 rounded-xl border bg-black/20 p-3"
+            style={{ borderColor: `${accent}55` }}
+          >
+            <span className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 text-(--accent-orb)">
+              <GameSkillIcon skillId={skill.id} className="size-5" />
+              <Image
+                src={getResonanceIconSrc(resonance.element)}
+                alt=""
+                width={16}
+                height={16}
+                className="absolute -right-1 -bottom-1 size-4 rounded-full bg-black/60 object-contain p-px"
+              />
+            </span>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold" style={{ color: accent }}>
+                {resonance.title}
+                <span className="ml-1.5 text-xs font-medium text-white/50">· {skill.title}</span>
+              </p>
+              <p className="mt-0.5 text-xs leading-relaxed text-white/70">{resonance.detail}</p>
+            </div>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 
@@ -313,7 +358,7 @@ function SequentialOrderBonusTable() {
       <p className="border-t border-white/10 px-3 py-2 text-[0.68rem] leading-relaxed text-white/55">
         Пример при <strong className="font-medium text-white/75">N = 10</strong> игроков. Формула для i-го верного:{" "}
         <code className="text-[0.65rem]">−N + 2N·(i−1)/(N−1)</code> % от base. Шаг между местами —{" "}
-        <code className="text-[0.65rem]">2N/(N−1)</code> %. Только верный ответ; effect id:{" "}
+        <code className="text-[0.65rem]">2N/(N−1)</code> %. Штраф не глубже −15% base даже в большом зале. Только верный ответ; effect id:{" "}
         <code className="text-[0.65rem]">q_sequential_order_bonus</code>.
       </p>
     </div>
@@ -529,6 +574,14 @@ export default function GameMechanicsContent() {
               </div>
             </MechanicsSection>
 
+            <MechanicsSection title="Резонансы">
+              <p>
+                Если способность совпадает со стихией игрока, она получает дополнительный эффект — резонанс. На панели способностей такая
+                иконка отмечена значком стихии. Под туманом стихия гаснет, и резонанс не срабатывает.
+              </p>
+              <ResonanceList />
+            </MechanicsSection>
+
             <MechanicsSection title="Стихии и аватар игры">
               <p>
                 В лобби до старта раунда можно выбрать стихию — она даёт уникальные бонусы и недостатки к очкам. Без выбора (
@@ -565,7 +618,7 @@ export default function GameMechanicsContent() {
               <p>
                 <Brain className="mr-1.5 inline size-4 align-text-bottom text-(--orb-border-four)" aria-hidden />
                 Серия считается по завершённым вопросам: каждый верный ответ увеличивает streak, неверный ответ или пропуск сбрасывает в 0.
-                В интерфейсе отображается визуальный ранг — те же названия и цвета, что в игре:
+                Исключения — «Защита» и «Защитный прилив» воды (серия −1, если верно ответило больше половины зала). В интерфейсе отображается визуальный ранг — те же названия и цвета, что в игре:
               </p>
               <ul className="mt-3 flex flex-col gap-2">
                 <li className="rounded-xl border border-white/12 bg-white/5 px-4 py-3">

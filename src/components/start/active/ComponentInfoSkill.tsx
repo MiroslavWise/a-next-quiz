@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import Image from "next/image"
 import { Loader2, X } from "lucide-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
@@ -14,6 +15,7 @@ import { ApiRequestError } from "@/api/errors"
 import { useUserByTgId } from "@/queries/user"
 import { GameSkillIcon } from "@/lib/game-skill-icons"
 import { getGameSkillDefinition } from "@/enum/game-skill"
+import { GAME_SKILL_RESONANCES, getResonanceAccent, getResonanceIconSrc } from "@/lib/game-elements-catalog"
 import { activateReportSkill, getReportMySkills, type IReportMySkillsResponse, type SkillId } from "@/api/reports"
 
 import { useContextInfoSkill } from "./ContextInfoSkill"
@@ -116,6 +118,7 @@ function ComponentInfoSkill() {
         active_index: response.active_index,
         active_skill: response.skill_id,
         skills: response.skills,
+        element_state: current?.element_state,
       }))
       showToast(`${getGameSkillDefinition(response.skill_id).title} активировано`)
       close()
@@ -136,6 +139,8 @@ function ComponentInfoSkill() {
   const selectedPvpBlocked = !isStaff && selectedIsPvp && playerIsTopThree
   const selectedPvpRankPending = !isStaff && selectedIsPvp && rankQuery.isPending
   const activationPending = activation.isPending
+  const resonance = !isStaff && selectedState?.resonance ? GAME_SKILL_RESONANCES[definition.id] : undefined
+  const resonanceAccent = resonance ? getResonanceAccent(resonance.element) : ""
 
   return (
     <>
@@ -174,6 +179,26 @@ function ComponentInfoSkill() {
             <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs leading-relaxed text-white/70">
               {definition.condition}
             </p>
+          ) : null}
+          {resonance ? (
+            <div
+              className="flex items-start gap-2.5 rounded-lg border px-3 py-2"
+              style={{ borderColor: `${resonanceAccent}66`, backgroundColor: `${resonanceAccent}14` }}
+            >
+              <Image
+                src={getResonanceIconSrc(resonance.element)}
+                alt=""
+                width={20}
+                height={20}
+                className="mt-0.5 size-5 shrink-0 object-contain"
+              />
+              <p className="text-xs leading-relaxed text-white/80">
+                <span className="font-semibold" style={{ color: resonanceAccent }}>
+                  Резонанс · {resonance.title}.
+                </span>{" "}
+                {resonance.detail}
+              </p>
+            </div>
           ) : null}
           {selectedPvpBlocked ? (
             <p className="rounded-lg border border-amber-300/30 bg-amber-500/10 px-3 py-2 text-xs leading-relaxed text-amber-100">

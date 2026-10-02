@@ -10,6 +10,8 @@ export interface IQuestion {
   time: number
   /** Бонусы вопроса (`GET /questions`, `active-index`, Socket.IO `data.question.bonuses`). Ключа нет, если бонусов нет. */
   bonuses?: QuestionBonus[] | null
+  /** Фаза стихии аватара на каждом 3-м вопросе (active-index, Socket.IO `data.question.avatar_phase`). */
+  avatar_phase?: "FIRE" | "WATER" | "EARTH" | "AIR" | null
   /** Публичный URL картинки вопроса (`GET /questions`, `GET /questions/{id}`) */
   imageUrl?: string | null
   image_url?: string | null

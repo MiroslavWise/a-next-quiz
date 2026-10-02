@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useIsMutating, useQuery } from "@tanstack/react-query"
 import { Lock, RotateCw } from "lucide-react"
 
@@ -7,6 +8,7 @@ import { getRank } from "@/api/rank"
 import { getReportMySkills, type SkillStatus } from "@/api/reports"
 import Button from "@/components/ui/button"
 import { GAME_SKILLS } from "@/enum/game-skill"
+import { GAME_SKILL_RESONANCES, getResonanceAccent, getResonanceIconSrc } from "@/lib/game-elements-catalog"
 import { cn } from "@/lib/utils"
 
 import { useContextInfoSkill } from "./ContextInfoSkill"
@@ -71,13 +73,15 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
             const isSelected = selectedSkillId === definition.id
             const statusText = isPvpBlocked ? "Недоступна: вы в топ-3" : skillStatusLabel[status]
             const lit = isActive || isSelected
+            const resonance = state?.resonance ? GAME_SKILL_RESONANCES[definition.id] : undefined
+            const resonanceText = resonance ? `. Резонанс: ${resonance.title}` : ""
 
             return (
               <SkillIconButton
                 key={definition.id}
                 skillId={definition.id}
-                label={`${definition.title}. ${statusText}`}
-                title={`${definition.title}: ${statusText}`}
+                label={`${definition.title}. ${statusText}${resonanceText}`}
+                title={`${definition.title}: ${statusText}${resonanceText}`}
                 pressed={lit}
                 disabled={activationPending}
                 lit={lit}
@@ -94,6 +98,15 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                 ) : null}
                 {isActive ? (
                   <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full border-2 border-background bg-(--accent-orb)" />
+                ) : null}
+                {resonance && !isUsed ? (
+                  <span
+                    className="bg-background absolute -bottom-1 -left-1 flex size-4 items-center justify-center rounded-full border"
+                    style={{ borderColor: getResonanceAccent(resonance.element) }}
+                    aria-hidden
+                  >
+                    <Image src={getResonanceIconSrc(resonance.element)} alt="" width={10} height={10} className="size-2.5 object-contain" />
+                  </span>
                 ) : null}
               </SkillIconButton>
             )
