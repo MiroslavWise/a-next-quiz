@@ -64,6 +64,7 @@ function DotsQuestions({ activeIndex, totalQuestions, myPassedQuestions, showRes
     <span
       className={cn(
         "font-mono leading-none font-semibold tabular-nums",
+        "shrink-0",
         anchored ? "text-[0.625rem] text-white/85" : "text-[0.65rem] text-white/55",
       )}
     >
@@ -79,11 +80,11 @@ function DotsQuestions({ activeIndex, totalQuestions, myPassedQuestions, showRes
       >
         <div
           className={cn(
-            "flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border px-2 py-1 shadow-lg shadow-black/20 backdrop-blur-md",
+            "flex max-w-full flex-row flex-nowrap items-center justify-center gap-1.5 rounded-full border px-2 py-1 shadow-lg shadow-black/20 backdrop-blur-md",
             isGameAvatar ? "border-white/30 bg-white/18" : "border-white/15 bg-(--accent-orb)/90",
           )}
         >
-          <span className="relative flex flex-wrap items-center justify-center gap-1" aria-hidden>
+          <span className="relative flex min-w-0 flex-row flex-nowrap items-center justify-center gap-1 overflow-x-auto" aria-hidden>
             {dots}
           </span>
           {counter}
@@ -93,8 +94,8 @@ function DotsQuestions({ activeIndex, totalQuestions, myPassedQuestions, showRes
   }
 
   return (
-    <div className="flex w-full flex-col items-center gap-1.5" aria-label={`Вопрос ${currentQuestion} из ${safeTotalQuestions}`}>
-      <span className="relative flex flex-wrap items-center justify-center gap-1.5" aria-hidden>
+    <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-1.5" aria-label={`Вопрос ${currentQuestion} из ${safeTotalQuestions}`}>
+      <span className="relative flex min-w-0 flex-row flex-nowrap items-center justify-center gap-1.5 overflow-x-auto" aria-hidden>
         {dots}
       </span>
       {counter}

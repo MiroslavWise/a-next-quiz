@@ -240,41 +240,28 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                       />
                     </Suspense>
                   ) : null}
-                  {collectingAnswers || (isQuestionEnded && !isObserverLikeLeader) ? (
-                    <ComponentsTitleQuestion
-                      {...question!}
-                      start={data?.start}
-                      time={question?.time ?? 0}
-                      reportId={reportId}
-                      tgId={tgId}
-                      activeIndex={activeIndex}
-                      ended={isQuestionEnded && !isObserverLikeLeader}
-                      showMeta={!isObserverLikeLeader}
-                      dots={
-                        !isQuestionEnded ? (
-                          <DotsQuestionsSection
-                            anchored
-                            activeIndex={activeIndex + 1}
-                            showResults={!isObserverLikeLeader}
-                            myPassedQuestions={myPassedQuestions}
-                            totalQuestions={questions?.length ?? 0}
-                          />
-                        ) : null
-                      }
-                    >
-                      {!isQuestionEnded ? <QuestionBonuses bonuses={question?.bonuses} /> : null}
-                    </ComponentsTitleQuestion>
-                  ) : (
-                    <>
+                  <ComponentsTitleQuestion
+                    key={questionRoundKey}
+                    {...question!}
+                    start={data?.start}
+                    time={question?.time ?? 0}
+                    reportId={reportId}
+                    tgId={tgId}
+                    activeIndex={activeIndex}
+                    ended={isQuestionEnded && !isObserverLikeLeader}
+                    showMeta={!isObserverLikeLeader}
+                    dots={
                       <DotsQuestionsSection
+                        anchored
                         activeIndex={activeIndex + 1}
                         showResults={!isObserverLikeLeader}
                         myPassedQuestions={myPassedQuestions}
                         totalQuestions={questions?.length ?? 0}
                       />
-                      <QuestionBonuses bonuses={question?.bonuses} />
-                    </>
-                  )}
+                    }
+                  >
+                    <QuestionBonuses bonuses={question?.bonuses} />
+                  </ComponentsTitleQuestion>
                 </div>
                 {isObserverLikeLeader && ["GAME", "END"].includes(statusQuestion!) ? (
                   <StaffGameSkills bySkillId={bySkillId} isQuestionEnded={isQuestionEnded} />
