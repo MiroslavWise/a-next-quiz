@@ -7,7 +7,7 @@ import { GAME_SKILLS, type GameSkillDefinition } from "@/enum/game-skill"
 import { cn } from "@/lib/utils"
 
 import { useContextInfoSkill } from "./ContextInfoSkill"
-import { SkillDock, SkillIconButton, SkillPalette, useCloseSkillInfoOnUnmount, type SkillMark } from "./SkillIconButton"
+import { SkillIconButton, SkillPalette, useCloseSkillInfoOnUnmount } from "./SkillIconButton"
 import waveSt from "../styles/timer-waves.module.scss"
 
 interface StaffGameSkillsProps {
@@ -66,30 +66,25 @@ function StaffGameSkills({ bySkillId, isQuestionEnded = false }: StaffGameSkills
 
   useCloseSkillInfoOnUnmount()
 
-  const marks = GAME_SKILLS.reduce<Partial<Record<(typeof GAME_SKILLS)[number]["id"], SkillMark>>>((result, definition) => {
-    const count = (bySkillId.get(definition.id) ?? []).length
-    if (count > 0 || value === definition.id) result[definition.id] = "lit"
-    return result
-  }, {})
-
   return (
     <section
-      className={cn("relative z-10 flex min-h-10 items-center justify-start overflow-visible", isQuestionEnded ? "my-2" : "my-1")}
+      className={cn(
+        "relative z-10 flex min-h-10 items-center justify-center overflow-visible",
+        isQuestionEnded ? "my-3 py-4" : "py-3",
+      )}
       aria-label="Способности участников"
     >
-      <SkillDock label="Способности участников" marks={marks}>
-        <SkillPalette>
-          {GAME_SKILLS.map((definition) => (
-            <StaffSkillButton
-              key={definition.id}
-              definition={definition}
-              count={(bySkillId.get(definition.id) ?? []).length}
-              selected={value === definition.id}
-              onSelect={open}
-            />
-          ))}
-        </SkillPalette>
-      </SkillDock>
+      <SkillPalette>
+        {GAME_SKILLS.map((definition) => (
+          <StaffSkillButton
+            key={definition.id}
+            definition={definition}
+            count={(bySkillId.get(definition.id) ?? []).length}
+            selected={value === definition.id}
+            onSelect={open}
+          />
+        ))}
+      </SkillPalette>
     </section>
   )
 }

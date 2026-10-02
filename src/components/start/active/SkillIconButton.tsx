@@ -1,16 +1,13 @@
 "use client"
 
-import { useEffect, useId, useState, type ReactNode } from "react"
+import { useEffect, type ReactNode } from "react"
 
-import type { SkillId } from "@/api/reports"
 import Button from "@/components/ui/button"
-import { GAME_SKILLS } from "@/enum/game-skill"
 import { GameSkillIcon } from "@/lib/game-skill-icons"
+
 import { cn } from "@/lib/utils"
-
+import type { SkillId } from "@/api/reports"
 import { useContextInfoSkill } from "./ContextInfoSkill"
-
-export type SkillMark = "lit" | "muted"
 
 const skillIconButtonClass = cn(
   "relative z-10 size-9 rounded-full border-white/15 bg-black/25 text-white/80",
@@ -22,75 +19,13 @@ const skillIconButtonLitClass =
 
 export function useCloseSkillInfoOnUnmount() {
   const { close } = useContextInfoSkill()
-  useEffect(() => () => close(), [close])
+  useEffect(() => () => close(), [])
 }
 
 export function SkillPalette({ children }: { children: ReactNode }) {
   return (
-    <div className="glass-start-liquid-palette relative flex flex-wrap items-center justify-start gap-1.5 overflow-visible rounded-full border border-white/12 p-1.5 shadow-none">
+    <div className="glass-start-liquid-palette relative flex flex-wrap items-center justify-center gap-1.5 overflow-visible rounded-full border border-white/12 p-1.5 shadow-none">
       {children}
-    </div>
-  )
-}
-
-export function SkillDock({
-  label,
-  marks,
-  disabled,
-  children,
-}: {
-  label: string
-  marks?: Partial<Record<SkillId, SkillMark>>
-  disabled?: boolean
-  children: ReactNode
-}) {
-  const panelId = useId()
-  const { close, activeIndex, questionId } = useContextInfoSkill()
-  const [expanded, setExpanded] = useState(false)
-  const lit = GAME_SKILLS.some((skill) => marks?.[skill.id] === "lit")
-
-  useEffect(() => {
-    setExpanded(false)
-  }, [activeIndex, questionId])
-
-  function toggle() {
-    if (disabled) return
-    setExpanded((current) => {
-      if (current) close()
-      return !current
-    })
-  }
-
-  return (
-    <div className="skill-dock">
-      <div className={cn("skill-hex-wrap", lit && "is-lit")}>
-        <button
-          type="button"
-          className={cn("skill-hex glass3d", disabled && "animate-pulse")}
-          aria-expanded={expanded}
-          aria-controls={panelId}
-          aria-label={expanded ? "Свернуть способности" : label}
-          disabled={disabled}
-          onClick={toggle}
-        >
-          <span className="skill-hex-icons" aria-hidden>
-            {GAME_SKILLS.map((skill) => (
-              <GameSkillIcon
-                key={skill.id}
-                skillId={skill.id}
-                className={cn(
-                  "size-3",
-                  marks?.[skill.id] === "muted" && "opacity-35 grayscale",
-                  marks?.[skill.id] === "lit" && "text-white drop-shadow-[0_0_6px_var(--accent-orb)]",
-                )}
-              />
-            ))}
-          </span>
-        </button>
-      </div>
-      <div id={panelId} className="skill-dock-panel" data-open={expanded} inert={!expanded}>
-        <div className="skill-dock-panel-inner">{children}</div>
-      </div>
     </div>
   )
 }
