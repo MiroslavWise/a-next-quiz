@@ -181,7 +181,14 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
     return <DefaultActiveSkeleton />
 
   return (
-    <ContextInfoSkill reportId={reportId} tgId={tgId} activeIndex={activeIndex} questionId={question?.id}>
+    <ContextInfoSkill
+      reportId={reportId}
+      tgId={tgId}
+      activeIndex={activeIndex}
+      questionId={question?.id}
+      audience={isObserverLikeLeader ? "staff" : "player"}
+      bySkillId={bySkillId}
+    >
       <ActiveQuestionRound
         key={questionRoundKey}
         activeIndex={activeIndex}
@@ -200,12 +207,12 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
           const showStaffBottomFooter = isLeader || (isObserver && collectingAnswers)
 
           return (
-            <div className={isObserverLikeLeader ? "flex h-full min-h-0 w-full md:overflow-hidden" : "flex w-full"}>
+            <div className={isObserverLikeLeader ? "flex w-full flex-col md:flex-row md:items-start" : "flex w-full"}>
               <div
                 className={
                   isObserverLikeLeader
-                    ? "relative flex h-full min-h-0 w-full min-w-0 flex-col gap-3 overflow-y-auto overscroll-contain px-4 pt-4 [-webkit-overflow-scrolling:touch] md:w-2/3 md:pr-2 md:pt-0"
-                    : "relative flex h-full w-full flex-col gap-3 px-4 pt-4"
+                    ? "relative flex w-full min-w-0 flex-col gap-3 px-4 md:w-2/3 md:pr-2"
+                    : "relative flex w-full flex-col gap-3 px-4"
                 }
               >
                 <div className="relative flex w-full flex-col items-center gap-3">
@@ -260,7 +267,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                   )}
                 </div>
                 {isObserverLikeLeader && ["GAME", "END"].includes(statusQuestion!) ? (
-                  <StaffGameSkills bySkillId={bySkillId} tgId={tgId} isQuestionEnded={isQuestionEnded} />
+                  <StaffGameSkills bySkillId={bySkillId} isQuestionEnded={isQuestionEnded} />
                 ) : null}
                 <ComponentsQuestionAnswers
                   tgId={tgId}

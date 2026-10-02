@@ -210,3 +210,8 @@
   position: relative;
   z-index: 6;
 }
+
+.glass3d > .skill-info-card-art {
+  position: absolute;
+  z-index: 1;
+}

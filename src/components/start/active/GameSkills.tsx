@@ -2,16 +2,15 @@
 
 import { useIsMutating, useQuery } from "@tanstack/react-query"
 import { Lock, RotateCw } from "lucide-react"
-import { useEffect } from "react"
 
 import { getRank } from "@/api/rank"
 import { getReportMySkills, type SkillStatus } from "@/api/reports"
 import Button from "@/components/ui/button"
 import { GAME_SKILLS } from "@/enum/game-skill"
 import { cn } from "@/lib/utils"
-import { GameSkillIcon } from "@/lib/game-skill-icons"
 
 import { useContextInfoSkill } from "./ContextInfoSkill"
+import { SkillIconButton, SkillPalette, useCloseSkillInfoOnUnmount } from "./SkillIconButton"
 
 interface GameSkillsProps {
   reportId: string
@@ -27,11 +26,11 @@ const skillStatusLabel: Record<SkillStatus, string> = {
 }
 
 function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps) {
-  const { open, close, value: selectedSkillId } = useContextInfoSkill()
+  const { open, value: selectedSkillId } = useContextInfoSkill()
   const queryKey = ["my-skills", reportId, activeIndex] as const
   const activationPending = useIsMutating({ mutationKey: ["activate-report-skill", reportId, questionId] }) > 0
 
-  useEffect(() => () => close(), [close])
+  useCloseSkillInfoOnUnmount()
 
   const skillsQuery = useQuery({
     queryKey,
@@ -62,7 +61,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
           Повторить загрузку способностей
         </Button>
       ) : (
-        <div className="glass-start-liquid-palette flex flex-wrap items-center justify-center gap-1.5 rounded-full border border-white/12 p-1.5 shadow-none">
+        <SkillPalette>
           {GAME_SKILLS.map((definition) => {
             const state = skillsQuery.data?.skills.find((skill) => skill.id === definition.id)
             const status = state?.status ?? "available"
@@ -71,28 +70,23 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
             const isPvpBlocked = !!definition.pvp && playerIsTopThree
             const isSelected = selectedSkillId === definition.id
             const statusText = isPvpBlocked ? "Недоступна: вы в топ-3" : skillStatusLabel[status]
+            const lit = isActive || isSelected
 
             return (
-              <Button
+              <SkillIconButton
                 key={definition.id}
-                type="button"
-                variant="outline"
-                size="icon-lg"
-                aria-label={`${definition.title}. ${statusText}`}
-                aria-pressed={isActive || isSelected}
+                skillId={definition.id}
+                label={`${definition.title}. ${statusText}`}
                 title={`${definition.title}: ${statusText}`}
-                onClick={() => open(definition.id)}
+                pressed={lit}
                 disabled={activationPending}
+                lit={lit}
+                onSelect={open}
                 className={cn(
-                  "relative rounded-full border-white/15 bg-black/25 text-white/80",
-                  "hover:border-(--accent-orb)/55 hover:bg-(--accent-orb)/15 hover:text-white",
-                  (isActive || isSelected) &&
-                    "border-(--accent-orb) bg-(--accent-orb)/25 text-white shadow-[0_0_22px_color-mix(in_srgb,var(--accent-orb)_55%,transparent)] ring-2 ring-(--accent-orb)/45",
                   isUsed && "border-white/8 bg-white/4 text-white/35 grayscale",
                   isPvpBlocked && "border-white/8 bg-white/4 text-white/30 grayscale",
                 )}
               >
-                <GameSkillIcon skillId={definition.id} className="size-4.5" />
                 {isPvpBlocked ? (
                   <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full border border-white/15 bg-background text-white/60">
                     <Lock className="size-2.5" aria-hidden />
@@ -101,10 +95,10 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                 {isActive ? (
                   <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full border-2 border-background bg-(--accent-orb)" />
                 ) : null}
-              </Button>
+              </SkillIconButton>
             )
           })}
-        </div>
+        </SkillPalette>
       )}
     </section>
   )

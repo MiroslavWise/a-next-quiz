@@ -107,11 +107,11 @@ main.start-shell {
   flex-shrink: 0;
   width: 100%;
   pointer-events: none;
-  height: 3.25rem;
-  height: calc(constant(safe-area-inset-top) + 3.25rem);
+  height: 4.5rem;
+  height: calc(constant(safe-area-inset-top) + 4.5rem);
   height: calc(
     env(safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px) +
-      var(--tg-safe-area-inset-top, 0px) + 3.25rem
+      var(--tg-safe-area-inset-top, 0px) + 4.5rem
   );
 }
 
