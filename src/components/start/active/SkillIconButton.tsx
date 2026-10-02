@@ -73,7 +73,7 @@ export function SkillDock({
           disabled={disabled}
           onClick={toggle}
         >
-          <span className="skill-hex-icons">
+          <span className="skill-hex-icons" aria-hidden>
             {GAME_SKILLS.map((skill) => (
               <GameSkillIcon
                 key={skill.id}
@@ -88,7 +88,7 @@ export function SkillDock({
           </span>
         </button>
       </div>
-      <div id={panelId} className="skill-dock-panel" data-open={expanded} hidden={!expanded && undefined}>
+      <div id={panelId} className="skill-dock-panel" data-open={expanded} inert={!expanded}>
         <div className="skill-dock-panel-inner">{children}</div>
       </div>
     </div>

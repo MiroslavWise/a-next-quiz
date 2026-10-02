@@ -10,7 +10,7 @@ import { GAME_SKILLS } from "@/enum/game-skill"
 import { cn } from "@/lib/utils"
 
 import { useContextInfoSkill } from "./ContextInfoSkill"
-import { SkillIconButton, SkillPalette, useCloseSkillInfoOnUnmount } from "./SkillIconButton"
+import { SkillDock, SkillIconButton, SkillPalette, useCloseSkillInfoOnUnmount, type SkillMark } from "./SkillIconButton"
 
 interface GameSkillsProps {
   reportId: string
@@ -46,23 +46,25 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
   })
 
   const playerIsTopThree = typeof rankQuery.data?.rank === "number" && rankQuery.data.rank >= 1 && rankQuery.data.rank <= 3
+  const marks = GAME_SKILLS.reduce<Partial<Record<(typeof GAME_SKILLS)[number]["id"], SkillMark>>>((result, definition) => {
+    const state = skillsQuery.data?.skills.find((skill) => skill.id === definition.id)
+    const status = state?.status ?? "available"
+    if (status === "used" || (!!definition.pvp && playerIsTopThree)) result[definition.id] = "muted"
+    else if (status === "active" || selectedSkillId === definition.id) result[definition.id] = "lit"
+    return result
+  }, {})
 
   return (
-    <section className="flex min-h-10 items-center justify-center" aria-label="Одноразовые способности">
-      {skillsQuery.isPending ? (
-        <div className="flex flex-wrap items-center justify-center gap-2" aria-label="Загрузка способностей">
-          {GAME_SKILLS.map((skill) => (
-            <span key={skill.id} className="size-9 animate-pulse rounded-full border border-white/10 bg-white/5" aria-hidden />
-          ))}
-        </div>
-      ) : skillsQuery.isError ? (
-        <Button type="button" variant="outline" size="sm" onClick={() => void skillsQuery.refetch()} disabled={skillsQuery.isFetching}>
-          <RotateCw className={cn("size-3.5", skillsQuery.isFetching && "animate-spin")} aria-hidden />
-          Повторить загрузку способностей
-        </Button>
-      ) : (
-        <SkillPalette>
-          {GAME_SKILLS.map((definition) => {
+    <section className="flex min-h-10 items-center justify-start" aria-label="Одноразовые способности">
+      <SkillDock label="Одноразовые способности" marks={marks} disabled={skillsQuery.isPending}>
+        {skillsQuery.isError ? (
+          <Button type="button" variant="outline" size="sm" onClick={() => void skillsQuery.refetch()} disabled={skillsQuery.isFetching}>
+            <RotateCw className={cn("size-3.5", skillsQuery.isFetching && "animate-spin")} aria-hidden />
+            Повторить загрузку способностей
+          </Button>
+        ) : (
+          <SkillPalette>
+            {GAME_SKILLS.map((definition) => {
             const state = skillsQuery.data?.skills.find((skill) => skill.id === definition.id)
             const status = state?.status ?? "available"
             const isActive = status === "active"
@@ -97,9 +99,10 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                 ) : null}
               </SkillIconButton>
             )
-          })}
-        </SkillPalette>
-      )}
+            })}
+          </SkillPalette>
+        )}
+      </SkillDock>
     </section>
   )
 }
