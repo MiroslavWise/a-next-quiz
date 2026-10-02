@@ -216,11 +216,17 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
           const showStaffBottomFooter = isLeader || (isObserver && collectingAnswers)
 
           return (
-            <div className={isObserverLikeLeader ? "flex w-full flex-col md:flex-row md:items-start" : "flex w-full"}>
+            <div
+              className={
+                isObserverLikeLeader
+                  ? "start-split-scroll flex w-full min-h-0 flex-1 flex-col md:flex-row md:items-stretch md:overflow-hidden"
+                  : "flex w-full"
+              }
+            >
               <div
                 className={
                   isObserverLikeLeader
-                    ? "relative flex w-full min-w-0 flex-col gap-3 px-4 md:w-2/3 md:pr-2"
+                    ? "relative flex w-full min-w-0 flex-col gap-3 px-4 md:h-full md:w-2/3 md:min-h-0 md:overflow-y-auto md:overscroll-contain md:pr-2"
                     : "relative flex w-full flex-col gap-3 px-4"
                 }
               >

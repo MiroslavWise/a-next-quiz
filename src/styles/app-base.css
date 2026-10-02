@@ -124,6 +124,27 @@ main.start-shell {
 }
 
 /**
+ * Планшет/ПК, вид ведущего: вопрос и таблица скроллятся отдельно.
+ * Высота ряда — остаток экрана под верхним спейсером, страница сама не крутится.
+ */
+@media (min-width: 768px) {
+  main.start-shell:has(.start-split-scroll) {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  main.start-shell:has(.start-split-scroll) .start-shell-inner,
+  main.start-shell:has(.start-split-scroll) .start-shell-inner > * {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}
+
+/**
  * Карточка способности: не bottom-sheet, плавает над контентом.
  * Боковые и нижние отступы + safe-area (Android nav / home indicator).
  * `.skill-info-card-art` — слот под фоновую картинку снизу с затемнением вверх.
