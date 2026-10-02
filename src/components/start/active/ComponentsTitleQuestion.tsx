@@ -24,6 +24,8 @@ interface IProps extends Partial<IQuestion> {
   activeIndex?: number
   ended?: boolean
   showMeta?: boolean
+  /** Индикатор вопросов: садится на центр верхнего бордера карточки. */
+  dots?: ReactNode
   children?: ReactNode
 }
 
@@ -63,6 +65,7 @@ function ComponentsTitleQuestion({
   ended = false,
   showMeta = true,
   bonuses,
+  dots,
   children,
 }: IProps) {
   const thumbUrl = imageUrl ?? image_url
@@ -83,39 +86,42 @@ function ComponentsTitleQuestion({
       )}
       <div
         className={cn(
-          "glass-start-liquid-palette relative isolate flex w-full flex-col items-center border text-center text-white shadow-none transition-all duration-300",
+          "glass-start-liquid-palette relative isolate flex w-full flex-col items-center overflow-visible border text-center text-white shadow-none transition-all duration-300",
           ROUND_CLASS,
           elementsBoosted && "border-(--accent-orb)/60 shadow-[0_0_28px_color-mix(in_srgb,var(--accent-orb)_30%,transparent)]",
         )}
       >
+        {dots}
         {elementsBoosted ? (
-          <>
-            <span
-              className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
-              aria-hidden
-            />
+          <span
+            className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
+            aria-hidden
+          />
+        ) : null}
+        <div className={cn("flex w-full flex-col items-center", dots && "pt-2.5")}>
+          {elementsBoosted ? (
             <p className="mt-2.5 inline-flex items-center gap-1 rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/15 px-2.5 py-0.5 text-[0.65rem] font-semibold tracking-[0.12em] text-white uppercase">
               <Sparkles className="size-3 text-(--accent-orb)" aria-hidden />
               Стихии усилены
             </p>
-          </>
-        ) : null}
-        {ended && (
-          <motion.p
-            initial={{ opacity: 0, scale: 0.92, filter: "blur(4px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[0.7rem] font-medium tracking-[0.16em] text-white/40"
-          >
-            Вопрос завершён
-          </motion.p>
-        )}
-        <div className="relative flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4">
-          {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
-          <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
-            <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
-              {titleText}
-            </p>
+          ) : null}
+          {ended && (
+            <motion.p
+              initial={{ opacity: 0, scale: 0.92, filter: "blur(4px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[0.7rem] font-medium tracking-[0.16em] text-white/40"
+            >
+              Вопрос завершён
+            </motion.p>
+          )}
+          <div className="relative flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4">
+            {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
+            <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
+              <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
+                {titleText}
+              </p>
+            </div>
           </div>
         </div>
       </div>

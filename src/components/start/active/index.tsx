@@ -121,13 +121,22 @@ function DotsQuestionsSection(props: IDotsQuestionsProps) {
   return (
     <Suspense
       fallback={
-        <div className="flex w-full flex-col items-center gap-1.5" aria-hidden>
-          <div className="flex items-center justify-center gap-1.5">
-            {Array.from({ length: props.totalQuestions }).map((_, index) => (
-              <Skeleton key={index + "dots-questions-item" + "-skeleton"} className="size-2 rounded-full" />
-            ))}
+        props.anchored ? (
+          <div
+            className="absolute top-0 left-1/2 z-20 h-6 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background/95 p-0.5"
+            aria-hidden
+          >
+            <Skeleton className="size-full rounded-full" />
           </div>
-        </div>
+        ) : (
+          <div className="flex w-full flex-col items-center gap-1.5" aria-hidden>
+            <div className="flex items-center justify-center gap-1.5">
+              {Array.from({ length: props.totalQuestions }).map((_, index) => (
+                <Skeleton key={index + "dots-questions-item" + "-skeleton"} className="size-2 rounded-full" />
+              ))}
+            </div>
+          </div>
+        )
       }
     >
       <DotsQuestions {...props} />
@@ -241,18 +250,19 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                       activeIndex={activeIndex}
                       ended={isQuestionEnded && !isObserverLikeLeader}
                       showMeta={!isObserverLikeLeader}
-                    >
-                      {!isQuestionEnded && (
-                        <>
+                      dots={
+                        !isQuestionEnded ? (
                           <DotsQuestionsSection
+                            anchored
                             activeIndex={activeIndex + 1}
                             showResults={!isObserverLikeLeader}
                             myPassedQuestions={myPassedQuestions}
                             totalQuestions={questions?.length ?? 0}
                           />
-                          <QuestionBonuses bonuses={question?.bonuses} />
-                        </>
-                      )}
+                        ) : null
+                      }
+                    >
+                      {!isQuestionEnded ? <QuestionBonuses bonuses={question?.bonuses} /> : null}
                     </ComponentsTitleQuestion>
                   ) : (
                     <>
