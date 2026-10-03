@@ -1,4 +1,5 @@
 import type { IAnswer } from "./answer"
+import type { EUserElement } from "@/enum/element"
 import type { QuestionBonus } from "@/enum/question-bonus"
 
 export interface IQuestion {
@@ -10,6 +11,8 @@ export interface IQuestion {
   time: number
   /** Бонусы вопроса (`GET /questions`, `active-index`, Socket.IO `data.question.bonuses`). Ключа нет, если бонусов нет. */
   bonuses?: QuestionBonus[] | null
+  /** Метка стихии вопроса. `null` или ключ отсутствует — бонуса нет. Аватара в значении нет. */
+  element?: EUserElement | null
   /** Фаза стихии аватара на каждом 3-м вопросе (active-index, Socket.IO `data.question.avatar_phase`). */
   avatar_phase?: "FIRE" | "WATER" | "EARTH" | "AIR" | null
   /** Публичный URL картинки вопроса (`GET /questions`, `GET /questions/{id}`) */

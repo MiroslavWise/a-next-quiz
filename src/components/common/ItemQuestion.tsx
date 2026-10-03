@@ -15,6 +15,7 @@ import { getTimeStringS } from "@/enum/time"
 import { getPointsStringS } from "@/enum/points"
 import type { IQuestion } from "@/interface/question"
 import { getQuestionBonusLabel, isNegativeQuestionBonus, normalizeQuestionBonuses } from "@/enum/question-bonus"
+import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
 
 interface IProps extends IQuestion {
@@ -25,7 +26,7 @@ interface IProps extends IQuestion {
 
 function ItemQuestion(props: IProps) {
   const { quizId, index, tgId, ...question } = props ?? {}
-  const { id, title, time, points, bonuses, imageUrl, image_url } = question ?? {}
+  const { id, title, time, points, bonuses, element, imageUrl, image_url } = question ?? {}
   const thumbUrl = imageUrl ?? image_url
   const questionBonuses = normalizeQuestionBonuses(bonuses)
   const [isDragging, setIsDragging] = useState(false)
@@ -73,8 +74,9 @@ function ItemQuestion(props: IProps) {
                 {title}
               </Link>
             </ItemTitle>
-            {questionBonuses.length > 0 ? (
-              <div className="mt-1.5 flex flex-wrap gap-1">
+            {element || questionBonuses.length > 0 ? (
+              <div className="mt-1.5 flex flex-wrap items-center gap-1">
+                <QuestionElementMark element={element} variant="badge" className="text-foreground" />
                 {questionBonuses.map((bonus) => {
                   const negative = isNegativeQuestionBonus(bonus)
 

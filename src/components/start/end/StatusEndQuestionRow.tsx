@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import type { IReportQuestionScore } from "@/api/reports"
 import { ElementEffectsList } from "@/components/elements/ElementEffectsList"
+import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 import { isNegativeQuizPoints } from "@/lib/quiz-points"
 import { reportQuestionScoreLabel, reportQuestionScoreVariant } from "@/lib/quiz-question-score"
@@ -19,7 +20,8 @@ function StatusEndQuestionRow({ q }: { q: IReportQuestionScore }) {
       )}
     >
       <div className="flex flex-row items-center justify-between gap-3">
-        <span className="min-w-0 flex-1 overflow-hidden">
+        <span className="flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden">
+          <QuestionElementMark element={q.element} variant="badge" className="text-white/90" />
           {title ? (
             <span className="block truncate text-xs font-normal text-white/55" title={title}>
               {title}

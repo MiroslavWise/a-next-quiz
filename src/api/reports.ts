@@ -376,6 +376,8 @@ export interface IReportQuestionScore {
   /** Итог за вопрос (`points_awarded`); может быть отрицательным из-за недостатков стихии. */
   /** Текст вопроса (если отдаёт API) */
   title?: string
+  /** Метка стихии вопроса из снимка квиза. Нет ключа — метки не было. */
+  element?: "FIRE" | "WATER" | "EARTH" | "AIR" | null
   /** Разбивка очков по эффектам стихии за вопрос — см. docs/API.md. */
   element_effects?: IElementEffect[]
 }
@@ -680,6 +682,8 @@ export interface IMyGameResultQuestion {
   index: number
   question_id: string
   title?: string
+  /** Метка стихии вопроса из снимка квиза. Нет ключа — метки не было. */
+  element?: "FIRE" | "WATER" | "EARTH" | "AIR" | null
   answered: boolean
   points: number
   is_right: boolean | null

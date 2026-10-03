@@ -9,6 +9,7 @@ import Skeleton from "@/components/ui/skeleton"
 import Button from "@/components/ui/button"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 import { MatchTitleChips } from "@/components/report/MatchTitleChip"
+import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 
 import { cn } from "@/lib/utils"
 import { formatDateTimeLongRu } from "@/lib/date"
@@ -46,7 +47,10 @@ function QuestionRow({ q, index }: { q: IMyGameResultQuestion; index: number }) 
 
       {/* Question text */}
       <div className="min-w-0 flex-1">
-        <p className="line-clamp-3 text-sm leading-snug text-white/80">{q.title ?? `Вопрос ${index + 1}`}</p>
+        <div className="flex items-start gap-1.5">
+          <QuestionElementMark element={q.element} variant="badge" className="mt-0.5 text-white/90" />
+          <p className="line-clamp-3 text-sm leading-snug text-white/80">{q.title ?? `Вопрос ${index + 1}`}</p>
+        </div>
         {q.element_effects && q.element_effects.length > 0 && (
           <div className="mt-1.5 flex flex-wrap gap-1">
             {q.element_effects.map((eff, i) => (

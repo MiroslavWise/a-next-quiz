@@ -12,6 +12,7 @@ import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 const PrizeLottie = lazy(() => import("../lottie/PrizeLottie"))
 import { UserAvatar, userProfileAdminSubtitle } from "@/components/common/UserAvatar"
 import { ElementEffectsList } from "@/components/elements/ElementEffectsList"
+import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 import { MatchTitleChips } from "@/components/report/MatchTitleChip"
 
 import { cn } from "@/lib/utils"
@@ -71,7 +72,8 @@ function QuestionScoreRow({ q, reducedEffects }: { q: IReportQuestionScore; redu
       )}
     >
       <div className="flex flex-row items-center justify-between gap-3">
-        <span className="min-w-0 flex-1 overflow-hidden">
+        <span className="flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden">
+          <QuestionElementMark element={q.element} variant="badge" />
           {title ? (
             <span className="block truncate text-xs font-normal opacity-80" title={title}>
               {title}

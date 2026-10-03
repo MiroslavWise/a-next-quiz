@@ -3,12 +3,14 @@ import { useQuery } from "@tanstack/react-query"
 import { Sparkles } from "lucide-react"
 
 import ElementStateChips from "./ElementStateChips"
+import QuestionElementMark from "./QuestionElementMark"
 import TimerSeconds from "./TimerSeconds"
 
 import { getRank } from "@/api/rank"
 import { elementThemeById, resolveElementThemeId } from "@/constants/palette"
 import { QuestionBonus } from "@/enum/question-bonus"
 import type { IQuestion } from "@/interface/question"
+import { questionElementVisual } from "@/lib/question-element"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/stores/auth"
 import { useElementThemeSession } from "@/stores/element-theme-session"
@@ -67,10 +69,15 @@ function ComponentsTitleQuestion({
   showTimer = true,
   showMeta = true,
   bonuses,
+  element,
   dots,
   children,
 }: IProps) {
   const thumbUrl = imageUrl ?? image_url
+  const profileElement = useAuth((s) => s.user?.element)
+  const isGameAvatar = useElementThemeSession((s) => s.isGameAvatar)
+  const elementVisual = questionElementVisual(element)
+  const resonant = showMeta && !!elementVisual && !isGameAvatar && profileElement === elementVisual.id
   const { remainingSeconds, totalSeconds } = useQuestionCountdown({ start, time, enabled: showTimer && !ended })
   const elementsBoosted = !ended && !!bonuses?.includes(QuestionBonus.ALL_ELEMENTS_BOOST)
 
@@ -92,8 +99,16 @@ function ComponentsTitleQuestion({
           ROUND_CLASS,
           elementsBoosted && "border-(--accent-orb)/60 shadow-[0_0_28px_color-mix(in_srgb,var(--accent-orb)_30%,transparent)]",
         )}
+        style={
+          elementVisual && !elementsBoosted
+            ? {
+                borderColor: `color-mix(in srgb, ${elementVisual.accentColor} ${resonant ? 72 : 45}%, transparent)`,
+              }
+            : undefined
+        }
       >
         {dots}
+        <QuestionElementMark element={element} variant="stamp" resonant={resonant} className={dots ? "top-4" : undefined} />
         {elementsBoosted ? (
           <span
             className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
@@ -110,7 +125,12 @@ function ComponentsTitleQuestion({
           {ended && (
             <p className="question-ended-in text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>
           )}
-          <div className="relative flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4">
+          <div
+            className={cn(
+              "relative z-[1] flex w-full flex-col items-center justify-center gap-2",
+              elementVisual ? "px-12 py-3.5 sm:py-4" : "p-3.5 sm:p-4",
+            )}
+          >
             {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
             <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
               <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
