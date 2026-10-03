@@ -14,7 +14,7 @@ import { reportTeamsQueryKey, useReportTeams } from "@/components/start/teams/us
 
 import { cn } from "@/lib/utils"
 import { useUserByTgId } from "@/queries/user"
-import { leaveTeam, postTeamInvite, removeUserFromReportUsers, revokeTeamInvite, type ITeam, type ITeamInvite } from "@/api/reports"
+import { postTeamInvite, removeUserFromReportUsers, revokeTeamInvite, type ITeam, type ITeamInvite } from "@/api/reports"
 import { ApiRequestError } from "@/api/errors"
 import { pairColor, teamOfMember } from "@/lib/report-teams"
 import { showToast } from "@/stores/toast"
@@ -230,16 +230,6 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByTy
         return
       }
 
-      if (action === "leave_team") {
-        void leaveTeam(reportId, targetRaw)
-          .then(() => {
-            showToast("Пара распущена")
-            refreshTeams()
-          })
-          .catch(toastTeamError)
-        return
-      }
-
       if (action === "revoke_team") {
         void revokeTeamInvite(reportId, targetRaw)
           .then(() => {
@@ -408,20 +398,6 @@ function UserWaiting({
     })
   }
 
-  function openLeavePopup() {
-    if (!team) return
-    const pseudoLabel = data?.pseudo?.trim() || `Участник ${user}`
-    const buttons: PopupButton[] = [
-      { id: "cancel_leave_team", type: "cancel" },
-      { id: `leave_team|${reportId}|${team.id}`, text: "Выйти", type: "destructive" },
-    ]
-    postEvent("web_app_open_popup", {
-      title: "Выйти из пары?",
-      message: `Распустить команду с «${pseudoLabel}»?`,
-      buttons,
-    })
-  }
-
   function openRevokePopup() {
     if (!outgoing) return
     const pseudoLabel = data?.pseudo?.trim() || `Участник ${user}`
@@ -438,7 +414,7 @@ function UserWaiting({
 
   function onPlayerClick() {
     if (isLoading) return
-    if (isSelf) {
+    if (isSelf || isPartner) {
       onOpenBonuses?.()
       return
     }
@@ -448,10 +424,6 @@ function UserWaiting({
       return
     }
     if (!canInvite) return
-    if (isPartner) {
-      openLeavePopup()
-      return
-    }
     if (outgoing) {
       openRevokePopup()
       return
@@ -471,19 +443,19 @@ function UserWaiting({
     openCreateTeamPopup()
   }
 
-  const interactive = !isLoading && ((isSelf && !!onOpenBonuses) || canRemoveFromReport || (canInvite && !isObserver && !isSelf))
+  const interactive =
+    !isLoading &&
+    (((isSelf || isPartner) && !!onOpenBonuses) || canRemoveFromReport || (canInvite && !isObserver && !isSelf))
   const title =
-    isSelf && onOpenBonuses
+    (isSelf || isPartner) && onOpenBonuses
       ? "Нажмите, чтобы посмотреть бонусы пары"
       : canRemoveFromReport
-    ? `${data?.pseudo ?? ""} — нажмите, чтобы исключить из игроков`
-    : outgoing
-      ? `${data?.pseudo ?? ""} — ожидает ответ, нажмите чтобы отозвать`
-      : isPartner
-        ? `${data?.pseudo ?? ""} — нажмите, чтобы выйти из пары`
-        : canInvite && !isObserver && !isSelf
-          ? `${data?.pseudo ?? ""} — нажмите, чтобы создать команду`
-          : (data?.pseudo ?? "")
+        ? `${data?.pseudo ?? ""} — нажмите, чтобы исключить из игроков`
+        : outgoing
+          ? `${data?.pseudo ?? ""} — ожидает ответ, нажмите чтобы отозвать`
+          : canInvite && !isObserver && !isSelf
+            ? `${data?.pseudo ?? ""} — нажмите, чтобы создать команду`
+            : (data?.pseudo ?? "")
 
   return (
     <div
