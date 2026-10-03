@@ -96,18 +96,20 @@ function ComponentsTitleQuestion({
         className={cn(
           "glass-start-liquid-palette relative isolate flex w-full flex-col items-center overflow-visible border text-center text-white shadow-none transition-all duration-300",
           ROUND_CLASS,
-          elementsBoosted && "border-(--accent-orb)/60 shadow-[0_0_28px_color-mix(in_srgb,var(--accent-orb)_30%,transparent)]",
+          elementVisual && "border-2",
+          !elementVisual && elementsBoosted && "border-(--accent-orb)/60 shadow-[0_0_28px_color-mix(in_srgb,var(--accent-orb)_30%,transparent)]",
         )}
         style={
-          elementVisual && !elementsBoosted
+          elementVisual
             ? {
-                borderColor: `color-mix(in srgb, ${elementVisual.accentColor} ${resonant ? 72 : 45}%, transparent)`,
+                borderColor: elementVisual.accentColor,
+                borderWidth: 2,
+                boxShadow: `0 0 0 1px color-mix(in srgb, ${elementVisual.accentColor} 55%, transparent), 0 0 28px color-mix(in srgb, ${elementVisual.accentColor} 42%, transparent), inset 0 1px 0 rgba(255,255,255,0.14)`,
               }
             : undefined
         }
       >
         {dots}
-        <QuestionElementMark element={element} variant="stamp" resonant={resonant} className={dots ? "top-4" : undefined} />
         {elementsBoosted ? (
           <span
             className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
@@ -136,6 +138,7 @@ function ComponentsTitleQuestion({
             </div>
           </div>
         </div>
+        <QuestionElementMark element={element} variant="stamp" resonant={resonant} className="top-2 left-2 z-20" />
       </div>
     </div>
   )

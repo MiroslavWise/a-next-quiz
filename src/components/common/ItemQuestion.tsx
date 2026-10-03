@@ -16,7 +16,6 @@ import { getTimeStringS } from "@/enum/time"
 import { getPointsStringS } from "@/enum/points"
 import type { IQuestion } from "@/interface/question"
 import { getQuestionBonusLabel, isNegativeQuestionBonus, normalizeQuestionBonuses } from "@/enum/question-bonus"
-import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 import { questionElementHint, questionElementVisual } from "@/lib/question-element"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
 
@@ -51,8 +50,8 @@ function ItemQuestion(props: IProps) {
         <span
           aria-hidden
           title={questionElementHint(elementVisual.id)}
-          className="absolute top-1.5 left-1.5 z-10 flex size-6 items-center justify-center rounded-full border bg-background"
-          style={{ borderColor: elementVisual.accentColor }}
+          className="absolute top-1.5 left-1.5 z-20 flex size-6 items-center justify-center rounded-full border bg-background"
+          style={{ position: "absolute", borderColor: elementVisual.accentColor }}
         >
           <Image src={elementVisual.iconSrc} alt="" width={14} height={14} className="size-3.5 object-contain" />
         </span>
@@ -92,9 +91,8 @@ function ItemQuestion(props: IProps) {
                 {title}
               </Link>
             </ItemTitle>
-            {element || questionBonuses.length > 0 ? (
+            {questionBonuses.length > 0 ? (
               <div className="mt-1.5 flex flex-wrap items-center gap-1">
-                <QuestionElementMark element={element} variant="badge" className="text-foreground" />
                 {questionBonuses.map((bonus) => {
                   const negative = isNegativeQuestionBonus(bonus)
 

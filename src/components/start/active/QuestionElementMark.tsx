@@ -38,16 +38,15 @@ function QuestionElementMark({ element, resonant = false, variant = "badge", cla
           title={hint}
           aria-label={hint}
           className={cn(
-            "absolute top-3 left-3 z-10 flex size-8 items-center justify-center rounded-full border",
+            "absolute top-2 left-2 z-20 flex size-8 items-center justify-center rounded-full border bg-[#06141a]",
             resonant && "motion-safe:animate-pulse",
             className,
           )}
           style={{
+            position: "absolute",
             borderColor: visual.accentColor,
-            backgroundColor: `color-mix(in srgb, ${visual.accentColor} 16%, transparent)`,
-            boxShadow: resonant
-              ? `0 0 0 2px color-mix(in srgb, ${visual.accentColor} 70%, transparent), 0 0 14px color-mix(in srgb, ${visual.accentColor} 55%, transparent)`
-              : `0 0 10px color-mix(in srgb, ${visual.accentColor} 28%, transparent)`,
+            backgroundColor: `color-mix(in srgb, ${visual.accentColor} 24%, #06141a)`,
+            boxShadow: `0 0 0 1px ${visual.accentColor}, 0 0 16px color-mix(in srgb, ${visual.accentColor} 50%, transparent)`,
           }}
         >
           <Image src={visual.iconSrc} alt="" width={18} height={18} className="size-4.5 object-contain" />
