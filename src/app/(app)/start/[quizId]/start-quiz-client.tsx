@@ -213,7 +213,6 @@ export default function StartQuizClient({ quizId }: { quizId: string }) {
               user_id={data.user_id!}
               lastByType={lastByType}
               questions={data.questions! || []}
-              status={status}
               prizes={prizes}
               elementAvatarId={data.element_avatar_id ?? null}
             />

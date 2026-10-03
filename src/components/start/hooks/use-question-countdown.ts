@@ -46,22 +46,24 @@ export function formatCountdown(seconds: number): string {
 interface IUseQuestionCountdownParams {
   start: unknown
   time: number
+  /** `false` — вопрос уже завершён, интервал не тикает. */
+  enabled?: boolean
 }
 
 /** Обратный отсчёт вопроса от `start` + `time` (секунды). */
-export function useQuestionCountdown({ start, time }: IUseQuestionCountdownParams) {
+export function useQuestionCountdown({ start, time, enabled = true }: IUseQuestionCountdownParams) {
   const totalSeconds = useMemo(() => Math.max(0, Math.floor(time || 0)), [time])
   const [remainingSeconds, setRemainingSeconds] = useState(() => getRemainingSeconds(start, totalSeconds))
 
   useEffect(() => {
-    if (!totalSeconds) return
+    if (!enabled || !totalSeconds) return
 
     const timer = setInterval(() => {
       setRemainingSeconds(getRemainingSeconds(start, totalSeconds))
     }, 250)
 
     return () => clearInterval(timer)
-  }, [start, totalSeconds])
+  }, [enabled, start, totalSeconds])
 
   const ringProgress = totalSeconds ? remainingSeconds / totalSeconds : 0
   const ringAngle = ringProgress * 360

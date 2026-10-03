@@ -22,6 +22,8 @@ interface IProps extends Partial<IQuestion> {
   tgId?: number
   activeIndex?: number
   ended?: boolean
+  /** Живой отсчёт. У ведущего карточка остаётся, но после конца вопроса секунды не идут. */
+  showTimer?: boolean
   showMeta?: boolean
   /** Индикатор вопросов: садится на центр верхнего бордера карточки. */
   dots?: ReactNode
@@ -62,13 +64,14 @@ function ComponentsTitleQuestion({
   tgId,
   activeIndex,
   ended = false,
+  showTimer = true,
   showMeta = true,
   bonuses,
   dots,
   children,
 }: IProps) {
   const thumbUrl = imageUrl ?? image_url
-  const { remainingSeconds, totalSeconds } = useQuestionCountdown({ start, time })
+  const { remainingSeconds, totalSeconds } = useQuestionCountdown({ start, time, enabled: showTimer && !ended })
   const elementsBoosted = !ended && !!bonuses?.includes(QuestionBonus.ALL_ELEMENTS_BOOST)
 
   const titleText = title ?? "Ожидаем текст вопроса..."
@@ -78,7 +81,7 @@ function ComponentsTitleQuestion({
       {!ended && (
         <>
           {showMeta ? <RoundMeta reportId={reportId} tgId={tgId} activeIndex={activeIndex} /> : null}
-          <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} />
+          {showTimer ? <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} /> : null}
           {showMeta ? <ElementStateChips reportId={reportId} activeIndex={activeIndex} /> : null}
           {children}
         </>

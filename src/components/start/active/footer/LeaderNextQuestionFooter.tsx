@@ -1,3 +1,5 @@
+import { PHASE_FOOTER_CLASS } from "@/components/start/lib/phase-shell"
+
 import AnswersCollectionProgress from "./AnswersCollectionProgress"
 import LeaderNextQuestionButton from "./LeaderNextQuestionButton"
 
@@ -5,6 +7,8 @@ const EMPTY_ANSWERS: number[] = []
 const EMPTY_USERS: number[] = []
 
 export interface LeaderNextQuestionFooterProps {
+  /** Ведущий может перейти дальше; наблюдатель видит только сбор ответов. */
+  canAdvance?: boolean
   onNext: () => void
   actionBlocked: boolean
   showBusy: boolean
@@ -19,6 +23,7 @@ export interface LeaderNextQuestionFooterProps {
 }
 
 export default function LeaderNextQuestionFooter({
+  canAdvance = true,
   onNext,
   actionBlocked,
   showBusy,
@@ -30,9 +35,11 @@ export default function LeaderNextQuestionFooter({
   answers = EMPTY_ANSWERS,
   users = EMPTY_USERS,
 }: LeaderNextQuestionFooterProps) {
+  const showProgress = !canAdvance || collectingAnswers
+
   return (
-    <footer className="bottom-next fixed right-0 left-0 z-50 shrink-0 p-4 sm:p-5">
-      {collectingAnswers ? (
+    <footer className={PHASE_FOOTER_CLASS} aria-live="polite">
+      {showProgress ? (
         <AnswersCollectionProgress answeredCount={answeredCount} participantsTotal={participantsTotal} answers={answers} users={users} />
       ) : (
         <LeaderNextQuestionButton

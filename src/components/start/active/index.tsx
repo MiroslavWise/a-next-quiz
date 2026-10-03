@@ -17,15 +17,19 @@ import type { IComponentWithRankProps } from "./ComponentWithRank"
 import ComponentsQuestionAnswers from "./ComponentsQuestionAnswers"
 const ComponentWithRank = memo(lazy(() => import("./ComponentWithRank")))
 const MobileLeaderboardAvatars = lazy(() => import("./MobileLeaderboardAvatars"))
-const ObserverAnswersFooter = lazy(() => import("./footer/ObserverAnswersFooter"))
 const LeaderNextQuestionFooter = lazy(() => import("./footer/LeaderNextQuestionFooter"))
 import { ActiveChartsSkeleton, DefaultActiveSkeleton, LeaderNextQuestionFooterSkeleton, WithRankSkeleton } from "./Skeletons"
 
-import { EReportStatus } from "@/enum/report"
 import ContextInfoSkill from "./ContextInfoSkill"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import { useQuizStaffSocketIO } from "@/hooks/useQuizStaffSocketIO"
 import { type LastSocketEventByType } from "@/hooks/socket-event-by-type"
+import {
+  GAME_PLAYER_COLUMN_CLASS,
+  GAME_PLAYER_SHELL_CLASS,
+  GAME_STAFF_COLUMN_CLASS,
+  GAME_STAFF_SHELL_CLASS,
+} from "@/components/start/lib/phase-shell"
 
 import { useNextQuestion } from "../hooks/use-next-question"
 import { useActiveQuestion } from "../hooks/use-active-question"
@@ -43,7 +47,6 @@ interface IProps {
   user_id: number
   lastByType: LastSocketEventByType<QuizEvent>
   questions: any[]
-  status: EReportStatus
   prizes: number[]
   elementAvatarId?: number | null
 }
@@ -61,9 +64,6 @@ function ActiveQuestionRound({ children, ...params }: ActiveQuestionRoundProps) 
   return <>{children(round)}</>
 }
 
-/**
- * Рендер верхней части для лидера: аватары и диаграммы
- */
 function LeaderTopSection({
   showDataPointsLeader,
   activeIndex,
@@ -106,9 +106,6 @@ function LeaderTopSection({
   )
 }
 
-/**
- * Рендер результатов для игрока после окончания вопроса
- */
 function PlayerResultsSection(props: IComponentWithRankProps) {
   return (
     <Suspense fallback={<WithRankSkeleton />}>
@@ -121,22 +118,12 @@ function DotsQuestionsSection(props: IDotsQuestionsProps) {
   return (
     <Suspense
       fallback={
-        props.anchored ? (
-          <div
-            className="absolute top-0 left-1/2 z-20 h-6 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background/95 p-0.5"
-            aria-hidden
-          >
-            <Skeleton className="size-full rounded-full" />
-          </div>
-        ) : (
-          <div className="flex w-full flex-col items-center gap-1.5" aria-hidden>
-            <div className="flex items-center justify-center gap-1.5">
-              {Array.from({ length: props.totalQuestions }).map((_, index) => (
-                <Skeleton key={index + "dots-questions-item" + "-skeleton"} className="size-2 rounded-full" />
-              ))}
-            </div>
-          </div>
-        )
+        <div
+          className="absolute top-0 left-1/2 z-20 h-6 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background/95 p-0.5"
+          aria-hidden
+        >
+          <Skeleton className="size-full rounded-full" />
+        </div>
       }
     >
       <DotsQuestions {...props} />
@@ -162,10 +149,11 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
   } = useActiveQuestion({ reportId, tgId })
   const { isAdminManager, isLeader, myRole, isFetchingMyRole, users, isObserver, isObserverLikeLeader, participantsTotal } =
     useReportParticipation({ reportId, tgId, user_id })
-  const staffSocketEnabled = isObserverLikeLeader && !!reportId
+  const isStaff = isObserverLikeLeader
+  const isPlayer = !isStaff
   const { lastByType: lastStaffByType } = useQuizStaffSocketIO({
     reportId,
-    enabled: staffSocketEnabled,
+    enabled: isStaff && !!reportId,
   })
   const { bySkillId } = useSkillActivations({
     lastStaffByType,
@@ -176,15 +164,13 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
   const { myPassedQuestions } = useMyPassedQuestions({
     reportId,
     tgId,
-    isObserverLikeLeader,
+    isObserverLikeLeader: isStaff,
     isQuestionEnded,
   })
   useActiveQuestionSync({ lastByType, queryClient, activeQuestionQueryKey, reportId })
 
   const questionRoundKey = `${activeIndex}-${question?.id ?? ""}`
-  const show = isObserverLikeLeader && showDataPointsLeader
-
-  const openDataPointsLeader = () => setVisibleDataPointsLeader(true)
+  const totalQuestions = questions?.length ?? 0
 
   if (isLoading || (isFetching && data?.status !== "END") || (isFetchingMyRole && !myRole && isAdminManager && !isLeader))
     return <DefaultActiveSkeleton />
@@ -195,7 +181,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
       tgId={tgId}
       activeIndex={activeIndex}
       questionId={question?.id}
-      audience={isObserverLikeLeader ? "staff" : "player"}
+      audience={isStaff ? "staff" : "player"}
       bySkillId={bySkillId}
     >
       <ActiveQuestionRound
@@ -206,70 +192,55 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
         reportId={reportId}
         question={question}
         statusQuestion={typeof statusQuestion === "string" ? statusQuestion : undefined}
-        isObserverLikeLeader={isObserverLikeLeader}
+        isObserverLikeLeader={isStaff}
         isFetchingMyRole={isFetchingMyRole}
         myRole={myRole}
         queryClient={queryClient}
         activeQuestionQueryKey={activeQuestionQueryKey}
       >
         {(round) => {
-          const showStaffBottomFooter = isLeader || (isObserver && collectingAnswers)
+          const showStaffFooter = isLeader || (isObserver && collectingAnswers)
 
           return (
-            <div
-              className={
-                isObserverLikeLeader
-                  ? "start-split-scroll flex w-full min-h-0 flex-1 flex-col md:flex-row md:items-stretch md:overflow-hidden"
-                  : "flex w-full"
-              }
-            >
-              <div
-                className={
-                  isObserverLikeLeader
-                    ? "relative flex w-full min-w-0 flex-col gap-3 px-4 md:h-full md:w-2/3 md:min-h-0 md:overflow-y-auto md:overscroll-contain md:pr-2"
-                    : "relative flex w-full flex-col gap-3 px-4"
-                }
-              >
-                <div className="relative flex w-full flex-col items-center gap-3">
-                  {isObserverLikeLeader ? (
-                    <Suspense fallback={null}>
-                      <LeaderTopSection
-                        showDataPointsLeader={showDataPointsLeader}
-                        activeIndex={activeIndex}
-                        isQuestionEnded={isQuestionEnded}
-                        reportId={reportId}
-                        tgId={tgId}
-                        lastByType={lastByType}
-                        prizes={prizes}
-                        question={question}
-                        onOpenDataPoints={openDataPointsLeader}
-                      />
-                    </Suspense>
-                  ) : null}
-                  <ComponentsTitleQuestion
-                    key={questionRoundKey}
-                    {...question!}
-                    start={data?.start}
-                    time={question?.time ?? 0}
+            <div className={isStaff ? GAME_STAFF_SHELL_CLASS : GAME_PLAYER_SHELL_CLASS}>
+              <div className={isStaff ? GAME_STAFF_COLUMN_CLASS : GAME_PLAYER_COLUMN_CLASS}>
+                {isStaff ? (
+                  <LeaderTopSection
+                    showDataPointsLeader={showDataPointsLeader}
+                    activeIndex={activeIndex}
+                    isQuestionEnded={isQuestionEnded}
                     reportId={reportId}
                     tgId={tgId}
-                    activeIndex={activeIndex}
-                    ended={isQuestionEnded && !isObserverLikeLeader}
-                    showMeta={!isObserverLikeLeader}
-                    dots={
-                      <DotsQuestionsSection
-                        anchored
-                        activeIndex={activeIndex + 1}
-                        showResults={!isObserverLikeLeader}
-                        myPassedQuestions={myPassedQuestions}
-                        totalQuestions={questions?.length ?? 0}
-                      />
-                    }
-                  >
-                    <QuestionBonuses bonuses={question?.bonuses} />
-                  </ComponentsTitleQuestion>
-                </div>
-                {isObserverLikeLeader && ["GAME", "END"].includes(statusQuestion!) ? (
+                    lastByType={lastByType}
+                    prizes={prizes}
+                    question={question}
+                    onOpenDataPoints={() => setVisibleDataPointsLeader(true)}
+                  />
+                ) : null}
+                <ComponentsTitleQuestion
+                  key={questionRoundKey}
+                  {...question!}
+                  start={data?.start}
+                  time={question?.time ?? 0}
+                  reportId={reportId}
+                  tgId={tgId}
+                  activeIndex={activeIndex}
+                  ended={isQuestionEnded && isPlayer}
+                  showTimer={!isQuestionEnded}
+                  showMeta={isPlayer}
+                  dots={
+                    <DotsQuestionsSection
+                      anchored
+                      activeIndex={activeIndex + 1}
+                      showResults={isPlayer}
+                      myPassedQuestions={myPassedQuestions}
+                      totalQuestions={totalQuestions}
+                    />
+                  }
+                >
+                  <QuestionBonuses bonuses={question?.bonuses} />
+                </ComponentsTitleQuestion>
+                {isStaff && (collectingAnswers || isQuestionEnded) ? (
                   <StaffGameSkills bySkillId={bySkillId} isQuestionEnded={isQuestionEnded} />
                 ) : null}
                 <ComponentsQuestionAnswers
@@ -277,7 +248,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                   reportId={reportId}
                   activeIndex={activeIndex}
                   round={{
-                    audience: isObserverLikeLeader ? "leader" : "player",
+                    audience: isStaff ? "leader" : "player",
                     phase: isQuestionEnded ? "results" : "active",
                     playerCommitted: round.hasAnswered,
                     playerAwaitingRoleGate: isFetchingMyRole && !myRole,
@@ -286,29 +257,26 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                   selectedAnswerId={round.selectedAnswerId}
                   renderedAnswers={renderedAnswers}
                   handleAnswer={round.handleAnswer}
-                  showLiveAnswerCounts={isObserverLikeLeader && collectingAnswers}
+                  showLiveAnswerCounts={isStaff && collectingAnswers}
                   liveCountsByAnswerId={round.countsByAnswerId}
                   participantsTotal={participantsTotal}
                 />
-                {isQuestionEnded && !isObserverLikeLeader && (
+                {isPlayer && isQuestionEnded ? (
                   <PlayerResultsSection reportId={reportId} tgId={tgId} activeIndex={activeIndex} />
-                )}
-                {!isObserverLikeLeader && collectingAnswers && question?.id ? (
+                ) : null}
+                {isPlayer && collectingAnswers && question?.id ? (
                   <GameSkills reportId={reportId} tgId={tgId} activeIndex={activeIndex} questionId={question.id} />
                 ) : null}
-                {showStaffBottomFooter ? (
-                  <div className="spacer-bottom-next" aria-hidden />
-                ) : (
-                  <div className="spacer-bottom-game" aria-hidden />
-                )}
+                <div className={showStaffFooter ? "spacer-bottom-next" : "spacer-bottom-game"} aria-hidden />
               </div>
-              {isLeader ? (
+              {showStaffFooter ? (
                 <Suspense fallback={<LeaderNextQuestionFooterSkeleton />}>
                   <LeaderNextQuestionFooter
+                    canAdvance={isLeader}
                     onNext={goToNextQuestion}
                     actionBlocked={loading || isFetching || statusQuestion !== "END"}
                     showBusy={loading || isFetching}
-                    isLastQuestionInQuiz={(data?.active_index ?? 0) === (questions?.length ?? 0) - 1}
+                    isLastQuestionInQuiz={(data?.active_index ?? 0) === totalQuestions - 1}
                     activeIndex={activeIndex}
                     collectingAnswers={collectingAnswers}
                     answeredCount={round.answeredCount}
@@ -318,22 +286,12 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                   />
                 </Suspense>
               ) : null}
-              {isObserver && collectingAnswers ? (
-                <Suspense fallback={<LeaderNextQuestionFooterSkeleton />}>
-                  <ObserverAnswersFooter
-                    answeredCount={round.answeredCount}
-                    participantsTotal={participantsTotal}
-                    answers={round.answeredUsers}
-                    users={users}
-                  />
-                </Suspense>
-              ) : null}
-              {isObserverLikeLeader && (
+              {isStaff ? (
                 <Suspense fallback={null}>
                   <DataPointsLeader
-                    reportId={reportId!}
-                    tgId={tgId!}
-                    showDataPointsLeader={show}
+                    reportId={reportId}
+                    tgId={tgId}
+                    showDataPointsLeader={showDataPointsLeader}
                     setVisibleDataPointsLeader={setVisibleDataPointsLeader}
                     lastByType={lastByType}
                     prizes={prizes}
@@ -343,10 +301,10 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                     answerProgressIndex={round.answersProgressForQuestion?.index}
                     isQuestionEnded={isQuestionEnded}
                     elementAvatarId={elementAvatarId}
-                    totalQuestions={questions?.length ?? 0}
+                    totalQuestions={totalQuestions}
                   />
                 </Suspense>
-              )}
+              ) : null}
             </div>
           )
         }}
