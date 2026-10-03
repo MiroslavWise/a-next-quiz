@@ -1,26 +1,50 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 
-import Spinner from "@/components/ui/spinner"
+import Skeleton from "@/components/ui/skeleton"
 
 import { cn } from "@/lib/utils"
-import { getReportsAnswersCorrect } from "@/api/reports"
-
-import styles from "../styles/optimal.module.scss"
+import { getReportsAnswersCorrect, type IReportAnswersCorrect } from "@/api/reports"
 
 interface IProps {
-  title?: string
   reportId: string
   tgId: number
   index: number
+  /** Подсветить строку исхода этого игрока. Ведущему не нужно. */
+  highlightOwn?: boolean
 }
 
-function bucketCount(data: { count?: number } | undefined): number {
+type Outcome = "right" | "wrong" | "skip"
+
+const ROWS: { id: Outcome; label: string; dotClass: string }[] = [
+  { id: "right", label: "Верно", dotClass: "bg-(--faithful)" },
+  { id: "wrong", label: "Неверно", dotClass: "bg-(--unfaithful)" },
+  { id: "skip", label: "Пропуск", dotClass: "bg-white/35" },
+]
+
+function bucketCount(data: { count?: number } | undefined) {
   return data?.count ?? 0
 }
 
-function ActiveCharts({ reportId, tgId, index, title }: IProps) {
+/** Сначала верно, потом неверно, пропуск забирает остаток до 100. */
+function sharePercents(right: number, wrong: number, total: number) {
+  if (total <= 0) return { right: 0, wrong: 0, skip: 0 }
+  const rightPct = Math.floor((right * 100) / total)
+  const wrongPct = Math.floor((wrong * 100) / total)
+  return { right: rightPct, wrong: wrongPct, skip: 100 - rightPct - wrongPct }
+}
+
+function ownOutcome(data: IReportAnswersCorrect, tgId: number): Outcome | null {
+  const inBucket = (users: { telegram_id: number }[] | undefined) => users?.some((user) => user.telegram_id === tgId) ?? false
+  if (inBucket(data.right?.users)) return "right"
+  if (inBucket(data.wrong?.users)) return "wrong"
+  if (inBucket(data.abstained?.users)) return "skip"
+  return null
+}
+
+function ActiveCharts({ reportId, tgId, index, highlightOwn = false }: IProps) {
   const { data, isLoading } = useQuery({
     queryKey: ["active-charts", reportId, index],
     queryFn: () => getReportsAnswersCorrect(reportId, index),
@@ -29,66 +53,86 @@ function ActiveCharts({ reportId, tgId, index, title }: IProps) {
 
   const right = bucketCount(data?.right)
   const wrong = bucketCount(data?.wrong)
-  const abstained = bucketCount(data?.abstained)
-  const total = data?.participants_total ?? right + wrong + abstained
-  const rightPercent = total > 0 ? (right / total) * 100 : 0
-  const wrongPercent = total > 0 ? (wrong / total) * 100 : 0
-  const abstainedPercent = total > 0 ? (abstained / total) * 100 : 0
-  const c1 = rightPercent
-  const c2 = rightPercent + wrongPercent
+  const skip = bucketCount(data?.abstained)
+  const total = data?.participants_total ?? right + wrong + skip
+  const percents = sharePercents(right, wrong, total)
+  const counts = { right, wrong, skip }
+  const mine = highlightOwn && data ? ownOutcome(data, tgId) : null
+  const empty = !isLoading && total <= 0
+
+  const [drawn, setDrawn] = useState(false)
+  useEffect(() => {
+    if (isLoading) return
+    const frame = requestAnimationFrame(() => setDrawn(true))
+    return () => cancelAnimationFrame(frame)
+  }, [isLoading, right, wrong, skip])
+
+  const segments = (
+    [
+      { id: "right" as const, count: right, className: "bg-(--faithful)" },
+      { id: "wrong" as const, count: wrong, className: "bg-(--unfaithful)" },
+      { id: "skip" as const, count: skip, className: "bg-white/35" },
+    ] as const
+  ).filter((segment) => segment.count > 0)
 
   return (
-    <div className="flex w-full flex-col gap-2">
-      <div className="glass-start-liquid-palette w-full rounded-2xl p-4 shadow-none lg:p-6">
-        {isLoading ? (
-          <div className="flex min-h-36 items-center justify-center lg:min-h-44">
-            <Spinner className="size-5 lg:size-6" />
-          </div>
-        ) : (
-          <div className="mt-4 grid grid-cols-[auto_minmax(0,1fr)] items-start gap-4 sm:gap-6 xl:mt-5 xl:gap-8">
-            <div className="relative">
+    <div className="glass-start-liquid-palette w-full rounded-2xl px-4 py-3.5 shadow-none">
+      {isLoading ? (
+        <ActiveChartsBodySkeleton />
+      ) : empty ? (
+        <div className="flex flex-col gap-2">
+          <div className="h-3 w-full rounded-full bg-white/15" />
+          <p className="text-sm text-white/60">Никто не в зале</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          <div
+            className="flex h-3 w-full overflow-hidden rounded-full bg-white/10"
+            role="img"
+            aria-label={`Верно ${right}, неверно ${wrong}, пропуск ${skip}`}
+          >
+            {segments.map((segment) => (
               <div
-                className={cn("size-28 rounded-full border border-(--accent-orb)/40 lg:size-36 2xl:size-66", styles.conicGradient)}
-                style={{
-                  "--c1": `${c1}%`,
-                  "--c2": `${c2}%`,
-                }}
-                aria-label="Круговая диаграмма ответов"
+                key={segment.id}
+                className={cn("h-full transition-[width] duration-[400ms] ease-out", segment.className)}
+                style={{ width: drawn ? `${(segment.count / total) * 100}%` : "0%" }}
               />
-              <div className="absolute inset-3 rounded-full bg-black/50 xl:inset-4" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-xs font-semibold text-white/90 xl:text-sm">{total}</span>
-              </div>
-            </div>
-            <ul className="w-full min-w-0 space-y-2 text-sm lg:text-base xl:space-y-2.5 2xl:text-xl">
-              <li className="glass-start-slab-faithful flex items-center justify-between rounded-xl px-3 py-2 text-white/95 xl:px-4 xl:py-2.5">
-                <span>Верно</span>
-                <span className="font-semibold tabular-nums">
-                  {right} ({rightPercent.toFixed(0)}%)
-                </span>
-              </li>
-              <li className="glass-start-slab-unfaithful flex items-center justify-between rounded-xl px-3 py-2 text-white/95 xl:px-4 xl:py-2.5">
-                <span>Не верно</span>
-                <span className="font-semibold tabular-nums">
-                  {wrong} ({wrongPercent.toFixed(0)}%)
-                </span>
-              </li>
-              <li className="flex min-w-0 flex-col gap-1.5">
-                <div className="glass-start-slab flex items-center justify-between rounded-xl px-3 py-2 text-white/95 xl:px-4 xl:py-2.5">
-                  <span>Пропуск / воздержались</span>
-                  <span className="font-semibold tabular-nums">
-                    {abstained} ({abstainedPercent.toFixed(0)}%)
-                  </span>
-                </div>
-              </li>
-            </ul>
+            ))}
           </div>
-        )}
-      </div>
-      <div className="glass-start-liquid-palette flex w-full items-center justify-center rounded-2xl p-4 shadow-none lg:p-6">
-        <p className="max-w-[90%] text-center text-base leading-relaxed font-medium text-balance whitespace-pre-wrap text-white xl:text-xl 2xl:text-2xl">
-          {title ?? ""}
-        </p>
+          <ul className="flex flex-col gap-1.5">
+            {ROWS.map((row) => {
+              const active = mine === row.id
+              return (
+                <li
+                  key={row.id}
+                  className={cn(
+                    "flex items-center gap-2 text-sm",
+                    active ? "font-medium text-white" : "text-white/65",
+                  )}
+                >
+                  <span className={cn("size-2 shrink-0 rounded-full", row.dotClass)} aria-hidden />
+                  <span>{row.label}</span>
+                  <span className="ml-auto tabular-nums">
+                    {counts[row.id]} ({percents[row.id]}%)
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ActiveChartsBodySkeleton() {
+  return (
+    <div className="flex flex-col gap-3" aria-hidden>
+      <Skeleton className="h-3 w-full rounded-full bg-white/10" />
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-4 w-full rounded-md bg-white/10" />
+        <Skeleton className="h-4 w-full rounded-md bg-white/10" />
+        <Skeleton className="h-4 w-3/4 rounded-md bg-white/10" />
       </div>
     </div>
   )

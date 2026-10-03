@@ -66,43 +66,30 @@ function ActiveQuestionRound({ children, ...params }: ActiveQuestionRoundProps) 
 
 function LeaderTopSection({
   showDataPointsLeader,
-  activeIndex,
-  isQuestionEnded,
   reportId,
   tgId,
   lastByType,
   prizes,
-  question,
   onOpenDataPoints,
 }: {
   showDataPointsLeader: boolean
-  activeIndex: number
-  isQuestionEnded: boolean
   reportId: string
   tgId: number
   lastByType: LastSocketEventByType<QuizEvent>
   prizes: number[]
-  question: { id: string; title?: string; time?: number } | undefined
   onOpenDataPoints: () => void
 }) {
   return (
-    <>
-      <Suspense fallback={null}>
-        <MobileLeaderboardAvatars
-          showDataPointsLeader={showDataPointsLeader}
-          reportId={reportId}
-          tgId={tgId}
-          lastByType={lastByType}
-          prizes={prizes}
-          onOpen={onOpenDataPoints}
-        />
-      </Suspense>
-      {isQuestionEnded && (
-        <Suspense fallback={<ActiveChartsSkeleton />}>
-          <ActiveCharts reportId={reportId} tgId={tgId} index={activeIndex} title={question?.title} />
-        </Suspense>
-      )}
-    </>
+    <Suspense fallback={null}>
+      <MobileLeaderboardAvatars
+        showDataPointsLeader={showDataPointsLeader}
+        reportId={reportId}
+        tgId={tgId}
+        lastByType={lastByType}
+        prizes={prizes}
+        onOpen={onOpenDataPoints}
+      />
+    </Suspense>
   )
 }
 
@@ -207,13 +194,10 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                 {isStaff ? (
                   <LeaderTopSection
                     showDataPointsLeader={showDataPointsLeader}
-                    activeIndex={activeIndex}
-                    isQuestionEnded={isQuestionEnded}
                     reportId={reportId}
                     tgId={tgId}
                     lastByType={lastByType}
                     prizes={prizes}
-                    question={question}
                     onOpenDataPoints={() => setVisibleDataPointsLeader(true)}
                   />
                 ) : null}
@@ -240,6 +224,11 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                 >
                   <QuestionBonuses bonuses={question?.bonuses} />
                 </ComponentsTitleQuestion>
+                {isStaff && isQuestionEnded ? (
+                  <Suspense fallback={<ActiveChartsSkeleton />}>
+                    <ActiveCharts reportId={reportId} tgId={tgId} index={activeIndex} />
+                  </Suspense>
+                ) : null}
                 {isStaff && (collectingAnswers || isQuestionEnded) ? (
                   <StaffGameSkills bySkillId={bySkillId} isQuestionEnded={isQuestionEnded} />
                 ) : null}
