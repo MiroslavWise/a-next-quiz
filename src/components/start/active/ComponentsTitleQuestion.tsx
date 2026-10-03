@@ -1,4 +1,3 @@
-import { motion } from "motion/react"
 import type { ReactNode } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Sparkles } from "lucide-react"
@@ -106,14 +105,7 @@ function ComponentsTitleQuestion({
             </p>
           ) : null}
           {ended && (
-            <motion.p
-              initial={{ opacity: 0, scale: 0.92, filter: "blur(4px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[0.7rem] font-medium tracking-[0.16em] text-white/40"
-            >
-              Вопрос завершён
-            </motion.p>
+            <p className="question-ended-in text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>
           )}
           <div className="relative flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4">
             {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}

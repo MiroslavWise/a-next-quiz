@@ -147,11 +147,46 @@
   }
 }
 
+.question-ended-in {
+  animation: question-ended-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes question-ended-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.question-thumb-reveal {
+  animation: question-thumb-reveal 0.6s ease-out both;
+}
+
+@keyframes question-thumb-reveal {
+  from {
+    clip-path: circle(0% at 50% 50%);
+  }
+  to {
+    clip-path: circle(75% at 50% 50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .answer-burst::before,
   .answer-burst::after {
     animation: none;
     opacity: 0.35;
+  }
+
+  .question-ended-in,
+  .question-thumb-reveal {
+    animation: none;
   }
 }
 

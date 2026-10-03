@@ -1,15 +1,12 @@
 "use client"
 
-import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 import { Check, Lock } from "lucide-react"
 
 import Spinner from "@/components/ui/spinner"
-
 import { cn } from "@/lib/utils"
 
 interface IProps {
   id: string
-  isAnime: boolean
   results: boolean
   description: string
   activeIndex: number
@@ -26,7 +23,6 @@ interface IProps {
 function ItemButtonAnswer({
   playerInputsLocked,
   id,
-  isAnime,
   activeIndex,
   results,
   handleAnswer,
@@ -57,20 +53,7 @@ function ItemButtonAnswer({
       <span className="relative z-10 flex items-center gap-3">
         <span className="min-w-0 flex-1">{description}</span>
         {isSubmitting ? (
-          <>
-            {isAnime ? (
-              <DotLottieReact
-                src="/lottie/anime-rotate.lottie"
-                className="size-4 shrink-0 xl:size-5"
-                loop
-                autoplay
-                speed={0.8}
-                backgroundColor="transparent"
-              />
-            ) : (
-              <Spinner className="size-4 shrink-0 xl:size-5" />
-            )}
-          </>
+          <Spinner className="size-4 shrink-0 xl:size-5" />
         ) : results && isCorrect ? (
           <Check className="size-4.5 shrink-0 text-faithful" aria-hidden />
         ) : playerHasSubmittedThisRound && isSelected && !results ? (

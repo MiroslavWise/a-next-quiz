@@ -7,8 +7,6 @@ const ItemSubAnswer = lazy(() => import("./ItemSubAnswer"))
 const ItemButtonAnswer = lazy(() => import("./ItemButtonAnswer"))
 
 import { cn } from "@/lib/utils"
-import { getAuthTelegramId } from "@/lib/jwt"
-import { isGetAnimeUser } from "@/lib/is-user"
 import { type IAnswer } from "@/interface/answer"
 import { getReportsAnswersCorrectCounts, type IAnswerUserEntry, type IReportQuestionAnswerCounts } from "@/api/reports"
 
@@ -129,9 +127,7 @@ function AnswerOptionsList({
   liveCountsByAnswerId?: Map<string, number>
   participantsTotal?: number
 }) {
-  const tgId = getAuthTelegramId()
   const results = phase === "results"
-  const isAnime = isGetAnimeUser(tgId)
   const [expandedAnswerId, setExpandedAnswerId] = useState<string | null>(null)
 
   return (
@@ -178,7 +174,6 @@ function AnswerOptionsList({
                 <ItemButtonAnswer
                   id={answer.id}
                   results={results}
-                  isAnime={isAnime}
                   isSelected={isSelected}
                   isCorrect={isCorrect}
                   activeIndex={activeIndex}
