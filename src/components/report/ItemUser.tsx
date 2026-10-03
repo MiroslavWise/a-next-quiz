@@ -12,6 +12,7 @@ import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 const PrizeLottie = lazy(() => import("../lottie/PrizeLottie"))
 import { UserAvatar, userProfileAdminSubtitle } from "@/components/common/UserAvatar"
 import { ElementEffectsList } from "@/components/elements/ElementEffectsList"
+import { MatchTitleChips } from "@/components/report/MatchTitleChip"
 
 import { cn } from "@/lib/utils"
 import { formatQuizPoints, isNegativeQuizPoints, quizPointsToneClass } from "@/lib/quiz-points"
@@ -102,6 +103,7 @@ function ItemUserReportPoints({
   isPrizePlace = false,
   isRandomPrize = false,
   gameTone = false,
+  titles,
 }: IProps) {
   const showDataUsers = useShowDataUser()
   const score = reportUserTotalPoints({ points, total_points })
@@ -282,6 +284,7 @@ function ItemUserReportPoints({
                 ({adminSubtitle})
               </span>
             ) : null}
+            <MatchTitleChips titles={titles} className="mt-1" />
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-1 self-center">

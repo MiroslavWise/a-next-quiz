@@ -7,6 +7,7 @@ import Spinner from "@/components/ui/spinner"
 import PrizeLottie from "@/components/lottie/PrizeLottie"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 import StatusEndQuestionRow from "./StatusEndQuestionRow"
+import { MatchTitleChips } from "@/components/report/MatchTitleChip"
 
 import { cn } from "@/lib/utils"
 import { formatQuizPoints, isNegativeQuizPoints, quizPointsToneClass } from "@/lib/quiz-points"
@@ -93,6 +94,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
           <p className="mt-2 text-xs leading-snug text-rose-200/85">Сумма ниже нуля — учтены отрицательные эффекты недостатков стихий.</p>
         ) : null}
       </div>
+      <MatchTitleChips titles={myScore.titles} className="justify-center" align="center" />
       {myScore.questions && myScore.questions.length > 0 ? (
         <ul className="space-y-2" aria-label="Результаты по вопросам">
           {sortedQuestions(myScore.questions).map((q) => (

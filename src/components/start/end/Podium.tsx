@@ -11,6 +11,7 @@ import { UserAvatar } from "@/components/common/UserAvatar"
 import { cn } from "@/lib/utils"
 import { useUserByTgId } from "@/queries/user"
 import { reportUserTotalPoints, type IReportUserPoints } from "@/api/reports"
+import { MatchTitleChips } from "@/components/report/MatchTitleChip"
 
 interface IProps {
   users: Array<IReportUserPoints & { rank: number }>
@@ -93,6 +94,7 @@ function PodiumUserCard({
         <p className="mt-1 truncate text-sm font-bold text-white/90" title={pseudo}>
           {pseudo}
         </p>
+        <MatchTitleChips titles={user.titles} align="center" className="mt-1.5" />
         <p className="mt-2 inline-flex items-center justify-center gap-1.5 text-sm font-black text-white tabular-nums">
           <PickaxeIcon points={score} className={cn("size-3.5", rankAccentClass(user.rank))} />
           {score.toLocaleString("ru-RU")}

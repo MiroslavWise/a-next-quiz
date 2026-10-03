@@ -380,6 +380,12 @@ export interface IReportQuestionScore {
   element_effects?: IElementEffect[]
 }
 
+/** Звание матча — факт вечера без очков (`docs/API.md`, `titles`). */
+export interface IMatchTitle {
+  id: string
+  title: string
+}
+
 export interface IReportUserPoints {
   telegram_id: string | number
   /** Итоговые очки за квиз (приоритет над `points`); могут быть отрицательными из-за недостатков стихий. */
@@ -391,6 +397,8 @@ export interface IReportUserPoints {
   points_delta?: number
   points?: number
   questions?: IReportQuestionScore[]
+  /** Звания матча. Пустой массив, если званий нет или матч ещё не завершён. */
+  titles?: IMatchTitle[]
 }
 
 export function reportUserTotalPoints(item: Pick<IReportUserPoints, "points" | "total_points">): number {
@@ -647,6 +655,8 @@ export interface IMyGame {
     name: string
     imageUrl: string | null
   } | null
+  /** Звания вызывающего в этой игре. */
+  titles?: IMatchTitle[]
 }
 
 /** Список до 10 последних завершённых игр текущего пользователя. */
@@ -681,6 +691,7 @@ export interface IMyGameResult {
   telegram_id: string
   total_points: number
   rank: number
+  titles?: IMatchTitle[]
   quiz: IMyGameResultQuiz | null
   questions: IMyGameResultQuestion[]
 }

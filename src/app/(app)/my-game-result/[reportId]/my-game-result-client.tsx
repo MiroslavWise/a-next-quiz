@@ -8,6 +8,7 @@ import { ArrowLeft, Award, CheckCircle2, XCircle, MinusCircle, Medal, Trophy, Ga
 import Skeleton from "@/components/ui/skeleton"
 import Button from "@/components/ui/button"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
+import { MatchTitleChips } from "@/components/report/MatchTitleChip"
 
 import { cn } from "@/lib/utils"
 import { formatDateTimeLongRu } from "@/lib/date"
@@ -211,6 +212,8 @@ export default function MyGameResultClient({ reportId }: { reportId: string }) {
                 <span className="text-[10px] text-white/30">Верно</span>
               </div>
             </div>
+
+            <MatchTitleChips titles={result.titles} className="mt-1" />
           </div>
         </div>
 
