@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowUpWideNarrow, ListChevronsDownUp, ListChevronsUpDown, Timer } from "lucide-react"
 
@@ -16,6 +17,7 @@ import { getPointsStringS } from "@/enum/points"
 import type { IQuestion } from "@/interface/question"
 import { getQuestionBonusLabel, isNegativeQuestionBonus, normalizeQuestionBonuses } from "@/enum/question-bonus"
 import QuestionElementMark from "@/components/start/active/QuestionElementMark"
+import { questionElementHint, questionElementVisual } from "@/lib/question-element"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
 
 interface IProps extends IQuestion {
@@ -29,6 +31,7 @@ function ItemQuestion(props: IProps) {
   const { id, title, time, points, bonuses, element, imageUrl, image_url } = question ?? {}
   const thumbUrl = imageUrl ?? image_url
   const questionBonuses = normalizeQuestionBonuses(bonuses)
+  const elementVisual = questionElementVisual(element)
   const [isDragging, setIsDragging] = useState(false)
 
   function handleDragStart(event: React.MouseEvent<HTMLButtonElement>) {
@@ -38,8 +41,23 @@ function ItemQuestion(props: IProps) {
   }
 
   return (
-    <Item variant="outline" size="sm" className="bg-background relative w-full overflow-hidden">
-      <div className="flex w-full flex-col gap-1">
+    <Item
+      variant="outline"
+      size="sm"
+      className="bg-background relative w-full overflow-hidden"
+      style={elementVisual ? { borderColor: elementVisual.accentColor } : undefined}
+    >
+      {elementVisual ? (
+        <span
+          aria-hidden
+          title={questionElementHint(elementVisual.id)}
+          className="absolute top-1.5 left-1.5 z-10 flex size-6 items-center justify-center rounded-full border bg-background"
+          style={{ borderColor: elementVisual.accentColor }}
+        >
+          <Image src={elementVisual.iconSrc} alt="" width={14} height={14} className="size-3.5 object-contain" />
+        </span>
+      ) : null}
+      <div className={cn("flex w-full flex-col gap-1", elementVisual && "pl-7")}>
         <div className="flex w-full flex-row items-center justify-between gap-2">
           <div className="flex flex-row items-center gap-1.5">
             <Badge variant="secondary" className="tabular-nums">
