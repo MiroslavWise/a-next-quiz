@@ -43,6 +43,7 @@ function StatusEndQuestionRow({ q }: { q: IReportQuestionScore }) {
         </span>
       </div>
       <ElementEffectsList effects={q.element_effects} variant="strip" className="border-t border-white/10 pt-1.5" />
+      <ElementEffectsList effects={q.team_effects} variant="strip" />
     </div>
   )
 }

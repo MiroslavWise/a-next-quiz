@@ -25,6 +25,10 @@ export interface IRank {
   element_effects_index?: number
   /** Эффекты одноразовых способностей за тот же закрытый вопрос — см. docs/API.md. */
   skill_effects?: ISkillEffect[]
+  /** Сплит пары за последний закрытый вопрос с ответом. */
+  team_effects?: IElementEffect[]
+  /** Партнёр по паре, если она ещё есть в снимке отчёта. */
+  partner_telegram_id?: number
 }
 
 export const getRank = async (reportId: string) => {

@@ -11,6 +11,8 @@ import type { LastSocketEventByType } from "@/hooks/socket-event-by-type"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import { normalizeTelegramId } from "@/lib/normalize"
 import { reportUserTotalPoints } from "@/api/reports"
+import { useReportTeams } from "@/components/start/teams/use-report-teams"
+import { pairColor, partnerTelegramId, teamOfMember } from "@/lib/report-teams"
 import { useAnswerOrderBy } from "../hooks/use-answer-order-by"
 import { useReportUserPoints } from "../hooks/use-report-user-points"
 import { statusesByIndexForUser, useUsersAnswersStatus } from "../hooks/use-users-answers-status"
@@ -59,6 +61,7 @@ function DataPointsLeader({
     lastByType,
     keepPrevious: true,
   })
+  const { data: teamsState } = useReportTeams({ reportId, lastByType })
 
   const { matrix } = useUsersAnswersStatus({ reportId, tgId, lastByType })
 
@@ -130,6 +133,18 @@ function DataPointsLeader({
             const tgKey = normalizeTelegramId(item.telegram_id)
             const answerOrder = Number.isFinite(tgKey) ? answerOrderByTelegramId.get(tgKey) : undefined
             const answerEntriesByIndex = Number.isFinite(tgKey) ? answerEntriesByTelegramId.get(tgKey) : undefined
+            const team = Number.isFinite(tgKey) ? teamOfMember(teamsState?.teams, tgKey) : undefined
+            const partnerId = partnerTelegramId(team, tgKey)
+            const prevId = index > 0 ? normalizeTelegramId(sortedData[index - 1]?.telegram_id) : NaN
+            const nextId = index < sortedData.length - 1 ? normalizeTelegramId(sortedData[index + 1]?.telegram_id) : NaN
+            const pairNeighbor =
+              partnerId == null
+                ? undefined
+                : partnerId === prevId
+                  ? "end"
+                  : partnerId === nextId
+                    ? "start"
+                    : undefined
             return (
               <UserPointsLeaderItem
                 key={item.telegram_id}
@@ -146,6 +161,8 @@ function DataPointsLeader({
                 totalQuestions={totalQuestions}
                 activeIndex={activeIndex}
                 answerEntriesByIndex={answerEntriesByIndex}
+                pairColor={team ? pairColor(team.id) : undefined}
+                pairNeighbor={pairNeighbor}
               />
             )
           })}

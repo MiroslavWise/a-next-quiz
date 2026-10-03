@@ -14,6 +14,9 @@ import { formatQuizPoints, isNegativeQuizPoints, quizPointsToneClass } from "@/l
 import { findPrizeEntryForUser, isRandomPrizeEntry } from "@/lib/report-prizes"
 import { reportMyScore, reportUserTotalPoints, type IReportQuestionScore, type IReportUserPoints } from "@/api/reports"
 import { useReportPrizesUsers } from "../hooks/use-report-prizes-users"
+import { useReportTeams } from "@/components/start/teams/use-report-teams"
+import { partnerTelegramId, teamOfMember } from "@/lib/report-teams"
+import { useUserByTgId } from "@/queries/user"
 
 interface IProps {
   reportId: string | number
@@ -47,6 +50,9 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
     enabled: !!reportId && !!tgId && !isLeader && !isObserver,
   })
   const { data: prizeWinners, isLoading: isLoadingPrizeWinners } = useReportPrizesUsers({ reportId })
+  const { data: teamsState } = useReportTeams({ reportId, enabled: !!reportId && !!tgId && !isLeader && !isObserver })
+  const myPartnerId = partnerTelegramId(teamOfMember(teamsState?.teams, tgId), tgId)
+  const { data: partner } = useUserByTgId(myPartnerId ?? 0, { enabled: !!myPartnerId })
 
   const myScore = useMemo(() => normalizeMyScore(data), [data])
   const myPrizeEntry = useMemo(() => findPrizeEntryForUser(prizeWinners, tgId), [prizeWinners, tgId])
@@ -94,6 +100,11 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
           <p className="mt-2 text-xs leading-snug text-rose-200/85">Сумма ниже нуля — учтены отрицательные эффекты недостатков стихий.</p>
         ) : null}
       </div>
+      {myPartnerId ? (
+        <p className="text-center text-sm text-white/80" role="status">
+          Пара: <span className="font-semibold text-white">{partner?.pseudo?.trim() || `Участник ${myPartnerId}`}</span>
+        </p>
+      ) : null}
       <MatchTitleChips titles={myScore.titles} className="justify-center" align="center" />
       {myScore.questions && myScore.questions.length > 0 ? (
         <ul className="space-y-2" aria-label="Результаты по вопросам">

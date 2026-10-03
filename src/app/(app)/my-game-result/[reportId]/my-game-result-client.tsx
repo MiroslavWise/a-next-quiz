@@ -51,6 +51,22 @@ function QuestionRow({ q, index }: { q: IMyGameResultQuestion; index: number }) 
           <QuestionElementMark element={q.element} variant="badge" className="mt-0.5 text-white/90" />
           <p className="line-clamp-3 text-sm leading-snug text-white/80">{q.title ?? `Вопрос ${index + 1}`}</p>
         </div>
+        {q.team_effects && q.team_effects.length > 0 && (
+          <div className="mt-1.5 flex flex-wrap gap-1">
+            {q.team_effects.map((eff, i) => (
+              <span
+                key={`team-${i}`}
+                className={cn(
+                  "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[10px] font-medium",
+                  eff.points >= 0 ? "bg-sky-500/15 text-sky-300" : "bg-red-500/15 text-red-400",
+                )}
+              >
+                {eff.points >= 0 ? "+" : ""}
+                {eff.points} {eff.title}
+              </span>
+            ))}
+          </div>
+        )}
         {q.element_effects && q.element_effects.length > 0 && (
           <div className="mt-1.5 flex flex-wrap gap-1">
             {q.element_effects.map((eff, i) => (

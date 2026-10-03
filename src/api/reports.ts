@@ -315,6 +315,81 @@ export const getReportUsers = async (reportId: string | number) => {
   })
 }
 
+/** Пара из двух игроков — `GET /report/{id}/teams` (docs/API.md). */
+export interface ITeam {
+  id: string
+  members: number[]
+}
+
+/** Живая заявка в пару. История declined/cancelled клиенту не приходит. */
+export interface ITeamInvite {
+  id: string
+  from: number
+  to: number
+  status: "pending" | "accepted" | "declined" | "cancelled"
+  created_at?: string
+}
+
+export interface IReportTeams {
+  teams: ITeam[]
+  invites: ITeamInvite[]
+}
+
+function teamError(res: { status: number; data: unknown }, fallback: string): never {
+  const body = res.data as { code?: unknown; message?: unknown } | undefined
+  const message = typeof body?.message === "string" && body.message.trim() ? body.message : fallback
+  const code = typeof body?.code === "string" ? body.code : undefined
+  throw new ApiRequestError(message, res.status, code)
+}
+
+export const getReportTeams = async (reportId: string | number) => {
+  return api.get(reportPath(reportId, "teams"), { headers: getApiHeaders() }).then((res) => {
+    if (res.status >= 200 && res.status < 300) {
+      const data = res.data as Partial<IReportTeams>
+      return {
+        teams: Array.isArray(data.teams) ? data.teams : [],
+        invites: Array.isArray(data.invites) ? data.invites : [],
+      } satisfies IReportTeams
+    }
+    return teamError(res, "Не удалось загрузить команды")
+  })
+}
+
+export const postTeamInvite = async (reportId: string | number, to: number) => {
+  return api.post(reportPath(reportId, "team-invites"), { to }, { headers: getApiHeaders() }).then((res) => {
+    if (res.status >= 200 && res.status < 300) return res.data as { invite?: ITeamInvite; team?: ITeam }
+    return teamError(res, "Не удалось отправить заявку")
+  })
+}
+
+export const acceptTeamInvite = async (reportId: string | number, inviteId: string) => {
+  return api.post(reportPath(reportId, `team-invites/${inviteId}/accept`), undefined, { headers: getApiHeaders() }).then((res) => {
+    if (res.status >= 200 && res.status < 300) return res.data as { team?: ITeam }
+    return teamError(res, "Не удалось принять заявку")
+  })
+}
+
+export const declineTeamInvite = async (reportId: string | number, inviteId: string) => {
+  return api.post(reportPath(reportId, `team-invites/${inviteId}/decline`), undefined, { headers: getApiHeaders() }).then((res) => {
+    if (res.status === 204 || (res.status >= 200 && res.status < 300)) return
+    return teamError(res, "Не удалось отклонить заявку")
+  })
+}
+
+export const revokeTeamInvite = async (reportId: string | number, inviteId: string) => {
+  return api.delete(reportPath(reportId, `team-invites/${inviteId}`), { headers: getApiHeaders() }).then((res) => {
+    if (res.status === 204 || (res.status >= 200 && res.status < 300)) return
+    return teamError(res, "Не удалось отозвать заявку")
+  })
+}
+
+export const leaveTeam = async (reportId: string | number, teamId: string) => {
+  return api.delete(reportPath(reportId, `teams/${teamId}`), { headers: getApiHeaders() }).then((res) => {
+    if (res.status === 204 || (res.status >= 200 && res.status < 300)) return
+    return teamError(res, "Не удалось выйти из пары")
+  })
+}
+
 /** Исключить участника из `reports.users` (см. `DELETE /report/{report_id}/users/{telegram_id}` в docs/API.md). */
 export const removeUserFromReportUsers = async (reportId: string | number, targetTelegramId: string | number) => {
   return api.delete(reportPath(reportId, `users/${targetTelegramId}`), { headers: getApiHeaders() }).then((res) => {
@@ -380,6 +455,8 @@ export interface IReportQuestionScore {
   element?: "FIRE" | "WATER" | "EARTH" | "AIR" | null
   /** Разбивка очков по эффектам стихии за вопрос — см. docs/API.md. */
   element_effects?: IElementEffect[]
+  /** Сплит пары после личного итога. Не входит в `element_effects`. */
+  team_effects?: IElementEffect[]
 }
 
 /** Звание матча — факт вечера без очков (`docs/API.md`, `titles`). */
@@ -688,6 +765,7 @@ export interface IMyGameResultQuestion {
   points: number
   is_right: boolean | null
   element_effects?: IElementEffect[]
+  team_effects?: IElementEffect[]
 }
 
 /** Ответ `GET /report/{report_id}/my-game-result` (docs/API.md). */

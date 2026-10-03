@@ -10,6 +10,7 @@ import { ElementEffectsList } from "@/components/elements/ElementEffectsList"
 
 import { cn } from "@/lib/utils"
 import { getRank } from "@/api/rank"
+import { useUserByTgId } from "@/queries/user"
 import { useRankBonuses } from "../hooks/use-rank-bonuses"
 import { useElementEffectsRank } from "../hooks/use-element-effects-rank"
 import { useSkillEffectsRank } from "../hooks/use-skill-effects-rank"
@@ -144,6 +145,9 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
   const { luckyBonus } = useRankBonuses({ activeIndex, data, isTopThree })
   const endElementEffects = useElementEffectsRank({ activeIndex, data })
   const endSkillEffects = useSkillEffectsRank({ activeIndex, data })
+  const partnerId = data?.partner_telegram_id
+  const { data: partner } = useUserByTgId(partnerId ?? 0, { enabled: !!partnerId })
+  const partnerName = partner?.pseudo?.trim() || (partnerId ? `Участник ${partnerId}` : "")
 
   if (isFetching && !data) {
     return <div className="glass-start-liquid-palette h-24 w-full animate-pulse rounded-2xl xl:h-28" />
@@ -228,6 +232,18 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
             </div>
             <LuckyBonusPointsChip points={luckyBonus.points} />
           </div>
+        </div>
+      ) : null}
+
+      {partnerId ? (
+        <p className="mt-3 text-sm text-white/80" role="status">
+          Пара: <span className="font-semibold text-white">{partnerName}</span>
+        </p>
+      ) : null}
+
+      {data.team_effects?.length ? (
+        <div className={cn(rankOutcomeBlockClass, "mt-3 overflow-hidden border-white/12 bg-black/25")} role="status" aria-live="polite">
+          <ElementEffectsList effects={data.team_effects} variant="strip" />
         </div>
       ) : null}
 

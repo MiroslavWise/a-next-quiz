@@ -7,6 +7,8 @@ import Image from "next/image"
 import { QrCode } from "lucide-react"
 
 import UsersWaiting from "./UsersWaiting"
+import { TeamInviteBanners } from "@/components/start/teams/TeamInviteBanners"
+import { useReportTeams } from "@/components/start/teams/use-report-teams"
 import Skeleton from "@/components/ui/skeleton"
 import ButtonToObserver from "./ButtonToObserver"
 const PrizesPicker = lazy(() => import("./PrizesPicker"))
@@ -104,6 +106,7 @@ function StatusWaiting(props: IProps) {
   const meInUsers = !!users?.users?.includes(tgId)
   const meInObservers = !!users?.observers?.includes(tgId)
   const isLeader = tgId === data?.user_id
+  const { data: teamsState } = useReportTeams({ reportId: data?.id ?? "", lastByType, enabled: !!data?.id && !!tgId })
   const playersCount = users?.users?.length ?? 0
 
   const { data: me } = useUserByTgId(tgId)
@@ -343,7 +346,17 @@ function StatusWaiting(props: IProps) {
         >
           <RandomPrizeLobbyBanner />
         </Suspense>
-        <UsersWaiting users={users!} tgId={tgId!} reportId={data.id} lastByType={lastByType} isLeader={isLeader} />
+        {meInUsers && !isLeader ? (
+          <TeamInviteBanners reportId={data.id} tgId={tgId} invites={teamsState?.invites ?? []} />
+        ) : null}
+        <UsersWaiting
+          users={users!}
+          tgId={tgId!}
+          reportId={data.id}
+          lastByType={lastByType}
+          isLeader={isLeader}
+          canInvite={meInUsers && !isLeader}
+        />
         <div className={isLeader ? "spacer-bottom-next" : "spacer-bottom-game"} aria-hidden />
       </div>
       {isLeader && (

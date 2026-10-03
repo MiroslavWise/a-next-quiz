@@ -26,6 +26,9 @@ import {
 import { useUserByTgId } from "@/queries/user"
 import { useShowDataUser } from "@/hooks/use-show-data-user"
 import { reportUserScore, reportUserTotalPoints, type IReportQuestionScore, type IReportUserPoints } from "@/api/reports"
+import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
+import { useReportTeams } from "@/components/start/teams/use-report-teams"
+import { pairColor, teamOfMember } from "@/lib/report-teams"
 
 interface IProps extends IReportUserPoints {
   tgId: number
@@ -90,6 +93,7 @@ function QuestionScoreRow({ q, reducedEffects }: { q: IReportQuestionScore; redu
         </span>
       </div>
       <ElementEffectsList effects={q.element_effects} variant="strip" className="border-border/60 border-t pt-1.5" />
+      <ElementEffectsList effects={q.team_effects} variant="strip" />
     </div>
   )
 }
@@ -111,6 +115,10 @@ function ItemUserReportPoints({
   const score = reportUserTotalPoints({ points, total_points })
   const [scoreOpen, setScoreOpen] = useState(false)
   const { data, isLoading } = useUserByTgId(telegram_id, { enabled: !!telegram_id && !!tgId })
+  const { data: teamsState } = useReportTeams({ reportId: reportId ?? "", enabled: !!reportId })
+  const memberId = Number(telegram_id)
+  const pair = Number.isFinite(memberId) ? teamOfMember(teamsState?.teams, memberId) : undefined
+  const color = pair ? pairColor(pair.id) : undefined
 
   const {
     data: userScoreDetail,
@@ -266,6 +274,7 @@ function ItemUserReportPoints({
             <div className="flex min-w-0 items-center gap-1.5 overflow-hidden">
               <p className={cn("min-w-0 truncate text-sm font-semibold", gameTone ? "text-white" : "text-foreground")} title={pseudo}>
                 {pseudo}
+                {color ? <span className="ml-2 align-middle"><TeamPairBadge color={color} /></span> : null}
                 {isRandomPrize ? (
                   <span
                     className={cn(

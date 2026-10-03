@@ -12,12 +12,16 @@ import { cn } from "@/lib/utils"
 import { useUserByTgId } from "@/queries/user"
 import { reportUserTotalPoints, type IReportUserPoints } from "@/api/reports"
 import { MatchTitleChips } from "@/components/report/MatchTitleChip"
+import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
+import { pairColor, teamOfMember } from "@/lib/report-teams"
+import type { ITeam } from "@/api/reports"
 
 interface IProps {
   users: Array<IReportUserPoints & { rank: number }>
   tgId: number
   prizes: number[]
   elementAvatarId?: number | null
+  teams?: ITeam[]
 }
 
 function rankCardClass(rank: 1 | 2 | 3) {
@@ -39,11 +43,13 @@ function PodiumUserCard({
   tgId,
   isPrizePlace,
   elementAvatarId,
+  teams,
 }: {
   user: IReportUserPoints & { rank: 1 | 2 | 3 }
   tgId: number
   isPrizePlace: boolean
   elementAvatarId?: number | null
+  teams?: ITeam[]
 }) {
   const { data, isLoading } = useUserByTgId(user.telegram_id, { enabled: !!user.telegram_id && !!tgId })
 
@@ -95,6 +101,14 @@ function PodiumUserCard({
           {pseudo}
         </p>
         <MatchTitleChips titles={user.titles} align="center" className="mt-1.5" />
+        {(() => {
+          const team = teamOfMember(teams, Number(user.telegram_id))
+          return team ? (
+            <div className="mt-1.5 flex justify-center">
+              <TeamPairBadge color={pairColor(team.id)} />
+            </div>
+          ) : null
+        })()}
         <p className="mt-2 inline-flex items-center justify-center gap-1.5 text-sm font-black text-white tabular-nums">
           <PickaxeIcon points={score} className={cn("size-3.5", rankAccentClass(user.rank))} />
           {score.toLocaleString("ru-RU")}
@@ -104,7 +118,7 @@ function PodiumUserCard({
   )
 }
 
-function Podium({ users, tgId, prizes, elementAvatarId }: IProps) {
+function Podium({ users, tgId, prizes, elementAvatarId, teams }: IProps) {
   const topUsers = users
     .filter((user): user is IReportUserPoints & { rank: 1 | 2 | 3 } => isTopRank(user.rank))
     .toSorted((a, b) => a.rank - b.rank)
@@ -128,6 +142,7 @@ function Podium({ users, tgId, prizes, elementAvatarId }: IProps) {
             tgId={tgId}
             isPrizePlace={prizes.includes(user.rank)}
             elementAvatarId={elementAvatarId}
+            teams={teams}
           />
         ))}
         {!topUsers.length ? <p className="px-1 py-2 text-sm text-white/55">Нет участников рейтинга</p> : null}

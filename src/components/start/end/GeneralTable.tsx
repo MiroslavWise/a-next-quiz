@@ -13,6 +13,7 @@ import { randomPrizeWinnerIds } from "@/lib/report-prizes"
 import { getReportUserPoints, reportUserTotalPoints, type IReportQuestionScore } from "@/api/reports"
 import { reportUserPointsQueryKey } from "../hooks/use-report-user-points"
 import { useReportPrizesUsers } from "../hooks/use-report-prizes-users"
+import { useReportTeams } from "@/components/start/teams/use-report-teams"
 
 interface IProps {
   reportId: string | number
@@ -34,6 +35,7 @@ function GeneralTable({ reportId, tgId, showLeaderboard, prizes, elementAvatarId
     queryFn: () => getReportUserPoints(reportId),
   })
   const { data: prizeWinners } = useReportPrizesUsers({ reportId })
+  const { data: teamsState } = useReportTeams({ reportId, enabled: !!reportId && showLeaderboard })
   const randomWinners = useMemo(() => randomPrizeWinnerIds(prizeWinners), [prizeWinners])
 
   const sortedLeaderboard = useMemo(() => {
@@ -68,7 +70,7 @@ function GeneralTable({ reportId, tgId, showLeaderboard, prizes, elementAvatarId
         </p>
       ) : null}
       <div className="shrink-0">
-        <Podium users={topThree} tgId={tgId} prizes={prizes} elementAvatarId={elementAvatarId} />
+        <Podium users={topThree} tgId={tgId} prizes={prizes} elementAvatarId={elementAvatarId} teams={teamsState?.teams} />
       </div>
       <div className="w-full lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-1">
         <ItemGroup className={prizes.length > 0 ? "space-y-4 pt-1 pl-1" : "space-y-4"}>

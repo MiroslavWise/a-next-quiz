@@ -1,17 +1,22 @@
 "use client"
 
 import { Users } from "lucide-react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { off, on, postEvent, type PopupButton } from "@tma.js/sdk"
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react"
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import Skeleton from "@/components/ui/skeleton"
 import { UserAvatar } from "@/components/common/UserAvatar"
 const LottieObserver = lazy(() => import("./LottieObserver"))
+import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
+import { reportTeamsQueryKey, useReportTeams } from "@/components/start/teams/use-report-teams"
 
 import { cn } from "@/lib/utils"
 import { useUserByTgId } from "@/queries/user"
-import { removeUserFromReportUsers } from "@/api/reports"
+import { leaveTeam, postTeamInvite, removeUserFromReportUsers, revokeTeamInvite, type ITeam, type ITeamInvite } from "@/api/reports"
+import { ApiRequestError } from "@/api/errors"
+import { pairColor, teamOfMember } from "@/lib/report-teams"
+import { showToast } from "@/stores/toast"
 import { useSocketEventEffect, type LastSocketEventByType } from "@/hooks/socket-event-by-type"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 
@@ -28,11 +33,56 @@ interface UsersWaitingProps {
   lastByType: LastSocketEventByType<QuizEvent>
   /** Ведущий (владелец отчёта) — только ему доступно исключение игроков из списка. */
   isLeader: boolean
+  /** Игрок в лобби может звать в пару. Ведущий и наблюдатель — нет. */
+  canInvite: boolean
 }
 
-function UsersWaiting({ users: initialUsers = { users: [], observers: [] }, tgId, reportId, lastByType, isLeader }: UsersWaitingProps) {
-  const usersSource = initialUsers ?? { users: [], observers: [] }
+type LobbyCard = { user: number; type: "user" | "observer" }
 
+type LobbyGroup =
+  | { kind: "pair"; team: ITeam; members: LobbyCard[] }
+  | { kind: "single"; card: LobbyCard }
+
+function toastTeamError(error: unknown) {
+  if (ApiRequestError.is(error)) {
+    showToast(error.message)
+    return
+  }
+  showToast("Не удалось обновить команду")
+}
+
+function buildLobbyGroups(cards: LobbyCard[], teams: ITeam[]): LobbyGroup[] {
+  const players = cards.filter((card) => card.type === "user")
+  const observers = cards.filter((card) => card.type === "observer").sort((a, b) => a.user - b.user)
+  const byId = new Map(players.map((card) => [card.user, card]))
+  const used = new Set<number>()
+  const groups: LobbyGroup[] = []
+  const orderedTeams = [...teams].sort((a, b) => Math.min(...a.members) - Math.min(...b.members))
+  for (const team of orderedTeams) {
+    const members = [...team.members]
+      .sort((a, b) => a - b)
+      .map((id) => byId.get(id))
+      .filter((card): card is LobbyCard => !!card)
+    if (members.length < 2) continue
+    members.forEach((card) => used.add(card.user))
+    groups.push({ kind: "pair", team, members })
+  }
+  for (const card of players.filter((item) => !used.has(item.user)).sort((a, b) => a.user - b.user)) {
+    groups.push({ kind: "single", card })
+  }
+  for (const card of observers) groups.push({ kind: "single", card })
+  return groups
+}
+
+function UsersWaiting({
+  users: initialUsers = { users: [], observers: [] },
+  tgId,
+  reportId,
+  lastByType,
+  isLeader,
+  canInvite,
+}: UsersWaitingProps) {
+  const usersSource = initialUsers ?? { users: [], observers: [] }
   const { users = [], observers = [] } = usersSource
 
   const totalUsersRaw = [
@@ -40,16 +90,15 @@ function UsersWaiting({ users: initialUsers = { users: [], observers: [] }, tgId
     ...observers.map((observer) => ({ user: observer, type: "observer" as const })),
   ]
 
-  const uniqueByTelegramId = new Map<number, { user: number; type: "user" | "observer" }>()
+  const uniqueByTelegramId = new Map<number, LobbyCard>()
   for (const item of totalUsersRaw) {
-    // При дублях приоритет у "user", чтобы не затирать участника наблюдателем.
     const prev = uniqueByTelegramId.get(item.user)
     if (!prev || (prev.type === "observer" && item.type === "user")) {
       uniqueByTelegramId.set(item.user, item)
     }
   }
 
-  const totalUsers = [...uniqueByTelegramId.values()].filter((item) => !(isLeader && item.user === tgId)).sort((a, b) => a.user - b.user)
+  const totalUsers = [...uniqueByTelegramId.values()].filter((item) => !(isLeader && item.user === tgId))
 
   return (
     <section
@@ -67,7 +116,14 @@ function UsersWaiting({ users: initialUsers = { users: [], observers: [] }, tgId
           </p>
         </div>
       ) : (
-        <CenterPlayerGrid users={totalUsers} tgId={tgId} reportId={reportId} isLeader={isLeader} lastByType={lastByType} />
+        <CenterPlayerGrid
+          users={totalUsers}
+          tgId={tgId}
+          reportId={reportId}
+          isLeader={isLeader}
+          canInvite={canInvite}
+          lastByType={lastByType}
+        />
       )}
     </section>
   )
@@ -77,10 +133,11 @@ UsersWaiting.displayName = "UsersWaiting"
 export default UsersWaiting
 
 interface IProps {
-  users: { user: number; type: "user" | "observer" }[]
+  users: LobbyCard[]
   tgId: number
   reportId: number
   isLeader: boolean
+  canInvite: boolean
   lastByType: LastSocketEventByType<QuizEvent>
 }
 
@@ -91,11 +148,19 @@ function parseUserProfileUpdatedPayload(msg: Record<string, unknown>) {
   return Number.isFinite(telegramId) && reportRaw != null ? { telegramId, reportId: reportRaw } : null
 }
 
-function CenterPlayerGrid({ users, tgId, reportId, isLeader, lastByType }: IProps) {
+function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByType }: IProps) {
   const queryClient = useQueryClient()
   const [highlightedTelegramId, setHighlightedTelegramId] = useState<number | null>(null)
   const clearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const playersCount = users.filter((item) => item.type === "user").length
+  const { data: teamsState } = useReportTeams({ reportId, lastByType })
+  const teams = teamsState?.teams ?? []
+  const invites = teamsState?.invites ?? []
+  const groups = useMemo(() => buildLobbyGroups(users, teams), [users, teams])
+
+  const refreshTeams = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: reportTeamsQueryKey(reportId) })
+  }, [queryClient, reportId])
 
   const focusUserCard = useCallback((telegramId: number) => {
     setHighlightedTelegramId(telegramId)
@@ -116,9 +181,7 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, lastByType }: IProp
       if (String(parsed.reportId) !== String(reportId)) return
 
       const tid = parsed.telegramId
-
       focusUserCard(tid)
-
       queryClient.invalidateQueries({
         predicate: (q) => {
           const key = q.queryKey
@@ -139,40 +202,107 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, lastByType }: IProp
   useEffect(() => {
     function handlePopupClosed(event: { button_id?: string }) {
       const buttonId = (event.button_id as string) ?? ""
-      if (!buttonId.startsWith("remove_report_user|")) return
       const parts = buttonId.split("|")
       if (parts.length !== 3) return
-      const [, rid, targetRaw] = parts
+      const [action, rid, targetRaw] = parts
       if (String(rid) !== String(reportId)) return
-      const targetTg = Number(targetRaw)
-      if (!Number.isFinite(targetTg)) return
 
-      void removeUserFromReportUsers(reportId, targetTg).catch((e) => {
-        console.error(e)
-      })
+      if (action === "remove_report_user") {
+        const targetTg = Number(targetRaw)
+        if (!Number.isFinite(targetTg)) return
+        void removeUserFromReportUsers(reportId, targetTg).catch((e) => {
+          console.error(e)
+        })
+        return
+      }
+
+      if (action === "create_team") {
+        const targetTg = Number(targetRaw)
+        if (!Number.isFinite(targetTg)) return
+        void postTeamInvite(reportId, targetTg)
+          .then((res) => {
+            showToast(res.team ? "Команда создана" : "Заявка отправлена")
+            refreshTeams()
+          })
+          .catch(toastTeamError)
+        return
+      }
+
+      if (action === "leave_team") {
+        void leaveTeam(reportId, targetRaw)
+          .then(() => {
+            showToast("Пара распущена")
+            refreshTeams()
+          })
+          .catch(toastTeamError)
+        return
+      }
+
+      if (action === "revoke_team") {
+        void revokeTeamInvite(reportId, targetRaw)
+          .then(() => {
+            showToast("Заявка отозвана")
+            refreshTeams()
+          })
+          .catch(toastTeamError)
+      }
     }
 
     on("popup_closed", handlePopupClosed)
     return () => off("popup_closed", handlePopupClosed)
-  }, [tgId, reportId, queryClient])
+  }, [reportId, refreshTeams])
 
   return (
     <div
       className={cn("relative w-full after:leading-none after:text-white/6 after:tabular-nums after:select-none", styles.wrapper)}
       style={{ "--num": playersCount }}
     >
-      <div className="relative z-10 grid min-h-60 w-full grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-3">
-        {users.map((item) => (
-          <UserWaiting
-            key={`${item.type}-${item.user}`}
-            user={item.user}
-            tgId={tgId}
-            reportId={reportId}
-            isLeader={isLeader}
-            type={item.type}
-            highlighted={highlightedTelegramId === item.user}
-          />
-        ))}
+      <div className="relative z-10 flex min-h-60 w-full flex-wrap content-start gap-3">
+        {groups.map((group) => {
+          if (group.kind === "pair") {
+            const color = pairColor(group.team.id)
+            return (
+              <div
+                key={group.team.id}
+                className="flex gap-2 rounded-2xl border-2 px-1.5 py-1.5"
+                style={{ borderColor: color }}
+              >
+                {group.members.map((item) => (
+                  <UserWaiting
+                    key={`${item.type}-${item.user}`}
+                    user={item.user}
+                    tgId={tgId}
+                    reportId={reportId}
+                    isLeader={isLeader}
+                    canInvite={canInvite}
+                    type={item.type}
+                    highlighted={highlightedTelegramId === item.user}
+                    team={group.team}
+                    pairColor={color}
+                    invites={invites}
+                    myTeam={teamOfMember(teams, tgId)}
+                  />
+                ))}
+              </div>
+            )
+          }
+          const item = group.card
+          return (
+            <UserWaiting
+              key={`${item.type}-${item.user}`}
+              user={item.user}
+              tgId={tgId}
+              reportId={reportId}
+              isLeader={isLeader}
+              canInvite={canInvite}
+              type={item.type}
+              highlighted={highlightedTelegramId === item.user}
+              invites={invites}
+              myTeam={teamOfMember(teams, tgId)}
+              theirTeam={item.type === "user" ? teamOfMember(teams, item.user) : undefined}
+            />
+          )
+        })}
       </div>
     </div>
   )
@@ -183,27 +313,45 @@ function UserWaiting({
   tgId,
   reportId,
   isLeader,
+  canInvite,
   type,
   highlighted,
+  team,
+  pairColor: color,
+  invites,
+  myTeam,
+  theirTeam,
 }: {
   user: number
   tgId: number
   reportId: number
   isLeader: boolean
+  canInvite: boolean
   type: "user" | "observer"
   highlighted: boolean
+  team?: ITeam
+  pairColor?: string
+  invites: ITeamInvite[]
+  myTeam?: ITeam
+  theirTeam?: ITeam
 }) {
   const { data, isLoading } = useUserByTgId(user, { enabled: !!user && !!tgId })
 
   const bg = data?.bg
   const isObserver = type === "observer"
-  const shouldPulse = highlighted && !isObserver ? highlighted : highlighted
+  const isSelf = user === tgId
+  const shouldPulse = highlighted
   const avatarClass = shouldPulse
     ? "border-(--accent-orb) ring-2 ring-(--accent-orb)/30 animate-pulse"
     : isObserver
       ? "border-white/25"
       : "border-(--accent-orb)/35"
-  const canRemoveFromReport = isLeader
+  const canRemoveFromReport = isLeader && !isLoading
+  const outgoing = invites.find((invite) => invite.status === "pending" && invite.from === tgId && invite.to === user)
+  const incoming = invites.find((invite) => invite.status === "pending" && invite.from === user && invite.to === tgId)
+  const myOutgoing = invites.find((invite) => invite.status === "pending" && invite.from === tgId)
+  const isPartner = !!team && team.members.includes(tgId) && team.members.includes(user) && !isSelf
+  const occupiedByOther = !!theirTeam && !isPartner
 
   function openRemoveUserPopup() {
     if (!canRemoveFromReport || !reportId) return
@@ -223,18 +371,110 @@ function UserWaiting({
     })
   }
 
+  function openCreateTeamPopup() {
+    const pseudoLabel = data?.pseudo?.trim() || `Участник ${user}`
+    const buttons: PopupButton[] = [
+      { id: "cancel_create_team", type: "cancel" },
+      { id: `create_team|${reportId}|${user}`, text: "Создать", type: "default" },
+    ]
+    postEvent("web_app_open_popup", {
+      title: "Создать команду",
+      message: `Хотите создать команду с «${pseudoLabel}»?`,
+      buttons,
+    })
+  }
+
+  function openLeavePopup() {
+    if (!team) return
+    const pseudoLabel = data?.pseudo?.trim() || `Участник ${user}`
+    const buttons: PopupButton[] = [
+      { id: "cancel_leave_team", type: "cancel" },
+      { id: `leave_team|${reportId}|${team.id}`, text: "Выйти", type: "destructive" },
+    ]
+    postEvent("web_app_open_popup", {
+      title: "Выйти из пары?",
+      message: `Распустить команду с «${pseudoLabel}»?`,
+      buttons,
+    })
+  }
+
+  function openRevokePopup() {
+    if (!outgoing) return
+    const pseudoLabel = data?.pseudo?.trim() || `Участник ${user}`
+    const buttons: PopupButton[] = [
+      { id: "cancel_revoke_team", type: "cancel" },
+      { id: `revoke_team|${reportId}|${outgoing.id}`, text: "Отозвать", type: "destructive" },
+    ]
+    postEvent("web_app_open_popup", {
+      title: "Отозвать заявку?",
+      message: `Отозвать приглашение для «${pseudoLabel}»?`,
+      buttons,
+    })
+  }
+
+  function onPlayerClick() {
+    if (isLoading || isObserver || isSelf) return
+    if (canRemoveFromReport) {
+      openRemoveUserPopup()
+      return
+    }
+    if (!canInvite) return
+    if (isPartner) {
+      openLeavePopup()
+      return
+    }
+    if (outgoing) {
+      openRevokePopup()
+      return
+    }
+    if (myTeam) {
+      showToast("Вы уже в паре")
+      return
+    }
+    if (occupiedByOther) {
+      showToast("Игрок уже в паре")
+      return
+    }
+    if (myOutgoing && myOutgoing.to !== user) {
+      showToast("Заявка уже отправлена")
+      return
+    }
+    openCreateTeamPopup()
+  }
+
+  const interactive = !isLoading && (canRemoveFromReport || (canInvite && !isObserver && !isSelf))
+  const title = canRemoveFromReport
+    ? `${data?.pseudo ?? ""} — нажмите, чтобы исключить из игроков`
+    : outgoing
+      ? `${data?.pseudo ?? ""} — ожидает ответ, нажмите чтобы отозвать`
+      : isPartner
+        ? `${data?.pseudo ?? ""} — нажмите, чтобы выйти из пары`
+        : canInvite && !isObserver && !isSelf
+          ? `${data?.pseudo ?? ""} — нажмите, чтобы создать команду`
+          : (data?.pseudo ?? "")
+
   return (
     <div
       data-user-card={user}
       className={cn(
-        "flex min-h-0 min-w-0 flex-col items-center justify-center gap-1 outline-none",
-        canRemoveFromReport && !isLoading && "cursor-pointer",
+        "flex min-h-0 w-[4.5rem] min-w-0 flex-col items-center justify-center gap-1 outline-none sm:w-20",
+        interactive && "cursor-pointer",
       )}
-      title={canRemoveFromReport && !isLoading ? `${data?.pseudo ?? ""} — нажмите, чтобы исключить из игроков` : (data?.pseudo ?? "")}
+      title={title}
       aria-label={data?.pseudo ?? ""}
-      role={canRemoveFromReport ? "button" : undefined}
-      tabIndex={canRemoveFromReport && !isLoading ? 0 : undefined}
-      onClick={canRemoveFromReport && !isLoading ? openRemoveUserPopup : undefined}
+      role={interactive ? "button" : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      onClick={interactive ? onPlayerClick : undefined}
+      onKeyDown={
+        interactive
+          ? (event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault()
+                onPlayerClick()
+              }
+            }
+          : undefined
+      }
     >
       {isLoading ? (
         <>
@@ -263,6 +503,9 @@ function UserWaiting({
           <p className={cn("max-w-16 truncate text-[0.65rem] leading-none sm:max-w-20", isObserver ? "text-white/55" : "text-white/90")}>
             {data?.pseudo ?? ""}
           </p>
+          {color ? <TeamPairBadge color={color} /> : null}
+          {outgoing ? <span className="text-[0.6rem] leading-none text-white/55">ожидает</span> : null}
+          {incoming && canInvite ? <span className="text-[0.6rem] leading-none text-white/70">зовёт вас</span> : null}
         </>
       )}
     </div>

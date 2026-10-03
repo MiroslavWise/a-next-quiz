@@ -15,6 +15,7 @@ import { useUserByTgId } from "@/queries/user"
 import { useShowDataUser } from "@/hooks/use-show-data-user"
 import type { IUsersAnswerStatusEntry } from "@/api/reports"
 import { formatQuizPoints, isNegativeQuizPoints } from "@/lib/quiz-points"
+import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
 
 interface IProps {
   tgId: number
@@ -30,6 +31,8 @@ interface IProps {
   totalQuestions?: number
   activeIndex?: number
   answerEntriesByIndex?: Map<number, IUsersAnswerStatusEntry>
+  pairColor?: string
+  pairNeighbor?: "start" | "end"
 }
 
 function UserPointsLeaderItem({
@@ -46,6 +49,8 @@ function UserPointsLeaderItem({
   totalQuestions = 0,
   activeIndex,
   answerEntriesByIndex,
+  pairColor,
+  pairNeighbor,
 }: IProps) {
   const showDataUsers = useShowDataUser()
   const { data, isLoading } = useUserByTgId(telegram_id, { enabled: !!tgId && !!telegram_id })
@@ -82,7 +87,10 @@ function UserPointsLeaderItem({
         isGameAvatar && "shadow-[0_0_16px_rgba(255,255,255,0.42),0_0_1px_rgba(255,255,255,0.95)]",
         isGameAvatar && !isPrizePlace && "border border-white/50 bg-white/12 ring-1 ring-white/40",
         isGameAvatar && isPrizePlace && "ring-white/55",
+        pairNeighbor === "start" && "rounded-b-md",
+        pairNeighbor === "end" && "rounded-t-md",
       )}
+      style={pairColor ? { boxShadow: `inset 3px 0 0 ${pairColor}` } : undefined}
     >
       <div
         className={cn(
@@ -128,6 +136,7 @@ function UserPointsLeaderItem({
         />
         <div className="flex min-w-0 flex-col justify-center gap-0.5">
           <p className="truncate text-[0.7rem] leading-none font-medium text-white">{pseudo}</p>
+          {pairColor ? <TeamPairBadge color={pairColor} /> : null}
           {showDataUsers && adminSubtitle && <span className="truncate text-[0.45rem] leading-none text-white/60">{adminSubtitle}</span>}
         </div>
         <div className="ml-auto flex shrink-0 items-center gap-1">
