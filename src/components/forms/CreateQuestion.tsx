@@ -10,6 +10,7 @@ import Textarea from "../ui/textarea"
 import { Field, FieldError, FieldLabel } from "../ui/field"
 import { OptionalImageUploadField } from "./OptionalImageUploadField"
 import { QuestionAnswersFields } from "./QuestionAnswersFields"
+import QuestionElementField from "./QuestionElementField"
 import { QuestionBonusesField } from "./QuestionBonusesField"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select"
 
@@ -45,6 +46,7 @@ function CreateQuestion({ quizId }: { quizId: string }) {
       time: Time.HIGH,
       points: Points.HIGH,
       bonuses: [],
+      element: null,
       answers: Array.from({ length: 4 }).map(() => ({
         id: "",
         text: "",
@@ -67,6 +69,7 @@ function CreateQuestion({ quizId }: { quizId: string }) {
         time: data.time,
         points: data.points,
         bonuses: questionBonusesToApi(data.bonuses),
+        element: data.element ?? null,
       }
 
       const res = await postCreateQuestion(body)
@@ -174,6 +177,13 @@ function CreateQuestion({ quizId }: { quizId: string }) {
         name="bonuses"
         render={({ field, fieldState }) => (
           <QuestionBonusesField value={field.value} onChange={field.onChange} invalid={fieldState.invalid} />
+        )}
+      />
+      <Controller
+        control={control}
+        name="element"
+        render={({ field, fieldState }) => (
+          <QuestionElementField value={field.value} onChange={field.onChange} invalid={fieldState.invalid} />
         )}
       />
       <OptionalImageUploadField

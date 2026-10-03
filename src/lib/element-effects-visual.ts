@@ -28,6 +28,7 @@ const GENERIC_VISUALS: Record<string, ElementEffectVisual> = {
   q_reverse_scoring: { accentColor: "#fb923c", iconSrc: null, tone: "bonus" },
   q_progressive_bonus: { accentColor: "#34d399", iconSrc: null, tone: "bonus" },
   q_sequential_order_bonus: { accentColor: "#f87171", iconSrc: null, tone: "bonus" },
+  question_element: { accentColor: "#f5c16c", iconSrc: null, tone: "bonus" },
   lucky_plus: { accentColor: "#fde047", iconSrc: null, tone: "bonus" },
   skill_boost: { accentColor: "#f59e0b", iconSrc: null, tone: "bonus" },
   skill_shield: { accentColor: "#38bdf8", iconSrc: null, tone: "neutral" },

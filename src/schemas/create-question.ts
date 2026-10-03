@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { object, string, number, array, boolean, mixed, type InferType } from "yup"
 
+import { EUserElement } from "@/enum/element"
 import { Time } from "@/enum/time"
 import { Points } from "@/enum/points"
 import { QuestionBonus } from "@/enum/question-bonus"
@@ -18,6 +19,13 @@ const schema = object({
     .of(mixed<QuestionBonus>().oneOf(Object.values(QuestionBonus)).required())
     .default([])
     .nullable(),
+  element: mixed<EUserElement>()
+    .nullable()
+    .default(null)
+    .test("question-element", "Некорректная стихия", (value) => {
+      if (value == null) return true
+      return value === EUserElement.FIRE || value === EUserElement.WATER || value === EUserElement.EARTH || value === EUserElement.AIR
+    }),
 })
 
 const schemaWithAnswers = object({

@@ -1,6 +1,7 @@
 import { patchQuestion } from "@/api/questions"
 import { questionBonusesEqual, questionBonusesToApi } from "@/enum/question-bonus"
 import type { IQuestion } from "@/interface/question"
+import { questionElementId } from "@/lib/question-element"
 import type { CreateQuestionFormDataWithAnswers } from "@/schemas/create-question"
 
 interface IData {
@@ -15,6 +16,8 @@ export async function updateQuestion({ question, data }: IData) {
   if (!!data.time && data.time !== question.time) body.time = data.time
   if (!!data.points && data.points !== question.points) body.points = data.points
   if (!questionBonusesEqual(data.bonuses, question.bonuses)) body.bonuses = questionBonusesToApi(data.bonuses)
+  const nextElement = questionElementId(data.element)
+  if (nextElement !== questionElementId(question.element)) body.element = nextElement
 
   if (Object.keys(body).length !== 0) return patchQuestion(question.id, body)
   return Promise.resolve(question)

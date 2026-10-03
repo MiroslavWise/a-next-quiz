@@ -2,21 +2,20 @@ import type { ReactNode } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Sparkles } from "lucide-react"
 
+import ImageThumb from "./ImageThumb"
+import TimerSeconds from "./TimerSeconds"
 import ElementStateChips from "./ElementStateChips"
 import QuestionElementMark from "./QuestionElementMark"
-import TimerSeconds from "./TimerSeconds"
 
+import { cn } from "@/lib/utils"
 import { getRank } from "@/api/rank"
-import { elementThemeById, resolveElementThemeId } from "@/constants/palette"
+import { useAuth } from "@/stores/auth"
 import { QuestionBonus } from "@/enum/question-bonus"
 import type { IQuestion } from "@/interface/question"
 import { questionElementVisual } from "@/lib/question-element"
-import { cn } from "@/lib/utils"
-import { useAuth } from "@/stores/auth"
-import { useElementThemeSession } from "@/stores/element-theme-session"
-
 import { useQuestionCountdown } from "../hooks/use-question-countdown"
-import ImageThumb from "./ImageThumb"
+import { useElementThemeSession } from "@/stores/element-theme-session"
+import { elementThemeById, resolveElementThemeId } from "@/constants/palette"
 
 interface IProps extends Partial<IQuestion> {
   start?: unknown
@@ -122,12 +121,10 @@ function ComponentsTitleQuestion({
               Стихии усилены
             </p>
           ) : null}
-          {ended && (
-            <p className="question-ended-in text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>
-          )}
+          {ended && <p className="question-ended-in text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>}
           <div
             className={cn(
-              "relative z-[1] flex w-full flex-col items-center justify-center gap-2",
+              "relative z-1 flex w-full flex-col items-center justify-center gap-2",
               elementVisual ? "px-12 py-3.5 sm:py-4" : "p-3.5 sm:p-4",
             )}
           >

@@ -38,5 +38,5 @@ export function questionElementVisual(value: unknown): QuestionElementVisual | n
 }
 
 export function questionElementHint(id: EUserElement) {
-  return `Вопрос ${QUESTION_ELEMENT_GENITIVE[id]}. Верный ответ этой стихии: +7% base`
+  return `Вопрос ${QUESTION_ELEMENT_GENITIVE[id]}. Верный ответ этой стихии: +7% base. Туман, пепел и «первый теряет стихию» гасят бонус`
 }

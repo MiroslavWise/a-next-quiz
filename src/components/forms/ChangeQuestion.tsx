@@ -11,6 +11,7 @@ import { Field, FieldError, FieldLabel } from "../ui/field"
 import { deleteUploadImageQuestion, postUploadFileQuestion } from "@/api/upload-file"
 import { ChangeQuestionAnswersSection } from "./change-question/ChangeQuestionAnswersSection"
 import { ChangeQuestionIllustrationSection } from "./change-question/ChangeQuestionIllustrationSection"
+import QuestionElementField from "./QuestionElementField"
 import { QuestionBonusesField } from "./QuestionBonusesField"
 import { IMAGE_UPLOAD_MAX_BYTES, isAllowedImageUpload } from "./lib/optional-image-upload"
 import { Select, SelectItem, SelectLabel, SelectValue, SelectTrigger, SelectContent, SelectGroup } from "../ui/select"
@@ -23,6 +24,7 @@ import { updateAnswers } from "./lib/update-answers"
 import type { IQuestion } from "@/interface/question"
 import { updateQuestion } from "./lib/update-question"
 import { normalizeQuestionBonuses } from "@/enum/question-bonus"
+import { questionElementId } from "@/lib/question-element"
 import { resolverCreateQuestionFormDataWithAnswers, type CreateQuestionFormDataWithAnswers } from "@/schemas/create-question"
 
 interface IProps {
@@ -52,6 +54,7 @@ function ChangeQuestion({ question, answers }: IProps) {
       time: question.time ?? Time.HIGH,
       points: question.points ?? Points.HIGH,
       bonuses: normalizeQuestionBonuses(question.bonuses),
+      element: questionElementId(question.element),
       answers: [
         ...answers.map((answer) => ({
           id: answer.id,
@@ -206,6 +209,13 @@ function ChangeQuestion({ question, answers }: IProps) {
         name="bonuses"
         render={({ field, fieldState }) => (
           <QuestionBonusesField value={field.value} onChange={field.onChange} invalid={fieldState.invalid} />
+        )}
+      />
+      <Controller
+        control={control}
+        name="element"
+        render={({ field, fieldState }) => (
+          <QuestionElementField value={field.value} onChange={field.onChange} invalid={fieldState.invalid} />
         )}
       />
       <ChangeQuestionIllustrationSection
