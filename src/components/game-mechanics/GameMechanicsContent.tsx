@@ -37,6 +37,7 @@ import {
   type QuestionBonus,
 } from "@/enum/question-bonus"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
+import { TEAM_BONUSES, type TeamBonusDefinition } from "@/lib/game-team-bonuses"
 
 function MechanicsSection({ title, children }: PropsWithChildren<{ title: string }>) {
   return (
@@ -68,6 +69,21 @@ function PhaseCard({ phase, title, description }: { phase: string; title: string
       </div>
       <p className="text-muted-foreground text-xs leading-relaxed">{description}</p>
     </div>
+  )
+}
+
+function TeamBonusMechanicsCard({ bonus }: { bonus: TeamBonusDefinition }) {
+  return (
+    <article className="border-border bg-background flex min-w-0 flex-col rounded-xl border p-3 sm:p-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
+        <h4 className="text-foreground text-sm font-semibold">{bonus.title}</h4>
+        <code className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[0.6rem] tracking-wide text-white/45">
+          {bonus.id}
+        </code>
+      </div>
+      <p className="mt-0.5 text-xs font-medium text-(--accent-orb)">{bonus.short}</p>
+      <p className="mt-2 text-xs leading-relaxed text-white/70">{bonus.detail}</p>
+    </article>
   )
 }
 
@@ -466,7 +482,7 @@ export default function GameMechanicsContent() {
                 <PhaseCard
                   phase="WAITING"
                   title="Лобби"
-                  description="Участники подключаются по коду или QR, ведущий настраивает призовые места. Игроки могут выбрать стихию до старта. Ведущий не числится в списке игроков."
+                  description="Участники подключаются по коду или QR, выбирают стихию и могут собрать пару из двух. Ведущий настраивает призовые места и сам в список игроков не входит. После старта состав пары заморожен."
                 />
                 <PhaseCard
                   phase="CHECKING"
@@ -520,7 +536,7 @@ export default function GameMechanicsContent() {
                   дают.
                 </IconNote>
                 <IconNote icon={<Trophy className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                  Рейтинг строится по итоговой сумме speed-очков, серии, стихий, бонусов вопроса и способностей. При равенстве выше тот, у
+                  Рейтинг строится по итоговой сумме speed-очков, серии, стихий, бонусов вопроса, способностей и бонусов пары. При равенстве выше тот, у
                   кого меньше{" "}
                   <code className="text-xs">telegram_id</code>. Итоговая сумма (<code className="text-xs">total_points</code>) и очки за
                   отдельный вопрос могут уйти <strong className="text-foreground">ниже нуля</strong> — отрицательные эффекты недостатков стихий (ожог, водоворот, обвал,
@@ -530,7 +546,7 @@ export default function GameMechanicsContent() {
                 <IconNote icon={<Target className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
                   В блоке «Ваш рейтинг» показывается место, серия верных ответов и сколько очков не хватает до участника выше (
                   <code className="text-xs">points_to_prev</code>). Для топ-3 — отдельные мотивационные сообщения. Разбивка по эффектам — в{" "}
-                  <code className="text-xs">element_effects</code> (сразу после ответа и в финальной статистике).
+                  <code className="text-xs">element_effects</code> и <code className="text-xs">team_effects</code> (сразу после ответа и в финальной статистике).
                 </IconNote>
                 <IconNote icon={<Crown className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
                   Призовые места задаёт ведущий в лобби. Игрок на призовом месте видит бейдж «Призовое место»; список призёров обновляется
@@ -540,6 +556,22 @@ export default function GameMechanicsContent() {
                   по закрытым вопросам, пропуск равен неверному ответу, ровно {RANDOM_PRIZE_MIN_CORRECT_PERCENT}% проходят. Если подходящих
                   игроков нет, случайный приз не разыгрывается.
                 </IconNote>
+              </div>
+            </MechanicsSection>
+
+            <MechanicsSection title="Пары">
+              <p>
+                В лобби двое игроков могут встать в пару. Карточки стоят рядом и делят одну обводку — не цвет стихии. Своя пара подсвечена ярче:
+                нажатие на свою карточку или бейдж «пара» открывает бонусы. Места, призы и способности остаются личными. Общего рейтинга пары нет.
+              </p>
+              <p className="text-xs text-white/55">
+                Собрать, принять и выйти можно только в <code className="text-[0.65rem]">WAITING</code>. Вор и Туман не выбирают партнёра целью.
+                Сначала считается личный итог вопроса, потом бонусы пары. Пропуск для котла — то же, что неверный ответ.
+              </p>
+              <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
+                {TEAM_BONUSES.map((bonus) => (
+                  <TeamBonusMechanicsCard key={bonus.id} bonus={bonus} />
+                ))}
               </div>
             </MechanicsSection>
 
@@ -561,7 +593,7 @@ export default function GameMechanicsContent() {
                 <p>
                   <strong className="text-foreground">Соревновательные (PvP):</strong> «Вор» и «Туман» доступны только игрокам{" "}
                   <strong className="text-foreground/85">вне топ-3</strong> и при <strong className="text-foreground/85">4+</strong>{" "}
-                  участниках. Цель выбирается случайно среди топ-3. «Вор» крадёт очки (щит цели блокирует кражу, суммарно не больше 8% base,
+                  участниках. Цель выбирается случайно среди топ-3, партнёр по паре из целей вычёркивается. «Вор» крадёт очки (щит цели блокирует кражу, суммарно не больше 8% base,
                   не ниже нуля), «Туман» гасит стихию цели на вопрос — аватар не затрагивается, и{" "}
                   <strong className="text-foreground/85">щит от тумана не спасает</strong>. Если цель уже ответила, её ответ
                   пересчитывается без стихии.
@@ -591,6 +623,10 @@ export default function GameMechanicsContent() {
                 После подтверждения участия сервер случайно назначает <strong className="text-foreground/90">аватара игры</strong> (
                 <code className="text-xs">element_avatar_id</code>). Если вы — аватар, ваша стихия не применяется — только правила аватара.
                 Неверный ответ и пропуск (не ответил до закрытия вопроса) для стихий и штрафов — одно и то же.
+              </p>
+              <p className="text-xs text-white/55">
+                Если у вопроса стоит метка стихии, верный ответ игрока той же стихии даёт +7% base («Своя стихия»). Аватар и игрок без стихии метку не
+                получают, <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code> это число не меняет. Туман и «первый теряет стихию» метку гасят.
               </p>
               <p className="text-xs text-white/55">
                 «Искра» (огонь) и «Первенство» (аватар) начисляются{" "}
@@ -787,6 +823,27 @@ export default function GameMechanicsContent() {
                 Критичные события дублируются с задержкой (~2 с) для «догона» клиентов после обрыва связи. При переподключении клиент заново
                 подгружает отчёт и активный вопрос.
               </p>
+            </MechanicsSection>
+
+            <MechanicsSection title="Звания">
+              <p>
+                Когда матч переходит в <code className="text-xs">END</code>, сервер один раз записывает факты вечера. Звание не даёт очков и не
+                делит место. Чипы видны на подиуме, в личном итоге и в разборе игры.
+              </p>
+              <ul className="mt-2 flex flex-col gap-2">
+                {[
+                  ["Первый за вечер", "Самый ранний верный ответ матча."],
+                  ["Серия 5", "Личная серия хотя бы раз дошла до пяти верных подряд."],
+                  ["Ни разу не пропустил", "На каждом закрытом вопросе был ответ, не пропуск."],
+                  ["Аватар вечера", "Игрок, которого сервер назначил аватаром игры."],
+                  ["Украл и ушёл", "«Вор» хотя бы раз успешно забрал очки."],
+                ].map(([title, detail]) => (
+                  <li key={title} className="rounded-xl border border-amber-500/35 bg-amber-950/25 px-4 py-3">
+                    <p className="text-sm font-semibold text-amber-200">{title}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-white/70">{detail}</p>
+                  </li>
+                ))}
+              </ul>
             </MechanicsSection>
 
             <MechanicsSection title="Полезно ведущему">

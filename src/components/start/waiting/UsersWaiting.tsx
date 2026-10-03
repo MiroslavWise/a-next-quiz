@@ -8,6 +8,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import Skeleton from "@/components/ui/skeleton"
 import { UserAvatar } from "@/components/common/UserAvatar"
 const LottieObserver = lazy(() => import("./LottieObserver"))
+import { TeamBonusesDialog } from "@/components/start/teams/TeamBonusesDialog"
 import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
 import { reportTeamsQueryKey, useReportTeams } from "@/components/start/teams/use-report-teams"
 
@@ -151,6 +152,7 @@ function parseUserProfileUpdatedPayload(msg: Record<string, unknown>) {
 function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByType }: IProps) {
   const queryClient = useQueryClient()
   const [highlightedTelegramId, setHighlightedTelegramId] = useState<number | null>(null)
+  const [bonusesTeam, setBonusesTeam] = useState<ITeam | null>(null)
   const clearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const playersCount = users.filter((item) => item.type === "user").length
   const { data: teamsState } = useReportTeams({ reportId, lastByType })
@@ -261,12 +263,30 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByTy
         {groups.map((group) => {
           if (group.kind === "pair") {
             const color = pairColor(group.team.id)
+            const isMine = group.team.members.includes(tgId)
             return (
               <div
                 key={group.team.id}
-                className="flex gap-2 rounded-2xl border-2 px-1.5 py-1.5"
-                style={{ borderColor: color }}
+                className={cn("relative flex gap-2 rounded-2xl border-2 px-1.5 py-1.5", isMine && "cursor-pointer")}
+                style={{
+                  borderColor: color,
+                  boxShadow: isMine ? `0 0 16px ${color}` : undefined,
+                }}
+                onClick={
+                  isMine
+                    ? (event) => {
+                        if (event.target === event.currentTarget) setBonusesTeam(group.team)
+                      }
+                    : undefined
+                }
               >
+                {isMine ? (
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 animate-pulse rounded-2xl border-2"
+                    style={{ borderColor: color, boxShadow: `0 0 22px ${color}` }}
+                  />
+                ) : null}
                 {group.members.map((item) => (
                   <UserWaiting
                     key={`${item.type}-${item.user}`}
@@ -281,6 +301,7 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByTy
                     pairColor={color}
                     invites={invites}
                     myTeam={teamOfMember(teams, tgId)}
+                    onOpenBonuses={isMine ? () => setBonusesTeam(group.team) : undefined}
                   />
                 ))}
               </div>
@@ -304,6 +325,7 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByTy
           )
         })}
       </div>
+      {bonusesTeam ? <TeamBonusesDialog team={bonusesTeam} viewerTgId={tgId} onClose={() => setBonusesTeam(null)} /> : null}
     </div>
   )
 }
@@ -321,6 +343,7 @@ function UserWaiting({
   invites,
   myTeam,
   theirTeam,
+  onOpenBonuses,
 }: {
   user: number
   tgId: number
@@ -334,6 +357,7 @@ function UserWaiting({
   invites: ITeamInvite[]
   myTeam?: ITeam
   theirTeam?: ITeam
+  onOpenBonuses?: () => void
 }) {
   const { data, isLoading } = useUserByTgId(user, { enabled: !!user && !!tgId })
 
@@ -413,7 +437,12 @@ function UserWaiting({
   }
 
   function onPlayerClick() {
-    if (isLoading || isObserver || isSelf) return
+    if (isLoading) return
+    if (isSelf) {
+      onOpenBonuses?.()
+      return
+    }
+    if (isObserver) return
     if (canRemoveFromReport) {
       openRemoveUserPopup()
       return
@@ -442,8 +471,11 @@ function UserWaiting({
     openCreateTeamPopup()
   }
 
-  const interactive = !isLoading && (canRemoveFromReport || (canInvite && !isObserver && !isSelf))
-  const title = canRemoveFromReport
+  const interactive = !isLoading && ((isSelf && !!onOpenBonuses) || canRemoveFromReport || (canInvite && !isObserver && !isSelf))
+  const title =
+    isSelf && onOpenBonuses
+      ? "Нажмите, чтобы посмотреть бонусы пары"
+      : canRemoveFromReport
     ? `${data?.pseudo ?? ""} — нажмите, чтобы исключить из игроков`
     : outgoing
       ? `${data?.pseudo ?? ""} — ожидает ответ, нажмите чтобы отозвать`
@@ -457,7 +489,7 @@ function UserWaiting({
     <div
       data-user-card={user}
       className={cn(
-        "flex min-h-0 w-[4.5rem] min-w-0 flex-col items-center justify-center gap-1 outline-none sm:w-20",
+        "flex min-h-0 w-18 min-w-0 flex-col items-center justify-center gap-1 outline-none sm:w-20",
         interactive && "cursor-pointer",
       )}
       title={title}
@@ -503,7 +535,7 @@ function UserWaiting({
           <p className={cn("max-w-16 truncate text-[0.65rem] leading-none sm:max-w-20", isObserver ? "text-white/55" : "text-white/90")}>
             {data?.pseudo ?? ""}
           </p>
-          {color ? <TeamPairBadge color={color} /> : null}
+          {color ? <TeamPairBadge color={color} onClick={onOpenBonuses} /> : null}
           {outgoing ? <span className="text-[0.6rem] leading-none text-white/55">ожидает</span> : null}
           {incoming && canInvite ? <span className="text-[0.6rem] leading-none text-white/70">зовёт вас</span> : null}
         </>

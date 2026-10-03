@@ -319,6 +319,8 @@ export const getReportUsers = async (reportId: string | number) => {
 export interface ITeam {
   id: string
   members: number[]
+  /** Сколько вопросов подряд оба ответили верно. Нет поля — ноль. */
+  pair_streak?: number
 }
 
 /** Живая заявка в пару. История declined/cancelled клиенту не приходит. */
