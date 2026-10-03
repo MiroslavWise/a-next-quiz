@@ -126,8 +126,7 @@ function ComponentsTitleQuestion({
           {ended && <p className="question-ended-in text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>}
           <div
             className={cn(
-              "relative z-1 flex w-full flex-col items-center justify-center gap-2",
-              elementVisual ? "px-12 py-3.5 sm:py-4" : "p-3.5 sm:p-4",
+              "relative z-1 flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4",
             )}
           >
             {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
@@ -138,7 +137,7 @@ function ComponentsTitleQuestion({
             </div>
           </div>
         </div>
-        <QuestionElementMark element={element} variant="stamp" resonant={resonant} className="top-2 left-2 z-20" />
+        <QuestionElementMark element={element} variant="stamp" resonant={resonant} />
       </div>
     </div>
   )

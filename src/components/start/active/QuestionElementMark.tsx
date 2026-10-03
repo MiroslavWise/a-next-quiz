@@ -38,7 +38,7 @@ function QuestionElementMark({ element, resonant = false, variant = "badge", cla
           title={hint}
           aria-label={hint}
           className={cn(
-            "absolute top-2 left-2 z-20 flex size-8 items-center justify-center rounded-full border bg-[#06141a]",
+            "pointer-events-none absolute top-0 left-0 z-20 flex size-8 -translate-x-1/3 -translate-y-1/3 items-center justify-center rounded-full border bg-[#06141a]",
             resonant && "motion-safe:animate-pulse",
             className,
           )}

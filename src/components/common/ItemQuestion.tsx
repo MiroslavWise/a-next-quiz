@@ -43,20 +43,20 @@ function ItemQuestion(props: IProps) {
     <Item
       variant="outline"
       size="sm"
-      className="bg-background relative w-full overflow-hidden"
+      className="bg-background relative w-full overflow-visible"
       style={elementVisual ? { borderColor: elementVisual.accentColor } : undefined}
     >
       {elementVisual ? (
         <span
           aria-hidden
           title={questionElementHint(elementVisual.id)}
-          className="absolute top-1.5 left-1.5 z-20 flex size-6 items-center justify-center rounded-full border bg-background"
+          className="pointer-events-none absolute top-0 left-0 z-20 flex size-6 -translate-x-1/3 -translate-y-1/3 items-center justify-center rounded-full border bg-background"
           style={{ position: "absolute", borderColor: elementVisual.accentColor }}
         >
           <Image src={elementVisual.iconSrc} alt="" width={14} height={14} className="size-3.5 object-contain" />
         </span>
       ) : null}
-      <div className={cn("flex w-full flex-col gap-1", elementVisual && "pl-7")}>
+      <div className="flex w-full flex-col gap-1">
         <div className="flex w-full flex-row items-center justify-between gap-2">
           <div className="flex flex-row items-center gap-1.5">
             <Badge variant="secondary" className="tabular-nums">

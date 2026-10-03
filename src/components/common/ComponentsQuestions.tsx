@@ -29,7 +29,7 @@ function ComponentsQuestions({ quizId, questions, isLoading, tgId }: IProps) {
           ))}
         </div>
       ) : questions?.length > 0 ? (
-        <ul className="flex w-full flex-col gap-2">
+        <ul className="flex w-full flex-col gap-3 overflow-visible py-1">
           {questions.map((question, index) => (
             <ItemQuestion key={question.id} {...question} quizId={quizId} index={index} tgId={tgId} />
           ))}
