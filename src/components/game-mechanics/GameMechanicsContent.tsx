@@ -37,6 +37,7 @@ import {
   type QuestionBonus,
 } from "@/enum/question-bonus"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
+import { MatchTitleMark } from "@/components/report/MatchTitleChip"
 import { TEAM_BONUSES, type TeamBonusDefinition } from "@/lib/game-team-bonuses"
 
 function MechanicsSection({ title, children }: PropsWithChildren<{ title: string }>) {
@@ -832,15 +833,57 @@ export default function GameMechanicsContent() {
               </p>
               <ul className="mt-2 flex flex-col gap-2">
                 {[
-                  ["Первый за вечер", "Самый ранний верный ответ матча."],
-                  ["Серия 5", "Личная серия хотя бы раз дошла до пяти верных подряд."],
-                  ["Ни разу не пропустил", "На каждом закрытом вопросе был ответ, не пропуск."],
-                  ["Аватар вечера", "Игрок, которого сервер назначил аватаром игры."],
-                  ["Украл и ушёл", "«Вор» хотя бы раз успешно забрал очки."],
-                ].map(([title, detail]) => (
-                  <li key={title} className="rounded-xl border border-amber-500/35 bg-amber-950/25 px-4 py-3">
-                    <p className="text-sm font-semibold text-amber-200">{title}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-white/70">{detail}</p>
+                  {
+                    id: "first_correct",
+                    title: "Первый за вечер",
+                    detail:
+                      "Больше всех закрытых вопросов, где был среди самых быстрых верных ответов. Если на вопросе одно время у 1–3 человек — кредит каждому; если у четверых и больше — вопрос никому. Звание у лидеров счёта, когда их не больше трёх.",
+                  },
+                  {
+                    id: "answer_titan",
+                    title: "Титан ответов",
+                    detail: "Личная серия хотя бы раз дошла до восьми верных подряд.",
+                  },
+                  {
+                    id: "never_skipped",
+                    title: "Ни разу не пропустил",
+                    detail: "Редкое звание: верный ответ на каждом закрытом вопросе. Ошибка или пропуск его снимают.",
+                    rare: true,
+                  },
+                  {
+                    id: "element_fire",
+                    title: "Пламя вечера",
+                    detail: "Больше всех очков среди игроков огня. Аватар игры в стихийных званиях не участвует.",
+                  },
+                  {
+                    id: "element_water",
+                    title: "Голос прилива",
+                    detail: "Больше всех очков среди игроков воды.",
+                  },
+                  {
+                    id: "element_earth",
+                    title: "Страж земли",
+                    detail: "Больше всех очков среди игроков земли.",
+                  },
+                  {
+                    id: "element_air",
+                    title: "Око бури",
+                    detail: "Больше всех очков среди игроков воздуха.",
+                  },
+                ].map((item) => (
+                  <li
+                    key={item.id}
+                    className={
+                      item.rare
+                        ? "rounded-xl border border-amber-200/70 bg-amber-900/40 px-4 py-3"
+                        : "rounded-xl border border-amber-500/35 bg-amber-950/25 px-4 py-3"
+                    }
+                  >
+                    <p className="flex items-center gap-2 text-sm font-semibold text-amber-200">
+                      <MatchTitleMark id={item.id} className="size-4" />
+                      {item.title}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-white/70">{item.detail}</p>
                   </li>
                 ))}
               </ul>

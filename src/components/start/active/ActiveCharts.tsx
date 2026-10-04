@@ -94,7 +94,7 @@ function ActiveCharts({ reportId, tgId, index, highlightOwn = false }: IProps) {
             {segments.map((segment) => (
               <div
                 key={segment.id}
-                className={cn("h-full transition-[width] duration-[400ms] ease-out", segment.className)}
+                className={cn("h-full transition-[width] duration-400 ease-out", segment.className)}
                 style={{ width: drawn ? `${(segment.count / total) * 100}%` : "0%" }}
               />
             ))}
