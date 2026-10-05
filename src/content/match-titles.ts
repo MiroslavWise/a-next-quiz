@@ -44,4 +44,36 @@ export const MATCH_TITLE_CATALOG: MatchTitleCatalogItem[] = [
     title: "Око бури",
     detail: "Больше всех очков среди игроков воздуха.",
   },
+  {
+    id: "pair_flawless",
+    title: "Безупречная пара",
+    detail: "Оба в паре на финише верно ответили на каждый закрытый вопрос.",
+    rare: true,
+  },
+  {
+    id: "pair_unison",
+    title: "В унисон",
+    detail: "На финише серия пары дошла до шести верных подряд. Ошибка или пропуск последнего вопроса серию сбрасывает.",
+  },
+  {
+    id: "pair_kin",
+    title: "Родство стихий",
+    detail: "Оба одной стихии, и хотя бы на одном вопросе у пары был резонанс. Аватар игры не участвует.",
+  },
+  {
+    id: "pair_spark",
+    title: "Искра двоих",
+    detail: "Среди пар финиша больше всех вопросов, где вспыхнула искра. Ничья — звание у каждой такой пары.",
+  },
+  {
+    id: "pair_evening",
+    title: "Пара вечера",
+    detail: "Наибольшая сумма очков двоих на финише, если она больше нуля. Ничья — у всех с этим максимумом.",
+  },
 ]
+
+export function matchTitleById(id: string | null | undefined): MatchTitleCatalogItem | undefined {
+  const key = id?.trim()
+  if (!key) return undefined
+  return MATCH_TITLE_CATALOG.find((item) => item.id === key)
+}

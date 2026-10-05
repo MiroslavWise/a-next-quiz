@@ -461,10 +461,9 @@ export interface IReportQuestionScore {
   team_effects?: IElementEffect[]
 }
 
-/** Звание матча — факт вечера без очков (`docs/API.md`, `titles`). */
+/** Звание матча — id константы (`docs/API.md`, `titles`). Подпись берётся из каталога на клиенте. */
 export interface IMatchTitle {
   id: string
-  title: string
 }
 
 export interface IReportUserPoints {
@@ -740,10 +739,9 @@ export interface IMyGame {
   titles?: IMatchTitle[]
 }
 
-/** Накопленное звание — `GET /my-titles` (docs/API.md). */
+/** Накопленное звание — `GET /my-titles` (docs/API.md). Подпись — из каталога по `id`. */
 export interface IMyTitle {
   id: string
-  title: string
   count: number
   first_earned_at: string
   last_earned_at: string

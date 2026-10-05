@@ -1,13 +1,19 @@
 import Image from "next/image"
-import { Crown, Gem, Zap, type LucideIcon } from "lucide-react"
+import { Crown, Gem, Heart, HeartHandshake, Sparkles, Trophy, Users, Zap, type LucideIcon } from "lucide-react"
 
 import type { IMatchTitle } from "@/api/reports"
+import { matchTitleById } from "@/content/match-titles"
 import { cn } from "@/lib/utils"
 
 const TITLE_ICONS: Record<string, LucideIcon> = {
   first_correct: Zap,
   answer_titan: Crown,
   never_skipped: Gem,
+  pair_flawless: Heart,
+  pair_unison: Users,
+  pair_kin: HeartHandshake,
+  pair_spark: Sparkles,
+  pair_evening: Trophy,
 }
 
 const ELEMENT_ICON_SRC: Record<string, string> = {
@@ -29,8 +35,10 @@ export function MatchTitleMark({ id, className }: { id: string; className?: stri
   return <span className={cn("size-1.5 shrink-0 rounded-full bg-amber-200/70", className)} aria-hidden />
 }
 
-function MatchTitleChip({ id, title, className }: { id: string; title: string; className?: string }) {
-  const rare = id === "never_skipped"
+function MatchTitleChip({ id, className }: { id: string; className?: string }) {
+  const known = matchTitleById(id)
+  if (!known) return null
+  const rare = Boolean(known.rare)
   return (
     <span
       className={cn(
@@ -41,8 +49,8 @@ function MatchTitleChip({ id, title, className }: { id: string; title: string; c
         className,
       )}
     >
-      <MatchTitleMark id={id} className={rare ? "text-amber-100" : undefined} />
-      <span className="min-w-0 truncate">{title}</span>
+      <MatchTitleMark id={known.id} className={rare ? "text-amber-100" : undefined} />
+      <span className="min-w-0 truncate">{known.title}</span>
     </span>
   )
 }
@@ -56,7 +64,10 @@ export function MatchTitleChips({
   className?: string
   align?: "start" | "center"
 }) {
-  const list = (titles ?? []).filter((item) => item?.title?.trim())
+  const list = (titles ?? []).flatMap((item) => {
+    const known = matchTitleById(item?.id)
+    return known ? [known] : []
+  })
   if (list.length === 0) return null
 
   return (
@@ -65,8 +76,8 @@ export function MatchTitleChips({
       aria-label="Звания"
     >
       {list.map((item) => (
-        <li key={item.id || item.title} className="max-w-full min-w-0">
-          <MatchTitleChip id={item.id} title={item.title} />
+        <li key={item.id} className="max-w-full min-w-0">
+          <MatchTitleChip id={item.id} />
         </li>
       ))}
     </ul>
