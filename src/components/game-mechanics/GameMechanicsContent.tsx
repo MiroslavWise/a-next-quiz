@@ -38,6 +38,7 @@ import {
 } from "@/enum/question-bonus"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
 import { MatchTitleMark } from "@/components/report/MatchTitleChip"
+import { MATCH_TITLE_CATALOG } from "@/content/match-titles"
 import { TEAM_BONUSES, type TeamBonusDefinition } from "@/lib/game-team-bonuses"
 
 function MechanicsSection({ title, children }: PropsWithChildren<{ title: string }>) {
@@ -832,45 +833,7 @@ export default function GameMechanicsContent() {
                 делит место. Чипы видны на подиуме, в личном итоге и в разборе игры.
               </p>
               <ul className="mt-2 flex flex-col gap-2">
-                {[
-                  {
-                    id: "first_correct",
-                    title: "Первый за вечер",
-                    detail:
-                      "Больше всех закрытых вопросов, где был среди самых быстрых верных ответов. Если на вопросе одно время у 1–3 человек — кредит каждому; если у четверых и больше — вопрос никому. Звание у лидеров счёта, когда их не больше трёх.",
-                  },
-                  {
-                    id: "answer_titan",
-                    title: "Титан ответов",
-                    detail: "Личная серия хотя бы раз дошла до восьми верных подряд.",
-                  },
-                  {
-                    id: "never_skipped",
-                    title: "Ни разу не пропустил",
-                    detail: "Редкое звание: верный ответ на каждом закрытом вопросе. Ошибка или пропуск его снимают.",
-                    rare: true,
-                  },
-                  {
-                    id: "element_fire",
-                    title: "Пламя вечера",
-                    detail: "Больше всех очков среди игроков огня. Аватар игры в стихийных званиях не участвует.",
-                  },
-                  {
-                    id: "element_water",
-                    title: "Голос прилива",
-                    detail: "Больше всех очков среди игроков воды.",
-                  },
-                  {
-                    id: "element_earth",
-                    title: "Страж земли",
-                    detail: "Больше всех очков среди игроков земли.",
-                  },
-                  {
-                    id: "element_air",
-                    title: "Око бури",
-                    detail: "Больше всех очков среди игроков воздуха.",
-                  },
-                ].map((item) => (
+                {MATCH_TITLE_CATALOG.map((item) => (
                   <li
                     key={item.id}
                     className={

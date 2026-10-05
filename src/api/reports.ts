@@ -740,6 +740,23 @@ export interface IMyGame {
   titles?: IMatchTitle[]
 }
 
+/** Накопленное звание — `GET /my-titles` (docs/API.md). */
+export interface IMyTitle {
+  id: string
+  title: string
+  count: number
+  first_earned_at: string
+  last_earned_at: string
+}
+
+/** Звания текущего пользователя. Пустой массив, если ещё ничего не получено. */
+export const getMyTitles = async () => {
+  return api.get("/my-titles", { headers: getApiHeaders() }).then((res) => {
+    if (res.status >= 200 && res.status < 300 && Array.isArray(res.data)) return res.data as IMyTitle[]
+    throw new Error("Failed to get my titles")
+  })
+}
+
 /** Список до 10 последних завершённых игр текущего пользователя. */
 export const getMyGames = async () => {
   return api.get("/my-games", { headers: getApiHeaders() }).then((res) => {

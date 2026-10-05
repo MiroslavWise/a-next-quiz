@@ -7,6 +7,7 @@ import HomeIdentity from "@/views/home/HomeIdentity"
 import HomeJoinByCode from "@/views/home/HomeJoinByCode"
 import HomeLayout from "@/views/home/HomeLayout"
 import HomeMechanicsLink from "@/views/home/HomeMechanicsLink"
+import HomeTitlesLink from "@/views/home/HomeTitlesLink"
 
 /**
  * Главная: Server Component (оболочка) + клиентские острова
@@ -21,6 +22,7 @@ export default function HomePage() {
             <div className="flex flex-col gap-3.5">
               <HomeIdentity />
               <HomeMechanicsLink />
+              <HomeTitlesLink />
               <Suspense fallback={null}>
                 <MyGamesList />
               </Suspense>
