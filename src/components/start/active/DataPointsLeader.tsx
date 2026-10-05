@@ -12,7 +12,8 @@ import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import { normalizeTelegramId } from "@/lib/normalize"
 import { reportUserTotalPoints } from "@/api/reports"
 import { useReportTeams } from "@/components/start/teams/use-report-teams"
-import { pairColor, partnerTelegramId, teamOfMember } from "@/lib/report-teams"
+import { pairColor, teamOfMember } from "@/lib/report-teams"
+import { PairBezierOverlay, type PairBezierLink } from "@/components/start/teams/PairBezierOverlay"
 import { useAnswerOrderBy } from "../hooks/use-answer-order-by"
 import { useReportUserPoints } from "../hooks/use-report-user-points"
 import { statusesByIndexForUser, useUsersAnswersStatus } from "../hooks/use-users-answers-status"
@@ -77,6 +78,24 @@ function DataPointsLeader({
 
   const answerOrderByTelegramId = useAnswerOrderBy(showAnswerOrder && answerProgressIndex === activeIndex ? (answeredUserIds ?? []) : [])
   const leaderboardListRef = useFlipList(sortedData, LEADERBOARD_REORDER_MS)
+  const pairLinks = useMemo(() => {
+    const present = new Set<number>()
+    for (const item of sortedData) {
+      const id = normalizeTelegramId(item.telegram_id)
+      if (Number.isFinite(id)) present.add(id)
+    }
+    const links: PairBezierLink[] = []
+    for (const team of teamsState?.teams ?? []) {
+      const members = team.members.filter((id) => present.has(id))
+      if (members.length < 2) continue
+      const a = members[0]
+      const b = members[1]
+      if (a == null || b == null) continue
+      links.push({ id: team.id, color: pairColor(team.id), a, b })
+    }
+    links.sort((a, b) => a.id.localeCompare(b.id))
+    return links
+  }, [sortedData, teamsState])
 
   function handleClose() {
     setVisibleDataPointsLeader(false)
@@ -123,54 +142,44 @@ function DataPointsLeader({
             </button>
           </div>
         </header>
-        <ul
-          ref={leaderboardListRef}
-          className="mt-1 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overscroll-contain pt-1.5 pr-1 [-webkit-overflow-scrolling:touch]"
-        >
-          {sortedData.map((item, index) => {
-            const rank = index + 1
-            const isPrizePlace = prizes.includes(rank)
-            const tgKey = normalizeTelegramId(item.telegram_id)
-            const answerOrder = Number.isFinite(tgKey) ? answerOrderByTelegramId.get(tgKey) : undefined
-            const answerEntriesByIndex = Number.isFinite(tgKey) ? answerEntriesByTelegramId.get(tgKey) : undefined
-            const team = Number.isFinite(tgKey) ? teamOfMember(teamsState?.teams, tgKey) : undefined
-            const partnerId = partnerTelegramId(team, tgKey)
-            const prevId = index > 0 ? normalizeTelegramId(sortedData[index - 1]?.telegram_id) : NaN
-            const nextId = index < sortedData.length - 1 ? normalizeTelegramId(sortedData[index + 1]?.telegram_id) : NaN
-            const pairNeighbor =
-              partnerId == null
-                ? undefined
-                : partnerId === prevId
-                  ? "end"
-                  : partnerId === nextId
-                    ? "start"
-                    : undefined
-            return (
-              <UserPointsLeaderItem
-                key={item.telegram_id}
-                telegram_id={item.telegram_id}
-                tgId={tgId}
-                points={reportUserTotalPoints(item)}
-                rank={rank}
-                rank_delta={item.rank_delta}
-                points_delta={item.points_delta}
-                isPrizePlace={isPrizePlace}
-                answerOrder={answerOrder}
-                isQuestionEnded={isQuestionEnded}
-                elementAvatarId={elementAvatarId}
-                totalQuestions={totalQuestions}
-                activeIndex={activeIndex}
-                answerEntriesByIndex={answerEntriesByIndex}
-                pairColor={team ? pairColor(team.id) : undefined}
-                pairNeighbor={pairNeighbor}
-              />
-            )
-          })}
-          {!sortedData.length ? (
-            <li className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/65">Нет участников</li>
-          ) : null}
-          <li className="spacer-bottom-next hidden md:block" aria-hidden />
-        </ul>
+        <div className="mt-1 flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain pt-1.5 pr-1 [-webkit-overflow-scrolling:touch]">
+          <div className="relative">
+            <ul ref={leaderboardListRef} className={cn("flex flex-col gap-1", pairLinks.length > 0 && "pl-4")}>
+              {sortedData.map((item, index) => {
+                const rank = index + 1
+                const isPrizePlace = prizes.includes(rank)
+                const tgKey = normalizeTelegramId(item.telegram_id)
+                const answerOrder = Number.isFinite(tgKey) ? answerOrderByTelegramId.get(tgKey) : undefined
+                const answerEntriesByIndex = Number.isFinite(tgKey) ? answerEntriesByTelegramId.get(tgKey) : undefined
+                const team = Number.isFinite(tgKey) ? teamOfMember(teamsState?.teams, tgKey) : undefined
+                return (
+                  <UserPointsLeaderItem
+                    key={item.telegram_id}
+                    telegram_id={item.telegram_id}
+                    tgId={tgId}
+                    points={reportUserTotalPoints(item)}
+                    rank={rank}
+                    rank_delta={item.rank_delta}
+                    points_delta={item.points_delta}
+                    isPrizePlace={isPrizePlace}
+                    answerOrder={answerOrder}
+                    isQuestionEnded={isQuestionEnded}
+                    elementAvatarId={elementAvatarId}
+                    totalQuestions={totalQuestions}
+                    activeIndex={activeIndex}
+                    answerEntriesByIndex={answerEntriesByIndex}
+                    pairColor={team ? pairColor(team.id) : undefined}
+                  />
+                )
+              })}
+              {!sortedData.length ? (
+                <li className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/65">Нет участников</li>
+              ) : null}
+              <li className="spacer-bottom-next hidden md:block" aria-hidden />
+            </ul>
+            <PairBezierOverlay pairs={pairLinks} orientation="vertical" />
+          </div>
+        </div>
       </section>
     </div>
   )

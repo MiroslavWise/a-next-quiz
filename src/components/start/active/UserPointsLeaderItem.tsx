@@ -15,7 +15,9 @@ import { useUserByTgId } from "@/queries/user"
 import { useShowDataUser } from "@/hooks/use-show-data-user"
 import type { IUsersAnswerStatusEntry } from "@/api/reports"
 import { formatQuizPoints, isNegativeQuizPoints } from "@/lib/quiz-points"
+import { normalizeTelegramId } from "@/lib/normalize"
 import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
+import { pairAvatarRingStyle } from "@/components/start/teams/PairBezierOverlay"
 
 interface IProps {
   tgId: number
@@ -32,7 +34,6 @@ interface IProps {
   activeIndex?: number
   answerEntriesByIndex?: Map<number, IUsersAnswerStatusEntry>
   pairColor?: string
-  pairNeighbor?: "start" | "end"
 }
 
 function UserPointsLeaderItem({
@@ -50,7 +51,6 @@ function UserPointsLeaderItem({
   activeIndex,
   answerEntriesByIndex,
   pairColor,
-  pairNeighbor,
 }: IProps) {
   const showDataUsers = useShowDataUser()
   const { data, isLoading } = useUserByTgId(telegram_id, { enabled: !!tgId && !!telegram_id })
@@ -76,6 +76,7 @@ function UserPointsLeaderItem({
   const isGameAvatar = elementAvatarId != null && Number(telegram_id) === elementAvatarId
   const hasPointsDelta = points_delta != null && points_delta !== 0
   const isPositiveDelta = (points_delta ?? 0) > 0
+  const anchorId = normalizeTelegramId(telegram_id)
 
   return (
     <li
@@ -87,10 +88,7 @@ function UserPointsLeaderItem({
         isGameAvatar && "shadow-[0_0_16px_rgba(255,255,255,0.42),0_0_1px_rgba(255,255,255,0.95)]",
         isGameAvatar && !isPrizePlace && "border border-white/50 bg-white/12 ring-1 ring-white/40",
         isGameAvatar && isPrizePlace && "ring-white/55",
-        pairNeighbor === "start" && "rounded-b-md",
-        pairNeighbor === "end" && "rounded-t-md",
       )}
-      style={pairColor ? { boxShadow: `inset 3px 0 0 ${pairColor}` } : undefined}
     >
       <div
         className={cn(
@@ -123,19 +121,30 @@ function UserPointsLeaderItem({
             <PrizeLottie className="size-2.5" />
           </span>
         ) : null}
-        <UserAvatar
-          variant="leader"
-          avatar={data?.avatar}
-          bg={bg}
-          pseudo={pseudo}
-          photoUrl={data?.photo_url}
-          element={data?.element}
-          isGameAvatar={isGameAvatar}
-          photoOverlay="never"
-          className="size-7 text-[0.65rem]"
-        />
+        <div
+          className="relative inline-grid shrink-0 rounded-full"
+          data-pair-anchor={pairColor && Number.isFinite(anchorId) ? anchorId : undefined}
+          style={pairColor ? pairAvatarRingStyle(pairColor) : undefined}
+        >
+          <UserAvatar
+            variant="leader"
+            avatar={data?.avatar}
+            bg={bg}
+            pseudo={pseudo}
+            photoUrl={data?.photo_url}
+            element={data?.element}
+            isGameAvatar={isGameAvatar}
+            photoOverlay="never"
+            className="size-7 text-[0.65rem]"
+          />
+        </div>
         <div className="flex min-w-0 flex-col justify-center gap-0.5">
-          <p className="truncate text-[0.7rem] leading-none font-medium text-white">{pseudo}</p>
+          <p
+            className="truncate text-[0.7rem] leading-none font-medium text-white"
+            style={pairColor ? { color: pairColor } : undefined}
+          >
+            {pseudo}
+          </p>
           {pairColor ? <TeamPairBadge color={pairColor} /> : null}
           {showDataUsers && adminSubtitle && <span className="truncate text-[0.45rem] leading-none text-white/60">{adminSubtitle}</span>}
         </div>

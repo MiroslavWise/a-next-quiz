@@ -9,6 +9,7 @@ import Skeleton from "@/components/ui/skeleton"
 import { UserAvatar } from "@/components/common/UserAvatar"
 const LottieObserver = lazy(() => import("./LottieObserver"))
 import { TeamBonusesDialog } from "@/components/start/teams/TeamBonusesDialog"
+import { PairBezierFrame, pairAvatarRingStyle } from "@/components/start/teams/PairBezierOverlay"
 import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
 import { reportTeamsQueryKey, useReportTeams } from "@/components/start/teams/use-report-teams"
 
@@ -254,14 +255,13 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByTy
           if (group.kind === "pair") {
             const color = pairColor(group.team.id)
             const isMine = group.team.members.includes(tgId)
+            const [first, second] = group.members
+            if (!first || !second) return null
             return (
-              <div
+              <PairBezierFrame
                 key={group.team.id}
-                className={cn("relative flex gap-2 rounded-2xl border-2 px-1.5 py-1.5", isMine && "cursor-pointer")}
-                style={{
-                  borderColor: color,
-                  boxShadow: isMine ? `0 0 16px ${color}` : undefined,
-                }}
+                className={cn("flex items-start gap-5", isMine && "cursor-pointer")}
+                pairs={[{ id: group.team.id, color, a: first.user, b: second.user, pulse: isMine }]}
                 onClick={
                   isMine
                     ? (event) => {
@@ -270,13 +270,6 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByTy
                     : undefined
                 }
               >
-                {isMine ? (
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 animate-pulse rounded-2xl border-2"
-                    style={{ borderColor: color, boxShadow: `0 0 22px ${color}` }}
-                  />
-                ) : null}
                 {group.members.map((item) => (
                   <UserWaiting
                     key={`${item.type}-${item.user}`}
@@ -294,7 +287,7 @@ function CenterPlayerGrid({ users, tgId, reportId, isLeader, canInvite, lastByTy
                     onOpenBonuses={isMine ? () => setBonusesTeam(group.team) : undefined}
                   />
                 ))}
-              </div>
+              </PairBezierFrame>
             )
           }
           const item = group.card
@@ -365,6 +358,7 @@ function UserWaiting({
   const incoming = invites.find((invite) => invite.status === "pending" && invite.from === user && invite.to === tgId)
   const myOutgoing = invites.find((invite) => invite.status === "pending" && invite.from === tgId)
   const isPartner = !!team && team.members.includes(tgId) && team.members.includes(user) && !isSelf
+  const isSelfPair = !!color && !!team?.members.includes(tgId)
   const occupiedByOther = !!theirTeam && !isPartner
 
   function openRemoveUserPopup() {
@@ -461,7 +455,7 @@ function UserWaiting({
     <div
       data-user-card={user}
       className={cn(
-        "flex min-h-0 w-18 min-w-0 flex-col items-center justify-center gap-1 outline-none sm:w-20",
+        "relative z-10 flex min-h-0 w-18 min-w-0 flex-col items-center justify-center gap-1 outline-none sm:w-20",
         interactive && "cursor-pointer",
       )}
       title={title}
@@ -487,7 +481,18 @@ function UserWaiting({
         </>
       ) : (
         <>
-          <div className="relative">
+          <div
+            className="relative z-10 inline-grid shrink-0 rounded-full"
+            data-pair-anchor={color ? user : undefined}
+            style={color ? pairAvatarRingStyle(color) : undefined}
+          >
+            {color && isSelfPair ? (
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -inset-px animate-pulse rounded-full"
+                style={{ boxShadow: `0 0 12px ${color}` }}
+              />
+            ) : null}
             {isObserver && (
               <Suspense fallback={null}>
                 <LottieObserver />
@@ -504,7 +509,13 @@ function UserWaiting({
               className={avatarClass}
             />
           </div>
-          <p className={cn("max-w-16 truncate text-[0.65rem] leading-none sm:max-w-20", isObserver ? "text-white/55" : "text-white/90")}>
+          <p
+            className={cn(
+              "relative z-10 max-w-16 truncate text-[0.65rem] leading-none sm:max-w-20",
+              color ? "font-medium" : isObserver ? "text-white/55" : "text-white/90",
+            )}
+            style={color ? { color } : undefined}
+          >
             {data?.pseudo ?? ""}
           </p>
           {color ? <TeamPairBadge color={color} onClick={onOpenBonuses} /> : null}
