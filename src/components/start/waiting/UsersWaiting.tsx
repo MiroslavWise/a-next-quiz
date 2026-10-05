@@ -507,6 +507,8 @@ function UserWaiting({
               photoUrl={data?.photo_url}
               element={data?.element}
               className={avatarClass}
+              partnerTelegramId={team?.members.find((id) => id !== user)}
+              partnerColor={color}
             />
           </div>
           <p

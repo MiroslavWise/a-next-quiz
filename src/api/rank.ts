@@ -29,6 +29,8 @@ export interface IRank {
   team_effects?: IElementEffect[]
   /** Партнёр по паре, если она ещё есть в снимке отчёта. */
   partner_telegram_id?: number
+  /** Сумма очков пары по всем закрытым вопросам. Может быть отрицательной. */
+  pair_points?: number
 }
 
 export const getRank = async (reportId: string) => {

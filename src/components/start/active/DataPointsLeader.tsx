@@ -12,7 +12,7 @@ import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import { normalizeTelegramId } from "@/lib/normalize"
 import { reportUserTotalPoints } from "@/api/reports"
 import { useReportTeams } from "@/components/start/teams/use-report-teams"
-import { pairColor, teamOfMember } from "@/lib/report-teams"
+import { pairColor, partnerTelegramId, teamOfMember } from "@/lib/report-teams"
 import { PairBezierOverlay, type PairBezierLink } from "@/components/start/teams/PairBezierOverlay"
 import { useAnswerOrderBy } from "../hooks/use-answer-order-by"
 import { useReportUserPoints } from "../hooks/use-report-user-points"
@@ -152,6 +152,7 @@ function DataPointsLeader({
                 const answerOrder = Number.isFinite(tgKey) ? answerOrderByTelegramId.get(tgKey) : undefined
                 const answerEntriesByIndex = Number.isFinite(tgKey) ? answerEntriesByTelegramId.get(tgKey) : undefined
                 const team = Number.isFinite(tgKey) ? teamOfMember(teamsState?.teams, tgKey) : undefined
+                const partnerId = partnerTelegramId(team, tgKey)
                 return (
                   <UserPointsLeaderItem
                     key={item.telegram_id}
@@ -169,6 +170,7 @@ function DataPointsLeader({
                     activeIndex={activeIndex}
                     answerEntriesByIndex={answerEntriesByIndex}
                     pairColor={team ? pairColor(team.id) : undefined}
+                    partnerTelegramId={partnerId}
                   />
                 )
               })}

@@ -34,6 +34,7 @@ interface IProps {
   activeIndex?: number
   answerEntriesByIndex?: Map<number, IUsersAnswerStatusEntry>
   pairColor?: string
+  partnerTelegramId?: number
 }
 
 function UserPointsLeaderItem({
@@ -51,6 +52,7 @@ function UserPointsLeaderItem({
   activeIndex,
   answerEntriesByIndex,
   pairColor,
+  partnerTelegramId,
 }: IProps) {
   const showDataUsers = useShowDataUser()
   const { data, isLoading } = useUserByTgId(telegram_id, { enabled: !!tgId && !!telegram_id })
@@ -136,6 +138,8 @@ function UserPointsLeaderItem({
             isGameAvatar={isGameAvatar}
             photoOverlay="never"
             className="size-7 text-[0.65rem]"
+            partnerTelegramId={partnerTelegramId}
+            partnerColor={pairColor}
           />
         </div>
         <div className="flex min-w-0 flex-col justify-center gap-0.5">

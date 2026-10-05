@@ -11,6 +11,7 @@ import type { IDotsQuestionsProps } from "./DotsQuestions"
 const DotsQuestions = lazy(() => import("./DotsQuestions"))
 const ActiveCharts = memo(lazy(() => import("./ActiveCharts")))
 import ComponentsTitleQuestion from "./ComponentsTitleQuestion"
+import { PairMateCard } from "./PairMateCard"
 const DataPointsLeader = lazy(() => import("./DataPointsLeader"))
 const LuckyBonusFloat = lazy(() => import("./LuckyBonusFloat"))
 import type { IComponentWithRankProps } from "./ComponentWithRank"
@@ -199,6 +200,15 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                     lastByType={lastByType}
                     prizes={prizes}
                     onOpenDataPoints={() => setVisibleDataPointsLeader(true)}
+                  />
+                ) : null}
+                {isPlayer ? (
+                  <PairMateCard
+                    reportId={reportId}
+                    tgId={tgId}
+                    lastByType={lastByType}
+                    activeIndex={activeIndex}
+                    isQuestionEnded={isQuestionEnded}
                   />
                 ) : null}
                 <ComponentsTitleQuestion

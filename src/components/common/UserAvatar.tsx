@@ -203,6 +203,39 @@ function UserElementBadge({
   )
 }
 
+function UserPartnerBadge({
+  telegramId,
+  side,
+  borderColor,
+}: {
+  telegramId: number
+  side: "left" | "right"
+  borderColor?: string
+}) {
+  const { data } = useUserByTgId(telegramId)
+  const pseudo = data?.pseudo?.trim() || ""
+  const label = pseudo ? `В паре с ${pseudo}` : "В паре"
+
+  return (
+    <span
+      className={cn(
+        "pointer-events-none absolute top-0 z-10 block h-2/5 w-2/5 overflow-hidden rounded-full border-2 border-background bg-white/15",
+        side === "left" ? "left-0" : "right-0",
+      )}
+      style={{ borderColor: borderColor || undefined, backgroundColor: data?.bg?.trim() || undefined }}
+      title={label}
+    >
+      {data?.avatar?.trim() ? (
+        <img src={data.avatar.trim()} alt="" className="size-full object-cover" draggable={false} />
+      ) : (
+        <span className="flex size-full items-center justify-center text-[0.45rem] leading-none font-semibold text-white">
+          {userInitials(pseudo)}
+        </span>
+      )}
+    </span>
+  )
+}
+
 function UserGameAvatarBadge({ variant, badgeClassName }: { variant: UserAvatarVariant; badgeClassName?: string }) {
   if (!elementBadgeClassForVariant(variant)) return null
 
@@ -247,6 +280,10 @@ export interface UserAvatarProps {
   isGameAvatar?: boolean
   /** Переопределяет размер бейджа стихии / аватара игры (например, при уменьшенном аватаре). */
   elementBadgeClassName?: string
+  /** Участник пары: его аватар в свободном верхнем углу. */
+  partnerTelegramId?: number | null
+  /** Цвет обводки миниатюры партнёра. */
+  partnerColor?: string
   onClick?: DispatchWithoutAction
 }
 
@@ -269,6 +306,8 @@ export function UserAvatar({
   element,
   isGameAvatar = false,
   elementBadgeClassName,
+  partnerTelegramId,
+  partnerColor,
   onClick,
 }: UserAvatarProps) {
   const styles = variantStyles[variant]
@@ -278,6 +317,10 @@ export function UserAvatar({
 
   const elementBadge = <UserElementBadge variant={variant} element={element} badgeClassName={elementBadgeClassName} />
   const gameAvatarBadge = isGameAvatar ? <UserGameAvatarBadge variant={variant} badgeClassName={elementBadgeClassName} /> : null
+  const partnerBadge =
+    partnerTelegramId != null && Number.isFinite(partnerTelegramId) ? (
+      <UserPartnerBadge telegramId={partnerTelegramId} side={isGameAvatar ? "left" : "right"} borderColor={partnerColor} />
+    ) : null
 
   const overlayAvatar =
     showOverlay && styles.overlayBorder ? (
@@ -291,6 +334,7 @@ export function UserAvatar({
       {styles.overlayPlacement === "sibling" ? overlayAvatar : null}
       {elementBadge}
       {gameAvatarBadge}
+      {partnerBadge}
     </div>
   )
 
