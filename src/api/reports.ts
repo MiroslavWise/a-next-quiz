@@ -154,6 +154,8 @@ export interface IReportAnswerPatchResponse {
   element_effects?: IElementEffect[]
   /** Эффекты активированной одноразовой способности. */
   skill_effects?: ISkillEffect[]
+  /** Вариант напарника, если оба уже ответили на этот вопрос. */
+  partner_answer_id?: string
 }
 
 export const answerQuestion = async (reportId: string, data: IAnswerQuestion) => {
@@ -170,6 +172,24 @@ export const answerQuestion = async (reportId: string, data: IAnswerQuestion) =>
       const code = typeof body?.code === "string" ? body.code : undefined
       throw new ApiRequestError(message, res.status, code)
     })
+}
+
+/** Ответ `GET /report/{report_id}/pair-answer` — вариант напарника, когда ответили оба. */
+export interface IPairAnswer {
+  partner_telegram_id: number | null
+  answer_id: string | null
+}
+
+export const getPairAnswer = async (reportId: string, index: number) => {
+  return api.get(reportPath(reportId, "pair-answer"), { params: { index }, headers: getApiHeaders() }).then((res) => {
+    if (res.status >= 200 && res.status < 300) {
+      const body = res.data as { partner_telegram_id?: unknown; answer_id?: unknown }
+      const partner = typeof body?.partner_telegram_id === "number" ? body.partner_telegram_id : null
+      const answerId = typeof body?.answer_id === "string" && body.answer_id.trim() ? body.answer_id : null
+      return { partner_telegram_id: partner, answer_id: answerId } satisfies IPairAnswer
+    }
+    throw new Error("Failed to get pair answer")
+  })
 }
 
 export type SkillId = "BOOST" | "SHIELD" | "THIEF" | "GAMBIT" | "TIDE" | "FOG"

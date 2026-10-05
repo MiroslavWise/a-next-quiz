@@ -1,82 +1,61 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { useQuery } from "@tanstack/react-query"
-import { ChevronRight, Gamepad2, Trophy } from "lucide-react"
+import { ChevronRight, Gamepad2 } from "lucide-react"
 
-import Skeleton from "@/components/ui/skeleton"
 import { getMyGames, type IMyGame } from "@/api/reports"
+import Button from "@/components/ui/button"
+import Skeleton from "@/components/ui/skeleton"
 import { formatDistanceToNowRu } from "@/lib/date"
 import { cn } from "@/lib/utils"
 
-function GameCardSkeleton() {
+function GameRowSkeleton() {
   return (
-    <div className="relative flex h-48 w-32 shrink-0 flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/5">
-      {/* Matches image area: 96px tall */}
-      <div className="h-24 w-full shrink-0 overflow-hidden rounded-none">
-        <Skeleton className="h-full w-full rounded-none bg-white/8" />
-      </div>
-      {/* Matches content area: px-2.5 py-2, two text lines + date line at bottom */}
-      <div className="flex flex-1 flex-col px-2.5 py-2">
-        <Skeleton className="h-3 w-full rounded bg-white/8" />
-        <Skeleton className="mt-1 h-3 w-4/5 rounded bg-white/6" />
-        <Skeleton className="mt-auto h-2.5 w-2/3 rounded bg-white/5" />
+    <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/4 px-3 py-3">
+      <Skeleton className="size-14 shrink-0 rounded-lg bg-white/10" />
+      <div className="min-w-0 flex-1">
+        <Skeleton className="h-4 w-40 bg-white/10" />
+        <Skeleton className="mt-2 h-3 w-24 bg-white/6" />
       </div>
     </div>
   )
 }
 
-function GameCard({ game }: { game: IMyGame }) {
-  const router = useRouter()
+function GameRow({ game }: { game: IMyGame }) {
   const quizName = game.quiz?.name ?? "Квиз удалён"
   const imageUrl = game.quiz?.imageUrl ?? null
   const date = formatDistanceToNowRu(game.created_at)
 
   return (
-    <button
-      type="button"
-      onClick={() => router.push(`/my-game-result/${game.id}`)}
+    <Link
+      href={`/my-game-result/${game.id}`}
       className={cn(
-        "group relative flex h-36 w-32 shrink-0 flex-col overflow-hidden rounded-2xl",
-        "border border-white/10 bg-white/5 text-left",
-        "transition-all duration-200 active:scale-[0.96] active:brightness-90",
-        "hover:border-white/20 hover:bg-white/8",
+        "group flex items-center gap-3 rounded-xl border border-white/10 bg-white/4 px-3 py-3 text-left",
+        "transition-colors hover:border-white/20 hover:bg-white/8",
+        "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)/50",
       )}
     >
-      {/* Image area */}
-      <div className="relative h-24 w-full overflow-hidden bg-white/5 shrink-0">
+      <span className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
         {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={quizName}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            loading="lazy"
-          />
+          <img src={imageUrl} alt="" className="size-full object-cover" loading="lazy" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <Gamepad2 className="size-8 text-white/20" />
-          </div>
+          <span className="flex size-full items-center justify-center">
+            <Gamepad2 className="size-6 text-white/25" aria-hidden />
+          </span>
         )}
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-1 flex-col gap-0.5 px-2.5 py-2">
-        <p className="line-clamp-2 text-xs font-medium leading-snug text-white/90">{quizName}</p>
-        <p className="mt-auto text-[10px] leading-tight text-white/35">{date}</p>
-      </div>
-
-      {/* Arrow hint */}
-      <div className="absolute right-2 top-2 flex size-5 items-center justify-center rounded-full bg-black/30 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        <ChevronRight className="size-3 text-white/60" />
-      </div>
-    </button>
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="line-clamp-2 block text-sm font-medium leading-snug text-white/90">{quizName}</span>
+        {date ? <span className="mt-0.5 block text-xs text-white/40">{date}</span> : null}
+      </span>
+      <ChevronRight className="size-4 shrink-0 text-white/35 transition-transform group-hover:translate-x-0.5" aria-hidden />
+    </Link>
   )
 }
 
 export default function MyGamesList() {
-  const { data: games, isLoading, isError } = useQuery({
+  const { data: games, isLoading, isError, refetch, isFetching } = useQuery({
     queryKey: ["my-games"],
     queryFn: getMyGames,
     staleTime: 1000 * 60 * 2,
@@ -85,44 +64,42 @@ export default function MyGamesList() {
 
   if (isLoading) {
     return (
-      <section className="flex flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <Trophy className="size-3.5 text-white/40" />
-          <span className="text-xs font-medium tracking-wide text-white/40 uppercase">Мои игры</span>
-        </div>
-        <div
-          className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1"
-          style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-        >
-          {Array.from({ length: 4 }).map((_, i) => (
-            <GameCardSkeleton key={i} />
-          ))}
-          <div className="w-1 shrink-0" aria-hidden />
-        </div>
-      </section>
+      <ul className="flex flex-col gap-2" aria-busy="true" aria-label="Загрузка игр">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <li key={i}>
+            <GameRowSkeleton />
+          </li>
+        ))}
+      </ul>
     )
   }
 
-  if (isError || !games || games.length === 0) return null
+  if (isError || !games) {
+    return (
+      <div className="rounded-xl border border-white/10 bg-white/4 px-4 py-4" role="alert">
+        <p className="text-sm text-white/80">Не удалось загрузить игры</p>
+        <Button type="button" variant="outline" size="sm" className="mt-3" disabled={isFetching} onClick={() => refetch()}>
+          Повторить
+        </Button>
+      </div>
+    )
+  }
+
+  if (games.length === 0) {
+    return (
+      <div className="rounded-xl border border-white/10 bg-white/4 px-4 py-4">
+        <p className="text-sm text-white/70">Завершённых игр пока нет</p>
+      </div>
+    )
+  }
 
   return (
-    <section className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <Trophy className="size-3.5 text-white/40" />
-        <span className="text-xs font-medium tracking-wide text-white/40 uppercase">Мои игры</span>
-        <span className="ml-auto text-[11px] text-white/25">{games.length}</span>
-      </div>
-      {/* Horizontal scroll, bleeds to screen edges */}
-      <div
-        className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1"
-        style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-      >
-        {games.map((game) => (
-          <GameCard key={game.id} game={game} />
-        ))}
-        {/* Trailing spacer so last card doesn't clip */}
-        <div className="w-1 shrink-0" aria-hidden />
-      </div>
-    </section>
+    <ul className="flex flex-col gap-2" aria-label="Мои игры">
+      {games.map((game) => (
+        <li key={game.id}>
+          <GameRow game={game} />
+        </li>
+      ))}
+    </ul>
   )
 }

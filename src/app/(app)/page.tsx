@@ -1,8 +1,5 @@
-import { Suspense } from "react"
-
-import MyGamesList from "@/components/common/MyGamesList"
-
 import HomeAdminFooter from "@/views/home/HomeAdminFooter"
+import HomeGamesLink from "@/views/home/HomeGamesLink"
 import HomeIdentity from "@/views/home/HomeIdentity"
 import HomeJoinByCode from "@/views/home/HomeJoinByCode"
 import HomeLayout from "@/views/home/HomeLayout"
@@ -11,7 +8,7 @@ import HomeTitlesLink from "@/views/home/HomeTitlesLink"
 
 /**
  * Главная: Server Component (оболочка) + клиентские острова
- * (профиль, список игр, OTP/start_param, admin footer).
+ * (профиль, ссылки на звания и игры, OTP/start_param, admin footer).
  */
 export default function HomePage() {
   return (
@@ -23,9 +20,7 @@ export default function HomePage() {
               <HomeIdentity />
               <HomeMechanicsLink />
               <HomeTitlesLink />
-              <Suspense fallback={null}>
-                <MyGamesList />
-              </Suspense>
+              <HomeGamesLink />
               <HomeJoinByCode />
             </div>
           </HomeLayout>

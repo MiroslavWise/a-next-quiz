@@ -4,7 +4,7 @@ import { useCallback, useMemo, useReducer, useRef, useState } from "react"
 import { type QueryClient } from "@tanstack/react-query"
 
 import { ApiRequestError } from "@/api/errors"
-import { answerQuestion } from "@/api/reports"
+import { answerQuestion, getPairAnswer } from "@/api/reports"
 import { latestSocketEventOfTypes, useSocketEventEffect, type LastSocketEventByType } from "@/hooks/socket-event-by-type"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import type { CountAnswersUsers, QuizStaffEvent } from "@/hooks/useQuizStaffSocketIO"
@@ -27,12 +27,14 @@ type RoundUiState = {
   selectedAnswerId: string | null
   submittingAnswerId: string | null
   hasAnswered: boolean
+  partnerAnswerId: string | null
 }
 
 const initialRoundUi: RoundUiState = {
   selectedAnswerId: null,
   submittingAnswerId: null,
   hasAnswered: false,
+  partnerAnswerId: null,
 }
 
 type RoundUiAction =
@@ -41,6 +43,7 @@ type RoundUiAction =
   | { type: "answerSuccess" }
   | { type: "answerErrorClearSelection" }
   | { type: "answerAlreadyAnswered" }
+  | { type: "partnerAnswer"; answerId: string }
 
 function roundUiReducer(state: RoundUiState, action: RoundUiAction): RoundUiState {
   switch (action.type) {
@@ -54,6 +57,8 @@ function roundUiReducer(state: RoundUiState, action: RoundUiAction): RoundUiStat
       return { ...state, selectedAnswerId: null }
     case "answerAlreadyAnswered":
       return { ...state, hasAnswered: true }
+    case "partnerAnswer":
+      return state.partnerAnswerId === action.answerId ? state : { ...state, partnerAnswerId: action.answerId }
     default:
       return state
   }
@@ -72,6 +77,8 @@ export interface AnswerRound {
   selectedAnswerId: string | null
   submittingAnswerId: string | null
   hasAnswered: boolean
+  /** Вариант напарника, когда ответили оба. */
+  partnerAnswerId: string | null
   handleAnswer: (answerId: string, index: number) => Promise<void>
   answeredCount: number
   answersProgressForQuestion: AnswersProgress
@@ -133,6 +140,8 @@ export interface IUseAnswerRoundParams {
   isObserverLikeLeader: boolean
   isFetchingMyRole: boolean
   myRole: { role: string } | undefined
+  /** Второй участник пары. Без пары подсветка ответа не запрашивается. */
+  partnerTelegramId?: number
   queryClient: QueryClient
   activeQuestionQueryKey: readonly ["active-questions", string]
 }
@@ -154,12 +163,13 @@ export function useAnswerRound({
   isObserverLikeLeader,
   isFetchingMyRole,
   myRole,
+  partnerTelegramId,
   queryClient,
   activeQuestionQueryKey,
 }: IUseAnswerRoundParams): AnswerRound {
   const [answersProgress, setAnswersProgress] = useState<AnswersProgress>(null)
   const [roundUi, dispatchRound] = useReducer(roundUiReducer, initialRoundUi)
-  const { selectedAnswerId, submittingAnswerId, hasAnswered } = roundUi
+  const { selectedAnswerId, submittingAnswerId, hasAnswered, partnerAnswerId } = roundUi
   const latestSyncEvent = latestSocketEventOfTypes(lastByType, syncActiveIndexMessageTypes)
   const latestSyncEventRef = useRef(latestSyncEvent)
   const answersProgressSyncGenerationRef = useRef(0)
@@ -221,6 +231,7 @@ export function useAnswerRound({
         })
         if (res) {
           dispatchRound({ type: "answerSuccess" })
+          if (res.partner_answer_id) dispatchRound({ type: "partnerAnswer", answerId: res.partner_answer_id })
           void queryClient.invalidateQueries({ queryKey: ["rank", reportId] })
         }
       } catch (error) {
@@ -249,10 +260,34 @@ export function useAnswerRound({
     ],
   )
 
+  useSocketEventEffect(
+    lastByType,
+    "answer",
+    (msg) => {
+      if (partnerTelegramId == null || !hasAnswered || partnerAnswerId) return
+      const answeredId = parseOptionalTelegramId(msg.telegram_id)
+      if (answeredId !== partnerTelegramId) return
+      let cancelled = false
+      void getPairAnswer(reportId, activeIndex)
+        .then((res) => {
+          if (cancelled || !res.answer_id) return
+          dispatchRound({ type: "partnerAnswer", answerId: res.answer_id })
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+      return () => {
+        cancelled = true
+      }
+    },
+    [partnerTelegramId, hasAnswered, partnerAnswerId, reportId, activeIndex],
+  )
+
   return {
     selectedAnswerId,
     submittingAnswerId,
     hasAnswered,
+    partnerAnswerId,
     handleAnswer,
     answeredCount,
     answersProgressForQuestion,

@@ -32,6 +32,9 @@ import {
   GAME_STAFF_SHELL_CLASS,
 } from "@/components/start/lib/phase-shell"
 
+import { useReportTeams } from "@/components/start/teams/use-report-teams"
+import { pairColor, partnerTelegramId, teamOfMember } from "@/lib/report-teams"
+
 import { useNextQuestion } from "../hooks/use-next-question"
 import { useActiveQuestion } from "../hooks/use-active-question"
 import { useShuffledAnswers } from "../hooks/use-shuffled-answers"
@@ -139,6 +142,13 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
     useReportParticipation({ reportId, tgId, user_id })
   const isStaff = isObserverLikeLeader
   const isPlayer = !isStaff
+  const { data: teamsState } = useReportTeams({
+    reportId,
+    lastByType,
+    enabled: isPlayer && !!reportId && !!tgId,
+  })
+  const myTeam = teamOfMember(teamsState?.teams, tgId)
+  const mateId = partnerTelegramId(myTeam, tgId)
   const { lastByType: lastStaffByType } = useQuizStaffSocketIO({
     reportId,
     enabled: isStaff && !!reportId,
@@ -183,6 +193,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
         isObserverLikeLeader={isStaff}
         isFetchingMyRole={isFetchingMyRole}
         myRole={myRole}
+        partnerTelegramId={isPlayer ? mateId : undefined}
         queryClient={queryClient}
         activeQuestionQueryKey={activeQuestionQueryKey}
       >
@@ -259,6 +270,8 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                   showLiveAnswerCounts={isStaff && collectingAnswers}
                   liveCountsByAnswerId={round.countsByAnswerId}
                   participantsTotal={participantsTotal}
+                  partnerAnswerId={isPlayer ? round.partnerAnswerId : null}
+                  pairColor={myTeam ? pairColor(myTeam.id) : undefined}
                 />
                 {isPlayer && isQuestionEnded ? (
                   <PlayerResultsSection reportId={reportId} tgId={tgId} activeIndex={activeIndex} />

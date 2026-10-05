@@ -68,6 +68,9 @@ interface IProps {
   showLiveAnswerCounts?: boolean
   liveCountsByAnswerId?: Map<string, number>
   participantsTotal?: number
+  /** Вариант напарника, когда оба уже ответили. */
+  partnerAnswerId?: string | null
+  pairColor?: string
 }
 
 function getCountFunction(answersCorrectCounts: IReportQuestionAnswerCounts["responses"], participantsTotal: number) {
@@ -108,6 +111,8 @@ function AnswerOptionsList({
   showLiveAnswerCounts = false,
   liveCountsByAnswerId,
   participantsTotal = 0,
+  partnerAnswerId = null,
+  pairColor,
 }: {
   activeIndex: number
   audience: AnswersAudience
@@ -126,6 +131,8 @@ function AnswerOptionsList({
   showLiveAnswerCounts?: boolean
   liveCountsByAnswerId?: Map<string, number>
   participantsTotal?: number
+  partnerAnswerId?: string | null
+  pairColor?: string
 }) {
   const results = phase === "results"
   const [expandedAnswerId, setExpandedAnswerId] = useState<string | null>(null)
@@ -183,6 +190,8 @@ function AnswerOptionsList({
                   playerInputsLocked={playerInputsLocked}
                   answerOptionGlassBase={answerOptionGlassBase}
                   playerHasSubmittedThisRound={playerHasSubmittedThisRound}
+                  partnerPicked={!!partnerAnswerId && partnerAnswerId === answer.id}
+                  pairColor={pairColor}
                   endTintClass={playerAnswerEndTintClass(answer.id, isCorrect, selectedAnswerId, userPickWasCorrect)}
                 />
               )}
@@ -206,6 +215,8 @@ function ComponentsQuestionAnswers({
   showLiveAnswerCounts = false,
   liveCountsByAnswerId,
   participantsTotal = 0,
+  partnerAnswerId = null,
+  pairColor,
 }: IProps) {
   const { audience, phase, playerCommitted, playerAwaitingRoleGate } = round
 
@@ -250,6 +261,8 @@ function ComponentsQuestionAnswers({
       showLiveAnswerCounts={showLiveAnswerCounts}
       liveCountsByAnswerId={liveCountsByAnswerId}
       participantsTotal={participantsTotal}
+      partnerAnswerId={audience === "player" ? partnerAnswerId : null}
+      pairColor={pairColor}
     />
   )
 }
