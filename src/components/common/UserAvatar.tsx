@@ -242,7 +242,7 @@ function UserGameAvatarBadge({ variant, badgeClassName }: { variant: UserAvatarV
   return (
     <span
       className={cn(
-        // Как бейдж стихии: сплошной фон. Полупрозрачный + белый круг из elements.svg = «призрак» на мелком аватаре.
+        // Как бейдж стихии: сплошной фон, чтобы дырка в центре иконки не просвечивала фон аватара.
         "pointer-events-none absolute top-0 right-0 z-10 box-border overflow-hidden rounded-full border-2 border-background isolate bg-white p-[10%]",
         AVATAR_CORNER_BADGE_SIZE,
         badgeClassName,

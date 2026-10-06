@@ -139,7 +139,7 @@ export const GAME_AVATAR_CARD: GameElementCard = {
   archetype: "Универсал без яркой специализации",
   description: "Случайный игрок после CHECKING. Стихия игрока не действует.",
   uiHint: "Тебя выбрала игра. Ты силён везде понемногу, но потолок серии и шанс Разлома напоминают о цене ошибки.",
-  iconSrc: "/element/elements.svg",
+  iconSrc: "/element/avatar.svg",
   accentColor: "#F5F5F5",
   wide: true,
   bonuses: [
