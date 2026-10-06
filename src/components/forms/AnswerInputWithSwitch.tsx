@@ -5,49 +5,127 @@ import Switch from "../ui/switch"
 
 import { cn } from "@/lib/utils"
 
-const KEYBOARD_FIELD_MARGIN = 24
+const KEYBOARD_FIELD_MARGIN = 16
 
-/** Нижняя граница видимой области в той же системе координат, что и getBoundingClientRect. */
-function visibleBottom() {
-  const viewport = window.visualViewport
-  if (!viewport) return window.innerHeight
-
-  const docTop = document.documentElement.getBoundingClientRect().top
-  const rectsFollowVisualViewport = Math.abs(docTop + window.scrollY + viewport.offsetTop) < 16
-  return rectsFollowVisualViewport ? viewport.height : viewport.offsetTop + viewport.height
+type ShellSnapshot = {
+  position: string
+  top: string
+  left: string
+  width: string
+  height: string
+  justifyContent: string
+  mainHeight: string
 }
 
-/** Доскроллить только main, когда клавиатура уже открыта. Окно не трогаем — иначе каждый фокус прыгает. */
-function placeAnswerField(input: HTMLInputElement) {
-  if (!input.isConnected) return
-  const scroller = input.closest("main")
-  if (!(scroller instanceof HTMLElement)) return
+let activeInput: HTMLInputElement | null = null
+let shellMain: HTMLElement | null = null
+let shellSnapshot: ShellSnapshot | null = null
+let releaseTimer = 0
+let placeTimer = 0
+let watching = false
+let stopWatching: (() => void) | null = null
+
+/**
+ * body и main стоят на 100svh и overflow:hidden. Клавиатура эту высоту не уменьшает:
+ * WebKit сдвигает visual viewport, оболочка остаётся выше клавиатуры и обрезает нижнее поле.
+ * На время фокуса оболочка совпадает с видимой областью, форма крутится уже внутри неё.
+ */
+function applyKeyboardShell() {
+  const viewport = window.visualViewport
+  const main = shellMain
+  if (!viewport || !main) return
+
+  const body = document.body
+  if (!shellSnapshot) {
+    shellSnapshot = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      width: body.style.width,
+      height: body.style.height,
+      justifyContent: body.style.justifyContent,
+      mainHeight: main.style.height,
+    }
+  }
+
+  const top = `${viewport.offsetTop}px`
+  const height = `${viewport.height}px`
+  if (body.style.position !== "fixed") body.style.position = "fixed"
+  if (body.style.left !== "0px") body.style.left = "0"
+  if (body.style.width !== "100%") body.style.width = "100%"
+  if (body.style.top !== top) body.style.top = top
+  if (body.style.height !== height) body.style.height = height
+  if (body.style.justifyContent !== "flex-start") body.style.justifyContent = "flex-start"
+  if (main.style.height !== "100%") main.style.height = "100%"
+}
+
+function placeAnswerField() {
+  applyKeyboardShell()
+  const input = activeInput
+  const main = shellMain
+  if (!input?.isConnected || !main) return
 
   const row = input.parentElement ?? input
-  const overflow = row.getBoundingClientRect().bottom + KEYBOARD_FIELD_MARGIN - visibleBottom()
-  if (overflow > 1) scroller.scrollTop += overflow
+  const overflow = row.getBoundingClientRect().bottom + KEYBOARD_FIELD_MARGIN - document.body.getBoundingClientRect().bottom
+  if (overflow > 1) main.scrollTop += overflow
+}
+
+function watchKeyboardShell() {
+  if (watching) return
+  const viewport = window.visualViewport
+  if (!viewport) return
+  watching = true
+
+  const onResize = () => {
+    applyKeyboardShell()
+    window.clearTimeout(placeTimer)
+    placeTimer = window.setTimeout(placeAnswerField, 80)
+  }
+
+  viewport.addEventListener("resize", onResize)
+  viewport.addEventListener("scroll", applyKeyboardShell)
+  onResize()
+
+  stopWatching = () => {
+    watching = false
+    window.clearTimeout(placeTimer)
+    viewport.removeEventListener("resize", onResize)
+    viewport.removeEventListener("scroll", applyKeyboardShell)
+    const body = document.body
+    const snapshot = shellSnapshot
+    if (snapshot) {
+      body.style.position = snapshot.position
+      body.style.top = snapshot.top
+      body.style.left = snapshot.left
+      body.style.width = snapshot.width
+      body.style.height = snapshot.height
+      body.style.justifyContent = snapshot.justifyContent
+      if (shellMain) shellMain.style.height = snapshot.mainHeight
+    }
+    shellSnapshot = null
+    shellMain = null
+    stopWatching = null
+  }
+}
+
+function releaseKeyboardShell() {
+  window.clearTimeout(releaseTimer)
+  releaseTimer = window.setTimeout(() => {
+    activeInput = null
+    stopWatching?.()
+  }, 120)
 }
 
 function bindAnswerFieldViewport(input: HTMLInputElement) {
-  const viewport = window.visualViewport
-  let timer = 0
+  const main = input.closest("main")
+  if (!(main instanceof HTMLElement)) return
 
-  const schedule = () => {
-    window.clearTimeout(timer)
-    // Несколько resize за анимацию клавиатуры — сдвигаем форму один раз, когда высота устаканилась.
-    timer = window.setTimeout(() => placeAnswerField(input), 120)
-  }
-
-  viewport?.addEventListener("resize", schedule)
-  const fallback = window.setTimeout(() => placeAnswerField(input), 450)
-
-  const stop = () => {
-    window.clearTimeout(timer)
-    window.clearTimeout(fallback)
-    viewport?.removeEventListener("resize", schedule)
-    input.removeEventListener("blur", stop)
-  }
-  input.addEventListener("blur", stop)
+  window.clearTimeout(releaseTimer)
+  activeInput = input
+  shellMain = main
+  watchKeyboardShell()
+  window.clearTimeout(placeTimer)
+  placeTimer = window.setTimeout(placeAnswerField, 80)
 }
 
 type Props = {
@@ -61,7 +139,7 @@ type Props = {
 }
 
 export function AnswerInputWithSwitch({ index, inputProps, switchId, checked, color, invalid, onCheckedChange }: Props) {
-  const { className: inputClassName, onKeyDown, onFocus, ...restInputProps } = inputProps
+  const { className: inputClassName, onKeyDown, onFocus, onBlur, ...restInputProps } = inputProps
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(event)
@@ -73,6 +151,11 @@ export function AnswerInputWithSwitch({ index, inputProps, switchId, checked, co
   const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
     onFocus?.(event)
     bindAnswerFieldViewport(event.currentTarget)
+  }
+
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    onBlur?.(event)
+    releaseKeyboardShell()
   }
 
   return (
@@ -95,6 +178,7 @@ export function AnswerInputWithSwitch({ index, inputProps, switchId, checked, co
         enterKeyHint="next"
         onKeyDown={handleKeyDown}
         onFocus={handleFocus}
+        onBlur={handleBlur}
         className={cn(
           "h-10 min-h-10 min-w-0 flex-1 border-0 bg-transparent shadow-none dark:bg-transparent",
           "text-base text-white caret-white placeholder:text-white/60",
