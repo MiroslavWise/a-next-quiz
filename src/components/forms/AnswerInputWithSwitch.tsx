@@ -5,56 +5,46 @@ import Switch from "../ui/switch"
 
 import { cn } from "@/lib/utils"
 
-/**
- * iOS и Telegram при фокусе сдвигают window, хотя прокрутка формы живёт в `main`.
- * `scrollIntoView` и `transform` на самом input это усиливают: экран уезжает вверх,
- * иногда весь интерфейс оказывается вне visual viewport, пока ввод не заставит WebKit перерисовать слой.
- */
+const KEYBOARD_FIELD_MARGIN = 24
+
+/** Нижняя граница видимой области в той же системе координат, что и getBoundingClientRect. */
+function visibleBottom() {
+  const viewport = window.visualViewport
+  if (!viewport) return window.innerHeight
+
+  const docTop = document.documentElement.getBoundingClientRect().top
+  const rectsFollowVisualViewport = Math.abs(docTop + window.scrollY + viewport.offsetTop) < 16
+  return rectsFollowVisualViewport ? viewport.height : viewport.offsetTop + viewport.height
+}
+
+/** Доскроллить только main, когда клавиатура уже открыта. Окно не трогаем — иначе каждый фокус прыгает. */
+function placeAnswerField(input: HTMLInputElement) {
+  if (!input.isConnected) return
+  const scroller = input.closest("main")
+  if (!(scroller instanceof HTMLElement)) return
+
+  const row = input.parentElement ?? input
+  const overflow = row.getBoundingClientRect().bottom + KEYBOARD_FIELD_MARGIN - visibleBottom()
+  if (overflow > 1) scroller.scrollTop += overflow
+}
+
 function bindAnswerFieldViewport(input: HTMLInputElement) {
   const viewport = window.visualViewport
+  let timer = 0
 
-  const pinDocument = () => {
-    if (window.scrollX === 0 && window.scrollY === 0) return
-    window.scrollTo(0, 0)
+  const schedule = () => {
+    window.clearTimeout(timer)
+    // Несколько resize за анимацию клавиатуры — сдвигаем форму один раз, когда высота устаканилась.
+    timer = window.setTimeout(() => placeAnswerField(input), 120)
   }
 
-  let frame = 0
-  const keepFieldVisible = () => {
-    pinDocument()
-    cancelAnimationFrame(frame)
-    frame = requestAnimationFrame(() => {
-      if (!input.isConnected) return
-      const scroller = input.closest("main")
-      if (!(scroller instanceof HTMLElement)) return
-
-      const rect = input.getBoundingClientRect()
-      const top = viewport?.offsetTop ?? 0
-      const bottom = top + (viewport?.height ?? window.innerHeight)
-      const margin = 16
-
-      if (rect.bottom > bottom - margin) {
-        scroller.scrollTop += rect.bottom - (bottom - margin)
-      } else if (rect.top < top + margin) {
-        scroller.scrollTop -= top + margin - rect.top
-      }
-    })
-  }
-
-  keepFieldVisible()
-  const later = window.setTimeout(keepFieldVisible, 300)
-
-  const onViewportScroll = () => {
-    pinDocument()
-  }
-
-  viewport?.addEventListener("scroll", onViewportScroll)
-  viewport?.addEventListener("resize", keepFieldVisible)
+  viewport?.addEventListener("resize", schedule)
+  const fallback = window.setTimeout(() => placeAnswerField(input), 450)
 
   const stop = () => {
-    window.clearTimeout(later)
-    cancelAnimationFrame(frame)
-    viewport?.removeEventListener("scroll", onViewportScroll)
-    viewport?.removeEventListener("resize", keepFieldVisible)
+    window.clearTimeout(timer)
+    window.clearTimeout(fallback)
+    viewport?.removeEventListener("resize", schedule)
     input.removeEventListener("blur", stop)
   }
   input.addEventListener("blur", stop)
