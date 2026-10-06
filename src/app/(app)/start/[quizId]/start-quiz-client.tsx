@@ -203,7 +203,7 @@ export default function StartQuizClient({ quizId }: { quizId: string }) {
           </ComponentSuspenseLoader>
         ) : status === EReportStatus.START ? (
           <ComponentSuspenseLoader>
-            <StatusStart refetch={bumpReportQuery} />
+            <StatusStart refetch={bumpReportQuery} questionCount={data.questions?.length ?? 0} quizName={data.quiz?.name} />
           </ComponentSuspenseLoader>
         ) : status === EReportStatus.GAME ? (
           <ComponentSuspenseLoader>

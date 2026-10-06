@@ -494,7 +494,7 @@ export default function GameMechanicsContent() {
                 <PhaseCard
                   phase="START"
                   title={`Экран старта (${START_SPLASH_SECONDS} с)`}
-                  description="Короткая заставка «Игра начинается» перед первым вопросом."
+                  description="Короткая заставка: сборка колоды перед первым вопросом."
                 />
                 <PhaseCard
                   phase="GAME"

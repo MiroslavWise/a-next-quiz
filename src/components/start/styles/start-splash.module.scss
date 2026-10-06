@@ -1,0 +1,279 @@
+.root {
+  --peek: 2.2rem;
+  --card-h: 5.35rem;
+  --cushion: 0.5rem;
+}
+
+.header {
+  animation: rise-fade 0.45s both;
+}
+
+.captionSlot {
+  display: grid;
+  min-height: 1.75rem;
+}
+
+.loadLine,
+.finaleLine {
+  grid-area: 1 / 1;
+}
+
+.finaleLine {
+  display: none;
+}
+
+.settled .loadLine {
+  display: none;
+}
+
+.settled .finaleLine {
+  display: block;
+}
+
+.stage {
+  width: min(100%, 20.5rem);
+  overflow: hidden;
+  perspective: 980px;
+}
+
+.deck {
+  position: relative;
+  width: 100%;
+  height: calc(var(--card-h) + var(--back) * var(--peek) + var(--cushion));
+  transform: rotateX(9deg);
+  transform-origin: center bottom;
+}
+
+.card {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--slot);
+  height: var(--card-h);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent-orb) 46%, rgba(255, 255, 255, 0.18));
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 28%),
+    color-mix(in srgb, var(--element-deep, #10141c) 82%, #07090d);
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  animation-name: rise;
+  animation-duration: 0.62s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+  animation-delay: calc(var(--splash) * 0.08s + var(--slot) * var(--splash) * 0.13s);
+}
+
+.cardTop {
+  animation-name: rise, pulse;
+  animation-duration: 0.62s, 0.48s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease-in-out;
+  animation-fill-mode: both, none;
+  animation-iteration-count: 1, 2;
+  animation-delay: calc(var(--splash) * 0.08s + var(--slot) * var(--splash) * 0.13s), calc(var(--splash) * 0.73s);
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.bar {
+  display: block;
+  height: 0.42rem;
+  border-radius: 999px;
+  background-image: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.08) 18%,
+    rgba(255, 255, 255, 0.32) 48%,
+    rgba(255, 255, 255, 0.08) 78%
+  );
+  background-size: 220% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.settled .bar {
+  animation: none;
+  background-color: rgba(255, 255, 255, 0.16);
+  background-image: none;
+}
+
+.panel {
+  width: min(100%, 20.5rem);
+  animation: rise-fade 0.5s calc(var(--splash) * 0.07s) both;
+}
+
+.track {
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent-orb);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-orb) 70%, transparent);
+  animation: fill calc(var(--splash) * 1s) linear forwards;
+}
+
+.mark {
+  display: grid;
+  width: 1.05rem;
+  height: 1.05rem;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  color: #fff;
+}
+
+.markOn {
+  border-color: color-mix(in srgb, var(--accent-orb) 75%, white);
+  background: color-mix(in srgb, var(--accent-orb) 32%, rgba(0, 0, 0, 0.62));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent-orb) 45%, transparent);
+}
+
+.checkIcon {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.markOn .checkIcon {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.liveCount {
+  display: inline;
+}
+
+.finalCount {
+  display: none;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(calc((var(--back) - var(--slot)) * -1 * var(--peek) + 6.5rem));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(calc((var(--back) - var(--slot)) * -1 * var(--peek)));
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 18px color-mix(in srgb, var(--accent-orb) 16%, transparent);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent-orb) 70%, transparent),
+      0 0 28px color-mix(in srgb, var(--accent-orb) 62%, transparent);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 120% 0;
+  }
+
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes fill {
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes rise-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .panel,
+  .card,
+  .cardTop,
+  .bar,
+  .fill {
+    animation: none !important;
+  }
+
+  .header,
+  .panel,
+  .card {
+    opacity: 1;
+  }
+
+  .card,
+  .cardTop {
+    transform: translateY(calc((var(--back) - var(--slot)) * -1 * var(--peek)));
+  }
+
+  .deck {
+    transform: none;
+  }
+
+  .bar {
+    background-color: rgba(255, 255, 255, 0.16);
+    background-image: none;
+  }
+
+  .fill {
+    width: 100%;
+  }
+
+  .loadLine {
+    display: none;
+  }
+
+  .finaleLine {
+    display: block;
+  }
+
+  .mark {
+    border-color: color-mix(in srgb, var(--accent-orb) 75%, white);
+    background: color-mix(in srgb, var(--accent-orb) 32%, rgba(0, 0, 0, 0.62));
+  }
+
+  .checkIcon {
+    opacity: 1;
+    transform: none;
+  }
+
+  .liveCount {
+    display: none;
+  }
+
+  .finalCount {
+    display: inline;
+  }
+}
