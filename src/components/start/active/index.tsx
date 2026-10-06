@@ -245,7 +245,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                 >
                   <QuestionBonuses bonuses={question?.bonuses} />
                 </ComponentsTitleQuestion>
-                {isStaff && isQuestionEnded ? (
+                {isQuestionEnded ? (
                   <Suspense fallback={<ActiveChartsSkeleton />}>
                     <ActiveCharts reportId={reportId} tgId={tgId} index={activeIndex} />
                   </Suspense>

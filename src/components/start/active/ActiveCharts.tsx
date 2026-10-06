@@ -28,12 +28,35 @@ function bucketCount(data: { count?: number } | undefined) {
   return data?.count ?? 0
 }
 
-/** Сначала верно, потом неверно, пропуск забирает остаток до 100. */
-function sharePercents(right: number, wrong: number, total: number) {
-  if (total <= 0) return { right: 0, wrong: 0, skip: 0 }
-  const rightPct = Math.floor((right * 100) / total)
-  const wrongPct = Math.floor((wrong * 100) / total)
-  return { right: rightPct, wrong: wrongPct, skip: 100 - rightPct - wrongPct }
+/** Доли до 100%. Нулевая категория остаётся 0%; остаток округления — только у ненулевых. */
+function sharePercents(right: number, wrong: number, skip: number, total: number) {
+  const percents = { right: 0, wrong: 0, skip: 0 }
+  if (total <= 0) return percents
+
+  const counts = { right, wrong, skip }
+  const order: Outcome[] = ["right", "wrong", "skip"]
+  const remainders: { id: Outcome; rem: number }[] = []
+  let used = 0
+
+  for (const id of order) {
+    const count = counts[id]
+    if (count <= 0) continue
+    const exact = (count * 100) / total
+    const floored = Math.floor(exact)
+    percents[id] = floored
+    used += floored
+    remainders.push({ id, rem: exact - floored })
+  }
+
+  let left = 100 - used
+  remainders.sort((a, b) => b.rem - a.rem)
+  for (const row of remainders) {
+    if (left <= 0) break
+    percents[row.id] += 1
+    left -= 1
+  }
+
+  return percents
 }
 
 function ownOutcome(data: IReportAnswersCorrect, tgId: number): Outcome | null {
@@ -55,7 +78,7 @@ function ActiveCharts({ reportId, tgId, index, highlightOwn = false }: IProps) {
   const wrong = bucketCount(data?.wrong)
   const skip = bucketCount(data?.abstained)
   const total = data?.participants_total ?? right + wrong + skip
-  const percents = sharePercents(right, wrong, total)
+  const percents = sharePercents(right, wrong, skip, total)
   const counts = { right, wrong, skip }
   const mine = highlightOwn && data ? ownOutcome(data, tgId) : null
   const empty = !isLoading && total <= 0
