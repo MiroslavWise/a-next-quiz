@@ -1,6 +1,6 @@
-import type { ReactNode } from "react"
-import { useQuery } from "@tanstack/react-query"
 import { Sparkles } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import type { CSSProperties, ReactNode } from "react"
 
 import ImageThumb from "./ImageThumb"
 import TimerSeconds from "./TimerSeconds"
@@ -32,6 +32,18 @@ interface IProps extends Partial<IQuestion> {
 }
 
 const ROUND_CLASS = "rounded-2xl xl:rounded-3xl"
+
+const SEAL_VARS = {
+  "--seal-size": "2rem",
+  "--seal-gap": "2px",
+  "--seal-stroke": "2px",
+  "--seal-center": "calc(var(--seal-size) / 2 - var(--seal-size) / 3)",
+  "--seal-orbit": "calc(var(--seal-size) + (var(--seal-gap) + var(--seal-stroke)) * 2)",
+  "--seal-cut": "calc(var(--seal-size) / 2 + var(--seal-gap) + 0.25px)",
+} as CSSProperties
+
+const SEAL_BORDER_MASK =
+  "radial-gradient(circle at calc(var(--seal-center) + var(--seal-stroke)) calc(var(--seal-center) + var(--seal-stroke)), transparent var(--seal-cut), #000 calc(var(--seal-cut) + 0.6px))"
 
 function RoundMeta({ reportId, tgId, activeIndex }: { reportId?: string; tgId?: number; activeIndex?: number }) {
   const element = useAuth((s) => s.user?.element)
@@ -102,13 +114,28 @@ function ComponentsTitleQuestion({
         style={
           elementVisual
             ? {
-                borderColor: elementVisual.accentColor,
+                ...SEAL_VARS,
+                borderColor: "transparent",
                 borderWidth: 2,
-                boxShadow: `0 0 0 1px color-mix(in srgb, ${elementVisual.accentColor} 55%, transparent), 0 0 28px color-mix(in srgb, ${elementVisual.accentColor} 42%, transparent), inset 0 1px 0 rgba(255,255,255,0.14)`,
+                boxShadow: `0 0 28px color-mix(in srgb, ${elementVisual.accentColor} 42%, transparent), inset 0 1px 0 rgba(255,255,255,0.14)`,
               }
             : undefined
         }
       >
+        {elementVisual ? (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute rounded-[inherit] border-2"
+            style={{
+              inset: "calc(var(--seal-stroke) * -1)",
+              borderColor: elementVisual.accentColor,
+              maskImage: SEAL_BORDER_MASK,
+              WebkitMaskImage: SEAL_BORDER_MASK,
+              maskMode: "alpha",
+              maskRepeat: "no-repeat",
+            }}
+          />
+        ) : null}
         {dots}
         {elementsBoosted ? (
           <span

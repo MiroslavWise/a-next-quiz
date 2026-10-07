@@ -34,22 +34,31 @@ function QuestionElementMark({ element, resonant = false, variant = "badge", cla
       <>
         <QuestionElementWash accent={visual.accentColor} resonant={resonant} />
         <span
-          role="img"
-          title={hint}
-          aria-label={hint}
           className={cn(
-            "pointer-events-none absolute top-0 left-0 z-20 flex size-8 -translate-x-1/3 -translate-y-1/3 items-center justify-center rounded-full border bg-[#06141a]",
+            "pointer-events-none absolute z-20 size-(--seal-size)",
             resonant && "motion-safe:animate-pulse",
             className,
           )}
-          style={{
-            position: "absolute",
-            borderColor: visual.accentColor,
-            backgroundColor: `color-mix(in srgb, ${visual.accentColor} 24%, #06141a)`,
-            boxShadow: `0 0 0 1px ${visual.accentColor}, 0 0 16px color-mix(in srgb, ${visual.accentColor} 50%, transparent)`,
-          }}
+          style={{ left: "var(--seal-center)", top: "var(--seal-center)", transform: "translate(-50%, -50%)" }}
         >
-          <Image src={visual.iconSrc} alt="" width={18} height={18} className="size-4.5 object-contain" />
+          <span
+            aria-hidden
+            className="absolute top-1/2 left-1/2 size-(--seal-orbit) -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
+            style={{ borderColor: visual.accentColor }}
+          />
+          <span
+            role="img"
+            title={hint}
+            aria-label={hint}
+            className="relative flex size-8 items-center justify-center rounded-full border bg-[#06141a]"
+            style={{
+              borderColor: visual.accentColor,
+              backgroundColor: `color-mix(in srgb, ${visual.accentColor} 24%, #06141a)`,
+              boxShadow: `0 0 0 1px ${visual.accentColor}, 0 0 16px color-mix(in srgb, ${visual.accentColor} 50%, transparent)`,
+            }}
+          >
+            <Image src={visual.iconSrc} alt="" width={18} height={18} className="size-4.5 object-contain" />
+          </span>
         </span>
       </>
     )
