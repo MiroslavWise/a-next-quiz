@@ -5,6 +5,7 @@ import type { CSSProperties, ReactNode } from "react"
 import ImageThumb from "./ImageThumb"
 import TimerSeconds from "./TimerSeconds"
 import ElementStateChips from "./ElementStateChips"
+import QuestionBonuses from "./QuestionBonuses"
 import QuestionElementMark from "./QuestionElementMark"
 
 import { cn } from "@/lib/utils"
@@ -28,22 +29,20 @@ interface IProps extends Partial<IQuestion> {
   showMeta?: boolean
   /** Индикатор вопросов: садится на центр верхнего бордера карточки. */
   dots?: ReactNode
-  children?: ReactNode
 }
 
 const ROUND_CLASS = "rounded-2xl xl:rounded-3xl"
 
 const SEAL_VARS = {
-  "--seal-size": "2rem",
-  "--seal-gap": "2px",
+  "--seal-size": "1.75rem",
+  "--seal-air": "4px",
   "--seal-stroke": "2px",
   "--seal-center": "calc(var(--seal-size) / 2 - var(--seal-size) / 3)",
-  "--seal-orbit": "calc(var(--seal-size) + (var(--seal-gap) + var(--seal-stroke)) * 2)",
-  "--seal-cut": "calc(var(--seal-size) / 2 + var(--seal-gap) + 0.25px)",
+  "--seal-notch": "calc(var(--seal-size) / 2 + var(--seal-air) + var(--seal-stroke))",
 } as CSSProperties
 
-const SEAL_BORDER_MASK =
-  "radial-gradient(circle at calc(var(--seal-center) + var(--seal-stroke)) calc(var(--seal-center) + var(--seal-stroke)), transparent var(--seal-cut), #000 calc(var(--seal-cut) + 0.6px))"
+const SEAL_FILL_MASK =
+  "radial-gradient(circle at calc(var(--seal-center) + var(--seal-stroke)) calc(var(--seal-center) + var(--seal-stroke)), transparent calc(var(--seal-notch) - 0.5px), #000 var(--seal-notch))"
 
 function RoundMeta({ reportId, tgId, activeIndex }: { reportId?: string; tgId?: number; activeIndex?: number }) {
   const element = useAuth((s) => s.user?.element)
@@ -82,7 +81,6 @@ function ComponentsTitleQuestion({
   bonuses,
   element,
   dots,
-  children,
 }: IProps) {
   const thumbUrl = imageUrl ?? image_url
   const profileElement = useAuth((s) => s.user?.element)
@@ -101,70 +99,84 @@ function ComponentsTitleQuestion({
           {showMeta ? <RoundMeta reportId={reportId} tgId={tgId} activeIndex={activeIndex} /> : null}
           {showTimer ? <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} /> : null}
           {showMeta ? <ElementStateChips reportId={reportId} activeIndex={activeIndex} /> : null}
-          {children}
         </>
       )}
-      <div
-        className={cn(
-          "glass-start-liquid-palette relative isolate flex w-full flex-col items-center overflow-visible border text-center text-white shadow-none transition-all duration-300",
-          ROUND_CLASS,
-          elementVisual && "border-2",
-          !elementVisual && elementsBoosted && "border-(--accent-orb)/60 shadow-[0_0_28px_color-mix(in_srgb,var(--accent-orb)_30%,transparent)]",
-        )}
-        style={
-          elementVisual
-            ? {
-                ...SEAL_VARS,
-                borderColor: "transparent",
-                borderWidth: 2,
-                boxShadow: `0 0 28px color-mix(in srgb, ${elementVisual.accentColor} 42%, transparent), inset 0 1px 0 rgba(255,255,255,0.14)`,
-              }
-            : undefined
-        }
-      >
+      <div className={cn("relative w-full", elementVisual && ROUND_CLASS)} style={SEAL_VARS}>
+        <div
+          className={cn(
+            "glass-start-liquid-palette relative isolate flex w-full flex-col items-center overflow-visible border text-center text-white shadow-none transition-all duration-300",
+            ROUND_CLASS,
+            elementVisual && "border-2",
+            !elementVisual &&
+              elementsBoosted &&
+              "border-(--accent-orb)/60 shadow-[0_0_28px_color-mix(in_srgb,var(--accent-orb)_30%,transparent)]",
+          )}
+          style={
+            elementVisual
+              ? {
+                  borderColor: elementVisual.accentColor,
+                  borderWidth: 2,
+                  boxShadow: `0 0 28px color-mix(in srgb, ${elementVisual.accentColor} 42%, transparent), inset 0 1px 0 rgba(255,255,255,0.14)`,
+                  maskImage: SEAL_FILL_MASK,
+                  WebkitMaskImage: SEAL_FILL_MASK,
+                  maskMode: "alpha",
+                  maskRepeat: "no-repeat",
+                  maskSize: "100% 100%",
+                }
+              : undefined
+          }
+        >
+          {dots}
+          {elementsBoosted ? (
+            <span
+              className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
+              aria-hidden
+            />
+          ) : null}
+          <div className={cn("flex w-full flex-col items-center", dots && "pt-2.5")}>
+            {elementsBoosted ? (
+              <p className="mt-2.5 inline-flex items-center gap-1 rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/15 px-2.5 py-0.5 text-[0.65rem] font-semibold tracking-[0.12em] text-white uppercase">
+                <Sparkles className="size-3 text-(--accent-orb)" aria-hidden />
+                Стихии усилены
+              </p>
+            ) : null}
+            {ended && <p className="question-ended-in text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>}
+            <div className={cn("relative z-1 flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4")}>
+              {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
+              <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
+                <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
+                  {titleText}
+                </p>
+              </div>
+            </div>
+          </div>
+          <QuestionElementMark element={element} variant="stamp" part="wash" resonant={resonant} />
+        </div>
         {elementVisual ? (
-          <span
-            aria-hidden
-            className="pointer-events-none absolute rounded-[inherit] border-2"
+          <span aria-hidden className={cn("pointer-events-none absolute inset-0 z-10 overflow-hidden rounded-[inherit]")}>
+            <span
+              className="absolute rounded-full border-2"
+              style={{
+                width: "calc(var(--seal-notch) * 2)",
+                height: "calc(var(--seal-notch) * 2)",
+                left: "calc(var(--seal-center) - var(--seal-size) / 2 - var(--seal-air))",
+                top: "calc(var(--seal-center) - var(--seal-size) / 2 - var(--seal-air))",
+                borderColor: elementVisual.accentColor,
+              }}
+            />
+          </span>
+        ) : null}
+        <QuestionElementMark element={element} variant="stamp" part="stamp" resonant={resonant} />
+        {!ended ? (
+          <QuestionBonuses
+            bonuses={bonuses}
+            className="absolute z-20"
             style={{
-              inset: "calc(var(--seal-stroke) * -1)",
-              borderColor: elementVisual.accentColor,
-              maskImage: SEAL_BORDER_MASK,
-              WebkitMaskImage: SEAL_BORDER_MASK,
-              maskMode: "alpha",
-              maskRepeat: "no-repeat",
+              left: "calc(var(--seal-stroke) - var(--seal-size) / 3)",
+              bottom: "calc(var(--seal-stroke) - var(--seal-size) / 3)",
             }}
           />
         ) : null}
-        {dots}
-        {elementsBoosted ? (
-          <span
-            className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
-            aria-hidden
-          />
-        ) : null}
-        <div className={cn("flex w-full flex-col items-center", dots && "pt-2.5")}>
-          {elementsBoosted ? (
-            <p className="mt-2.5 inline-flex items-center gap-1 rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/15 px-2.5 py-0.5 text-[0.65rem] font-semibold tracking-[0.12em] text-white uppercase">
-              <Sparkles className="size-3 text-(--accent-orb)" aria-hidden />
-              Стихии усилены
-            </p>
-          ) : null}
-          {ended && <p className="question-ended-in text-[0.7rem] font-medium tracking-[0.16em] text-white/40">Вопрос завершён</p>}
-          <div
-            className={cn(
-              "relative z-1 flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4",
-            )}
-          >
-            {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
-            <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
-              <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
-                {titleText}
-              </p>
-            </div>
-          </div>
-        </div>
-        <QuestionElementMark element={element} variant="stamp" resonant={resonant} />
       </div>
     </div>
   )

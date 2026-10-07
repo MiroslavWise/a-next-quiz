@@ -5,7 +5,6 @@ import { useState, Suspense, lazy, memo, type ReactNode } from "react"
 
 import GameSkills from "./GameSkills"
 import Skeleton from "@/components/ui/skeleton"
-import QuestionBonuses from "./QuestionBonuses"
 import StaffGameSkills from "./StaffGameSkills"
 import type { IDotsQuestionsProps } from "./DotsQuestions"
 const DotsQuestions = lazy(() => import("./DotsQuestions"))
@@ -242,9 +241,7 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                       totalQuestions={totalQuestions}
                     />
                   }
-                >
-                  <QuestionBonuses bonuses={question?.bonuses} />
-                </ComponentsTitleQuestion>
+                />
                 {isQuestionEnded ? (
                   <Suspense fallback={<ActiveChartsSkeleton />}>
                     <ActiveCharts reportId={reportId} tgId={tgId} index={activeIndex} />

@@ -8,6 +8,8 @@ interface IProps {
   /** Стихия профиля совпала с меткой, игрок не аватар. */
   resonant?: boolean
   variant?: "stamp" | "badge"
+  /** У печати: заливка угла внутри карточки или сам кружок поверх выреза. */
+  part?: "wash" | "stamp"
   className?: string
 }
 
@@ -23,7 +25,7 @@ function QuestionElementWash({ accent, resonant }: { accent: string; resonant: b
   )
 }
 
-function QuestionElementMark({ element, resonant = false, variant = "badge", className }: IProps) {
+function QuestionElementMark({ element, resonant = false, variant = "badge", part, className }: IProps) {
   const visual = questionElementVisual(element)
   if (!visual) return null
 
@@ -32,34 +34,31 @@ function QuestionElementMark({ element, resonant = false, variant = "badge", cla
   if (variant === "stamp") {
     return (
       <>
-        <QuestionElementWash accent={visual.accentColor} resonant={resonant} />
-        <span
-          className={cn(
-            "pointer-events-none absolute z-20 size-(--seal-size)",
-            resonant && "motion-safe:animate-pulse",
-            className,
-          )}
-          style={{ left: "var(--seal-center)", top: "var(--seal-center)", transform: "translate(-50%, -50%)" }}
-        >
+        {part !== "stamp" ? <QuestionElementWash accent={visual.accentColor} resonant={resonant} /> : null}
+        {part !== "wash" ? (
           <span
-            aria-hidden
-            className="absolute top-1/2 left-1/2 size-(--seal-orbit) -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
-            style={{ borderColor: visual.accentColor }}
-          />
-          <span
-            role="img"
-            title={hint}
-            aria-label={hint}
-            className="relative flex size-8 items-center justify-center rounded-full border bg-[#06141a]"
+            className={cn("pointer-events-none absolute z-20 size-(--seal-size)", resonant && "motion-safe:animate-pulse", className)}
             style={{
-              borderColor: visual.accentColor,
-              backgroundColor: `color-mix(in srgb, ${visual.accentColor} 24%, #06141a)`,
-              boxShadow: `0 0 0 1px ${visual.accentColor}, 0 0 16px color-mix(in srgb, ${visual.accentColor} 50%, transparent)`,
+              left: "calc(var(--seal-center) + var(--seal-stroke))",
+              top: "calc(var(--seal-center) + var(--seal-stroke))",
+              transform: "translate(-50%, -50%)",
             }}
           >
-            <Image src={visual.iconSrc} alt="" width={18} height={18} className="size-4.5 object-contain" />
+            <span
+              role="img"
+              title={hint}
+              aria-label={hint}
+              className="relative flex size-full items-center justify-center rounded-full border bg-[#06141a]"
+              style={{
+                borderColor: visual.accentColor,
+                backgroundColor: `color-mix(in srgb, ${visual.accentColor} 24%, #06141a)`,
+                boxShadow: `0 0 0 1px ${visual.accentColor}, 0 0 16px color-mix(in srgb, ${visual.accentColor} 50%, transparent)`,
+              }}
+            >
+              <Image src={visual.iconSrc} alt="" width={16} height={16} className="size-4 object-contain" />
+            </span>
           </span>
-        </span>
+        ) : null}
       </>
     )
   }
