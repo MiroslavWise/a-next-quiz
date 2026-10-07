@@ -34,10 +34,7 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
-        id: deploy
-        run: |
-          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
-          echo "url=$url" >> $GITHUB_OUTPUT
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Send Telegram Notification (Success)
         id: notify
@@ -45,7 +42,6 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
         run: |
           node --input-type=module <<'EOF'
           import { execSync } from "node:child_process"
@@ -98,7 +94,6 @@ jobs:
           if (bullets.length) {
             parts.push(bullets.map((item) => `- ${escapeMd(item)}`).join("\n"))
           }
-          if (process.env.DEPLOY_URL) parts.push(escapeMd(process.env.DEPLOY_URL))
 
           const text = parts.join("\n\n").slice(0, 4000)
           console.log(text)
@@ -112,7 +107,6 @@ jobs:
                 chat_id: process.env.TELEGRAM_CHAT_ID,
                 text,
                 parse_mode: "Markdown",
-                disable_web_page_preview: true,
               }),
             },
           )
