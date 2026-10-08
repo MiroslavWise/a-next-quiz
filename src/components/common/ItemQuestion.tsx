@@ -57,7 +57,7 @@ function ItemQuestion(props: IProps) {
         </span>
       ) : null}
       {questionBonuses.length > 0 ? (
-        <div className="absolute top-0 right-0 z-20 flex translate-x-1/3 -translate-y-1/3 flex-row-reverse items-center">
+        <div className="absolute top-0 right-12 z-20 flex -translate-y-1/3 flex-row-reverse items-center">
           {questionBonuses.map((bonus, index) => {
             const team = isTeamQuestionBonus(bonus)
             const negative = !team && isNegativeQuestionBonus(bonus)

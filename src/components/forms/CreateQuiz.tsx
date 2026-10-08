@@ -17,6 +17,7 @@ import { resolverCreateQuizFormData, type CreateQuizFormData } from "@/schemas/c
 
 function CreateQuiz() {
   const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const router = useRouter()
 
   const {
@@ -39,6 +40,7 @@ function CreateQuiz() {
   })
 
   const onSubmit = handleSubmit(async (data) => {
+    setSubmitError(null)
     try {
       const res = await postQuiz(data)
       if (res?.id) {
@@ -51,12 +53,12 @@ function CreateQuiz() {
         }
         void refetch().catch(() => {})
         router.replace(`/admin/quiz/${res.id}`)
-      } else {
-        console.error("Ошибка при создании квиза: нет id в ответе")
-        router.replace(`/admin`)
+        return
       }
+      setSubmitError("Не удалось сохранить квиз.")
     } catch (error) {
       console.error(error)
+      setSubmitError("Не удалось сохранить квиз.")
     }
   })
 
@@ -120,16 +122,15 @@ function CreateQuiz() {
           }
         />
       </div>
-      <footer className="border-border -mx-4 flex w-[calc(100%+2rem)] items-center justify-end gap-2 border-t p-4">
+      <footer className="border-border -mx-4 flex w-[calc(100%+2rem)] flex-col items-end gap-2 border-t p-4">
+        {submitError ? (
+          <p role="alert" className="text-destructive w-full text-right text-xs">
+            {submitError}
+          </p>
+        ) : null}
+        <div className="flex items-center gap-2">
         <Button type="reset" variant="outline" disabled={isSubmitting}>
-          {isSubmitting ? (
-            <span className="inline-flex items-center gap-1">
-              <span className="border-border size-3 animate-spin rounded-full border-2 border-t-transparent" />
-              <span>Отмена…</span>
-            </span>
-          ) : (
-            "Сбросить"
-          )}
+          Сбросить
         </Button>
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? (
@@ -141,6 +142,7 @@ function CreateQuiz() {
             "Сохранить квиз"
           )}
         </Button>
+        </div>
       </footer>
     </form>
   )

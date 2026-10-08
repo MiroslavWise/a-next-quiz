@@ -13,13 +13,12 @@ import { ChangeQuestionAnswersSection } from "./change-question/ChangeQuestionAn
 import { ChangeQuestionIllustrationSection } from "./change-question/ChangeQuestionIllustrationSection"
 import QuestionElementField from "./QuestionElementField"
 import { QuestionBonusesField } from "./QuestionBonusesField"
+import QuestionTimePointsFields from "./QuestionTimePointsFields"
 import { IMAGE_UPLOAD_MAX_BYTES, isAllowedImageUpload } from "./lib/optional-image-upload"
-import { Select, SelectItem, SelectLabel, SelectValue, SelectTrigger, SelectContent, SelectGroup } from "../ui/select"
-
 import { getColor } from "./lib/colors"
-import { arrayTime, Time } from "@/enum/time"
+import { Time } from "@/enum/time"
 import type { IAnswer } from "@/interface/answer"
-import { arrayPoints, Points } from "@/enum/points"
+import { Points } from "@/enum/points"
 import { updateAnswers } from "./lib/update-answers"
 import type { IQuestion } from "@/interface/question"
 import { updateQuestion } from "./lib/update-question"
@@ -36,6 +35,7 @@ function ChangeQuestion({ question, answers }: IProps) {
   const router = useRouter()
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [removeImage, setRemoveImage] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const replaceInputRef = useRef<HTMLInputElement>(null)
 
   const initialImageUrl = question.imageUrl ?? question.image_url ?? null
@@ -92,6 +92,7 @@ function ChangeQuestion({ question, answers }: IProps) {
   }
 
   const onSubmit = handleSubmit(async (data) => {
+    setSubmitError(null)
     try {
       await Promise.all([
         updateAnswers({ answers: answers || [], values: { answers: data.answers }, questionId: question.id }),
@@ -116,12 +117,13 @@ function ChangeQuestion({ question, answers }: IProps) {
       }
 
       if (imageFailed) {
-        console.warn("Изменения текста сохранены, но операция с иллюстрацией не удалась")
+        setSubmitError("Текст сохранён, иллюстрацию обновить не удалось.")
+        return
       }
+      router.push(`/admin/quiz/${question.quizId}`)
     } catch (error) {
       console.error(error)
-    } finally {
-      router.push(`/admin/quiz/${question.quizId}`)
+      setSubmitError("Не удалось сохранить вопрос.")
     }
   })
 
@@ -135,63 +137,7 @@ function ChangeQuestion({ question, answers }: IProps) {
         name="title"
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor={field.name} className="w-full items-center">
-              Вопрос{" "}
-              <div className="ml-auto flex flex-row items-center gap-2">
-                <Controller
-                  control={control}
-                  name="time"
-                  render={({ field: f_time, fieldState: f_timeState }) => (
-                    <Select
-                      onValueChange={(value) => {
-                        f_time.onChange(Number(value))
-                      }}
-                      value={f_time.value?.toString() ?? "30"}
-                    >
-                      <SelectTrigger className="ml-auto w-full max-w-40" aria-invalid={f_timeState.invalid}>
-                        <SelectValue placeholder="Выберите время" />
-                      </SelectTrigger>
-                      <SelectContent align="end">
-                        <SelectGroup>
-                          <SelectLabel>Время</SelectLabel>
-                          {arrayTime.map(([key, value]) => (
-                            <SelectItem key={`::${key.toString()}::`} value={key.toString()}>
-                              {value}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name="points"
-                  render={({ field: f_points, fieldState: f_pointsState }) => (
-                    <Select
-                      onValueChange={(value) => {
-                        f_points.onChange(Number(value))
-                      }}
-                      value={f_points.value?.toString() ?? "1000"}
-                    >
-                      <SelectTrigger className="ml-auto w-full max-w-40" aria-invalid={f_pointsState.invalid}>
-                        <SelectValue placeholder="Выберите количество очков" />
-                      </SelectTrigger>
-                      <SelectContent align="end">
-                        <SelectGroup>
-                          <SelectLabel>Количество очков</SelectLabel>
-                          {arrayPoints.map(([key, value]) => (
-                            <SelectItem key={`::${key.toString()}::`} value={key.toString()}>
-                              {value}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </div>
-            </FieldLabel>
+            <FieldLabel htmlFor={field.name}>Вопрос</FieldLabel>
             <Textarea
               {...field}
               id={field.name}
@@ -204,6 +150,7 @@ function ChangeQuestion({ question, answers }: IProps) {
           </Field>
         )}
       />
+      <QuestionTimePointsFields control={control} />
       <Controller
         control={control}
         name="bonuses"
@@ -237,8 +184,13 @@ function ChangeQuestion({ question, answers }: IProps) {
         setValue={setValue}
         getColor={getColor}
       />
-      <footer className="border-border -mx-4 w-[calc(100%+2rem)] border-t p-4">
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <footer className="border-border -mx-4 flex w-[calc(100%+2rem)] flex-col items-end gap-2 border-t p-4">
+        {submitError ? (
+          <p role="alert" className="text-destructive w-full text-right text-xs">
+            {submitError}
+          </p>
+        ) : null}
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? (
             <span className="inline-flex items-center gap-1">
               <span className="border-border size-3 animate-spin rounded-full border-2 border-t-transparent" />

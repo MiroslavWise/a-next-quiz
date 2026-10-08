@@ -61,13 +61,13 @@ export function QuestionBonusesField({ value, onChange, invalid }: Props) {
       <div
         className={cn(
           "flex flex-col gap-2 rounded-xl border border-dashed px-3 py-3",
-          invalid ? "border-destructive/50 bg-destructive/5" : "border-amber-500/40 bg-amber-500/5",
+          invalid ? "border-destructive/50 bg-destructive/5" : "border-border bg-muted/20",
         )}
       >
-        <div className="flex items-start gap-2 text-sm text-amber-950/80 dark:text-amber-50/90">
-          <Sparkles className="mt-0.5 size-4 shrink-0 text-amber-500 dark:text-amber-200" aria-hidden />
+        <div className="flex items-start gap-2 text-sm">
+          <Sparkles className="text-muted-foreground mt-0.5 size-4 shrink-0" aria-hidden />
           <p className="text-muted-foreground text-xs leading-relaxed">
-            Дополнительные правила начисления очков и влияния стихий. Без выбора вопрос идёт по стандартным правилам квиза.
+            Можно выбрать несколько. Они действуют только на этот вопрос. Если снять все, остаются обычные правила квиза.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
