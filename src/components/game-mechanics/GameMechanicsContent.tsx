@@ -31,9 +31,11 @@ import {
   QUESTION_BONUS_OPTIONS,
   SEQUENTIAL_ORDER_BONUS_EXAMPLE,
   QUESTION_BONUSES_AT_END,
+  QUESTION_BONUSES_FOR_TEAMS,
   QUESTION_BONUSES_ON_ANSWER,
   getQuestionBonusLabel,
   isNegativeQuestionBonus,
+  isTeamQuestionBonus,
   type QuestionBonus,
 } from "@/enum/question-bonus"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
@@ -253,16 +255,17 @@ function QuestionBonusTimingGroup({
       <p className="mt-1 text-xs leading-relaxed text-white/60">{description}</p>
       <ul className="mt-2 flex flex-wrap gap-1.5">
         {bonuses.map((bonus) => {
-          const negative = isNegativeQuestionBonus(bonus)
+          const team = isTeamQuestionBonus(bonus)
+          const negative = !team && isNegativeQuestionBonus(bonus)
 
           return (
             <li
               key={bonus}
               className={cn(
                 "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[0.65rem] font-medium",
-                negative
-                  ? "border-(--unfaithful)/40 bg-(--unfaithful)/10 text-rose-50"
-                  : "border-(--accent-orb)/40 bg-(--accent-orb)/10 text-amber-50",
+                team && "border-sky-300/45 bg-sky-400/12 text-sky-50",
+                negative && "border-(--unfaithful)/40 bg-(--unfaithful)/10 text-rose-50",
+                !team && !negative && "border-(--accent-orb)/40 bg-(--accent-orb)/10 text-amber-50",
               )}
             >
               <QuestionBonusIcon bonus={bonus} className="size-3 shrink-0 opacity-90" />
@@ -568,7 +571,7 @@ export default function GameMechanicsContent() {
               </p>
               <p className="text-xs text-white/55">
                 Собрать, принять и выйти можно только в <code className="text-[0.65rem]">WAITING</code>. Вор и Туман не выбирают партнёра целью.
-                Сначала считается личный итог вопроса, потом бонусы пары. Пропуск для котла — то же, что неверный ответ.
+                Сначала считается личный итог вопроса, потом бонусы пары. Пропуск для котла — то же, что неверный ответ. На отдельном вопросе можно включить «Связку», «Разрыв» или «Эхо» — они действуют только на пару.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                 {TEAM_BONUSES.map((bonus) => (
@@ -740,23 +743,31 @@ export default function GameMechanicsContent() {
                   description="Влияют на начисление сразу. REVERSE_SCORING и ALL_ELEMENTS_BOOST не отменяют стихии — добавляют поправку или меняют числа."
                   bonuses={QUESTION_BONUSES_ON_ANSWER}
                 />
+                <QuestionBonusTimingGroup
+                  title="Только для пары"
+                  description="Считаются при закрытии вопроса после подушки и серии пары. Строка попадает в team_effects. Игроку без пары бонус ничего не меняет."
+                  bonuses={QUESTION_BONUSES_FOR_TEAMS}
+                />
               </div>
               <ul className="mt-3 flex flex-col gap-2">
                 {QUESTION_BONUS_OPTIONS.map((option) => {
-                  const isNegative = isNegativeQuestionBonus(option.value)
+                  const team = isTeamQuestionBonus(option.value)
+                  const isNegative = !team && isNegativeQuestionBonus(option.value)
 
                   return (
                     <li
                       key={option.value}
                       className={cn(
                         "rounded-xl border px-4 py-3",
-                        isNegative ? "border-(--unfaithful)/35 bg-(--unfaithful)/8" : "border-(--accent-orb)/35 bg-(--accent-orb)/10",
+                        team && "border-sky-300/40 bg-sky-400/10",
+                        isNegative && "border-(--unfaithful)/35 bg-(--unfaithful)/8",
+                        !team && !isNegative && "border-(--accent-orb)/35 bg-(--accent-orb)/10",
                       )}
                     >
                       <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
                         <span
                           className="inline-flex items-center gap-1.5 text-sm font-semibold"
-                          style={{ color: isNegative ? "var(--unfaithful)" : "var(--accent-orb)" }}
+                          style={{ color: team ? "#7dd3fc" : isNegative ? "var(--unfaithful)" : "var(--accent-orb)" }}
                         >
                           <QuestionBonusIcon bonus={option.value} className="size-3.5 shrink-0 opacity-90" />
                           {option.label}
@@ -827,10 +838,10 @@ export default function GameMechanicsContent() {
               </p>
             </MechanicsSection>
 
-            <MechanicsSection title="Звания">
+            <MechanicsSection title="Достижения">
               <p>
-                Когда матч переходит в <code className="text-xs">END</code>, сервер один раз записывает факты вечера. Звание не даёт очков и не
-                делит место. Чипы видны на подиуме, в личном итоге и в разборе игры.
+                Когда матч переходит в <code className="text-xs">END</code>, сервер один раз записывает факты вечера. Достижение не даёт очков и
+                не делит место. Кружки сидят на рамке карточки игрока: на подиуме, в строке рейтинга, в личном итоге и в своём результате.
               </p>
               <ul className="mt-2 flex flex-col gap-2">
                 {MATCH_TITLE_CATALOG.map((item) => (

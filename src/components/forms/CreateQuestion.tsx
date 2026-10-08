@@ -26,7 +26,7 @@ import { postCreateAnswers } from "@/api/answers"
 import { arrayPoints, Points } from "@/enum/points"
 import { postCreateQuestion } from "@/api/questions"
 import { postUploadFileQuestion } from "@/api/upload-file"
-import { questionBonusesToApi } from "@/enum/question-bonus"
+import { DEFAULT_CREATE_QUESTION_BONUSES, questionBonusesToApi } from "@/enum/question-bonus"
 
 function CreateQuestion({ quizId }: { quizId: string }) {
   const router = useRouter()
@@ -45,7 +45,7 @@ function CreateQuestion({ quizId }: { quizId: string }) {
       quizId: quizId,
       time: Time.HIGH,
       points: Points.HIGH,
-      bonuses: [],
+      bonuses: [...DEFAULT_CREATE_QUESTION_BONUSES],
       element: null,
       answers: Array.from({ length: 4 }).map(() => ({
         id: "",

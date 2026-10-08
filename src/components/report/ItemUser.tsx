@@ -14,6 +14,7 @@ import { UserAvatar, userProfileAdminSubtitle } from "@/components/common/UserAv
 import { ElementEffectsList } from "@/components/elements/ElementEffectsList"
 import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 import { MatchTitleChips } from "@/components/report/MatchTitleChip"
+import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
 
 import { cn } from "@/lib/utils"
 import { formatQuizPoints, isNegativeQuizPoints, quizPointsToneClass } from "@/lib/quiz-points"
@@ -134,6 +135,7 @@ function ItemUserReportPoints({
   const detailQuestions = sortQuestions(userScoreDetail?.questions)
   const breakdown = reportQuestionScoreBreakdown(userScoreDetail?.questions)
 
+  const showSeals = gameTone && (titles?.length ?? 0) > 0
   const pseudo = data?.pseudo?.trim() || `Пользователь ${telegram_id}`
   const adminSubtitle = userProfileAdminSubtitle(data)
   const avatar = data?.avatar
@@ -206,7 +208,7 @@ function ItemUserReportPoints({
   return (
     <div
       className={cn(
-        "relative space-y-0",
+        "relative space-y-0 has-aria-expanded:z-30",
         isPrizePlace && (gameTone ? "rounded-2xl ring-1 ring-(--accent-orb)/45" : "rounded-xl border-2 border-amber-400/70 bg-amber-500/8"),
         isRandomPrize &&
           !isPrizePlace &&
@@ -242,6 +244,7 @@ function ItemUserReportPoints({
           </Suspense>
         </div>
       ) : null}
+      {showSeals ? <MatchTitleSeals titles={titles} /> : null}
       <Item
         variant="outline"
         size="sm"
@@ -249,6 +252,7 @@ function ItemUserReportPoints({
         className={cn(
           "bg-card/60 flex flex-row flex-nowrap items-center justify-between gap-2",
           gameTone && "glass-start-slab rounded-2xl bg-transparent text-white",
+          showSeals && "pr-7",
           reportId && scoreOpen && "rounded-b-none border-b-0",
           isPrizePlace && !gameTone && "border-transparent bg-transparent",
         )}
@@ -295,7 +299,7 @@ function ItemUserReportPoints({
                 ({adminSubtitle})
               </span>
             ) : null}
-            <MatchTitleChips titles={titles} className="mt-1" />
+            {gameTone ? null : <MatchTitleChips titles={titles} className="mt-1" />}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-1 self-center">

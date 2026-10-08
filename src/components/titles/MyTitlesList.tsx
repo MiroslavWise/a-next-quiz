@@ -29,7 +29,7 @@ export default function MyTitlesList() {
 
   if (isLoading) {
     return (
-      <ul className="flex flex-col gap-2" aria-busy="true" aria-label="Загрузка званий">
+      <ul className="flex flex-col gap-2" aria-busy="true" aria-label="Загрузка достижений">
         {MATCH_TITLE_CATALOG.map((item) => (
           <li key={item.id}>
             <TitleCardSkeleton />
@@ -42,7 +42,7 @@ export default function MyTitlesList() {
   if (isError || !data) {
     return (
       <div className="rounded-xl border border-white/10 bg-white/4 px-4 py-4" role="alert">
-        <p className="text-sm text-white/80">Не удалось загрузить звания</p>
+        <p className="text-sm text-white/80">Не удалось загрузить достижения</p>
         <Button type="button" variant="outline" size="sm" className="mt-3" disabled={isFetching} onClick={() => refetch()}>
           Повторить
         </Button>
@@ -53,7 +53,7 @@ export default function MyTitlesList() {
   const countById = new Map(data.map((item) => [item.id, item.count]))
 
   return (
-    <ul className="flex flex-col gap-2" aria-label="Звания">
+    <ul className="flex flex-col gap-2" aria-label="Достижения">
       {MATCH_TITLE_CATALOG.map((item) => {
         const count = countById.get(item.id) ?? 0
         const earned = count > 0

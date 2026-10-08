@@ -73,7 +73,7 @@ export function MatchTitleChips({
   return (
     <ul
       className={cn("flex flex-wrap gap-1.5", align === "center" && "justify-center", className)}
-      aria-label="Звания"
+      aria-label="Достижения"
     >
       {list.map((item) => (
         <li key={item.id} className="max-w-full min-w-0">

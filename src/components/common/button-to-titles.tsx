@@ -19,7 +19,7 @@ function ButtonToTitles() {
             <Award className="size-4 text-current" aria-hidden />
           </span>
           <span className="min-w-0">
-            <span className="block text-sm font-semibold text-current">Мои звания</span>
+            <span className="block text-sm font-semibold text-current">Мои достижения</span>
             <span className="text-muted-foreground mt-0.5 block truncate text-xs">Сколько раз факты вечера уже были вашими</span>
           </span>
         </span>

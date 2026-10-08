@@ -2,14 +2,17 @@ import type { LucideIcon } from "lucide-react"
 import {
   ArrowLeftRight,
   ArrowDownUp,
+  AudioLines,
   Crown,
   Dices,
   HeartHandshake,
+  Link2,
   Orbit,
   Pointer,
   PowerOff,
   Snail,
   TrendingUp,
+  Unlink,
 } from "lucide-react"
 
 import { QuestionBonus, type QuestionBonusValue } from "@/enum/question-bonus"
@@ -25,6 +28,9 @@ const QUESTION_BONUS_ICONS: Record<QuestionBonus, LucideIcon> = {
   [QuestionBonus.ALL_ELEMENTS_BOOST]: Orbit,
   [QuestionBonus.PROGRESSIVE_BONUS]: TrendingUp,
   [QuestionBonus.SEQUENTIAL_ORDER_BONUS]: ArrowDownUp,
+  [QuestionBonus.PAIR_BOND]: Link2,
+  [QuestionBonus.PAIR_RIFT]: Unlink,
+  [QuestionBonus.PAIR_ECHO]: AudioLines,
 }
 
 export function getQuestionBonusIcon(bonus: QuestionBonus | QuestionBonusValue): LucideIcon {

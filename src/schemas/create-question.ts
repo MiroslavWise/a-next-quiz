@@ -4,7 +4,7 @@ import { object, string, number, array, boolean, mixed, type InferType } from "y
 import { EUserElement } from "@/enum/element"
 import { Time } from "@/enum/time"
 import { Points } from "@/enum/points"
-import { QuestionBonus } from "@/enum/question-bonus"
+import { DEFAULT_CREATE_QUESTION_BONUSES, QuestionBonus } from "@/enum/question-bonus"
 
 const schema = object({
   title: string()
@@ -17,7 +17,7 @@ const schema = object({
   points: number().required("Количество очков является обязательным").default(Points.HIGH),
   bonuses: array()
     .of(mixed<QuestionBonus>().oneOf(Object.values(QuestionBonus)).required())
-    .default([])
+    .default([...DEFAULT_CREATE_QUESTION_BONUSES])
     .nullable(),
   element: mixed<EUserElement>()
     .nullable()

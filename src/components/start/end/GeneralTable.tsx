@@ -73,7 +73,7 @@ function GeneralTable({ reportId, tgId, showLeaderboard, prizes, elementAvatarId
         <Podium users={topThree} tgId={tgId} prizes={prizes} elementAvatarId={elementAvatarId} teams={teamsState?.teams} />
       </div>
       <div className="w-full lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-1">
-        <ItemGroup className={prizes.length > 0 ? "space-y-4 pt-1 pl-1" : "space-y-4"}>
+        <ItemGroup className={prizes.length > 0 ? "pt-2 pr-2 pl-1" : "pt-2 pr-2"}>
           {restLeaderboard.map((item) => {
             const place = item.rank ?? 0
             const isPrizePlace = place > 0 && prizes.includes(place)

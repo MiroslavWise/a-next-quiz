@@ -8,6 +8,7 @@ import {
   QUESTION_BONUS_OPTIONS,
   QuestionBonus,
   isNegativeQuestionBonus,
+  isTeamQuestionBonus,
   normalizeQuestionBonuses,
 } from "@/enum/question-bonus"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
@@ -19,7 +20,8 @@ type Props = {
 }
 
 function getBonusToggleClassName(bonus: QuestionBonus, isActive: boolean) {
-  const isNegative = isNegativeQuestionBonus(bonus)
+  const isTeam = isTeamQuestionBonus(bonus)
+  const isNegative = !isTeam && isNegativeQuestionBonus(bonus)
 
   return cn(
     "size-10 min-w-10 shrink-0 rounded-xl p-0 shadow-none transition-all duration-200",
@@ -28,13 +30,18 @@ function getBonusToggleClassName(bonus: QuestionBonus, isActive: boolean) {
     isActive &&
       "grayscale-0 ring-1 ring-offset-1 ring-offset-background",
     isActive &&
+      isTeam &&
+      "border-sky-400/55 bg-sky-500/15 text-sky-700 hover:bg-sky-500/25 data-[state=on]:bg-sky-500/15 dark:text-sky-100",
+    isActive &&
       isNegative &&
       "border-(--unfaithful)/50 bg-(--unfaithful)/14 text-red-600 hover:bg-(--unfaithful)/20 data-[state=on]:bg-(--unfaithful)/14 dark:text-unfaithful",
     isActive &&
+      !isTeam &&
       !isNegative &&
       "border-(--accent-orb)/50 bg-(--accent-orb)/14 text-amber-600 hover:bg-(--accent-orb)/20 data-[state=on]:bg-(--accent-orb)/14 dark:text-amber-200",
+    isActive && isTeam && "ring-sky-400/40",
     isActive && isNegative && "ring-(--unfaithful)/35",
-    isActive && !isNegative && "ring-(--accent-orb)/35",
+    isActive && !isTeam && !isNegative && "ring-(--accent-orb)/35",
   )
 }
 

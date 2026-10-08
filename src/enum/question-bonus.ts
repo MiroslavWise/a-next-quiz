@@ -10,6 +10,9 @@ export enum QuestionBonus {
   ALL_ELEMENTS_BOOST = "ALL_ELEMENTS_BOOST",
   PROGRESSIVE_BONUS = "PROGRESSIVE_BONUS",
   SEQUENTIAL_ORDER_BONUS = "SEQUENTIAL_ORDER_BONUS",
+  PAIR_BOND = "PAIR_BOND",
+  PAIR_RIFT = "PAIR_RIFT",
+  PAIR_ECHO = "PAIR_ECHO",
 }
 
 export type QuestionBonusValue = `${QuestionBonus}`
@@ -25,6 +28,9 @@ const QUESTION_BONUS_LABELS: Record<QuestionBonus, string> = {
   [QuestionBonus.ALL_ELEMENTS_BOOST]: "Усиление стихий",
   [QuestionBonus.PROGRESSIVE_BONUS]: "Нарастающий бонус",
   [QuestionBonus.SEQUENTIAL_ORDER_BONUS]: "Порядок верных",
+  [QuestionBonus.PAIR_BOND]: "Связка",
+  [QuestionBonus.PAIR_RIFT]: "Разрыв",
+  [QuestionBonus.PAIR_ECHO]: "Эхо",
 }
 
 const QUESTION_BONUS_DETAILS: Record<QuestionBonus, string> = {
@@ -45,9 +51,26 @@ const QUESTION_BONUS_DETAILS: Record<QuestionBonus, string> = {
     "Только за верный ответ. Место в очереди верных: priorCorrect + 1 — неверные ответы до вас не сдвигают очередь. 1-й верный: +3% от счёта за ответ; 2-й: +5%; 3-й: +7%; далее +2% за каждого следующего верного (4-й: +9%, 5-й: +11% …).",
   [QuestionBonus.SEQUENTIAL_ORDER_BONUS]:
     "Только за верный ответ. Штраф или бонус от base вопроса по месту среди верных; N = число игроков в report.users. Формула: −N% + 2N·(i−1)/(N−1). 1-й верный — до −N% base, но не больше −15%; если все N ответят верно — N-й получает +N% base. Неверные и пропуски в очередь не входят.",
+  [QuestionBonus.PAIR_BOND]:
+    "Только для пары. Оба верно — каждому +12% от его очков за ответ, поверх серии пары. Один верный — без этого бонуса. Игроку без пары ничего не даёт.",
+  [QuestionBonus.PAIR_RIFT]:
+    "Только для пары. Верно ответил только один — после подушки его итог за вопрос режется на 35%. Оба верно или оба мимо — правило молчит. Срезанные очки партнёру не переходят.",
+  [QuestionBonus.PAIR_ECHO]:
+    "Только для пары. Оба верно — более медленный получает 8% base, но не больше speed-очков более быстрого. Быстрый ничего не теряет. Одинаковое время — эха нет.",
 }
 
-export const QUESTION_BONUS_OPTIONS = Object.values(QuestionBonus).map((value) => ({
+/** Включены при создании вопроса и идут первыми в ряду бонусов. */
+export const DEFAULT_CREATE_QUESTION_BONUSES: readonly QuestionBonus[] = [
+  QuestionBonus.BOTTOM_TWO_BY_SCORE_PLUS,
+  QuestionBonus.BOTTOM_THREE,
+]
+
+const QUESTION_BONUS_OPTION_ORDER: readonly QuestionBonus[] = [
+  ...DEFAULT_CREATE_QUESTION_BONUSES,
+  ...Object.values(QuestionBonus).filter((value) => !DEFAULT_CREATE_QUESTION_BONUSES.includes(value)),
+]
+
+export const QUESTION_BONUS_OPTIONS = QUESTION_BONUS_OPTION_ORDER.map((value) => ({
   value,
   label: QUESTION_BONUS_LABELS[value],
   detail: QUESTION_BONUS_DETAILS[value],
@@ -66,13 +89,25 @@ const NEGATIVE_QUESTION_BONUSES = new Set<QuestionBonus>([
   QuestionBonus.WRONG_ANSWER_DISABLE_ELEMENT,
   QuestionBonus.REVERSE_SCORING,
   QuestionBonus.SEQUENTIAL_ORDER_BONUS,
+  QuestionBonus.PAIR_RIFT,
+])
+
+const TEAM_QUESTION_BONUSES = new Set<QuestionBonus>([
+  QuestionBonus.PAIR_BOND,
+  QuestionBonus.PAIR_RIFT,
+  QuestionBonus.PAIR_ECHO,
 ])
 
 export function isNegativeQuestionBonus(bonus: QuestionBonus): boolean {
   return NEGATIVE_QUESTION_BONUSES.has(bonus)
 }
 
+export function isTeamQuestionBonus(bonus: QuestionBonus): boolean {
+  return TEAM_QUESTION_BONUSES.has(bonus)
+}
+
 export function getQuestionBonusSwitchColor(bonus: QuestionBonus): string {
+  if (isTeamQuestionBonus(bonus)) return "bg-sky-400"
   return isNegativeQuestionBonus(bonus) ? "bg-(--unfaithful)" : "bg-(--accent-orb)"
 }
 
@@ -110,6 +145,13 @@ export const QUESTION_BONUSES_ON_ANSWER: readonly QuestionBonus[] = [
   QuestionBonus.ALL_ELEMENTS_BOOST,
   QuestionBonus.PROGRESSIVE_BONUS,
   QuestionBonus.SEQUENTIAL_ORDER_BONUS,
+]
+
+/** Начисляются при закрытии вопроса только игрокам в паре. Строки пишутся в `team_effects`. */
+export const QUESTION_BONUSES_FOR_TEAMS: readonly QuestionBonus[] = [
+  QuestionBonus.PAIR_BOND,
+  QuestionBonus.PAIR_RIFT,
+  QuestionBonus.PAIR_ECHO,
 ]
 
 export type AllElementsBoostRow = {

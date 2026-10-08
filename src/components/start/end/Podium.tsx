@@ -7,14 +7,14 @@ import Skeleton from "@/components/ui/skeleton"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 import PrizeLottie from "@/components/lottie/PrizeLottie"
 import { UserAvatar } from "@/components/common/UserAvatar"
+import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
+import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
 
 import { cn } from "@/lib/utils"
-import { useUserByTgId } from "@/queries/user"
-import { reportUserTotalPoints, type IReportUserPoints } from "@/api/reports"
-import { MatchTitleChips } from "@/components/report/MatchTitleChip"
-import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
-import { pairColor, teamOfMember } from "@/lib/report-teams"
 import type { ITeam } from "@/api/reports"
+import { useUserByTgId } from "@/queries/user"
+import { pairColor, teamOfMember } from "@/lib/report-teams"
+import { reportUserTotalPoints, type IReportUserPoints } from "@/api/reports"
 
 interface IProps {
   users: Array<IReportUserPoints & { rank: number }>
@@ -71,7 +71,10 @@ function PodiumUserCard({
   const isGameAvatar = elementAvatarId != null && Number(user.telegram_id) === elementAvatarId
 
   return (
-    <article className={cn("relative min-w-0 overflow-hidden rounded-2xl px-4 py-3 text-center", rankCardClass(user.rank))}>
+    <article
+      className={cn("relative z-10 min-w-0 rounded-2xl px-4 py-3 text-center has-aria-expanded:z-30", rankCardClass(user.rank))}
+    >
+      <MatchTitleSeals titles={user.titles} />
       <div className="relative z-10">
         <span className={cn("inline-flex items-center gap-1.5 text-[0.7rem] font-black tracking-wide", rankAccentClass(user.rank))}>
           <Icon className="size-3.5" aria-hidden />#{user.rank}
@@ -100,7 +103,6 @@ function PodiumUserCard({
         <p className="mt-1 truncate text-sm font-bold text-white/90" title={pseudo}>
           {pseudo}
         </p>
-        <MatchTitleChips titles={user.titles} align="center" className="mt-1.5" />
         {(() => {
           const team = teamOfMember(teams, Number(user.telegram_id))
           return team ? (

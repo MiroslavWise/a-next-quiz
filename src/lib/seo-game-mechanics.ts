@@ -10,7 +10,7 @@ export const OG_IMAGE = `${SITE_ORIGIN}/og/game-mechanics.jpg`
 
 export const GAME_MECHANICS_TITLE = "Механика игры QAND — правила викторины, очки и стихии"
 export const GAME_MECHANICS_DESCRIPTION =
-  "Как устроена викторина QAND: фазы матча, очки за скорость, стихии, пары, одноразовые способности, серии, бонусы вопроса, звания и призовые места."
+  "Как устроена викторина QAND: фазы матча, очки за скорость, стихии, пары, одноразовые способности, серии, бонусы вопроса, достижения и призовые места."
 
 export const gameMechanicsMetadata: Metadata = {
   title: GAME_MECHANICS_TITLE,

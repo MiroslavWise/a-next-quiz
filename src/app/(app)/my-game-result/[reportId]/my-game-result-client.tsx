@@ -8,7 +8,7 @@ import { ArrowLeft, Award, CheckCircle2, XCircle, MinusCircle, Medal, Trophy, Ga
 import Skeleton from "@/components/ui/skeleton"
 import Button from "@/components/ui/button"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
-import { MatchTitleChips } from "@/components/report/MatchTitleChip"
+import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
 import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 
 import { cn } from "@/lib/utils"
@@ -188,7 +188,8 @@ export default function MyGameResultClient({ reportId }: { reportId: string }) {
           <span>История игр</span>
         </Link>
 
-        <div className="relative mb-5 overflow-hidden">
+        <div className="relative mb-5 has-aria-expanded:z-30">
+          <MatchTitleSeals titles={result.titles} />
           {imageUrl && (
             <div className="relative h-48 w-full overflow-hidden sm:h-56">
               <Image src={imageUrl} alt={quizName} fill sizes="(max-width: 1024px) 100vw, 64rem" className="object-cover" />
@@ -233,7 +234,6 @@ export default function MyGameResultClient({ reportId }: { reportId: string }) {
               </div>
             </div>
 
-            <MatchTitleChips titles={result.titles} className="mt-1" />
           </div>
         </div>
 

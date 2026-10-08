@@ -7,7 +7,7 @@ import Spinner from "@/components/ui/spinner"
 import PrizeLottie from "@/components/lottie/PrizeLottie"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 import StatusEndQuestionRow from "./StatusEndQuestionRow"
-import { MatchTitleChips } from "@/components/report/MatchTitleChip"
+import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
 
 import { cn } from "@/lib/utils"
 import { formatQuizPoints, isNegativeQuizPoints, quizPointsToneClass } from "@/lib/quiz-points"
@@ -85,7 +85,13 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
         </div>
       ) : null}
       {myScore.rank != null && (
-        <div className={cn("glass-start-slab flex flex-col items-center rounded-2xl px-5 py-4 text-center", rankPodiumClass(myScore.rank))}>
+        <div
+          className={cn(
+            "glass-start-slab relative flex flex-col items-center rounded-2xl px-5 py-4 text-center has-aria-expanded:z-30",
+            rankPodiumClass(myScore.rank),
+          )}
+        >
+          <MatchTitleSeals titles={myScore.titles} />
           <span className="text-[0.65rem] font-semibold tracking-[0.2em] text-(--accent-orb)/85 uppercase">Место</span>
           <span className="mt-1 text-5xl leading-none font-black tabular-nums">{myScore.rank}</span>
           <span className="mt-2 text-sm font-semibold text-white/85">{placeLabel(myScore.rank)}</span>
@@ -105,7 +111,11 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
           Пара: <span className="font-semibold text-white">{partner?.pseudo?.trim() || `Участник ${myPartnerId}`}</span>
         </p>
       ) : null}
-      <MatchTitleChips titles={myScore.titles} className="justify-center" align="center" />
+      {myScore.rank == null && (myScore.titles?.length ?? 0) > 0 ? (
+        <div className="glass-start-slab relative min-h-10 rounded-2xl has-aria-expanded:z-30">
+          <MatchTitleSeals titles={myScore.titles} />
+        </div>
+      ) : null}
       {myScore.questions && myScore.questions.length > 0 ? (
         <ul className="space-y-2" aria-label="Результаты по вопросам">
           {sortedQuestions(myScore.questions).map((q) => (

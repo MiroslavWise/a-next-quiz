@@ -8,6 +8,7 @@ import {
   getQuestionBonusDetail,
   getQuestionBonusLabel,
   isNegativeQuestionBonus,
+  isTeamQuestionBonus,
   normalizeQuestionBonuses,
   type QuestionBonus,
 } from "@/enum/question-bonus"
@@ -40,13 +41,16 @@ function QuestionBonuses({ bonuses, className, style }: IQuestionBonusesProps) {
     setActiveBonus((current) => (current === bonus ? null : bonus))
   }
 
-  const negative = activeBonus ? isNegativeQuestionBonus(activeBonus) : false
+  const activeTeam = activeBonus ? isTeamQuestionBonus(activeBonus) : false
+  const negative = activeBonus ? !activeTeam && isNegativeQuestionBonus(activeBonus) : false
 
   return (
     <div ref={rootRef} className={cn("relative w-fit", className)} style={style}>
       <div className="flex flex-row-reverse items-center">
         {items.map((bonus, index) => {
           const isActive = activeBonus === bonus
+          const team = isTeamQuestionBonus(bonus)
+          const negative = !team && isNegativeQuestionBonus(bonus)
 
           return (
             <button
@@ -58,9 +62,9 @@ function QuestionBonuses({ bonuses, className, style }: IQuestionBonusesProps) {
               className={cn(
                 "relative flex size-(--seal-size) shrink-0 items-center justify-center rounded-full border-2 shadow-[0_0_0_2px_#06141a] transition-shadow",
                 index > 0 && "-mr-2.5",
-                isNegativeQuestionBonus(bonus)
-                  ? "border-(--unfaithful)/70 bg-[#1a0c10] text-rose-50"
-                  : "border-(--accent-orb)/70 bg-[#12161c] text-amber-50",
+                team && "border-sky-300/80 bg-[#07141c] text-sky-50",
+                negative && "border-(--unfaithful)/70 bg-[#1a0c10] text-rose-50",
+                !team && !negative && "border-(--accent-orb)/70 bg-[#12161c] text-amber-50",
                 isActive && "ring-2 ring-white/50",
               )}
               style={{ zIndex: index + 1 }}
@@ -75,9 +79,9 @@ function QuestionBonuses({ bonuses, className, style }: IQuestionBonusesProps) {
           className={cn(
             "absolute bottom-full left-0 z-30 mb-2 flex w-max max-w-xs items-start gap-1.5 rounded-lg border px-2 py-1.5 text-left leading-snug font-medium backdrop-blur-md",
             "text-[0.62rem] lg:gap-2 lg:px-2.5 lg:py-2 lg:text-[0.68rem]",
-            negative
-              ? "border-(--unfaithful)/45 bg-(--unfaithful)/90 text-rose-50"
-              : "border-(--accent-orb)/45 bg-[#12161c]/95 text-amber-50",
+            activeTeam && "border-sky-300/50 bg-[#07141c]/95 text-sky-50",
+            negative && "border-(--unfaithful)/45 bg-(--unfaithful)/90 text-rose-50",
+            !activeTeam && !negative && "border-(--accent-orb)/45 bg-[#12161c]/95 text-amber-50",
           )}
         >
           <QuestionBonusIcon bonus={activeBonus} className="mt-0.5 size-2.5 shrink-0 opacity-90 lg:size-3" />

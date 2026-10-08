@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils"
 import { getTimeStringS } from "@/enum/time"
 import { getPointsStringS } from "@/enum/points"
 import type { IQuestion } from "@/interface/question"
-import { getQuestionBonusLabel, isNegativeQuestionBonus, normalizeQuestionBonuses } from "@/enum/question-bonus"
+import { getQuestionBonusLabel, isNegativeQuestionBonus, isTeamQuestionBonus, normalizeQuestionBonuses } from "@/enum/question-bonus"
 import { questionElementHint, questionElementVisual } from "@/lib/question-element"
 import { QuestionBonusIcon } from "@/lib/question-bonus-icons"
 
@@ -56,6 +56,33 @@ function ItemQuestion(props: IProps) {
           <Image src={elementVisual.iconSrc} alt="" width={14} height={14} className="size-3.5 object-contain" />
         </span>
       ) : null}
+      {questionBonuses.length > 0 ? (
+        <div className="absolute top-0 right-0 z-20 flex translate-x-1/3 -translate-y-1/3 flex-row-reverse items-center">
+          {questionBonuses.map((bonus, index) => {
+            const team = isTeamQuestionBonus(bonus)
+            const negative = !team && isNegativeQuestionBonus(bonus)
+            const label = getQuestionBonusLabel(bonus)
+
+            return (
+              <span
+                key={bonus}
+                title={label}
+                aria-label={label}
+                className={cn(
+                  "flex size-5 shrink-0 items-center justify-center rounded-full border bg-background",
+                  index > 0 && "-mr-1.5",
+                  team && "border-sky-400/70 text-sky-700 dark:text-sky-100",
+                  negative && "border-(--unfaithful)/70 text-red-700 dark:text-rose-50",
+                  !team && !negative && "border-amber-500/70 text-amber-700 dark:text-amber-100",
+                )}
+                style={{ zIndex: index + 1 }}
+              >
+                <QuestionBonusIcon bonus={bonus} className="size-2.5 shrink-0" />
+              </span>
+            )
+          })}
+        </div>
+      ) : null}
       <div className="flex w-full flex-col gap-1">
         <div className="flex w-full flex-row items-center justify-between gap-2">
           <div className="flex flex-row items-center gap-1.5">
@@ -91,29 +118,6 @@ function ItemQuestion(props: IProps) {
                 {title}
               </Link>
             </ItemTitle>
-            {questionBonuses.length > 0 ? (
-              <div className="mt-1.5 flex flex-wrap items-center gap-1">
-                {questionBonuses.map((bonus) => {
-                  const negative = isNegativeQuestionBonus(bonus)
-
-                  return (
-                    <Badge
-                      key={bonus}
-                      variant="outline"
-                      className={cn(
-                        "text-[0.65rem]",
-                        negative
-                          ? "border-red-500/40 bg-red-500/10 text-red-950 dark:border-(--unfaithful)/45 dark:bg-(--unfaithful)/14 dark:text-rose-50"
-                          : "border-amber-500/35 bg-amber-500/8 text-amber-950 dark:text-amber-50",
-                      )}
-                    >
-                      <QuestionBonusIcon bonus={bonus} className="size-2.5 shrink-0 opacity-90" />
-                      {getQuestionBonusLabel(bonus)}
-                    </Badge>
-                  )
-                })}
-              </div>
-            ) : null}
           </ItemContent>
           <ItemActions>
             <Button variant="outline" size="icon" onClick={handleDragStart} className="relative">
