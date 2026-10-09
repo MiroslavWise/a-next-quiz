@@ -84,16 +84,18 @@ const GlobalVerificationMainContext = ({ children }: PropsWithChildren) => {
 
   if (status === AuthStatus.PENDING) {
     return (
-      <section className="flex min-h-dvh w-full items-center justify-center px-4">
-        <div className="bg-card flex w-full max-w-sm flex-col items-center gap-4 p-6 text-center">
-          <div className="border-border bg-muted/60 flex size-10 items-center justify-center rounded-full border">
-            <div className="border-primary size-4 animate-spin rounded-full border-2 border-b-transparent" />
-          </div>
-          <div className="space-y-1">
-            <h2 className="text-foreground text-base font-semibold tracking-tight">Проверяем доступ</h2>
-            <p className="text-muted-foreground text-xs">Подождите пару секунд: мы авторизуем вас и подгружаем данные.</p>
-          </div>
-        </div>
+      <section
+        className="flex min-h-dvh w-full flex-col items-center justify-center gap-3 px-4 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <p className="glass-start-meta">вход</p>
+        <h2 className="text-xl font-semibold tracking-tight text-balance text-white sm:text-2xl">Проверяем доступ</h2>
+        <span className="relative mt-2 flex size-11 items-center justify-center" aria-hidden>
+          <span className="absolute inset-0 animate-ping rounded-full bg-(--accent-orb)/30" />
+          <span className="absolute inset-1 animate-spin rounded-full border-2 border-transparent border-t-(--accent-orb) border-r-(--accent-orb)/45" />
+          <span className="size-1.5 rounded-full bg-(--accent-orb) shadow-[0_0_12px_color-mix(in_srgb,var(--accent-orb)_80%,transparent)]" />
+        </span>
       </section>
     )
   }
