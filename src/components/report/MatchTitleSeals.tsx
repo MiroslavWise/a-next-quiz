@@ -64,9 +64,9 @@ export function MatchTitleSeals({ titles, className }: { titles?: IMatchTitle[] 
               className={cn(
                 "pointer-events-auto relative flex size-7 shrink-0 items-center justify-center rounded-full bg-background/95 p-0.5",
                 "shadow-[0_0_0_1px_rgba(255,255,255,0.12),0_8px_16px_rgba(0,0,0,0.4)]",
-                "transition-transform hover:!z-50 hover:scale-105 focus-visible:!z-50 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none",
+                "transition-transform hover:z-50! hover:scale-105 focus-visible:z-50! focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none",
                 index > 0 && "-mr-2.5",
-                isActive && "!z-50 ring-2 ring-white/55",
+                isActive && "z-50! ring-2 ring-white/55",
               )}
               style={{ zIndex: list.length - index }}
             >

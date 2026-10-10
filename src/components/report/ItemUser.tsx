@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type CSSProperties } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { ChevronDown, ChevronUp, Gift } from "lucide-react"
 
@@ -15,6 +15,7 @@ import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
 
 import { cn } from "@/lib/utils"
+import { questionElementVisual } from "@/lib/question-element"
 import { formatQuizPoints, isNegativeQuizPoints, quizPointsToneClass } from "@/lib/quiz-points"
 import { RANDOM_PRIZE_MIN_CORRECT_PERCENT } from "@/lib/report-prizes"
 import {
@@ -60,22 +61,39 @@ function sortQuestions(list?: IReportQuestionScore[]) {
   return (list ?? []).toSorted((a, b) => a.index - b.index)
 }
 
+const ROW_SEAL_VARS = {
+  "--seal-size": "1.35rem",
+  "--seal-air": "3px",
+  "--seal-stroke": "1.5px",
+  "--seal-center": "calc(var(--seal-size) / 2 - var(--seal-size) / 3)",
+  "--seal-notch": "calc(var(--seal-size) / 2 + var(--seal-air) + var(--seal-stroke))",
+} as CSSProperties
+
 function QuestionScoreRow({ q, reducedEffects }: { q: IReportQuestionScore; reducedEffects: boolean }) {
   const variant = reportQuestionScoreVariant(q)
   const title = q.title?.trim()
+  const hasElement = questionElementVisual(q.element) != null
+
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 rounded-lg border px-3 py-2 text-sm",
+        "relative flex flex-col gap-2 overflow-visible rounded-lg border px-3 py-2 text-sm",
+        hasElement && "pt-3 pl-3.5",
         variant === "muted" && "border-border/80 bg-muted/40 text-muted-foreground",
         variant === "ok" &&
           cn("border-emerald-500/45 text-emerald-950 dark:text-emerald-50", reducedEffects ? "bg-emerald-500/20" : "bg-emerald-500/25"),
         variant === "bad" && cn("border-rose-500/45 text-rose-950 dark:text-rose-50", reducedEffects ? "bg-rose-500/20" : "bg-rose-500/25"),
       )}
+      style={hasElement ? ROW_SEAL_VARS : undefined}
     >
-      <div className="flex flex-row items-center justify-between gap-3">
-        <span className="flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden">
-          <QuestionElementMark element={q.element} variant="badge" />
+      {hasElement ? (
+        <>
+          <QuestionElementMark element={q.element} variant="stamp" part="wash" />
+          <QuestionElementMark element={q.element} variant="stamp" part="stamp" />
+        </>
+      ) : null}
+      <div className="relative z-1 flex flex-row items-center justify-between gap-3">
+        <span className="flex min-w-0 flex-1 items-center overflow-hidden">
           {title ? (
             <span className="block truncate text-xs font-normal opacity-80" title={title}>
               {title}
@@ -91,8 +109,8 @@ function QuestionScoreRow({ q, reducedEffects }: { q: IReportQuestionScore; redu
           </span>
         </span>
       </div>
-      <ElementEffectsList effects={q.element_effects} variant="strip" className="border-border/60 border-t pt-1.5" />
-      <ElementEffectsList effects={q.team_effects} variant="strip" />
+      <ElementEffectsList effects={q.element_effects} variant="strip" className="border-border/60 relative z-1 border-t pt-1.5" />
+      <ElementEffectsList effects={q.team_effects} variant="strip" className="relative z-1" />
     </div>
   )
 }
@@ -157,7 +175,7 @@ function ItemUserReportPoints({
   const scorePanel = reportId ? (
     <div
       className={cn(
-        "border-border bg-card/40 overflow-hidden rounded-b-xl border border-t-0 px-3 py-3",
+        "border-border bg-card/40 overflow-visible rounded-b-xl border border-t-0 px-3 py-3",
         gameTone && "glass-start-slab rounded-t-none border-white/10",
         !scoreOpen && "hidden",
       )}
@@ -190,9 +208,9 @@ function ItemUserReportPoints({
             </span>
           </div>
           {detailQuestions.length > 0 ? (
-            <ul className="space-y-1.5" aria-label="По вопросам">
+            <ul className="space-y-3 overflow-visible pt-2" aria-label="По вопросам">
               {detailQuestions.map((q) => (
-                <li key={`${q.question_id}-${q.index}`}>
+                <li key={`${q.question_id}-${q.index}`} className="overflow-visible">
                   <QuestionScoreRow q={q} reducedEffects={reducedEffects} />
                 </li>
               ))}

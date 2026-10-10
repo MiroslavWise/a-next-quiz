@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, type CSSProperties } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowLeft, FileBarChart, Play, Trash, Trophy, Users } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -12,14 +12,33 @@ import Button from "@/components/ui/button"
 import Skeleton from "@/components/ui/skeleton"
 import { ItemGroup } from "@/components/ui/item"
 import ItemUserReportPoints from "@/components/report/ItemUser"
+import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 
 import { cn } from "@/lib/utils"
 import { useAuthJwtClaims } from "@/lib/jwt"
 import { EReportStatus } from "@/enum/report"
 import { formatDateTimeHHmmDDMMYY } from "@/lib/date"
+import { questionElementVisual } from "@/lib/question-element"
 import { randomPrizeWinnerIds } from "@/lib/report-prizes"
-import { deleteReport, getReportById, getReportUserPoints, reportUserTotalPoints, type IReportUserPoints } from "@/api/reports"
+import { aggregateQuestionOutcomeStats } from "@/lib/report-question-stats"
+import {
+  deleteReport,
+  getReportById,
+  getReportUserPoints,
+  getReportUsersAnswersStatus,
+  reportUserTotalPoints,
+  type IReportUserPoints,
+} from "@/api/reports"
 import { useReportPrizesUsers } from "@/components/start/hooks/use-report-prizes-users"
+import type { IQuestion } from "@/interface/question"
+
+const STATS_SEAL_VARS = {
+  "--seal-size": "1.35rem",
+  "--seal-air": "3px",
+  "--seal-stroke": "1.5px",
+  "--seal-center": "calc(var(--seal-size) / 2 - var(--seal-size) / 3)",
+  "--seal-notch": "calc(var(--seal-size) / 2 + var(--seal-air) + var(--seal-stroke))",
+} as CSSProperties
 
 const STATUS_LABEL: Record<EReportStatus, string> = {
   [EReportStatus.WAITING]: "Ожидание",
@@ -36,6 +55,119 @@ function statusTone(status?: EReportStatus) {
   }
   if (status === EReportStatus.CHECKING) return "border-amber-400/35 bg-amber-500/12 text-amber-100"
   return "border-white/12 bg-white/6 text-white/70"
+}
+
+function QuestionStatsSection({
+  questions,
+  reportId,
+  tgId,
+  enabled,
+}: {
+  questions?: IQuestion[] | null
+  reportId: string
+  tgId?: number
+  enabled: boolean
+}) {
+  const { data: matrix, isLoading } = useQuery({
+    queryKey: ["report-users-answers-status", reportId],
+    queryFn: () => getReportUsersAnswersStatus(reportId),
+    enabled: enabled && !!reportId && !!tgId,
+  })
+
+  const stats = useMemo(() => aggregateQuestionOutcomeStats(matrix), [matrix])
+
+  if (!enabled) return null
+
+  if (isLoading) {
+    return (
+      <section className="rounded-2xl border border-white/10 bg-white/3 p-3.5 sm:p-4">
+        <Skeleton className="mb-3 h-5 w-40 rounded-md" />
+        <div className="space-y-2.5">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton key={`q-stat-skeleton-${index}`} className="h-16 w-full rounded-xl" />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  if (stats.length === 0) return null
+
+  return (
+    <section className="overflow-visible rounded-2xl border border-white/10 bg-white/3 p-3.5 sm:p-4">
+      <header className="mb-3 px-0.5">
+        <h2 className="text-base font-semibold text-white">По вопросам</h2>
+        <p className="mt-0.5 text-xs text-white/45">Доля верных, неверных и пропусков среди участников</p>
+      </header>
+      <ul className="space-y-3 overflow-visible pt-2" aria-label="Статистика по вопросам">
+        {stats.map((row) => {
+          const meta = questions?.[row.index]
+          const title = meta?.title?.trim()
+          const element = meta?.element
+          const hasElement = questionElementVisual(element) != null
+
+          return (
+            <li key={`question-stat-${row.index}`} className="overflow-visible">
+              <article
+                className={cn(
+                  "relative overflow-visible rounded-xl border border-white/10 bg-white/4 px-3 py-2.5",
+                  hasElement && "pt-3.5 pl-3.5",
+                )}
+                style={hasElement ? STATS_SEAL_VARS : undefined}
+              >
+                {hasElement ? (
+                  <>
+                    <QuestionElementMark element={element} variant="stamp" part="wash" />
+                    <QuestionElementMark element={element} variant="stamp" part="stamp" />
+                  </>
+                ) : null}
+                <div className="relative z-1 space-y-2">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-[0.65rem] font-medium tracking-[0.14em] text-white/40 uppercase">
+                        Вопрос {row.index + 1}
+                      </p>
+                      <p className="mt-0.5 truncate text-sm font-medium text-white/90" title={title || undefined}>
+                        {title || `Вопрос ${row.index + 1}`}
+                      </p>
+                    </div>
+                    <p className="shrink-0 font-mono text-[0.65rem] text-white/40 tabular-nums">{row.total} уч.</p>
+                  </div>
+                  <div
+                    className="flex h-2 overflow-hidden rounded-full bg-white/8"
+                    role="img"
+                    aria-label={`Верно ${row.rightPct}%, неверно ${row.wrongPct}%, пропуск ${row.skippedPct}%`}
+                  >
+                    {row.rightPct > 0 ? (
+                      <span className="bg-emerald-400/80" style={{ width: `${row.rightPct}%` }} />
+                    ) : null}
+                    {row.wrongPct > 0 ? <span className="bg-rose-400/80" style={{ width: `${row.wrongPct}%` }} /> : null}
+                    {row.skippedPct > 0 ? (
+                      <span className="bg-slate-400/70" style={{ width: `${row.skippedPct}%` }} />
+                    ) : null}
+                  </div>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-[0.7rem] tabular-nums">
+                    <span className="text-emerald-300/90">
+                      Верно <span className="font-semibold">{row.rightPct}%</span>
+                      <span className="text-white/35"> · {row.right}</span>
+                    </span>
+                    <span className="text-rose-300/90">
+                      Неверно <span className="font-semibold">{row.wrongPct}%</span>
+                      <span className="text-white/35"> · {row.wrong}</span>
+                    </span>
+                    <span className="text-slate-300/85">
+                      Пропуск <span className="font-semibold">{row.skippedPct}%</span>
+                      <span className="text-white/35"> · {row.skipped}</span>
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </li>
+          )
+        })}
+      </ul>
+    </section>
+  )
 }
 
 function ReportDetailsSkeleton() {
@@ -239,6 +371,13 @@ export default function AdminReportDetailsClient({ uuid }: { uuid: string }) {
           {prizePlacesLabel ? <p className="mt-0.5 text-[0.65rem] text-white/40">места</p> : null}
         </div>
       </div>
+
+      <QuestionStatsSection
+        questions={report?.questions}
+        reportId={uuid}
+        tgId={tgId}
+        enabled={!!tgId && (report?.status === EReportStatus.END || report?.status === EReportStatus.GAME)}
+      />
 
       <section className="overflow-visible rounded-2xl border border-white/10 bg-white/3 p-3.5 sm:p-4">
         <header className="mb-3 flex items-end justify-between gap-3 px-0.5">
