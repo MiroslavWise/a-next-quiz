@@ -44,3 +44,27 @@
     color: var(--orb-border-four);
   }
 }
+
+.toneOne,
+.toneTwo,
+.toneThree {
+  animation: none;
+}
+
+.toneOne {
+  background-color: color-mix(in srgb, var(--orb-bg-one) 10%, transparent);
+  border-color: color-mix(in srgb, var(--orb-border-one) 45%, transparent);
+  color: var(--orb-border-one);
+}
+
+.toneTwo {
+  background-color: color-mix(in srgb, var(--orb-bg-two) 10%, transparent);
+  border-color: color-mix(in srgb, var(--orb-border-two) 45%, transparent);
+  color: var(--orb-border-two);
+}
+
+.toneThree {
+  background-color: color-mix(in srgb, var(--orb-bg-three) 10%, transparent);
+  border-color: color-mix(in srgb, var(--orb-border-three) 45%, transparent);
+  color: var(--orb-border-three);
+}

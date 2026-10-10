@@ -20,8 +20,8 @@ export default function HomePage() {
             <div className="flex flex-col gap-3.5">
               <HomeIdentity />
               <HomeMechanicsLink />
-              <HomeTitlesLink />
               <HomeCharactersLink />
+              <HomeTitlesLink />
               <HomeGamesLink />
               <HomeJoinByCode />
             </div>

@@ -26,7 +26,7 @@ function ButtonToCharacters() {
   }).join(", ")
 
   return (
-    <Button asChild variant="outline" className={cn("h-auto justify-between overflow-hidden rounded-2xl px-4 py-3 text-left", styles.button)}>
+    <Button asChild variant="outline" className={cn("h-auto justify-between overflow-hidden rounded-2xl px-4 py-3 text-left", styles.button, styles.toneOne)}>
       <Link href="/characters" aria-label={`Мои персонажи. ${levelLabel}`}>
         <span className="flex min-w-0 flex-1 items-center gap-3">
           <span className={cn("bg-background/60 flex size-9 shrink-0 items-center justify-center rounded-xl border", styles.buttonIcon)}>

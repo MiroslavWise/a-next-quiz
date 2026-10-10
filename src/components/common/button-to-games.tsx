@@ -11,7 +11,7 @@ function ButtonToGames() {
     <Button
       asChild
       variant="outline"
-      className={cn("h-auto justify-between overflow-hidden rounded-2xl px-4 py-3 text-left", styles.button)}
+      className={cn("h-auto justify-between overflow-hidden rounded-2xl px-4 py-3 text-left", styles.button, styles.toneThree)}
     >
       <Link href="/games">
         <span className="flex min-w-0 items-center gap-3">

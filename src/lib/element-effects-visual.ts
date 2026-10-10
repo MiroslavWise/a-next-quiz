@@ -48,6 +48,7 @@ const GENERIC_VISUALS: Record<string, ElementEffectVisual> = {
   team_bond: { accentColor: "#fbbf24", iconSrc: null, tone: "bonus" },
   team_rift: { accentColor: "#f87171", iconSrc: null, tone: "penalty" },
   team_echo: { accentColor: "#38bdf8", iconSrc: null, tone: "bonus" },
+  team_both_miss: { accentColor: "#f87171", iconSrc: null, tone: "penalty" },
   skill_boost_resonance: { accentColor: ELEMENT_ACCENT[EUserElement.FIRE], iconSrc: "/element/fire.svg", tone: "bonus" },
   earth_firmness: { accentColor: ELEMENT_ACCENT[EUserElement.EARTH], iconSrc: "/element/earth.svg", tone: "bonus" },
   earth_shield_refund: { accentColor: ELEMENT_ACCENT[EUserElement.EARTH], iconSrc: "/element/earth.svg", tone: "bonus" },

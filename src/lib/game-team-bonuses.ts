@@ -1,6 +1,8 @@
 export const TEAM_SPARK_MIN_PERCENT = 1
 export const TEAM_SPARK_MAX_PERCENT = 11
 export const TEAM_CUSHION_PERCENT = 70
+export const TEAM_WRONG_SHARE_PERCENT = 20
+export const TEAM_BOTH_MISS_PERCENT = 5
 export const TEAM_RESONANCE_POINTS = 50
 export const TEAM_PAIR_STREAK_STEP_PERCENT = 2
 export const TEAM_PAIR_STREAK_MAX_PERCENT = 12
@@ -22,8 +24,8 @@ export const TEAM_BONUSES: readonly TeamBonusDefinition[] = [
   {
     id: "team_split",
     title: "Подушка",
-    short: `Верный не ниже ${TEAM_CUSHION_PERCENT}% своего итога`,
-    detail: `Если верно ответил только один, а второй ошибся или пропустил, котёл делится пополам, но верный не опускается ниже ${TEAM_CUSHION_PERCENT}% своего личного итога. Остаток забирает второй. Оба неверно — обычный котёл, без этой защиты. В разборе это одна строка «Пара».`,
+    short: `Верный оставляет ${TEAM_CUSHION_PERCENT}%, партнёр получает ${TEAM_WRONG_SHARE_PERCENT}%`,
+    detail: `Если верно ответил только один и его итог больше нуля, он оставляет ${TEAM_CUSHION_PERCENT}% своих очков вопроса. Партнёр получает свои очки плюс ${TEAM_WRONG_SHARE_PERCENT}% итога верного. Оставшиеся примерно 10% сгорают. Если итог верного не больше нуля, котёл делится пополам. Оба неверно — тоже пополам, и каждому дополнительно −${TEAM_BOTH_MISS_PERCENT}% базы вопроса («Оба мимо»). Пропуск считается ошибкой.`,
   },
   {
     id: "team_resonance",
