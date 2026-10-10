@@ -557,6 +557,44 @@ export const getReportsAnswersCorrect = async (reportId: string | number, index:
     })
 }
 
+/** Элемент сводки — `GET /report/{id}/questions-outcome-stats` (docs/API.md). */
+export interface IQuestionOutcomeStat {
+  index: number
+  question_id: string
+  title?: string
+  element?: "FIRE" | "WATER" | "EARTH" | "AIR" | null
+  participants_total: number
+  right: IAnswerUsersBucket
+  wrong: IAnswerUsersBucket
+  abstained: IAnswerUsersBucket
+  right_pct: number
+  wrong_pct: number
+  abstained_pct: number
+}
+
+export interface IReportQuestionsOutcomeStats {
+  questions: IQuestionOutcomeStat[]
+}
+
+/** Сводка по всем END-вопросам: title, %, списки игроков (admin/manager). */
+export const getReportQuestionsOutcomeStats = async (reportId: string | number) => {
+  return api.get(reportPath(reportId, "questions-outcome-stats"), { headers: getApiHeaders() }).then((res) => {
+    if (res.status >= 200 && res.status < 300) {
+      const data = res.data as Partial<IReportQuestionsOutcomeStats>
+      return {
+        questions: Array.isArray(data.questions) ? data.questions : [],
+      } satisfies IReportQuestionsOutcomeStats
+    }
+    const body = res.data as { code?: unknown; message?: unknown } | undefined
+    const message =
+      typeof body?.message === "string" && body.message.trim()
+        ? body.message
+        : "Не удалось загрузить статистику по вопросам"
+    const code = typeof body?.code === "string" ? body.code : undefined
+    throw new ApiRequestError(message, res.status, code)
+  })
+}
+
 export interface IReportQuestionAnswerCounts {
   question_id: string
   responses: {
