@@ -4,6 +4,7 @@ import HomeIdentity from "@/views/home/HomeIdentity"
 import HomeJoinByCode from "@/views/home/HomeJoinByCode"
 import HomeLayout from "@/views/home/HomeLayout"
 import HomeMechanicsLink from "@/views/home/HomeMechanicsLink"
+import HomeCharactersLink from "@/views/home/HomeCharactersLink"
 import HomeTitlesLink from "@/views/home/HomeTitlesLink"
 
 /**
@@ -20,6 +21,7 @@ export default function HomePage() {
               <HomeIdentity />
               <HomeMechanicsLink />
               <HomeTitlesLink />
+              <HomeCharactersLink />
               <HomeGamesLink />
               <HomeJoinByCode />
             </div>

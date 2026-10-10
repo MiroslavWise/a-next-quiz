@@ -30,6 +30,8 @@ function activationErrorMessage(error: unknown): string {
       return "На этом вопросе уже активна другая способность"
     case "skill_not_available":
       return "Сейчас эта способность недоступна"
+    case "ultimate_locked":
+      return "Персонаж не достиг 10 уровня"
     default:
       return error.message
   }
@@ -234,11 +236,13 @@ function ComponentInfoSkill() {
                 ? "Активна на этом вопросе"
                 : selectedStatus === "used"
                   ? "Уже использована"
-                  : selectedPvpBlocked
-                    ? "Недоступно в топ-3"
-                    : selectedPvpRankPending
-                      ? "Проверяем место…"
-                      : "Активировать"}
+                  : selectedStatus === "locked"
+                    ? "Откроется на 10 уровне"
+                    : selectedPvpBlocked
+                      ? "Недоступно в топ-3"
+                      : selectedPvpRankPending
+                        ? "Проверяем место…"
+                        : "Активировать"}
             </Button>
           )}
         </div>

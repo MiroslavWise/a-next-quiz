@@ -8,6 +8,7 @@ import PrizeLottie from "@/components/lottie/PrizeLottie"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 import StatusEndQuestionRow from "./StatusEndQuestionRow"
 import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
+import CharacterAwardBlock from "@/components/characters/CharacterAwardBlock"
 
 import { cn } from "@/lib/utils"
 import { formatQuizPoints, isNegativeQuizPoints, quizPointsToneClass } from "@/lib/quiz-points"
@@ -106,6 +107,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
           <p className="mt-2 text-xs leading-snug text-rose-200/85">Сумма ниже нуля — учтены отрицательные эффекты недостатков стихий.</p>
         ) : null}
       </div>
+      <CharacterAwardBlock award={myScore.character_award} />
       {myPartnerId ? (
         <p className="text-center text-sm text-white/80" role="status">
           Пара: <span className="font-semibold text-white">{partner?.pseudo?.trim() || `Участник ${myPartnerId}`}</span>

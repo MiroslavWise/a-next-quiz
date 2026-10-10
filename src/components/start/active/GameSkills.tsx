@@ -25,6 +25,7 @@ const skillStatusLabel: Record<SkillStatus, string> = {
   available: "Доступна",
   active: "Активна",
   used: "Использована",
+  locked: "Откроется на 10 уровне",
 }
 
 function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps) {
@@ -111,6 +112,40 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
               </SkillIconButton>
             )
           })}
+          {skillsQuery.data?.skills
+            .filter((skill) => skill.is_ultimate)
+            .map((skill) => {
+              const status = skill.status
+              const isActive = status === "active"
+              const isUsed = status === "used"
+              const isLocked = status === "locked"
+              const isSelected = selectedSkillId === skill.id
+              const statusText = skillStatusLabel[status]
+              const lit = isActive || isSelected
+              return (
+                <SkillIconButton
+                  key={skill.id}
+                  skillId={skill.id}
+                  label={`${skill.title}. ${statusText}`}
+                  title={`${skill.title}: ${statusText}`}
+                  pressed={lit}
+                  disabled={activationPending}
+                  lit={lit}
+                  onSelect={open}
+                  className={cn(
+                    "border-amber-200/80 text-amber-50",
+                    (isUsed || isLocked) && "border-white/10 bg-white/4 text-white/40 grayscale",
+                  )}
+                >
+                  {isLocked ? (
+                    <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full border border-amber-200/40 bg-background text-amber-100">
+                      <Lock className="size-2.5" aria-hidden />
+                    </span>
+                  ) : null}
+                  {isActive ? <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full border-2 border-background bg-amber-200" /> : null}
+                </SkillIconButton>
+              )
+            })}
         </SkillPalette>
       )}
     </section>

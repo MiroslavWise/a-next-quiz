@@ -7,6 +7,7 @@ import type { IQuiz } from "@/interface/quiz"
 import type { IReport } from "@/interface/report"
 import type { IAnswer } from "@/interface/answer"
 import type { IQuestion } from "@/interface/question"
+import type { ICharacterAward } from "@/api/characters"
 import type { EReportStatus } from "@/enum/report"
 import { normalizeActiveIndexSnapshot } from "@/lib/normalize-active-index"
 
@@ -192,8 +193,8 @@ export const getPairAnswer = async (reportId: string, index: number) => {
   })
 }
 
-export type SkillId = "BOOST" | "SHIELD" | "THIEF" | "GAMBIT" | "TIDE" | "FOG"
-export type SkillStatus = "available" | "active" | "used"
+export type SkillId = "BOOST" | "SHIELD" | "THIEF" | "GAMBIT" | "TIDE" | "FOG" | "ULT_FIRE" | "ULT_WATER" | "ULT_EARTH" | "ULT_AIR"
+export type SkillStatus = "available" | "active" | "used" | "locked"
 
 export interface ISkillState {
   id: SkillId
@@ -203,6 +204,9 @@ export interface ISkillState {
   used_at_index?: number
   /** Способность в резонансе со стихией игрока (см. docs/API.md «Резонансы»). */
   resonance?: boolean
+  /** Ульта 10 уровня. Закрытая тоже приходит, со статусом `locked`. */
+  is_ultimate?: boolean
+  element?: "FIRE" | "WATER" | "EARTH" | "AIR"
 }
 
 export type ElementPhase = "FIRE" | "WATER" | "EARTH" | "AIR"
@@ -499,6 +503,8 @@ export interface IReportUserPoints {
   questions?: IReportQuestionScore[]
   /** Звания матча. Пустой массив, если званий нет или матч ещё не завершён. */
   titles?: IMatchTitle[]
+  /** Опыт персонажа за этот матч. `null`, пока игра не завершена. */
+  character_award?: ICharacterAward | null
 }
 
 export function reportUserTotalPoints(item: Pick<IReportUserPoints, "points" | "total_points">): number {
@@ -811,6 +817,7 @@ export interface IMyGameResult {
   total_points: number
   rank: number
   titles?: IMatchTitle[]
+  character_award?: ICharacterAward | null
   quiz: IMyGameResultQuiz | null
   questions: IMyGameResultQuestion[]
 }

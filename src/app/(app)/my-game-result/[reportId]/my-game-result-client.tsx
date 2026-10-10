@@ -9,6 +9,7 @@ import Skeleton from "@/components/ui/skeleton"
 import Button from "@/components/ui/button"
 import PickaxeIcon from "@/components/lottie/PickaxeIcon"
 import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
+import CharacterAwardBlock from "@/components/characters/CharacterAwardBlock"
 import QuestionElementMark from "@/components/start/active/QuestionElementMark"
 
 import { cn } from "@/lib/utils"
@@ -210,6 +211,7 @@ export default function MyGameResultClient({ reportId }: { reportId: string }) {
               {createdAt && <p className="mt-1 text-xs text-white/30">{formatDateTimeLongRu(createdAt)}</p>}
             </div>
 
+            <CharacterAwardBlock award={result.character_award} />
             <div className="mt-1 grid grid-cols-3 gap-2 sm:gap-3">
               <div className="flex flex-col items-center gap-1 rounded-xl bg-white/5 py-3">
                 <RankIcon className={cn("size-5", rank.color)} aria-hidden />

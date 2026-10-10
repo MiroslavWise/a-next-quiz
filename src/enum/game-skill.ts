@@ -58,6 +58,37 @@ export const GAME_SKILLS: readonly GameSkillDefinition[] = [
   },
 ] as const
 
+export const ULTIMATE_SKILLS: readonly GameSkillDefinition[] = [
+  {
+    id: "ULT_FIRE",
+    title: "Феникс",
+    short: "Один раз за матч",
+    detail: "На вопросе нет дебаффов и минусов, серия не сбрасывается. Верный ответ получает +40% базы, ошибка или пропуск — 0.",
+    condition: "Открывается на 10 уровне Огня.",
+  },
+  {
+    id: "ULT_WATER",
+    title: "Прилив жизни",
+    short: "Один раз за матч",
+    detail: "За верный ответ тебе +2% базы на каждого игрока. Каждому другому верному ответу +30 очков, даже если ты ошибся.",
+    condition: "Открывается на 10 уровне Воды.",
+  },
+  {
+    id: "ULT_EARTH",
+    title: "Гранит",
+    short: "Один раз за матч",
+    detail: "Иммунитет к дебаффам, серия не сбрасывается, скорость ответа ×1.30. Верный ответ дополнительно +10% базы.",
+    condition: "Открывается на 10 уровне Земли.",
+  },
+  {
+    id: "ULT_AIR",
+    title: "Смерч",
+    short: "Один раз за матч",
+    detail: "Каждый игрок получает множитель 0.6, 1.0 или 1.4 к очкам вопроса. Тебе дополнительно +10% базы.",
+    condition: "Открывается на 10 уровне Воздуха.",
+  },
+]
+
 export function getGameSkillDefinition(skillId: SkillId): GameSkillDefinition {
-  return GAME_SKILLS.find((skill) => skill.id === skillId) ?? GAME_SKILLS[0]
+  return GAME_SKILLS.find((skill) => skill.id === skillId) ?? ULTIMATE_SKILLS.find((skill) => skill.id === skillId) ?? GAME_SKILLS[0]
 }
