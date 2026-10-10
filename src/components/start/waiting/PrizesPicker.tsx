@@ -1,10 +1,10 @@
 "use client"
 
+import { Gift } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import Spinner from "@/components/ui/spinner"
-import PrizeLottie from "@/components/lottie/PrizeLottie"
 
 import { cn } from "@/lib/utils"
 import { patchReportPrizes } from "@/api/reports"
@@ -112,7 +112,7 @@ function PrizesPickerContent({ reportId, prizes, usersCount }: Omit<PrizesPicker
       <div className="flex items-start justify-between gap-2">
         <div className="space-y-1">
           <div className="flex items-center gap-1.5">
-            <PrizeLottie className="size-3.5 shrink-0" />
+            <Gift className="size-3.5 shrink-0 text-amber-300" aria-hidden />
             <h2 className="text-sm font-semibold text-white">Призовые места</h2>
           </div>
           <p className="text-[0.7rem] leading-relaxed text-white/55 sm:text-xs">

@@ -3,7 +3,7 @@
 import { useState, type CSSProperties } from "react"
 
 import Skeleton from "@/components/ui/skeleton"
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import { UserAvatarById, userProfileAdminSubtitle } from "@/components/common/UserAvatar"
 
 import { cn } from "@/lib/utils"

@@ -56,7 +56,6 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
-      { source: "/lottie/:path*", headers: [cacheControl] },
       { source: "/avatars/:path*", headers: [cacheControl] },
       { source: "/element/:path*", headers: [cacheControl] },
       { source: "/webp/:path*", headers: [cacheControl] },

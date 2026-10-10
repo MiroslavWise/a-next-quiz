@@ -1,6 +1,6 @@
 import { Sparkles } from "lucide-react"
 
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import { UserAvatarById } from "@/components/common/UserAvatar"
 
 import { cn } from "@/lib/utils"

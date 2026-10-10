@@ -1,8 +1,7 @@
-import { MedalIcon, TrophyIcon } from "lucide-react"
+import { Gift, MedalIcon, TrophyIcon } from "lucide-react"
 
 import Skeleton from "@/components/ui/skeleton"
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
-import PrizeLottie from "@/components/lottie/PrizeLottie"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import { UserAvatar, userProfileAdminSubtitle } from "@/components/common/UserAvatar"
 
 import { cn } from "@/lib/utils"
@@ -77,7 +76,7 @@ function PrizeWinnerRow({
           className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/80 shadow-[0_0_10px_color-mix(in_srgb,var(--accent-orb)_45%,transparent)]"
           aria-hidden
         >
-          <PrizeLottie className="size-4" />
+          <Gift className="size-3 text-white" aria-hidden />
         </span>
       </div>
 

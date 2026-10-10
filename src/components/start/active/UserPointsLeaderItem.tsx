@@ -1,11 +1,10 @@
 "use client"
 
 import { lazy, Suspense } from "react"
-import { DotLottieReact } from "@lottiefiles/dotlottie-react"
+import { Check, Gift } from "lucide-react"
 
 import Skeleton from "@/components/ui/skeleton"
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
-import PrizeLottie from "@/components/lottie/PrizeLottie"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import UserAnswerStatusBars from "./UserAnswerStatusBars"
 const RatingScale = lazy(() => import("../webp/rating-scale"))
 import { UserAvatar, userProfileAdminSubtitle } from "@/components/common/UserAvatar"
@@ -104,14 +103,11 @@ function UserPointsLeaderItem({
             aria-label={isTopThreeAnswer ? `Ответил ${answerOrder}-м по счёту` : "Ответил правильно"}
             title={isTopThreeAnswer ? `Порядок ответа: ${answerOrder}` : "Ответил правильно"}
           >
-            <DotLottieReact
-              src={isTopThreeAnswer ? `/lottie/answers/${answerOrder}.lottie` : "/lottie/answers/check.lottie"}
-              autoplay
-              loop
-              speed={0.6}
-              backgroundColor="transparent"
-              className="size-full"
-            />
+            {isTopThreeAnswer && answerOrder >= 1 ? (
+              <span className="text-[0.6rem] leading-none font-bold text-white tabular-nums">{answerOrder}</span>
+            ) : (
+              <Check className="size-2.5 text-white" aria-hidden />
+            )}
           </span>
         ) : null}
         {isPrizePlace ? (
@@ -120,7 +116,7 @@ function UserPointsLeaderItem({
             aria-label="Призовое место"
             title="Призовое место"
           >
-            <PrizeLottie className="size-2.5" />
+            <Gift className="size-2.5 text-white" aria-hidden />
           </span>
         ) : null}
         <div

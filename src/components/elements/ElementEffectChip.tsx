@@ -1,4 +1,4 @@
-import PickaxeIcon from "@/components/lottie/PickaxeIcon";
+import PickaxeIcon from "@/components/icons/PickaxeIcon";
 
 import { cn } from "@/lib/utils";
 import type { IElementEffect } from "@/interface/element-effect";

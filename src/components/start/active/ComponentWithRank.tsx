@@ -5,7 +5,7 @@ import { Crown, Sparkles } from "lucide-react"
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 
 import CountText from "@/components/common/count-text"
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import { ElementEffectsList } from "@/components/elements/ElementEffectsList"
 
 import { cn } from "@/lib/utils"

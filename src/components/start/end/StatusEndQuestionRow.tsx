@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 import type { IReportQuestionScore } from "@/api/reports"
 import { ElementEffectsList } from "@/components/elements/ElementEffectsList"
 import QuestionElementMark from "@/components/start/active/QuestionElementMark"
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import { isNegativeQuizPoints } from "@/lib/quiz-points"
 import { reportQuestionScoreLabel, reportQuestionScoreVariant } from "@/lib/quiz-question-score"
 

@@ -1,6 +1,4 @@
-import { Sparkles } from "lucide-react"
-
-import PrizeLottie from "@/components/lottie/PrizeLottie"
+import { Gift, Sparkles } from "lucide-react"
 
 import { RANDOM_PRIZE_MIN_CORRECT_PERCENT } from "@/lib/report-prizes"
 
@@ -15,7 +13,7 @@ function RandomPrizeLobbyBanner() {
           className="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 sm:size-11"
           aria-hidden
         >
-          <PrizeLottie className="size-6" />
+          <Gift className="size-6 text-(--accent-orb)" aria-hidden />
         </span>
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex items-center gap-2">

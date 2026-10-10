@@ -1,6 +1,6 @@
 "use client"
 
-import { DotLottieReact } from "@lottiefiles/dotlottie-react"
+import ElementMarkIcon from "@/components/icons/ElementMarkIcon"
 
 import { cn } from "@/lib/utils"
 import type { EUserElement } from "@/enum/element"
@@ -36,7 +36,7 @@ function ElementsUserButton({ className, disabled, onClick, element }: ElementsU
       onClick={onClick ?? dispatchOpenElementsUser}
       className={cn(className ?? DEFAULT_BUTTON_CLASS, needsElementPrompt && styles.promptButton)}
     >
-      <DotLottieReact src="/lottie/elements.lottie" loop autoplay backgroundColor="transparent" className="size-3.5 shrink-0" />
+      <ElementMarkIcon element={element} className="size-3.5 shrink-0" />
     </button>
   )
 }

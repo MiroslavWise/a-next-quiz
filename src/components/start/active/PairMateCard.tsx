@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import { UserAvatar } from "@/components/common/UserAvatar"
 import { useReportTeams } from "@/components/start/teams/use-report-teams"
 

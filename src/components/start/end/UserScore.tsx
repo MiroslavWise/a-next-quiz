@@ -1,11 +1,11 @@
 "use client"
 
+import { Gift } from "lucide-react"
 import { useMemo } from "react"
 import { useQuery } from "@tanstack/react-query"
 
 import Spinner from "@/components/ui/spinner"
-import PrizeLottie from "@/components/lottie/PrizeLottie"
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import StatusEndQuestionRow from "./StatusEndQuestionRow"
 import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
 import CharacterAwardBlock from "@/components/characters/CharacterAwardBlock"
@@ -75,27 +75,29 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
     <div className="space-y-4">
       {isRandomPrizeWinner ? (
         <div className="glass-start-slab-faithful flex flex-col items-center gap-2 rounded-2xl p-4 text-center text-white" role="status">
-          <PrizeLottie className="size-16 sm:size-20" />
+          <Gift className="size-16 text-amber-300 sm:size-20" aria-hidden />
           <p className="text-sm font-semibold xl:text-base">Вы получаете случайный приз!</p>
         </div>
       ) : null}
       {isPrizeWinner && myScore.rank != null ? (
         <div className="glass-start-slab-selected flex flex-col items-center gap-2 rounded-2xl p-4 text-center text-white" role="status">
-          <PrizeLottie className="size-16 sm:size-20" />
+          <Gift className="size-16 text-amber-300 sm:size-20" aria-hidden />
           <p className="text-sm font-semibold xl:text-base">Вы получаете приз за {placeLabel(myScore.rank)}</p>
         </div>
       ) : null}
       {myScore.rank != null && (
-        <div
-          className={cn(
-            "glass-start-slab relative flex flex-col items-center rounded-2xl px-5 py-4 text-center has-aria-expanded:z-30",
-            rankPodiumClass(myScore.rank),
-          )}
-        >
+        <div className="relative overflow-visible has-aria-expanded:z-30">
           <MatchTitleSeals titles={myScore.titles} />
-          <span className="text-[0.65rem] font-semibold tracking-[0.2em] text-(--accent-orb)/85 uppercase">Место</span>
-          <span className="mt-1 text-5xl leading-none font-black tabular-nums">{myScore.rank}</span>
-          <span className="mt-2 text-sm font-semibold text-white/85">{placeLabel(myScore.rank)}</span>
+          <div
+            className={cn(
+              "glass-start-slab flex flex-col items-center rounded-2xl px-5 py-4 text-center",
+              rankPodiumClass(myScore.rank),
+            )}
+          >
+            <span className="text-[0.65rem] font-semibold tracking-[0.2em] text-(--accent-orb)/85 uppercase">Место</span>
+            <span className="mt-1 text-5xl leading-none font-black tabular-nums">{myScore.rank}</span>
+            <span className="mt-2 text-sm font-semibold text-white/85">{placeLabel(myScore.rank)}</span>
+          </div>
         </div>
       )}
       <div className="text-center">
@@ -114,7 +116,8 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
         </p>
       ) : null}
       {myScore.rank == null && (myScore.titles?.length ?? 0) > 0 ? (
-        <div className="glass-start-slab relative min-h-10 rounded-2xl has-aria-expanded:z-30">
+        <div className="relative min-h-8 overflow-visible has-aria-expanded:z-30">
+          <div className="glass-start-slab min-h-10 rounded-2xl" />
           <MatchTitleSeals titles={myScore.titles} />
         </div>
       ) : null}

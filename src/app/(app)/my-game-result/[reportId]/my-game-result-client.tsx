@@ -7,7 +7,7 @@ import { ArrowLeft, Award, CheckCircle2, XCircle, MinusCircle, Medal, Trophy, Ga
 
 import Skeleton from "@/components/ui/skeleton"
 import Button from "@/components/ui/button"
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
 import CharacterAwardBlock from "@/components/characters/CharacterAwardBlock"
 import QuestionElementMark from "@/components/start/active/QuestionElementMark"

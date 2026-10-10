@@ -1,19 +1,17 @@
 "use client"
 
-import { lazy, Suspense, useState } from "react"
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { ChevronDown, ChevronUp } from "lucide-react"
+import { ChevronDown, ChevronUp, Gift } from "lucide-react"
 
 import { Item } from "@/components/ui/item"
 import Button from "@/components/ui/button"
 import Spinner from "@/components/ui/spinner"
 import Skeleton from "@/components/ui/skeleton"
-import PickaxeIcon from "@/components/lottie/PickaxeIcon"
-const PrizeLottie = lazy(() => import("../lottie/PrizeLottie"))
+import PickaxeIcon from "@/components/icons/PickaxeIcon"
 import { UserAvatar, userProfileAdminSubtitle } from "@/components/common/UserAvatar"
 import { ElementEffectsList } from "@/components/elements/ElementEffectsList"
 import QuestionElementMark from "@/components/start/active/QuestionElementMark"
-import { MatchTitleChips } from "@/components/report/MatchTitleChip"
 import { MatchTitleSeals } from "@/components/report/MatchTitleSeals"
 
 import { cn } from "@/lib/utils"
@@ -135,7 +133,7 @@ function ItemUserReportPoints({
   const detailQuestions = sortQuestions(userScoreDetail?.questions)
   const breakdown = reportQuestionScoreBreakdown(userScoreDetail?.questions)
 
-  const showSeals = gameTone && (titles?.length ?? 0) > 0
+  const showSeals = (titles?.length ?? 0) > 0
   const pseudo = data?.pseudo?.trim() || `Пользователь ${telegram_id}`
   const adminSubtitle = userProfileAdminSubtitle(data)
   const avatar = data?.avatar
@@ -208,40 +206,36 @@ function ItemUserReportPoints({
   return (
     <div
       className={cn(
-        "relative space-y-0 has-aria-expanded:z-30",
-        isPrizePlace && (gameTone ? "rounded-2xl ring-1 ring-(--accent-orb)/45" : "rounded-xl border-2 border-amber-400/70 bg-amber-500/8"),
+        "relative space-y-0 overflow-visible has-aria-expanded:z-30",
+        isPrizePlace && (gameTone ? "rounded-2xl ring-1 ring-(--accent-orb)/45" : "rounded-2xl ring-1 ring-amber-400/35"),
         isRandomPrize &&
           !isPrizePlace &&
-          (gameTone ? "rounded-2xl ring-1 ring-faithful/45" : "rounded-xl border-2 border-emerald-400/45 bg-emerald-500/8"),
+          (gameTone ? "rounded-2xl ring-1 ring-faithful/45" : "rounded-2xl ring-1 ring-emerald-400/30"),
       )}
     >
       {isPrizePlace ? (
         <div
           className={cn(
-            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-8 items-center justify-center rounded-full border-2",
+            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-7 items-center justify-center rounded-full border",
             gameTone
               ? "border-(--accent-orb)/50 bg-(--accent-orb)/80"
-              : "border-amber-300/80 bg-linear-to-br from-amber-400 to-amber-600",
+              : "border-amber-300/50 bg-amber-500/85",
           )}
           aria-hidden
         >
-          <Suspense fallback={null}>
-            <PrizeLottie className="size-full rounded-full" />
-          </Suspense>
+          <Gift className="size-3.5 text-white" aria-hidden />
         </div>
       ) : isRandomPrize ? (
         <div
           className={cn(
-            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-8 items-center justify-center rounded-full border-2",
+            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-7 items-center justify-center rounded-full border",
             gameTone
               ? "border-faithful/60 bg-faithful/80"
-              : "border-emerald-300/70 bg-linear-to-br from-emerald-400 to-emerald-600",
+              : "border-emerald-300/45 bg-emerald-500/80",
           )}
           aria-hidden
         >
-          <Suspense fallback={null}>
-            <PrizeLottie className="size-full rounded-full" />
-          </Suspense>
+          <Gift className="size-3.5 text-white" aria-hidden />
         </div>
       ) : null}
       {showSeals ? <MatchTitleSeals titles={titles} /> : null}
@@ -252,7 +246,7 @@ function ItemUserReportPoints({
         className={cn(
           "bg-card/60 flex flex-row flex-nowrap items-center justify-between gap-2",
           gameTone && "glass-start-slab rounded-2xl bg-transparent text-white",
-          showSeals && "pr-7",
+          showSeals && "pt-4",
           reportId && scoreOpen && "rounded-b-none border-b-0",
           isPrizePlace && !gameTone && "border-transparent bg-transparent",
         )}
@@ -299,7 +293,6 @@ function ItemUserReportPoints({
                 ({adminSubtitle})
               </span>
             ) : null}
-            {gameTone ? null : <MatchTitleChips titles={titles} className="mt-1" />}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-1 self-center">

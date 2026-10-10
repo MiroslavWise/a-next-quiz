@@ -1,7 +1,8 @@
 "use client"
 
 import { ChevronRight } from "lucide-react"
-import { DotLottieReact } from "@lottiefiles/dotlottie-react"
+
+import ElementMarkIcon from "@/components/icons/ElementMarkIcon"
 
 import { cn } from "@/lib/utils"
 import { dispatchOpenElementsUser } from "@/stores/elements-user"
@@ -27,7 +28,7 @@ function ElementPickPromptBanner() {
           className="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 sm:size-11"
           aria-hidden
         >
-          <DotLottieReact src="/lottie/elements.lottie" loop autoplay backgroundColor="transparent" className="size-5 shrink-0" />
+          <ElementMarkIcon className="size-5 shrink-0 text-(--accent-orb)" />
         </span>
         <span className="min-w-0 flex-1 space-y-0.5">
           <span className="block text-sm font-semibold tracking-tight text-white sm:text-[0.95rem]">Выберите стихию</span>

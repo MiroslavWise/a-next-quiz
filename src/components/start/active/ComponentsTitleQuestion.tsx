@@ -101,7 +101,7 @@ function ComponentsTitleQuestion({
           {showMeta ? <ElementStateChips reportId={reportId} activeIndex={activeIndex} /> : null}
         </>
       )}
-      <div className={cn("relative w-full", elementVisual && ROUND_CLASS)} style={SEAL_VARS}>
+      <div className={cn("relative w-full overflow-visible", elementVisual && ROUND_CLASS)} style={SEAL_VARS}>
         <div
           className={cn(
             "glass-start-liquid-palette relative isolate flex w-full flex-col items-center overflow-visible border text-center text-white shadow-none transition-all duration-300",
@@ -126,7 +126,6 @@ function ComponentsTitleQuestion({
               : undefined
           }
         >
-          {dots}
           {elementsBoosted ? (
             <span
               className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
@@ -152,6 +151,7 @@ function ComponentsTitleQuestion({
           </div>
           <QuestionElementMark element={element} variant="stamp" part="wash" resonant={resonant} />
         </div>
+        {dots}
         {elementVisual ? (
           <span aria-hidden className={cn("pointer-events-none absolute inset-0 z-10 overflow-hidden rounded-[inherit]")}>
             <span

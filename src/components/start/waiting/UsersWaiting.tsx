@@ -1,13 +1,12 @@
 "use client"
 
-import { Users } from "lucide-react"
+import { Eye, Users } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { off, on, postEvent, type PopupButton } from "@tma.js/sdk"
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import Skeleton from "@/components/ui/skeleton"
 import { UserAvatar } from "@/components/common/UserAvatar"
-const LottieObserver = lazy(() => import("./LottieObserver"))
 import { TeamBonusesDialog } from "@/components/start/teams/TeamBonusesDialog"
 import { PairBezierFrame, pairAvatarRingStyle } from "@/components/start/teams/PairBezierOverlay"
 import { TeamPairBadge } from "@/components/start/teams/TeamPairBadge"
@@ -493,11 +492,14 @@ function UserWaiting({
                 style={{ boxShadow: `0 0 12px ${color}` }}
               />
             ) : null}
-            {isObserver && (
-              <Suspense fallback={null}>
-                <LottieObserver />
-              </Suspense>
-            )}
+            {isObserver ? (
+              <span
+                className="absolute -top-1 -right-1 z-10 flex size-6 items-center justify-center rounded-full border border-white/20 bg-black/55 sm:size-7"
+                aria-hidden
+              >
+                <Eye className="size-3.5 text-white/80" />
+              </span>
+            ) : null}
             <UserAvatar
               variant="waiting"
               bare

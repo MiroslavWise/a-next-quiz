@@ -1,9 +1,9 @@
 "use client"
 
+import { Gift } from "lucide-react"
 import { useMemo } from "react"
 
 import Skeleton from "@/components/ui/skeleton"
-import PrizeLottie from "@/components/lottie/PrizeLottie"
 import { UserAvatarById } from "@/components/common/UserAvatar"
 
 import { cn } from "@/lib/utils"
@@ -66,7 +66,7 @@ function LeaderboardAvatarFace({
           className="absolute -top-1 -right-1 z-10 flex size-4.5 items-center justify-center rounded-full border border-amber-200/70 bg-linear-to-br from-amber-400 to-amber-600"
           aria-hidden
         >
-          <PrizeLottie className="size-full" />
+          <Gift className="size-2.5 text-white" aria-hidden />
         </span>
       ) : null}
     </div>

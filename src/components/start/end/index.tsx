@@ -46,7 +46,7 @@ function StatusEnd({ data, tgId }: IProps) {
       <Suspense fallback={null}>
         <PrizesWinnersBanner reportId={data.id} tgId={tgId} elementAvatarId={data.element_avatar_id ?? null} />
       </Suspense>
-      <section className="glass-start-liquid-palette w-full rounded-2xl p-3.5 sm:p-4">
+      <section className="glass-start-liquid-palette w-full overflow-visible rounded-2xl p-3.5 pt-5 sm:p-4 sm:pt-5">
         <header className="mb-3 flex items-center justify-between gap-3">
           <h2 className="text-base font-semibold text-white">{showLeaderboard ? "Таблица рейтинга" : "Ваш результат"}</h2>
           <Link

@@ -48,8 +48,7 @@ export function MatchTitleSeals({ titles, className }: { titles?: IMatchTitle[] 
   return (
     <div
       ref={rootRef}
-      className={cn("absolute z-20 w-fit", className)}
-      style={{ right: "-0.45rem", top: "-0.45rem" }}
+      className={cn("pointer-events-none absolute top-0 right-2.5 z-20 w-fit -translate-y-1/2", className)}
     >
       <div className="flex flex-row-reverse items-center" aria-label="Достижения">
         {list.map((item, index) => {
@@ -63,17 +62,24 @@ export function MatchTitleSeals({ titles, className }: { titles?: IMatchTitle[] 
               aria-label={item.title}
               onClick={() => setActiveId((current) => (current === item.id ? null : item.id))}
               className={cn(
-                "relative flex size-[1.35rem] shrink-0 items-center justify-center rounded-full border-2 shadow-[0_3px_6px_rgba(0,0,0,0.45)] transition-shadow",
-                "hover:brightness-110 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none",
-                index > 0 && "-mr-2",
-                rare
-                  ? "border-amber-200/85 bg-[#1a1408] text-amber-50"
-                  : "border-amber-500/75 bg-[#12161c] text-amber-100",
-                isActive && "ring-2 ring-white/50",
+                "pointer-events-auto relative flex size-7 shrink-0 items-center justify-center rounded-full bg-background/95 p-0.5",
+                "shadow-[0_0_0_1px_rgba(255,255,255,0.12),0_8px_16px_rgba(0,0,0,0.4)]",
+                "transition-transform hover:!z-50 hover:scale-105 focus-visible:!z-50 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none",
+                index > 0 && "-mr-2.5",
+                isActive && "!z-50 ring-2 ring-white/55",
               )}
-              style={{ zIndex: index + 1 }}
+              style={{ zIndex: list.length - index }}
             >
-              <MatchTitleMark id={item.id} className="size-3" />
+              <span
+                className={cn(
+                  "flex size-full items-center justify-center rounded-full border shadow-lg shadow-black/30",
+                  rare
+                    ? "border-amber-200/85 bg-[#1a1408] text-amber-50"
+                    : "border-amber-400/75 bg-[#12161c] text-amber-100",
+                )}
+              >
+                <MatchTitleMark id={item.id} className="size-3.5" />
+              </span>
             </button>
           )
         })}
@@ -81,7 +87,7 @@ export function MatchTitleSeals({ titles, className }: { titles?: IMatchTitle[] 
       {active ? (
         <span
           className={cn(
-            "absolute top-full right-0 z-30 mt-2 flex w-max max-w-48 flex-col gap-0.5 rounded-lg border px-2 py-1.5 text-left leading-snug backdrop-blur-md",
+            "pointer-events-auto absolute top-full right-0 z-30 mt-2 flex w-max max-w-48 flex-col gap-0.5 rounded-lg border px-2 py-1.5 text-left leading-snug backdrop-blur-md",
             "text-[0.62rem]",
             active.rare
               ? "border-amber-200/45 bg-amber-950/95 text-amber-50"
