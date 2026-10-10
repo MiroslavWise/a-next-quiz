@@ -5,6 +5,7 @@ import { Brain, Clock, Crown, Gift, ListChecks, Sparkles, Target, Trophy, Users,
 import AppPageHeaders from "@/components/common/AppPageHeaders"
 
 import { GAME_SKILLS, ULTIMATE_SKILLS, type GameSkillDefinition } from "@/enum/game-skill"
+import { ElementAbilityEffectList } from "@/components/elements/ElementAbilityEffectList"
 import {
   GAME_AVATAR_CARD,
   GAME_ELEMENT_CARDS,
@@ -196,47 +197,6 @@ function StreakTierCard({
         {bonusPercent > 0 ? <span className="shrink-0 text-sm font-bold text-white/90 tabular-nums">+{bonusPercent}%</span> : null}
       </div>
     </li>
-  )
-}
-
-function ElementEffectList({
-  title,
-  effects,
-  variant,
-  accentColor,
-}: {
-  title: string
-  effects: GameElementCard["bonuses"]
-  variant: "bonus" | "penalty"
-  accentColor: string
-}) {
-  if (effects.length === 0) {
-    return null
-  }
-
-  return (
-    <div className="min-w-0">
-      <p className="mb-1.5 text-[0.65rem] font-semibold tracking-[0.14em] text-white/50 uppercase">{title}</p>
-      <ul className="flex min-w-0 flex-col gap-1.5">
-        {effects.map((effect) => (
-          <li
-            key={effect.id}
-            className={cn(
-              "rounded-lg border px-2.5 py-2",
-              variant === "bonus" ? "border-white/10 bg-white/5" : "border-red-400/20 bg-red-500/8",
-            )}
-          >
-            <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
-              <span className="text-xs font-semibold" style={{ color: variant === "bonus" ? accentColor : "#fca5a5" }}>
-                {effect.title}
-              </span>
-              <span className="text-[0.65rem] font-medium tracking-wide text-white/55 tabular-nums">{effect.short}</span>
-            </div>
-            <p className="mt-0.5 text-[0.7rem] leading-snug text-white/60">{effect.detail}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
   )
 }
 
@@ -470,8 +430,8 @@ function ElementMechanicsCard({ card }: { card: GameElementCard }) {
       </blockquote>
 
       <div className={cn("relative mt-3 grid min-w-0 gap-3", card.shortcomings.length > 0 ? "sm:grid-cols-2" : "grid-cols-1")}>
-        <ElementEffectList title="Бонусы" effects={card.bonuses} variant="bonus" accentColor={accent} />
-        <ElementEffectList title="Недостатки" effects={card.shortcomings} variant="penalty" accentColor={accent} />
+        <ElementAbilityEffectList title="Бонусы" effects={card.bonuses} variant="bonus" accentColor={accent} />
+        <ElementAbilityEffectList title="Недостатки" effects={card.shortcomings} variant="penalty" accentColor={accent} />
       </div>
     </article>
   )
@@ -651,7 +611,8 @@ export default function GameMechanicsContent() {
               <p className="text-xs text-white/55">
                 Уровень считается по накопленным очкам, от 0 до 50, и в базу отдельно не пишется. Первые два уровня стоят по 4 000 очков.
                 Дальше каждый следующий уровень дороже предыдущего на 835: с 2 на 3 нужно 4 835, с 9 на 10 — 10 680. После 10 уровня новых
-                способностей нет, растёт только число — до 50.
+                способностей нет, растёт только число — до 50. За каждый вопрос уровень даёт % от base: верный — до +14% на 50 уровне (на 0 —
+                0%), ошибка или пропуск — с шансом 25% до +7% на 50 уровне. Нужна выбранная стихия в матче.
               </p>
               <p className="text-xs text-white/55">
                 Опыт приходит один раз в конце матча и равен итоговым очкам за игру, но не ниже нуля. 1 место добавляет 7%, 2 место — 5%, 3
@@ -661,8 +622,9 @@ export default function GameMechanicsContent() {
                 подействует со следующей.
               </p>
               <p className="text-xs text-white/55">
-                На 0 уровне у выбранной стихии работают только недостатки. Speed, обычная серия и Lucky остаются. Бонусы на карточках ниже —
-                это числа в момент открытия; следующие уровни их усиливают, а недостатки чуть смягчают.
+                На 0 уровне у выбранной стихии работают только недостатки. Speed, обычная серия и Lucky остаются. У каждой способности на
+                карточке стихии указано, с какого уровня она открывается; следующие уровни усиливают бонусы и смягчают недостатки. При выборе
+                стихии в профиле закрытые способности показываются серыми.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                 <CharacterLadder
@@ -677,7 +639,7 @@ export default function GameMechanicsContent() {
                     "6 — ожог слабее, −12%",
                     "7 — горение уже с серии 2+",
                     "8 — пепел реже, 12%",
-                    "9 — ожог реже, 14%",
+                    "9 — ожог реже, 9%",
                     "10 — ульта «Феникс»",
                   ]}
                 />
@@ -773,10 +735,11 @@ export default function GameMechanicsContent() {
               <p>
                 <Brain className="mr-1.5 inline size-4 align-text-bottom text-(--orb-border-four)" aria-hidden />
                 Серия считается по завершённым вопросам: каждый верный ответ увеличивает streak, неверный ответ или пропуск сбрасывает в 0.
-                Исключения — «Защита», ульты «Феникс» и «Гранит», и «Защитный прилив» воды. У земли и воздуха своя серия открывается с 1 уровня
-                персонажа; до этого у всех обычные +5% за шаг и потолок 35%. «Защитный прилив» появляется с 3 уровня: ошибка снимает один шаг,
-                если верно ответило больше половины зала. С 7 уровня воды в половине таких случаев серия не уменьшается. В интерфейсе
-                отображается визуальный ранг — те же названия и цвета, что в игре:
+                Исключения — «Защита», ульты «Феникс» и «Гранит», «Защитный прилив» воды, и «Ожог» огня на верном ответе (серия не растёт, бонус
+                серии за этот вопрос не даётся). У земли и воздуха своя серия открывается с 1 уровня персонажа; до этого у всех обычные +5% за
+                шаг и потолок 35%. «Защитный прилив» появляется с 3 уровня: ошибка снимает один шаг, если верно ответило больше половины зала.
+                С 7 уровня воды в половине таких случаев серия не уменьшается. В интерфейсе отображается визуальный ранг — те же названия и
+                цвета, что в игре:
               </p>
               <ul className="mt-3 flex flex-col gap-2">
                 <li className="rounded-xl border border-white/12 bg-white/5 px-4 py-3">

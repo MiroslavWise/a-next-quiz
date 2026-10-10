@@ -7,6 +7,8 @@ export type GameElementEffect = {
   title: string
   short: string
   detail: string
+  /** Уровень персонажа, с которого способность активна. Нет поля — без гейта (аватар и т.п.). */
+  unlockLevel?: number
 }
 
 export type GameElementCard = {
@@ -35,23 +37,38 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     iconSrc: "/element/fire.svg",
     accentColor: "#E85D2A",
     bonuses: [
-      { id: "fire_speed", title: "Жар", short: "Speed ×1.15", detail: "Speed-очки за верный ответ умножаются на 1.15." },
-      { id: "fire_spark", title: "Искра", short: "+10% base", detail: "Первый верный ответ на вопросе: +10% base (ошибки до вас не мешают)." },
+      { id: "fire_speed", title: "Жар", short: "Speed ×1.15", detail: "Speed-очки за верный ответ умножаются на 1.15.", unlockLevel: 1 },
+      {
+        id: "fire_spark",
+        title: "Искра",
+        short: "+10% base",
+        detail: "Первый верный ответ на вопросе: +10% base (ошибки до вас не мешают).",
+        unlockLevel: 2,
+      },
       {
         id: "fire_burning",
         title: "Горение",
         short: "Серия 3+ → +15%",
         detail: "При серии 3+ speed-очки падают так, будто таймер на 20% короче, но верный ответ даёт +15% base. Пепел гасит бонус.",
+        unlockLevel: 3,
       },
     ],
     shortcomings: [
       {
         id: "fire_burn",
         title: "Ожог",
-        short: "17% → −13%",
-        detail: "17% шанс −13% base и −2 к серии; при ответе в первые 3 секунды только −10%. GAMBIT: −16% (быстрый ответ −12%).",
+        short: "12% → −13%",
+        detail:
+          "12% шанс −13% base; при ответе в первые 5 секунд −7%. На верном — серия не растёт. GAMBIT: −16% (быстрый ответ −9%).",
+        unlockLevel: 0,
       },
-      { id: "fire_ash", title: "Пепел", short: "15% → гасит бонусы", detail: "15% шанс отключить положительные усиления строки, включая «Свою стихию», и её END-бонусы." },
+      {
+        id: "fire_ash",
+        title: "Пепел",
+        short: "15% → гасит бонусы",
+        detail: "15% шанс отключить положительные усиления строки, включая «Свою стихию», и её END-бонусы.",
+        unlockLevel: 0,
+      },
     ],
   },
   {
@@ -64,17 +81,36 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     iconSrc: "/element/water.svg",
     accentColor: "#06B6D4",
     bonuses: [
-      { id: "water_flow", title: "Течение", short: "+5% к ответу", detail: "Верный ответ: +5% к очкам ответа поверх streak (35%+5%=40%)." },
-      { id: "water_empathy", title: "Эмпатия", short: "+5×N (≤60)", detail: "Верный ответ: +5 очков за каждого игрока в игре, максимум 60." },
+      {
+        id: "water_flow",
+        title: "Течение",
+        short: "+5% к ответу",
+        detail: "Верный ответ: +5% к очкам ответа поверх streak (35%+5%=40%).",
+        unlockLevel: 1,
+      },
+      {
+        id: "water_empathy",
+        title: "Эмпатия",
+        short: "+5×N (≤60)",
+        detail: "Верный ответ: +5 очков за каждого игрока в игре, максимум 60.",
+        unlockLevel: 2,
+      },
       {
         id: "water_ebb",
         title: "Защитный прилив",
         short: "Серия −1",
         detail: "Ошибка или пропуск, когда верно ответило больше половины зала: серия уменьшается на 1 вместо сброса.",
+        unlockLevel: 3,
       },
     ],
     shortcomings: [
-      { id: "water_whirlpool", title: "Водоворот", short: "16% → −18% + пул", detail: "16% шанс −18% base (GAMBIT −22.5%) и пул ×1.5 для других верных на END." },
+      {
+        id: "water_whirlpool",
+        title: "Водоворот",
+        short: "16% → −18% + пул",
+        detail: "16% шанс −18% base (GAMBIT −22.5%) и пул ×1.5 для других верных на END.",
+        unlockLevel: 0,
+      },
     ],
   },
   {
@@ -87,17 +123,30 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     iconSrc: "/element/earth.svg",
     accentColor: "#1C8C47",
     bonuses: [
-      { id: "earth_streak", title: "Корни", short: "Streak 6%→45%", detail: "Серия: +6% за шаг, максимум 45%." },
-      { id: "earth_patience", title: "Терпение", short: "+17% base", detail: "Верный ответ последним: +17% от base points вопроса." },
+      { id: "earth_streak", title: "Корни", short: "Streak 6%→45%", detail: "Серия: +6% за шаг, максимум 45%.", unlockLevel: 1 },
+      {
+        id: "earth_patience",
+        title: "Терпение",
+        short: "+17% base",
+        detail: "Верный ответ последним: +17% от base points вопроса.",
+        unlockLevel: 2,
+      },
       {
         id: "earth_monolith",
         title: "Монолит",
         short: "Каждые 3 подряд",
         detail: "Каждые 3 верных подряд дают иммунитет к Обвалу на следующем вопросе.",
+        unlockLevel: 3,
       },
     ],
     shortcomings: [
-      { id: "earth_collapse", title: "Обвал", short: "17% → −15%", detail: "17% шанс −15% base и −2 к серии; GAMBIT повышает отрицательное начисление до −18%." },
+      {
+        id: "earth_collapse",
+        title: "Обвал",
+        short: "17% → −15%",
+        detail: "17% шанс −15% base и −2 к серии; GAMBIT повышает отрицательное начисление до −18%.",
+        unlockLevel: 0,
+      },
     ],
   },
   {
@@ -110,24 +159,38 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     iconSrc: "/element/air.svg",
     accentColor: "#76E3D6",
     bonuses: [
-      { id: "air_lucky", title: "Везунчик", short: "Lucky 24%", detail: "При выигрыше Lucky: 24% base вместо 12%." },
+      { id: "air_lucky", title: "Везунчик", short: "Lucky 24%", detail: "При выигрыше Lucky: 24% base вместо 12%.", unlockLevel: 3 },
       {
         id: "air_gust",
         title: "Порыв",
         short: "40% → +7%",
         detail: "Любой исход (верный, неверный, пропуск): 40% шанс +7% base. Под GAMBIT шанс 70%; на вопросе «Обратный счёт» порывов нет.",
+        unlockLevel: 2,
       },
       {
         id: "air_lucky_steal",
         title: "Попутный ветер",
         short: "Lucky: −3% лидеру",
         detail: "Выиграв Lucky, крадёшь 3% base у лидера рейтинга. Щит лидера блокирует кражу.",
+        unlockLevel: 5,
       },
-      { id: "air_gust_double", title: "Усиленный порыв", short: "20% → +14%", detail: "Если порыв сработал: 20% шанс удвоить до +14% base." },
-      { id: "air_streak", title: "Лёгкий ветер", short: "Streak 4%→42%", detail: "Серия: +4% за шаг, максимум 42%." },
+      {
+        id: "air_gust_double",
+        title: "Усиленный порыв",
+        short: "20% → +14%",
+        detail: "Если порыв сработал: 20% шанс удвоить до +14% base.",
+        unlockLevel: 4,
+      },
+      { id: "air_streak", title: "Лёгкий ветер", short: "Streak 4%→42%", detail: "Серия: +4% за шаг, максимум 42%.", unlockLevel: 1 },
     ],
     shortcomings: [
-      { id: "air_draft", title: "Сквозняк", short: "18% → −14%", detail: "18% шанс −14% base и −1 к серии; GAMBIT повышает отрицательное начисление до −17.5%." },
+      {
+        id: "air_draft",
+        title: "Сквозняк",
+        short: "18% → −14%",
+        detail: "18% шанс −14% base и −1 к серии; GAMBIT повышает отрицательное начисление до −17.5%.",
+        unlockLevel: 0,
+      },
     ],
   },
 ]
@@ -196,3 +259,16 @@ export function getResonanceIconSrc(element: ResonanceElementId): string {
 export const GAME_ELEMENT_VISUAL_BY_ID = Object.fromEntries(
   GAME_ELEMENT_CARDS.map((card) => [card.id, { iconSrc: card.iconSrc, accentColor: card.accentColor, name: card.name }]),
 ) as Record<EUserElement, { iconSrc: string; accentColor: string; name: string }>
+
+/** Подпись уровня открытия для бейджей способностей. */
+export function formatAbilityUnlockLevel(level: number | undefined): string | null {
+  if (level == null || level < 0) return null
+  return `с ${level} ур.`
+}
+
+/** Способность открыта при текущем уровне персонажа. Без unlockLevel — всегда открыта. */
+export function isAbilityUnlocked(unlockLevel: number | undefined, characterLevel: number | undefined): boolean {
+  if (unlockLevel == null) return true
+  if (characterLevel == null) return true
+  return characterLevel >= unlockLevel
+}

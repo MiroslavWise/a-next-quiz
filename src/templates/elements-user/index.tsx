@@ -2,67 +2,110 @@
 
 import { Loader2Icon, X } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
-import { useQueryClient } from "@tanstack/react-query"
-import { useEffect, useState, type CSSProperties } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useEffect, useMemo, useState, type CSSProperties } from "react"
 
 import Button from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { ElementAbilityEffectList } from "@/components/elements/ElementAbilityEffectList"
 
 import { cn } from "@/lib/utils"
 import type { IUser } from "@/interface/user"
 import { EUserElement } from "@/enum/element"
-import { getElementThemeUpdatedToastMessage } from "@/lib/element-theme-toast"
 import { patchUserElement } from "@/api/user"
 import { showToast } from "@/stores/toast"
 import { useAuth, dispatchSetUser } from "@/stores/auth"
 import { setUserQueryCache, useUserByTgId } from "@/queries/user"
+import { getMyCharacters, type ICharacterCard } from "@/api/characters"
+import { getElementThemeUpdatedToastMessage } from "@/lib/element-theme-toast"
 import { dispatchCloseElementsUser, useElementsUser } from "@/stores/elements-user"
 import { GAME_ELEMENT_CARDS, type GameElementCard } from "@/lib/game-elements-catalog"
 import { resolverUpdateUserElementFormData, type UpdateUserElementFormData } from "@/schemas/update-user-element"
 
 import styles from "./style.module.scss"
 
-function ElementEffectListCompact({
-  title,
-  effects,
-  variant,
-  accentColor,
+function formatPoints(value: number) {
+  return new Intl.NumberFormat("ru-RU").format(value)
+}
+
+function ElementProgressStrip({
+  character,
+  fallbackLevel,
+  fallbackName,
+  accent,
+  loading,
 }: {
-  title: string
-  effects: GameElementCard["bonuses"]
-  variant: "bonus" | "penalty"
-  accentColor: string
+  character: ICharacterCard | undefined
+  fallbackLevel?: number
+  fallbackName?: string
+  accent: string
+  loading?: boolean
 }) {
-  if (effects.length === 0) return null
+  const level = character?.current_level ?? fallbackLevel
+  const name = character?.name ?? fallbackName
+
+  if (level == null) {
+    return (
+      <div className="mt-1.5 rounded-md border border-white/10 bg-white/4 px-2 py-1.5">
+        <p className="text-[0.6rem] text-white/45">{loading ? "Загрузка уровня…" : "Уровень пока неизвестен"}</p>
+      </div>
+    )
+  }
+
+  const atCap = level >= 50
+  const progress = character != null ? Math.min(100, Math.max(0, character.progress_percent)) : null
 
   return (
-    <div className="min-w-0">
-      <p className="mb-1 text-[0.55rem] font-semibold tracking-[0.12em] text-white/45 uppercase">{title}</p>
-      <ul className="flex min-w-0 flex-col gap-1">
-        {effects.map((effect) => (
-          <li
-            key={effect.id}
-            className={cn(
-              "rounded-md border px-2 py-1.5",
-              variant === "bonus" ? "border-white/10 bg-white/5" : "border-red-400/20 bg-red-500/8",
-            )}
-          >
-            <div className="flex flex-wrap items-baseline justify-between gap-x-1.5 gap-y-0">
-              <span className="text-[0.65rem] font-semibold" style={{ color: variant === "bonus" ? accentColor : "#fca5a5" }}>
-                {effect.title}
-              </span>
-              <span className="text-[0.55rem] font-medium tracking-wide text-white/50 tabular-nums">{effect.short}</span>
-            </div>
-            <p className="mt-0.5 text-[0.6rem] leading-snug text-white/58">{effect.detail}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="mt-1.5 rounded-md border px-2 py-1.5" style={{ borderColor: `${accent}33`, backgroundColor: `${accent}0c` }}>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
+        <span className="text-[0.65rem] font-semibold tabular-nums" style={{ color: accent }}>
+          Ур. {level}
+          {name ? <span className="ml-1 font-medium text-white/55">· {name}</span> : null}
+        </span>
+        {character != null ? (
+          <span className="text-[0.55rem] text-white/50 tabular-nums">
+            {atCap ? "Максимум" : `до ${level + 1}: ${formatPoints(character.points_to_next_level)}`}
+          </span>
+        ) : (
+          <span className="text-[0.55rem] text-white/45">опыт на странице персонажа</span>
+        )}
+      </div>
+      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/10" aria-hidden>
+        <div
+          className="h-full rounded-full transition-[width] duration-200"
+          style={{ width: `${progress ?? (atCap ? 100 : 0)}%`, backgroundColor: accent }}
+        />
+      </div>
+      {character != null ? (
+        <p className="mt-0.5 text-[0.55rem] text-white/45 tabular-nums">{formatPoints(character.total_points)} опыта</p>
+      ) : null}
+      <span className="sr-only">
+        Уровень {level}
+        {progress != null ? `, прогресс ${progress} процентов` : ""}
+      </span>
     </div>
   )
 }
 
-function ElementPickerOption({ card, selected, onSelect }: { card: GameElementCard; selected: boolean; onSelect: () => void }) {
+function ElementPickerOption({
+  card,
+  selected,
+  onSelect,
+  character,
+  fallbackLevel,
+  fallbackName,
+  loading,
+}: {
+  card: GameElementCard
+  selected: boolean
+  onSelect: () => void
+  character: ICharacterCard | undefined
+  fallbackLevel?: number
+  fallbackName?: string
+  loading?: boolean
+}) {
   const accent = card.accentColor
+  const characterLevel = character?.current_level ?? fallbackLevel
 
   return (
     <button
@@ -100,6 +143,14 @@ function ElementPickerOption({ card, selected, onSelect }: { card: GameElementCa
             <span className="text-xs font-semibold tracking-tight" style={{ color: accent }}>
               {card.name}
             </span>
+            {characterLevel != null ? (
+              <span
+                className="inline-flex rounded-full border px-1.5 py-px text-[0.55rem] font-bold tabular-nums"
+                style={{ borderColor: `${accent}55`, color: accent, backgroundColor: `${accent}14` }}
+              >
+                {characterLevel} ур.
+              </span>
+            ) : null}
             <span
               className="inline-flex rounded-full border px-1.5 py-px text-[0.55rem] font-semibold tracking-widest uppercase"
               style={{ borderColor: `${accent}44`, color: accent, backgroundColor: `${accent}10` }}
@@ -112,6 +163,14 @@ function ElementPickerOption({ card, selected, onSelect }: { card: GameElementCa
         </div>
       </div>
 
+      <ElementProgressStrip
+        character={character}
+        fallbackLevel={fallbackLevel}
+        fallbackName={fallbackName}
+        accent={accent}
+        loading={loading}
+      />
+
       <blockquote
         className="mt-1.5 rounded-md border px-2 py-1.5 text-[0.6rem] leading-snug text-white/68 italic"
         style={{ borderColor: `${accent}28`, backgroundColor: `${accent}0a` }}
@@ -119,9 +178,25 @@ function ElementPickerOption({ card, selected, onSelect }: { card: GameElementCa
         {card.uiHint}
       </blockquote>
 
-      <div className={cn("mt-1.5 grid min-w-0 gap-1.5", card.shortcomings.length > 0 ? "grid-cols-1 min-[400px]:grid-cols-2" : "grid-cols-1")}>
-        <ElementEffectListCompact title="Бонусы" effects={card.bonuses} variant="bonus" accentColor={accent} />
-        <ElementEffectListCompact title="Недостатки" effects={card.shortcomings} variant="penalty" accentColor={accent} />
+      <div
+        className={cn("mt-1.5 grid min-w-0 gap-1.5", card.shortcomings.length > 0 ? "grid-cols-1 min-[400px]:grid-cols-2" : "grid-cols-1")}
+      >
+        <ElementAbilityEffectList
+          title="Бонусы"
+          effects={card.bonuses}
+          variant="bonus"
+          accentColor={accent}
+          characterLevel={characterLevel}
+          density="compact"
+        />
+        <ElementAbilityEffectList
+          title="Недостатки"
+          effects={card.shortcomings}
+          variant="penalty"
+          accentColor={accent}
+          characterLevel={characterLevel}
+          density="compact"
+        />
       </div>
     </button>
   )
@@ -133,6 +208,27 @@ function ElementsUser() {
   const [submitting, setSubmitting] = useState(false)
   const isOpen = useElementsUser(({ isOpen }) => isOpen)
   const { data: profile } = useUserByTgId(user?.telegram_id, { enabled: !!user?.telegram_id && isOpen })
+  const charactersQuery = useQuery({
+    queryKey: ["characters", "me"],
+    queryFn: getMyCharacters,
+    enabled: !!user?.telegram_id && isOpen,
+  })
+
+  const characterByElement = useMemo(() => {
+    const map = new Map<string, ICharacterCard>()
+    for (const card of charactersQuery.data?.characters ?? []) {
+      map.set(card.element, card)
+    }
+    return map
+  }, [charactersQuery.data?.characters])
+
+  const summaryByElement = useMemo(() => {
+    const map = new Map<string, { current_level: number; name: string }>()
+    for (const item of profile?.characters_summary ?? []) {
+      map.set(item.element, { current_level: item.current_level, name: item.name })
+    }
+    return map
+  }, [profile?.characters_summary])
 
   const { control, handleSubmit, reset } = useForm<UpdateUserElementFormData>({
     resolver: resolverUpdateUserElementFormData,
@@ -191,8 +287,8 @@ function ElementsUser() {
               {profile?.element ? "Сменить стихию" : "Выберите стихию"}
             </h2>
             <p className="text-muted-foreground text-[0.65rem] leading-snug">
-              Необязательно, но даёт бонусы и недостатки в игре. Любой исход может изменить очки — итоговая сумма может стать
-              отрицательной. Можно изменить до старта раунда.
+              Необязательно, но даёт бонусы и недостатки в игре. Серые способности ещё не открыты уровнем персонажа. Можно изменить до
+              старта раунда.
             </p>
           </div>
           <Button type="button" size="icon-sm" variant="ghost" onClick={dispatchCloseElementsUser} aria-label="Закрыть">
@@ -208,14 +304,21 @@ function ElementsUser() {
               <Field data-invalid={fieldState.invalid} className="space-y-2">
                 <FieldLabel className="sr-only">Стихия</FieldLabel>
                 <div className="flex flex-col gap-2" role="radiogroup" aria-label="Стихия">
-                  {GAME_ELEMENT_CARDS.map((card) => (
-                    <ElementPickerOption
-                      key={card.id}
-                      card={card}
-                      selected={field.value === card.id}
-                      onSelect={() => field.onChange(card.id)}
-                    />
-                  ))}
+                  {GAME_ELEMENT_CARDS.map((card) => {
+                    const summary = summaryByElement.get(card.id)
+                    return (
+                      <ElementPickerOption
+                        key={card.id}
+                        card={card}
+                        selected={field.value === card.id}
+                        onSelect={() => field.onChange(card.id)}
+                        character={characterByElement.get(card.id)}
+                        fallbackLevel={summary?.current_level}
+                        fallbackName={summary?.name}
+                        loading={charactersQuery.isLoading}
+                      />
+                    )
+                  })}
                 </div>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
