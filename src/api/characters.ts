@@ -45,7 +45,7 @@ export interface ICharacterAwardShare {
 
 export interface ICharacterAward {
   telegram_id: string
-  kind: "element" | "avatar" | "none"
+  kind: "element" | "avatar" | "leader" | "none"
   element?: CharacterElement
   base_points: number
   points_gained: number

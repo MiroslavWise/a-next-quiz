@@ -25,11 +25,15 @@ export default function CharacterAwardBlock({ award }: { award?: ICharacterAward
     )
   }
 
-  if (award.kind === "avatar") {
+  if (award.kind === "avatar" || award.kind === "leader") {
+    const isLeader = award.kind === "leader"
     return (
       <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/85" role="status">
-        <p className="font-semibold text-white">Аватар</p>
-        <p className="mt-1">Опыт разделён на 4 персонажа{award.shares?.[0] ? ` — по ${formatXp(award.shares[0].points_gained)} каждому` : ""}.</p>
+        <p className="font-semibold text-white">{isLeader ? "Ведущий" : "Аватар"}</p>
+        <p className="mt-1">
+          {isLeader ? "Опыт начислен всем 4 персонажам" : "Опыт разделён на 4 персонажа"}
+          {award.shares?.[0] ? ` — по ${formatXp(award.shares[0].points_gained)} каждому` : ""}.
+        </p>
         <Link href="/characters" className="mt-2 inline-flex text-xs font-medium text-(--accent-orb) underline-offset-2 hover:underline">
           Открыть персонажей
         </Link>
