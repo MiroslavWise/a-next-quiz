@@ -144,7 +144,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "earth_collapse",
         title: "Обвал",
         short: "17% → −15%",
-        detail: "17% шанс −15% base и −2 к серии; GAMBIT повышает отрицательное начисление до −18%.",
+        detail: "17% шанс −15% base; на верном ответе серия не растёт. GAMBIT повышает отрицательное начисление до −18%.",
         unlockLevel: 0,
       },
     ],
@@ -188,7 +188,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "air_draft",
         title: "Сквозняк",
         short: "18% → −14%",
-        detail: "18% шанс −14% base и −1 к серии; GAMBIT повышает отрицательное начисление до −17.5%.",
+        detail: "18% шанс −14% base; на верном ответе серия не растёт. GAMBIT повышает отрицательное начисление до −17.5%.",
         unlockLevel: 0,
       },
     ],
@@ -218,7 +218,7 @@ export const GAME_AVATAR_CARD: GameElementCard = {
       detail: "На каждом 3-м вопросе — главный бонус случайной стихии: Жар (speed ×1.15), Течение (+5%), Корни (серия до 45%) или Порыв (40% → +7%).",
     },
   ],
-  shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "16% шанс −25% base и −2 к серии; GAMBIT повышает отрицательное начисление до −31%." }],
+  shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "16% шанс −25% base; на верном ответе серия не растёт. GAMBIT повышает отрицательное начисление до −31%." }],
 }
 
 export const GAME_AVATAR_ICON_SRC = GAME_AVATAR_CARD.iconSrc
