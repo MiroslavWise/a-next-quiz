@@ -287,14 +287,15 @@ function ProgressiveBonusTable() {
           {PROGRESSIVE_BONUS_SCALE.map((row) => (
             <tr key={row.positionLabel} className="border-b border-white/8 last:border-b-0">
               <td className="px-3 py-2.5 text-white/80">{row.positionLabel}</td>
-              <td className="px-3 py-2.5 font-semibold text-(--accent-orb) tabular-nums">+{row.percent}% от счёта за ответ</td>
+              <td className="px-3 py-2.5 font-semibold text-(--accent-orb) tabular-nums">+{row.percent}%</td>
             </tr>
           ))}
         </tbody>
       </table>
       <p className="border-t border-white/10 px-3 py-2 text-[0.68rem] leading-relaxed text-white/55">
         Далее +2% за каждого следующего верного (7-й → +15%, 8-й → +17% …). Очередь:{" "}
-        <code className="text-[0.65rem]">priorCorrect + 1</code> — неверные ответы до вас не сдвигают место. Только верный ответ; effect id:{" "}
+        <code className="text-[0.65rem]">priorCorrect + 1</code> — неверные ответы до вас не сдвигают место. Процент считается от speed, серии и
+        плоских бонусов стихии до шансовых недостатков; метка стихии вопроса и бонус уровня идут после. Только верный ответ; effect id:{" "}
         <code className="text-[0.65rem]">q_progressive_bonus</code>.
       </p>
     </div>
@@ -510,7 +511,7 @@ export default function GameMechanicsContent() {
               <div className="flex flex-col gap-2">
                 <IconNote icon={<Clock className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
                   У вопроса есть базовая стоимость (<code className="text-xs">base points</code>). За верный ответ в первые 3 секунды
-                  начисляется 100% speed-части, затем она плавно снижается до 30% к концу таймера. Неверный ответ и пропуск speed-очков не
+                  начисляется 100% speed-части, затем квадратичное падение до 30% к концу таймера. Неверный ответ и пропуск speed-очков не
                   дают.
                 </IconNote>
                 <IconNote icon={<Trophy className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
@@ -561,7 +562,8 @@ export default function GameMechanicsContent() {
               </p>
               <p className="text-xs text-white/55">
                 Способность можно активировать до или после ответа, пока вопрос находится в статусе <code className="text-xs">GAME</code>.
-                Активная способность отмечается на панели, использованная остаётся видимой, но повторно недоступна.
+                Активная способность отмечается на панели, использованная остаётся видимой, но повторно недоступна. Если включить её уже после
+                ответа, строка пересчитывается так, будто способность была активна до клика; случайные броски не повторяются.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-3">
                 {GAME_SKILLS.map((skill) => (
@@ -583,7 +585,7 @@ export default function GameMechanicsContent() {
                   <strong className="text-foreground">Соревновательные (PvP):</strong> «Вор» и «Туман» доступны только игрокам{" "}
                   <strong className="text-foreground/85">вне топ-3</strong> и при <strong className="text-foreground/85">4+</strong>{" "}
                   участниках. Цель выбирается случайно среди топ-3, партнёр по паре из целей вычёркивается. «Вор» крадёт очки (щит цели блокирует кражу, суммарно не больше 8% base,
-                  не ниже нуля), «Туман» гасит стихию цели на вопрос — аватар не затрагивается, и{" "}
+                  общий счёт матча цели не ниже нуля — даже если за этот вопрос она получила 0), «Туман» гасит стихию цели на вопрос — аватар не затрагивается, и{" "}
                   <strong className="text-foreground/85">щит от тумана не спасает</strong>. Если цель уже ответила, её ответ
                   пересчитывается без стихии.
                 </p>
@@ -612,7 +614,9 @@ export default function GameMechanicsContent() {
                 Уровень считается по накопленным очкам, от 0 до 50, и в базу отдельно не пишется. Первые два уровня стоят по 4 000 очков.
                 Дальше каждый следующий уровень дороже предыдущего на 835: с 2 на 3 нужно 4 835, с 9 на 10 — 10 680. После 10 уровня новых
                 способностей нет, растёт только число — до 50. За каждый вопрос уровень даёт % от base: верный — до +14% на 50 уровне (на 0 —
-                0%), ошибка или пропуск — с шансом 25% до +7% на 50 уровне. Нужна выбранная стихия в матче.
+                0%), ошибка или пропуск — с шансом 25% до +7% на 50 уровне. Нужны выбранная стихия в снимке матча и уровень выше нуля. Пепел
+                этот бонус не гасит: он привязан к персонажу на старте, поэтому остаётся у аватара и когда боевую стихию на вопросе гасят туман
+                или бонус вопроса.
               </p>
               <p className="text-xs text-white/55">
                 Опыт приходит один раз в конце матча и равен итоговым очкам за игру, но не ниже нуля. 1 место добавляет 7%, 2 место — 5%, 3
