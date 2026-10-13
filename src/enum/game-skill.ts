@@ -1,10 +1,4 @@
-import type { SkillId, SkillStatus, SkillVariant } from "@/api/reports"
-
-export type GameSkillVariantOption = {
-  id: SkillVariant
-  title: string
-  detail: string
-}
+import type { SkillId, SkillStatus } from "@/api/reports"
 
 export interface GameSkillDefinition {
   id: SkillId
@@ -14,22 +8,14 @@ export interface GameSkillDefinition {
   condition?: string
   /** PvP-способность против лидеров: недоступна игроку из топ-3. */
   pvp?: boolean
-  needsVariant?: boolean
-  variants?: readonly GameSkillVariantOption[]
 }
 
 export const GAME_SKILLS: readonly GameSkillDefinition[] = [
   {
     id: "BOOST",
     title: "Ускорение",
-    short: "Два варианта на следующий вопрос",
-    detail:
-      "После верного ответа на следующем вопросе остаются два варианта. Путь A — два случайных из четырёх. Путь B — верный и один ложный.",
-    needsVariant: true,
-    variants: [
-      { id: "A", title: "Путь A", detail: "Два случайных из четырёх" },
-      { id: "B", title: "Путь B", detail: "Верный и один ложный" },
-    ],
+    short: "Верный и ложный на следующий вопрос",
+    detail: "После верного ответа на следующем вопросе остаются один верный и один ложный вариант.",
   },
   {
     id: "SHIELD",
@@ -50,14 +36,9 @@ export const GAME_SKILLS: readonly GameSkillDefinition[] = [
   {
     id: "GAMBIT",
     title: "Ставка",
-    short: "Риск на следующий вопрос",
+    short: "Удваивает бонусы следующего вопроса",
     detail:
-      "После любого ответа действует на следующем вопросе. Путь A: верный ответ утраивает очки вопроса, ошибка или пропуск обнуляет их. Путь B: верный ответ удваивает очки, ошибка считается как обычно.",
-    needsVariant: true,
-    variants: [
-      { id: "A", title: "Путь A", detail: "Верный ×3, ошибка или пропуск — 0" },
-      { id: "B", title: "Путь B", detail: "Верный ×2, ошибка как обычно" },
-    ],
+      "После любого ответа на следующем вопросе удваиваются стихия, серия, бонусы вопроса, парные эффекты и Lucky. Очки за скорость не меняются.",
   },
   {
     id: "TIDE",

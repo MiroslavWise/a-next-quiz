@@ -59,7 +59,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         title: "Ожог",
         short: "12% → −13%",
         detail:
-          "12% шанс −13% base; при ответе в первые 5 секунд −7%. На верном — серия не растёт. GAMBIT: −16% (быстрый ответ −9%).",
+          "12% шанс −13% base; при ответе в первые 5 секунд −7%. На верном — серия не растёт.",
         unlockLevel: 0,
       },
       {
@@ -108,7 +108,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "water_whirlpool",
         title: "Водоворот",
         short: "16% → −18% + пул",
-        detail: "16% шанс −18% base (GAMBIT −22.5%) и пул ×1.5 для других верных на END.",
+        detail: "16% шанс −18% base и пул ×1.5 для других верных на END.",
         unlockLevel: 0,
       },
     ],
@@ -144,7 +144,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "earth_collapse",
         title: "Обвал",
         short: "17% → −15%",
-        detail: "17% шанс −15% base; на верном ответе серия не растёт. GAMBIT повышает отрицательное начисление до −18%.",
+        detail: "17% шанс −15% base; на верном ответе серия не растёт.",
         unlockLevel: 0,
       },
     ],
@@ -164,7 +164,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "air_gust",
         title: "Порыв",
         short: "40% → +7%",
-        detail: "Любой исход (верный, неверный, пропуск): 40% шанс +7% base. Под GAMBIT шанс 70%; на вопросе «Обратный счёт» порывов нет.",
+        detail: "Любой исход (верный, неверный, пропуск): 40% шанс +7% base. На вопросе «Обратный счёт» порывов нет.",
         unlockLevel: 2,
       },
       {
@@ -188,7 +188,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "air_draft",
         title: "Сквозняк",
         short: "18% → −14%",
-        detail: "18% шанс −14% base; на верном ответе серия не растёт. GAMBIT повышает отрицательное начисление до −17.5%.",
+        detail: "18% шанс −14% base; на верном ответе серия не растёт.",
         unlockLevel: 0,
       },
     ],
@@ -218,7 +218,7 @@ export const GAME_AVATAR_CARD: GameElementCard = {
       detail: "На каждом 3-м вопросе — главный бонус случайной стихии: Жар (speed ×1.15), Течение (+5%), Корни (серия до 45%) или Порыв (40% → +7%).",
     },
   ],
-  shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "16% шанс −25% base; на верном ответе серия не растёт. GAMBIT повышает отрицательное начисление до −31%." }],
+  shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "16% шанс −25% base; на верном ответе серия не растёт." }],
 }
 
 export const GAME_AVATAR_ICON_SRC = GAME_AVATAR_CARD.iconSrc

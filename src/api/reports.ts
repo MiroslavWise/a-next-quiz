@@ -209,7 +209,6 @@ export type SkillId =
   | "ULT_EARTH"
   | "ULT_AIR"
 
-export type SkillVariant = "A" | "B"
 export type SkillStatus = "available" | "active" | "used" | "locked"
 
 export interface ISkillState {
@@ -225,7 +224,6 @@ export interface ISkillState {
   /** Ульта 10 уровня. Закрытая тоже приходит, со статусом `locked`. */
   is_ultimate?: boolean
   element?: "FIRE" | "WATER" | "EARTH" | "AIR"
-  variant?: SkillVariant
 }
 
 export type ElementPhase = "FIRE" | "WATER" | "EARTH" | "AIR"
@@ -295,12 +293,12 @@ export const getReportMySkills = async (reportId: string | number) => {
 
 export const activateReportSkill = async (
   reportId: string | number,
-  data: { skillId: SkillId; index: number; questionId: string; variant?: SkillVariant },
+  data: { skillId: SkillId; index: number; questionId: string },
 ) => {
   return api
     .post(
       reportPath(reportId, "skill"),
-      { skill_id: data.skillId, index: data.index, question_id: data.questionId, variant: data.variant },
+      { skill_id: data.skillId, index: data.index, question_id: data.questionId },
       { headers: getApiHeaders() },
     )
     .then((res) => {

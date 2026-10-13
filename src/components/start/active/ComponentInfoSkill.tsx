@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Image from "next/image"
 import { Loader2, X } from "lucide-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -16,16 +16,9 @@ import { useUserByTgId } from "@/queries/user"
 import { GameSkillIcon } from "@/lib/game-skill-icons"
 import { gameSkillLockLabel, getGameSkillDefinition, isElementalSkillId, isUltimateSkillId } from "@/enum/game-skill"
 import { GAME_SKILL_RESONANCES, getResonanceAccent, getResonanceIconSrc } from "@/lib/game-elements-catalog"
-import {
-  activateReportSkill,
-  getReportMySkills,
-  type IReportMySkillsResponse,
-  type SkillId,
-  type SkillVariant,
-} from "@/api/reports"
+import { activateReportSkill, getReportMySkills, type IReportMySkillsResponse, type SkillId } from "@/api/reports"
 
 import { useContextInfoSkill } from "./ContextInfoSkill"
-import SkillVariantPicker from "./SkillVariantPicker"
 
 function activationErrorMessage(error: unknown): string {
   if (!ApiRequestError.is(error)) return "Не удалось активировать способность"
@@ -40,7 +33,6 @@ function activationErrorMessage(error: unknown): string {
     case "ultimate_locked":
       return "Персонаж не достиг 10 уровня"
     default:
-      if (error.message.toLowerCase().includes("variant")) return "Выберите путь A или B"
       return error.message
   }
 }
@@ -114,12 +106,6 @@ function ComponentInfoSkill() {
     enabled: enabled && !isStaff && !!reportId && !!tgId && !!questionId,
   })
 
-  const [variant, setVariant] = useState<SkillVariant | null>(null)
-
-  useEffect(() => {
-    setVariant(null)
-  }, [value])
-
   const activation = useMutation({
     mutationKey: ["activate-report-skill", reportId, questionId],
     mutationFn: (skillId: SkillId) =>
@@ -127,7 +113,6 @@ function ComponentInfoSkill() {
         skillId,
         index: activeIndex,
         questionId,
-        variant: variant ?? undefined,
       }),
     onSuccess: (response) => {
       queryClient.setQueryData<IReportMySkillsResponse>(queryKey, (current) => ({
@@ -157,8 +142,6 @@ function ComponentInfoSkill() {
   const selectedPvpBlocked = !isStaff && selectedIsPvp && playerIsTopThree
   const selectedPvpRankPending = !isStaff && selectedIsPvp && rankQuery.isPending
   const activationPending = activation.isPending
-  const needsVariant = !!definition.needsVariant && selectedStatus === "available"
-  const variantMissing = needsVariant && variant == null
   const isElemental = selectedState?.is_elemental ?? isElementalSkillId(definition.id)
   const isUltimate = selectedState?.is_ultimate ?? isUltimateSkillId(definition.id)
   const lockedText = gameSkillLockLabel("locked", { isElemental, isUltimate })
@@ -228,20 +211,6 @@ function ComponentInfoSkill() {
               {definition.title} недоступен: сейчас вы занимаете место в топ-3.
             </p>
           ) : null}
-          {!isStaff && needsVariant && definition.variants ? (
-            <SkillVariantPicker
-              options={definition.variants}
-              value={variant}
-              onChange={setVariant}
-              disabled={activationPending}
-            />
-          ) : null}
-          {!isStaff && !needsVariant && selectedState?.variant && definition.variants ? (
-            <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs leading-relaxed text-white/70">
-              {definition.variants.find((option) => option.id === selectedState.variant)?.title}:{" "}
-              {definition.variants.find((option) => option.id === selectedState.variant)?.detail}
-            </p>
-          ) : null}
           {isStaff ? (
             <div className="space-y-2 text-left">
               <p className="text-sm font-medium text-white">На этом вопросе</p>
@@ -263,14 +232,7 @@ function ComponentInfoSkill() {
               variant="ghost"
               size="lg"
               onClick={() => activation.mutate(value)}
-              disabled={
-                selectedStatus !== "available" ||
-                activationPending ||
-                selectedPvpBlocked ||
-                selectedPvpRankPending ||
-                variantMissing ||
-                !questionId
-              }
+              disabled={selectedStatus !== "available" || activationPending || selectedPvpBlocked || selectedPvpRankPending || !questionId}
               className="glass-start-btn-primary-palette mt-1 h-11 w-full rounded-2xl text-white hover:bg-transparent"
             >
               {activationPending ? <Loader2 className="animate-spin" aria-hidden /> : null}
@@ -284,9 +246,7 @@ function ComponentInfoSkill() {
                       ? "Недоступно в топ-3"
                       : selectedPvpRankPending
                         ? "Проверяем место…"
-                        : variantMissing
-                          ? "Выберите путь A или B"
-                          : "Активировать"}
+                        : "Активировать"}
             </Button>
           )}
         </div>
