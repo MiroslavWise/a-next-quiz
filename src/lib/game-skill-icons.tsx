@@ -1,4 +1,20 @@
-import { CloudFog, Dices, Droplets, Flame, HandCoins, Mountain, ShieldHalf, Waves, Wind, Zap, type LucideIcon } from "lucide-react"
+import {
+  Castle,
+  CloudFog,
+  Dices,
+  Droplets,
+  Flame,
+  FlameKindling,
+  HandCoins,
+  LifeBuoy,
+  Mountain,
+  ShieldHalf,
+  Tornado,
+  Waves,
+  Wind,
+  Zap,
+  type LucideIcon,
+} from "lucide-react"
 
 import type { SkillId } from "@/api/reports"
 
@@ -9,6 +25,10 @@ const gameSkillIcons: Record<SkillId, LucideIcon> = {
   GAMBIT: Dices,
   TIDE: Waves,
   FOG: CloudFog,
+  ELEM_FIRE: FlameKindling,
+  ELEM_WATER: LifeBuoy,
+  ELEM_AIR: Tornado,
+  ELEM_EARTH: Castle,
   ULT_FIRE: Flame,
   ULT_WATER: Droplets,
   ULT_EARTH: Mountain,

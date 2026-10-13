@@ -3,11 +3,11 @@
 import { useMemo, useState } from "react"
 
 import type { SkillId } from "@/api/reports"
-import { GAME_SKILLS } from "@/enum/game-skill"
+import { allGameSkillIds } from "@/enum/game-skill"
 import { useSocketEventEffect, type LastSocketEventByType } from "@/hooks/socket-event-by-type"
 import type { QuizStaffEvent } from "@/hooks/useQuizStaffSocketIO"
 
-const SKILL_IDS = new Set<string>(GAME_SKILLS.map((skill) => skill.id))
+const SKILL_IDS = new Set<string>(allGameSkillIds())
 
 function isSkillId(value: unknown): value is SkillId {
   return typeof value === "string" && SKILL_IDS.has(value)
@@ -65,7 +65,7 @@ export function useSkillActivations({ lastStaffByType, activeIndex }: IUseSkillA
 
   const bySkillId = useMemo(() => {
     const map = new Map<SkillId, number[]>()
-    for (const skill of GAME_SKILLS) map.set(skill.id, [])
+    for (const id of allGameSkillIds()) map.set(id, [])
     for (const item of activations) {
       map.get(item.skillId)?.push(item.telegramId)
     }

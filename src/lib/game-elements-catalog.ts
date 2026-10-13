@@ -233,12 +233,6 @@ export type GameSkillResonance = {
 
 /** Резонансы способностей со стихией игрока — см. docs/API.md «Резонансы». */
 export const GAME_SKILL_RESONANCES: Partial<Record<SkillId, GameSkillResonance>> = {
-  BOOST: { element: EUserElement.FIRE, title: "Резонанс жара", detail: "Огонь: верный ответ дополнительно получает +5% speed-очков." },
-  SHIELD: {
-    element: EUserElement.EARTH,
-    title: "Твёрдость",
-    detail: "Земля: верный ответ +10% base, а щит возвращает половину заблокированных штрафов.",
-  },
   THIEF: {
     element: EUserElement.AIR,
     title: "Обходной ветер",

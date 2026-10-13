@@ -4,7 +4,7 @@ import { Brain, Clock, Crown, Gift, ListChecks, Sparkles, Target, Trophy, Users,
 
 import AppPageHeaders from "@/components/common/AppPageHeaders"
 
-import { GAME_SKILLS, ULTIMATE_SKILLS, type GameSkillDefinition } from "@/enum/game-skill"
+import { ELEMENTAL_SKILLS, GAME_SKILLS, ULTIMATE_SKILLS, type GameSkillDefinition } from "@/enum/game-skill"
 import { ElementAbilityEffectList } from "@/components/elements/ElementAbilityEffectList"
 import {
   GAME_AVATAR_CARD,
@@ -556,17 +556,27 @@ export default function GameMechanicsContent() {
 
             <MechanicsSection title="Одноразовые способности">
               <p>
-                У каждого участника есть шесть общих способностей. Каждую можно использовать один раз за матч, а на одном вопросе разрешена
-                только одна способность. Иконка открывает описание; применение нужно отдельно подтвердить кнопкой «Активировать». Седьмая
-                кнопка — ульта своей стихии: она видна всегда, но нажимается только с 10 уровня персонажа.
+                У каждого участника шесть общих способностей. Каждую можно использовать один раз за матч, а на одном вопросе разрешена
+                только одна способность. Иконка открывает описание; применение нужно отдельно подтвердить кнопкой «Активировать». У
+                игрока со стихией есть четвёртый слот своей стихии (с третьего вопроса) и ульта этой стихии: она видна всегда, но
+                нажимается только с 10 уровня персонажа.
               </p>
               <p className="text-xs text-white/55">
-                Способность можно активировать до или после ответа, пока вопрос находится в статусе <code className="text-xs">GAME</code>.
-                Активная способность отмечается на панели, использованная остаётся видимой, но повторно недоступна. Если включить её уже после
-                ответа, строка пересчитывается так, будто способность была активна до клика; случайные броски не повторяются.
+                Способность можно активировать, пока вопрос находится в статусе <code className="text-xs">GAME</code>. Щит, ускорение,
+                инферно и вихрь — только после верного ответа; ставка и твердыня — после любого уже отправленного; водный рывок — после
+                ошибки или пропуска. Активная способность отмечается на панели, использованная остаётся видимой, но повторно недоступна.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-3">
                 {GAME_SKILLS.map((skill) => (
+                  <SkillMechanicsCard key={skill.id} skill={skill} />
+                ))}
+              </div>
+              <p className="mt-3 text-sm font-semibold text-white/85">Стихийный слот</p>
+              <p className="text-xs text-white/55">
+                Только своя стихия, один раз за матч. До третьего вопроса кнопка закрыта. Аватар и игрок без стихии слот не получают.
+              </p>
+              <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
+                {ELEMENTAL_SKILLS.map((skill) => (
                   <SkillMechanicsCard key={skill.id} skill={skill} />
                 ))}
               </div>
@@ -590,9 +600,10 @@ export default function GameMechanicsContent() {
                   пересчитывается без стихии.
                 </p>
                 <p>
-                  <strong className="text-foreground">Усиления:</strong> «Риск» умножает на 1.25 все начисления за вопрос — и плюсы, и
-                  минусы. «Прилив» начисляется в конце вопроса по итоговому числу верно ответивших. Персональные эффекты способностей не
-                  рассылаются через Socket.IO — результат приходит в <code className="text-[0.65rem]">skill_effects</code>.
+                  <strong className="text-foreground">Усиления:</strong> «Ставка» меняет очки следующего вопроса: путь A даёт ×3 или 0,
+                  путь B — ×2 при верном ответе. «Ускорение» оставляет два варианта ответа. «Прилив» начисляется в конце вопроса по
+                  итоговому числу верно ответивших. Персональные эффекты способностей не рассылаются через Socket.IO — результат
+                  приходит в <code className="text-[0.65rem]">skill_effects</code>.
                 </p>
               </div>
             </MechanicsSection>

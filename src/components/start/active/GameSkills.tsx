@@ -5,9 +5,9 @@ import { useIsMutating, useQuery } from "@tanstack/react-query"
 import { Lock, RotateCw } from "lucide-react"
 
 import { getRank } from "@/api/rank"
-import { getReportMySkills, type SkillStatus } from "@/api/reports"
+import { getReportMySkills } from "@/api/reports"
 import Button from "@/components/ui/button"
-import { GAME_SKILLS } from "@/enum/game-skill"
+import { GAME_SKILLS, gameSkillLockLabel } from "@/enum/game-skill"
 import { GAME_SKILL_RESONANCES, getResonanceAccent, getResonanceIconSrc } from "@/lib/game-elements-catalog"
 import { cn } from "@/lib/utils"
 
@@ -19,13 +19,6 @@ interface GameSkillsProps {
   tgId: number
   activeIndex: number
   questionId: string
-}
-
-const skillStatusLabel: Record<SkillStatus, string> = {
-  available: "Доступна",
-  active: "Активна",
-  used: "Использована",
-  locked: "Откроется на 10 уровне",
 }
 
 function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps) {
@@ -72,7 +65,9 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
             const isUsed = status === "used"
             const isPvpBlocked = !!definition.pvp && playerIsTopThree
             const isSelected = selectedSkillId === definition.id
-            const statusText = isPvpBlocked ? "Недоступна: вы в топ-3" : skillStatusLabel[status]
+            const statusText = isPvpBlocked
+              ? "Недоступна: вы в топ-3"
+              : gameSkillLockLabel(status, { isElemental: state?.is_elemental, isUltimate: state?.is_ultimate })
             const lit = isActive || isSelected
             const resonance = state?.resonance ? GAME_SKILL_RESONANCES[definition.id] : undefined
             const resonanceText = resonance ? `. Резонанс: ${resonance.title}` : ""
@@ -113,14 +108,14 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
             )
           })}
           {skillsQuery.data?.skills
-            .filter((skill) => skill.is_ultimate)
+            .filter((skill) => skill.is_elemental || skill.is_ultimate)
             .map((skill) => {
               const status = skill.status
               const isActive = status === "active"
               const isUsed = status === "used"
               const isLocked = status === "locked"
               const isSelected = selectedSkillId === skill.id
-              const statusText = skillStatusLabel[status]
+              const statusText = gameSkillLockLabel(status, { isElemental: skill.is_elemental, isUltimate: skill.is_ultimate })
               const lit = isActive || isSelected
               return (
                 <SkillIconButton

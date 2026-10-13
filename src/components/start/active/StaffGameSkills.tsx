@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react"
 
 import type { SkillId } from "@/api/reports"
-import { GAME_SKILLS, type GameSkillDefinition } from "@/enum/game-skill"
+import { ELEMENTAL_SKILLS, GAME_SKILLS, ULTIMATE_SKILLS, type GameSkillDefinition } from "@/enum/game-skill"
 import { cn } from "@/lib/utils"
 
 import { useContextInfoSkill } from "./ContextInfoSkill"
@@ -75,7 +75,7 @@ function StaffGameSkills({ bySkillId, isQuestionEnded = false }: StaffGameSkills
       aria-label="Способности участников"
     >
       <SkillPalette>
-        {GAME_SKILLS.map((definition) => (
+        {[...GAME_SKILLS, ...ELEMENTAL_SKILLS, ...ULTIMATE_SKILLS].map((definition) => (
           <StaffSkillButton
             key={definition.id}
             definition={definition}

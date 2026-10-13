@@ -193,7 +193,23 @@ export const getPairAnswer = async (reportId: string, index: number) => {
   })
 }
 
-export type SkillId = "BOOST" | "SHIELD" | "THIEF" | "GAMBIT" | "TIDE" | "FOG" | "ULT_FIRE" | "ULT_WATER" | "ULT_EARTH" | "ULT_AIR"
+export type SkillId =
+  | "BOOST"
+  | "SHIELD"
+  | "THIEF"
+  | "GAMBIT"
+  | "TIDE"
+  | "FOG"
+  | "ELEM_FIRE"
+  | "ELEM_WATER"
+  | "ELEM_AIR"
+  | "ELEM_EARTH"
+  | "ULT_FIRE"
+  | "ULT_WATER"
+  | "ULT_EARTH"
+  | "ULT_AIR"
+
+export type SkillVariant = "A" | "B"
 export type SkillStatus = "available" | "active" | "used" | "locked"
 
 export interface ISkillState {
@@ -204,9 +220,12 @@ export interface ISkillState {
   used_at_index?: number
   /** Способность в резонансе со стихией игрока (см. docs/API.md «Резонансы»). */
   resonance?: boolean
+  /** Стихийный 4-й слот. До третьего вопроса статус `locked`. */
+  is_elemental?: boolean
   /** Ульта 10 уровня. Закрытая тоже приходит, со статусом `locked`. */
   is_ultimate?: boolean
   element?: "FIRE" | "WATER" | "EARTH" | "AIR"
+  variant?: SkillVariant
 }
 
 export type ElementPhase = "FIRE" | "WATER" | "EARTH" | "AIR"
@@ -231,6 +250,10 @@ export interface ISkillEffect {
     | "skill_tide"
     | "skill_fog"
     | "skill_fog_cast"
+    | "skill_inferno"
+    | "skill_tidal"
+    | "skill_whirlwind"
+    | "skill_stalwart"
     | "skill_boost_resonance"
     | "earth_firmness"
     | "earth_shield_refund"
@@ -248,6 +271,7 @@ export interface IReportMySkillsResponse {
   active_skill?: SkillId
   skills: ISkillState[]
   element_state?: IElementState
+  visible_answer_ids?: string[]
 }
 
 export interface IActivateReportSkillResponse {
@@ -259,6 +283,7 @@ export interface IActivateReportSkillResponse {
   target_telegram_ids?: string[]
   skill_effects?: ISkillEffect[]
   skills: ISkillState[]
+  visible_answer_ids?: string[]
 }
 
 export const getReportMySkills = async (reportId: string | number) => {
@@ -270,12 +295,12 @@ export const getReportMySkills = async (reportId: string | number) => {
 
 export const activateReportSkill = async (
   reportId: string | number,
-  data: { skillId: SkillId; index: number; questionId: string },
+  data: { skillId: SkillId; index: number; questionId: string; variant?: SkillVariant },
 ) => {
   return api
     .post(
       reportPath(reportId, "skill"),
-      { skill_id: data.skillId, index: data.index, question_id: data.questionId },
+      { skill_id: data.skillId, index: data.index, question_id: data.questionId, variant: data.variant },
       { headers: getApiHeaders() },
     )
     .then((res) => {

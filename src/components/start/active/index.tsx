@@ -1,7 +1,7 @@
 "use client"
 
-import { useQueryClient } from "@tanstack/react-query"
-import { useState, Suspense, lazy, memo, type ReactNode } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMemo, useState, Suspense, lazy, memo, type ReactNode } from "react"
 
 import GameSkills from "./GameSkills"
 import Skeleton from "@/components/ui/skeleton"
@@ -43,6 +43,7 @@ import { useReportParticipation } from "../hooks/use-report-participation"
 import { useActiveQuestionSync } from "../hooks/use-active-question-sync"
 import { useAnswerRound, type AnswerRound, type IUseAnswerRoundParams } from "../hooks/use-answer-round"
 import ComponentInfoSkill from "./ComponentInfoSkill"
+import { getReportMySkills } from "@/api/reports"
 
 interface IProps {
   reportId: string
@@ -156,7 +157,18 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
     lastStaffByType,
     activeIndex,
   })
-  const renderedAnswers = useShuffledAnswers({ answers, questionId: question?.id, activeIndex, tgId })
+  const shuffledAnswers = useShuffledAnswers({ answers, questionId: question?.id, activeIndex, tgId })
+  const mySkillsQuery = useQuery({
+    queryKey: ["my-skills", reportId, activeIndex] as const,
+    queryFn: () => getReportMySkills(reportId),
+    enabled: isPlayer && !!reportId && !!question?.id,
+    refetchOnMount: true,
+  })
+  const renderedAnswers = useMemo(() => {
+    const visibleIds = mySkillsQuery.data?.visible_answer_ids
+    if (!isPlayer || isQuestionEnded || !Array.isArray(visibleIds) || visibleIds.length === 0) return shuffledAnswers
+    return shuffledAnswers.filter((answer) => visibleIds.includes(answer.id))
+  }, [isPlayer, isQuestionEnded, mySkillsQuery.data?.visible_answer_ids, shuffledAnswers])
   const { loading, goToNextQuestion } = useNextQuestion({ reportId, tgId, user_id, statusQuestion, isFetching })
   const { myPassedQuestions } = useMyPassedQuestions({
     reportId,
