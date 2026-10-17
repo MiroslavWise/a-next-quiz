@@ -29,6 +29,8 @@ interface IProps extends Partial<IQuestion> {
   showMeta?: boolean
   /** Индикатор вопросов: садится на центр верхнего бордера карточки. */
   dots?: ReactNode
+  /** Активированные скилы ведущего/наблюдателя — справа снизу, как бафы слева. */
+  staffSkills?: ReactNode
 }
 
 const ROUND_CLASS = "rounded-2xl xl:rounded-3xl"
@@ -81,6 +83,7 @@ function ComponentsTitleQuestion({
   bonuses,
   element,
   dots,
+  staffSkills,
 }: IProps) {
   const thumbUrl = imageUrl ?? image_url
   const profileElement = useAuth((s) => s.user?.element)
@@ -177,6 +180,7 @@ function ComponentsTitleQuestion({
             }}
           />
         ) : null}
+        {staffSkills}
       </div>
     </div>
   )

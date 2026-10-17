@@ -253,14 +253,23 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                       totalQuestions={totalQuestions}
                     />
                   }
+                  staffSkills={
+                    isStaff && (collectingAnswers || isQuestionEnded) ? (
+                      <StaffGameSkills
+                        bySkillId={bySkillId}
+                        className="absolute z-20"
+                        style={{
+                          right: "calc(var(--seal-stroke) - var(--seal-size) / 3)",
+                          bottom: "calc(var(--seal-stroke) - var(--seal-size) / 3)",
+                        }}
+                      />
+                    ) : null
+                  }
                 />
                 {isQuestionEnded ? (
                   <Suspense fallback={<ActiveChartsSkeleton />}>
                     <ActiveCharts reportId={reportId} tgId={tgId} index={activeIndex} />
                   </Suspense>
-                ) : null}
-                {isStaff && (collectingAnswers || isQuestionEnded) ? (
-                  <StaffGameSkills bySkillId={bySkillId} isQuestionEnded={isQuestionEnded} />
                 ) : null}
                 <ComponentsQuestionAnswers
                   tgId={tgId}
