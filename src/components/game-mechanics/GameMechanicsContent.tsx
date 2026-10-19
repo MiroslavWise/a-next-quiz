@@ -566,6 +566,26 @@ export default function GameMechanicsContent() {
                 инферно и вихрь — только после верного ответа; ставка и твердыня — после любого уже отправленного; водный рывок — после
                 ошибки или пропуска. Активная способность отмечается на панели, использованная остаётся видимой, но повторно недоступна.
               </p>
+              <div className="mt-2 flex min-w-0 flex-col gap-2 rounded-xl border border-white/12 bg-white/5 px-4 py-3 text-xs leading-relaxed text-white/65">
+                <p>
+                  <strong className="text-foreground">Мана:</strong> ресурс только на время матча (не пишется в профиль). Старт —{" "}
+                  <strong className="text-foreground/85">уровень персонажа стихии × 2</strong> (аватар матча начинает с 0). Потолок —{" "}
+                  <strong className="text-foreground/85">1250 + 10 × уровень</strong>, у аватара всегда{" "}
+                  <strong className="text-foreground/85">1500</strong>. За любой положительный прирост очков мана растёт на{" "}
+                  <strong className="text-foreground/85">35%</strong>; ошибки и штрафы её не снимают.
+                </p>
+                <p>
+                  <strong className="text-foreground">Стоимость каста:</strong> ускорение и щит — 312; ставка и прилив — 437; вор и туман —
+                  500; стихийный слот — 625; ульта — 1125. После каждого успешного каста цена{" "}
+                  <strong className="text-foreground/85">всех следующих</strong> способностей растёт на{" "}
+                  <strong className="text-foreground/85">+8% от базы</strong> за каждый уже использованный скилл (линейно: ×1.08, ×1.16…).
+                  Поэтому дорогие скилы выгоднее брать раньше.
+                </p>
+                <p>
+                  На панели слева — колба запаса (нажатие открывает краткую справку). Заливка на иконке показывает, хватает ли маны на этот
+                  скилл. Без маны активация недоступна, даже если способность ещё не использована.
+                </p>
+              </div>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-3">
                 {GAME_SKILLS.map((skill) => (
                   <SkillMechanicsCard key={skill.id} skill={skill} />

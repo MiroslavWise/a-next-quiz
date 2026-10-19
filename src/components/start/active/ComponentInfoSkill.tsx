@@ -32,6 +32,8 @@ function activationErrorMessage(error: unknown): string {
       return "Сейчас эта способность недоступна"
     case "ultimate_locked":
       return "Персонаж не достиг 10 уровня"
+    case "insufficient_mana":
+      return "Недостаточно маны для этой способности"
     default:
       return error.message
   }
@@ -119,6 +121,9 @@ function ComponentInfoSkill() {
         telegram_id: current?.telegram_id ?? "",
         active_index: response.active_index,
         active_skill: response.skill_id,
+        mana: response.mana ?? current?.mana,
+        mana_max: response.mana_max ?? current?.mana_max,
+        skill_casts: response.skill_casts ?? current?.skill_casts,
         skills: response.skills,
         element_state: current?.element_state,
         visible_answer_ids: response.visible_answer_ids ?? current?.visible_answer_ids,
@@ -137,6 +142,11 @@ function ComponentInfoSkill() {
   const definition = getGameSkillDefinition(value)
   const selectedState = skillsQuery.data?.skills.find((skill) => skill.id === value)
   const selectedStatus = selectedState?.status ?? "available"
+  const mana = skillsQuery.data?.mana ?? 0
+  const manaCost = selectedState?.mana_cost ?? 0
+  const skillCasts = skillsQuery.data?.skill_casts ?? 0
+  const canAfford = manaCost <= 0 || mana >= manaCost
+  const manaFill = manaCost > 0 ? Math.max(0, Math.min(1, mana / manaCost)) : 0
   const playerIsTopThree = typeof rankQuery.data?.rank === "number" && rankQuery.data.rank >= 1 && rankQuery.data.rank <= 3
   const selectedIsPvp = !!definition.pvp
   const selectedPvpBlocked = !isStaff && selectedIsPvp && playerIsTopThree
@@ -147,6 +157,7 @@ function ComponentInfoSkill() {
   const lockedText = gameSkillLockLabel("locked", { isElemental, isUltimate })
   const resonance = !isStaff && selectedState?.resonance ? GAME_SKILL_RESONANCES[definition.id] : undefined
   const resonanceAccent = resonance ? getResonanceAccent(resonance.element) : ""
+  const escalateMult = (100 + 8 * skillCasts) / 100
 
   return (
     <>
@@ -211,6 +222,34 @@ function ComponentInfoSkill() {
               {definition.title} недоступен: сейчас вы занимаете место в топ-3.
             </p>
           ) : null}
+          {!isStaff && manaCost > 0 ? (
+            <div className="space-y-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+              <div className="flex items-center justify-between gap-2 text-xs text-white/75">
+                <span>
+                  Стоимость <span className="font-semibold tabular-nums text-white">{manaCost}</span>
+                </span>
+                <span className="tabular-nums">
+                  {mana}/{manaCost}
+                </span>
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-black/35" role="progressbar" aria-valuemin={0} aria-valuemax={manaCost} aria-valuenow={Math.min(mana, manaCost)} aria-label="Накопление маны до стоимости">
+                <div
+                  className="h-full rounded-full transition-[width] duration-300"
+                  style={{
+                    width: `${Math.round(manaFill * 100)}%`,
+                    background: "color-mix(in srgb, var(--accent-orb) 80%, white 10%)",
+                  }}
+                />
+              </div>
+              {skillCasts > 0 ? (
+                <p className="text-[0.7rem] leading-snug text-white/55">
+                  +8% за каждый каст · сейчас ×{escalateMult.toFixed(2)}
+                </p>
+              ) : (
+                <p className="text-[0.7rem] leading-snug text-white/45">Каждый каст поднимает цену следующих на +8%</p>
+              )}
+            </div>
+          ) : null}
           {isStaff ? (
             <div className="space-y-2 text-left">
               <p className="text-sm font-medium text-white">На этом вопросе</p>
@@ -232,7 +271,14 @@ function ComponentInfoSkill() {
               variant="ghost"
               size="lg"
               onClick={() => activation.mutate(value)}
-              disabled={selectedStatus !== "available" || activationPending || selectedPvpBlocked || selectedPvpRankPending || !questionId}
+              disabled={
+                selectedStatus !== "available" ||
+                activationPending ||
+                selectedPvpBlocked ||
+                selectedPvpRankPending ||
+                !questionId ||
+                !canAfford
+              }
               className="glass-start-btn-primary-palette mt-1 h-11 w-full rounded-2xl text-white hover:bg-transparent"
             >
               {activationPending ? <Loader2 className="animate-spin" aria-hidden /> : null}
@@ -246,7 +292,11 @@ function ComponentInfoSkill() {
                       ? "Недоступно в топ-3"
                       : selectedPvpRankPending
                         ? "Проверяем место…"
-                        : "Активировать"}
+                        : !canAfford
+                          ? "Не хватает маны"
+                          : manaCost > 0
+                            ? `Активировать · ${manaCost}`
+                            : "Активировать"}
             </Button>
           )}
         </div>

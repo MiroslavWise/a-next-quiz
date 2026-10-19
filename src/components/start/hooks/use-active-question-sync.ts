@@ -162,6 +162,24 @@ export function useActiveQuestionSync({ lastByType, queryClient, activeQuestionQ
   useSocketEventEffect(lastByType, "end-question", applySync, syncDeps)
   useSocketEventEffect(lastByType, "update-end-question", applySync, syncDeps)
 
+  // END-доначисления очков дают ману — обновляем палитру.
+  useSocketEventEffect(
+    lastByType,
+    "end-question",
+    () => {
+      void queryClient.invalidateQueries({ queryKey: ["my-skills", reportId] })
+    },
+    [queryClient, reportId],
+  )
+  useSocketEventEffect(
+    lastByType,
+    "update-end-question",
+    () => {
+      void queryClient.invalidateQueries({ queryKey: ["my-skills", reportId] })
+    },
+    [queryClient, reportId],
+  )
+
   useSocketEventEffect(
     lastByType,
     "user-removed",

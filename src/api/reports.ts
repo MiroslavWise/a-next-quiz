@@ -151,6 +151,11 @@ export interface IReportAnswerPatchResponse {
   id?: number
   active_index?: number
   is_right?: boolean
+  /** Текущая мана после ответа. */
+  mana?: number
+  mana_max?: number
+  /** Прирост маны за этот ответ (если был). */
+  mana_gained?: number
   /** Эффекты стихии сразу после ответа (жар, искра, streak и т.д.). */
   element_effects?: IElementEffect[]
   /** Эффекты активированной одноразовой способности. */
@@ -217,6 +222,8 @@ export interface ISkillState {
   status: SkillStatus
   active_index?: number
   used_at_index?: number
+  /** Эффективная стоимость маны (с эскалацией +8% × skill_casts). */
+  mana_cost?: number
   /** Способность в резонансе со стихией игрока (см. docs/API.md «Резонансы»). */
   resonance?: boolean
   /** Стихийный 4-й слот. До третьего вопроса статус `locked`. */
@@ -267,6 +274,12 @@ export interface IReportMySkillsResponse {
   telegram_id: string
   active_index: number
   active_skill?: SkillId
+  /** Текущая мана в матче. */
+  mana?: number
+  /** Потолок маны. */
+  mana_max?: number
+  /** Сколько способностей уже использовано (эскалация цены). */
+  skill_casts?: number
   skills: ISkillState[]
   element_state?: IElementState
   visible_answer_ids?: string[]
@@ -276,6 +289,9 @@ export interface IActivateReportSkillResponse {
   skill_id: SkillId
   active_index: number
   activated_at: string
+  mana?: number
+  mana_max?: number
+  skill_casts?: number
   target_telegram_id?: string
   /** FOG аватара (резонанс): обе цели тумана. */
   target_telegram_ids?: string[]

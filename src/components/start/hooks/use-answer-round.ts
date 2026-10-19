@@ -233,6 +233,7 @@ export function useAnswerRound({
           dispatchRound({ type: "answerSuccess" })
           if (res.partner_answer_id) dispatchRound({ type: "partnerAnswer", answerId: res.partner_answer_id })
           void queryClient.invalidateQueries({ queryKey: ["rank", reportId] })
+          void queryClient.invalidateQueries({ queryKey: ["my-skills", reportId] })
         }
       } catch (error) {
         if (ApiRequestError.is(error) && error.code === "already_answered") {

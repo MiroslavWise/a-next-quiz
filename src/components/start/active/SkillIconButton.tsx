@@ -10,12 +10,15 @@ import type { SkillId } from "@/api/reports"
 import { useContextInfoSkill } from "./ContextInfoSkill"
 
 const skillIconButtonClass = cn(
-  "relative z-10 size-9 rounded-full border-white/15 bg-black/25 text-white/80",
+  "relative z-10 size-9 overflow-hidden rounded-full border-white/15 bg-black/25 text-white/80",
   "hover:border-(--accent-orb)/55 hover:bg-(--accent-orb)/15 hover:text-white",
 )
 
 const skillIconButtonLitClass =
   "border-(--accent-orb) bg-(--accent-orb)/25 text-white shadow-[0_0_22px_color-mix(in_srgb,var(--accent-orb)_55%,transparent)] ring-2 ring-(--accent-orb)/45"
+
+const skillIconButtonReadyClass =
+  "border-(--accent-orb)/70 shadow-[0_0_14px_color-mix(in_srgb,var(--accent-orb)_40%,transparent)] ring-1 ring-(--accent-orb)/35"
 
 export function useCloseSkillInfoOnUnmount() {
   const { close } = useContextInfoSkill()
@@ -37,6 +40,8 @@ export function SkillIconButton({
   pressed,
   disabled,
   lit,
+  ready,
+  manaFill = 0,
   className,
   onSelect,
   children,
@@ -47,10 +52,16 @@ export function SkillIconButton({
   pressed?: boolean
   disabled?: boolean
   lit?: boolean
+  /** Хватает маны и скилл доступен — спокойное кольцо готовности. */
+  ready?: boolean
+  /** 0..1 заливка «бутылочки» до стоимости скила. */
+  manaFill?: number
   className?: string
   onSelect: (skillId: SkillId) => void
   children?: ReactNode
 }) {
+  const fill = Math.max(0, Math.min(1, manaFill))
+
   return (
     <Button
       type="button"
@@ -61,9 +72,23 @@ export function SkillIconButton({
       title={title}
       disabled={disabled}
       onClick={() => onSelect(skillId)}
-      className={cn(skillIconButtonClass, lit && skillIconButtonLitClass, className)}
+      className={cn(
+        skillIconButtonClass,
+        lit && skillIconButtonLitClass,
+        !lit && ready && skillIconButtonReadyClass,
+        className,
+      )}
     >
-      <GameSkillIcon skillId={skillId} className="size-4.5" />
+      <span
+        className="pointer-events-none absolute inset-0 origin-bottom transition-transform duration-300 ease-out"
+        style={{
+          transform: `scaleY(${fill})`,
+          background:
+            "linear-gradient(180deg, color-mix(in srgb, var(--accent-orb) 55%, transparent) 0%, color-mix(in srgb, var(--accent-orb) 78%, transparent) 100%)",
+        }}
+        aria-hidden
+      />
+      <GameSkillIcon skillId={skillId} className="relative z-10 size-4.5" />
       {children}
     </Button>
   )
