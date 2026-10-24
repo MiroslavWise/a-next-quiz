@@ -85,7 +85,7 @@ export function ManaVial({ mana, manaMax, className }: ManaVialProps) {
         <div
           id={tipId}
           role="tooltip"
-          className="glass3d absolute bottom-[calc(100%+0.5rem)] left-1/2 z-30 w-52 -translate-x-1/2 rounded-xl border border-white/15 px-3 py-2.5 text-left shadow-lg"
+          className="game-liquid absolute bottom-[calc(100%+0.5rem)] left-1/2 z-50 w-52 -translate-x-1/2 rounded-lg px-3 py-2.5 text-left"
         >
           <p className="text-xs font-semibold text-white">Мана · {safeMana} / {safeMax}</p>
           <p className="mt-1 text-[0.7rem] leading-snug text-white/70">

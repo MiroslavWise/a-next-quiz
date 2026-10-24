@@ -84,7 +84,7 @@ const GlobalVerificationMainContext = ({ children }: PropsWithChildren) => {
   }, [])
 
   if (status === AuthStatus.PENDING) {
-    return <HomeJoinOverlay caption="вход" title="Проверяем доступ" />
+    return <HomeJoinOverlay caption="вход" title="Проверяем доступ" status="Проверяем сессию…" />
   }
 
   if (status === AuthStatus.UNAUTHENTICATED) {

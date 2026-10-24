@@ -7,6 +7,7 @@ import styles from "./home-join-overlay.module.scss"
 type HomeJoinOverlayProps = {
   title?: string
   caption?: string
+  status?: string
   className?: string
 }
 
@@ -14,6 +15,7 @@ type HomeJoinOverlayProps = {
 export default function HomeJoinOverlay({
   title = "Входим в игру",
   caption = "подключение",
+  status = "Ищем комнату…",
   className,
 }: HomeJoinOverlayProps) {
   return (
@@ -33,7 +35,7 @@ export default function HomeJoinOverlay({
 
       <section className={cn(styles.panel, "game-liquid w-full max-w-72 rounded-lg px-4 py-3.5")}>
         <p className="text-[0.65rem] font-bold tracking-[0.18em] text-white/45 uppercase">статус</p>
-        <p className="mt-1 text-base font-semibold tracking-tight text-white">Ищем комнату…</p>
+        <p className="mt-1 text-base font-semibold tracking-tight text-white">{status}</p>
         <div className={cn(styles.track, "mt-3")}>
           <span className={styles.fill} />
         </div>

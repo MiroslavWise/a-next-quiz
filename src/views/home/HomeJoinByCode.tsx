@@ -164,7 +164,7 @@ export default function HomeJoinByCode() {
 
   return (
     <>
-      {showJoinOverlay ? <HomeJoinOverlay /> : null}
+      {showJoinOverlay ? <HomeJoinOverlay caption="подключение" title="Входим в игру" status="Ищем комнату…" /> : null}
 
       <div className="game-liquid mt-auto flex flex-col items-center justify-center rounded-lg px-4 py-6 sm:px-6">
         <p className="game-meta mb-4">Перейти по коду</p>
