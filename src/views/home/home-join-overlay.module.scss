@@ -1,0 +1,64 @@
+.track {
+  height: 6px;
+  overflow: hidden;
+  border: 2px solid #0a0c0b;
+  border-radius: 0.25rem;
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 2px 2px 0 0 #0a0c0b;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  width: 38%;
+  border-radius: inherit;
+  background: var(--accent-orb);
+  animation: slide 1.15s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-20%);
+  }
+
+  50% {
+    transform: translateX(160%);
+  }
+
+  100% {
+    transform: translateX(-20%);
+  }
+}
+
+@keyframes rise-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  animation: rise-fade 0.4s both;
+}
+
+.panel {
+  animation: rise-fade 0.45s 0.08s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .header,
+  .panel {
+    animation: none !important;
+  }
+
+  .fill {
+    width: 70%;
+    transform: none;
+  }
+}

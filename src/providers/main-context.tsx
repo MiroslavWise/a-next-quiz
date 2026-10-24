@@ -18,6 +18,7 @@ import { postCheckDataUser } from "@/api/check-data-user"
 import { useSyncElementTheme } from "@/hooks/use-sync-element-theme"
 import { dispatchUpdateInfo, useUpdateInfo } from "@/stores/update-info"
 import { dispatchAuth, dispatchUnauthenticated, useAuth } from "@/stores/auth"
+import HomeJoinOverlay from "@/views/home/HomeJoinOverlay"
 
 const GlobalVerificationMainContext = ({ children }: PropsWithChildren) => {
   useSyncElementTheme()
@@ -83,33 +84,20 @@ const GlobalVerificationMainContext = ({ children }: PropsWithChildren) => {
   }, [])
 
   if (status === AuthStatus.PENDING) {
-    return (
-      <section
-        className="flex min-h-dvh w-full flex-col items-center justify-center gap-3 px-4 text-center"
-        role="status"
-        aria-live="polite"
-      >
-        <p className="glass-start-meta">вход</p>
-        <h2 className="text-xl font-semibold tracking-tight text-balance text-white sm:text-2xl">Проверяем доступ</h2>
-        <span className="relative mt-2 flex size-11 items-center justify-center" aria-hidden>
-          <span className="absolute inset-0 animate-ping rounded-full bg-(--accent-orb)/30" />
-          <span className="absolute inset-1 animate-spin rounded-full border-2 border-transparent border-t-(--accent-orb) border-r-(--accent-orb)/45" />
-          <span className="size-1.5 rounded-full bg-(--accent-orb) shadow-[0_0_12px_color-mix(in_srgb,var(--accent-orb)_80%,transparent)]" />
-        </span>
-      </section>
-    )
+    return <HomeJoinOverlay caption="вход" title="Проверяем доступ" />
   }
 
   if (status === AuthStatus.UNAUTHENTICATED) {
     return (
       <section className="bg-background flex min-h-dvh w-full items-center justify-center px-4">
-        <div className="border-border bg-card flex w-full max-w-sm flex-col gap-4 rounded-2xl border p-6 text-left">
-          <h2 className="text-foreground text-base font-semibold tracking-tight">Вы не авторизованы</h2>
-          <p className="text-muted-foreground text-xs">Откройте мини‑приложение из Telegram или выполните вход, чтобы продолжить.</p>
+        <div className="game-liquid flex w-full max-w-sm flex-col gap-4 rounded-lg p-6 text-left">
+          <p className="game-meta">доступ</p>
+          <h2 className="text-base font-bold tracking-tight text-white">Вы не авторизованы</h2>
+          <p className="text-xs text-white/65">Откройте мини‑приложение из Telegram или выполните вход, чтобы продолжить.</p>
           <Button
             type="button"
             size="sm"
-            className="inline-flex items-center gap-1.5"
+            className="game-btn-primary inline-flex h-11 items-center gap-1.5 rounded-lg font-bold"
             disabled={loading}
             onClick={async () => {
               if (loading) return
