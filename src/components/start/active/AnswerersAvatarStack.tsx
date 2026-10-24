@@ -59,8 +59,8 @@ function AnswererRow({ entry, viewerTgId }: { entry: IAnswerUserEntry; viewerTgI
           </div>
           <span
             className={cn(
-              "inline-flex shrink-0 items-center gap-0.5 rounded-md border px-1.5 py-0.5 text-[0.65rem] font-semibold tabular-nums",
-              negativeScore ? "border-rose-400/35 bg-rose-500/15 text-rose-100" : "border-white/15 bg-white/8 text-white/90",
+              "inline-flex shrink-0 items-center gap-0.5 rounded-md border-2 border-black/70 px-1.5 py-0.5 text-[0.65rem] font-bold tabular-nums shadow-[2px_2px_0_0_#0a0c0b]",
+              negativeScore ? "bg-rose-500/20 text-rose-100" : "bg-white/10 text-white/90",
             )}
             title={`Очки за вопрос: ${formatQuizPoints(score)}`}
           >
@@ -135,7 +135,7 @@ export function AnswerersAvatarStack({
           setExpanded(!expanded)
         }}
         className={cn(
-          "flex max-w-full items-center rounded-full border-2 py-0.5 pr-1.5 pl-0.5 transition-colors",
+          "flex max-w-full items-center rounded-md border-2 py-0.5 pr-1.5 pl-0.5 transition-[transform,box-shadow]",
           "focus-visible:outline-none",
           toneClass,
         )}
@@ -178,7 +178,7 @@ export function AnswerersAvatarStack({
       {expanded ? (
         <ul
           role="list"
-          className="mt-1.5 w-full min-w-[16rem] max-w-md space-y-0.5 overflow-y-auto overscroll-contain rounded-lg border border-white/12 bg-black/50 p-1.5 backdrop-blur-sm [-webkit-overflow-scrolling:touch]"
+          className="mt-1.5 w-full min-w-[16rem] max-w-md space-y-0.5 overflow-y-auto overscroll-contain rounded-md border-2 border-black/80 bg-black/70 p-1.5 shadow-[4px_4px_0_0_#0a0c0b] [-webkit-overflow-scrolling:touch]"
         >
           {users.map((entry) => (
             <AnswererRow key={entry.telegram_id} entry={entry} viewerTgId={viewerTgId} />

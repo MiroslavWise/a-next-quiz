@@ -26,7 +26,7 @@ export function ElementEffectChip({
   const size =
     resolvedVariant === "strip"
       ? {
-          chip: "rounded-full px-2.5 py-1",
+          chip: "rounded-md px-2.5 py-1 shadow-[2px_2px_0_0_#0a0c0b]",
           title: "text-[0.7rem]",
           icon: "size-2.5",
           pickaxe: "size-3",
@@ -53,14 +53,12 @@ export function ElementEffectChip({
         className,
       )}
       style={{
-        borderWidth: 1,
+        borderWidth: 2,
         borderStyle: "solid",
-        borderColor: isPenalty
-          ? "rgb(248 113 113 / 0.45)"
-          : `${visual.accentColor}55`,
+        borderColor: isPenalty ? "color-mix(in srgb, var(--unfaithful) 70%, #0a0c0b)" : visual.accentColor,
         backgroundColor: isPenalty
-          ? "rgb(239 68 68 / 0.12)"
-          : `${visual.accentColor}16`,
+          ? "rgb(239 68 68 / 0.14)"
+          : `${visual.accentColor}18`,
       }}
       title={effect.title}
     >
@@ -74,7 +72,7 @@ export function ElementEffectChip({
           />
         ) : (
           <span
-            className="size-full rounded-full shadow-[0_0_6px_currentColor]"
+            className="size-full rounded-sm"
             style={{
               backgroundColor: visual.accentColor,
               color: visual.accentColor,

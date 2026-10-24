@@ -28,10 +28,10 @@ export function ActiveChartsSkeleton() {
   return (
     <div className="glass-start-liquid-palette w-full rounded-xl px-4 py-3.5" aria-hidden>
       <div className="flex flex-col gap-3">
-        <Skeleton className="h-3 w-full rounded-full bg-white/10" />
-        <Skeleton className="h-4 w-full rounded-md bg-white/10" />
-        <Skeleton className="h-4 w-full rounded-md bg-white/10" />
-        <Skeleton className="h-4 w-3/4 rounded-md bg-white/10" />
+        <Skeleton className="h-3.5 w-full rounded-md border-2 border-black/50 bg-white/10" />
+        <Skeleton className="h-8 w-full rounded-md border-2 border-black/40 bg-white/10" />
+        <Skeleton className="h-8 w-full rounded-md border-2 border-black/40 bg-white/10" />
+        <Skeleton className="h-8 w-3/4 rounded-md border-2 border-black/40 bg-white/10" />
       </div>
     </div>
   )

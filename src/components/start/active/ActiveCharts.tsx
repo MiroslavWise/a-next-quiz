@@ -18,10 +18,25 @@ interface IProps {
 
 type Outcome = "right" | "wrong" | "skip"
 
-const ROWS: { id: Outcome; label: string; dotClass: string }[] = [
-  { id: "right", label: "Верно", dotClass: "bg-(--faithful)" },
-  { id: "wrong", label: "Неверно", dotClass: "bg-(--unfaithful)" },
-  { id: "skip", label: "Пропуск", dotClass: "bg-white/35" },
+const ROWS: { id: Outcome; label: string; rowClass: string; activeClass: string }[] = [
+  {
+    id: "right",
+    label: "Верно",
+    rowClass: "border-faithful/70 bg-(--faithful)/12 shadow-[3px_3px_0_0_color-mix(in_srgb,var(--faithful)_45%,#0a0c0b)]",
+    activeClass: "border-faithful bg-(--faithful)/22",
+  },
+  {
+    id: "wrong",
+    label: "Неверно",
+    rowClass: "border-(--unfaithful)/70 bg-(--unfaithful)/12 shadow-[3px_3px_0_0_color-mix(in_srgb,var(--unfaithful)_45%,#0a0c0b)]",
+    activeClass: "border-(--unfaithful) bg-(--unfaithful)/22",
+  },
+  {
+    id: "skip",
+    label: "Пропуск",
+    rowClass: "border-white/35 bg-white/8 shadow-[3px_3px_0_0_#0a0c0b]",
+    activeClass: "border-white/55 bg-white/14",
+  },
 ]
 
 function bucketCount(data: { count?: number } | undefined) {
@@ -104,13 +119,13 @@ function ActiveCharts({ reportId, tgId, index, highlightOwn = false }: IProps) {
         <ActiveChartsBodySkeleton />
       ) : empty ? (
         <div className="flex flex-col gap-2">
-          <div className="h-3 w-full rounded-full bg-white/15" />
-          <p className="text-sm text-white/60">Никто не в зале</p>
+          <div className="h-3 w-full rounded-md border-2 border-black/70 bg-black/35 shadow-[2px_2px_0_0_#0a0c0b]" />
+          <p className="text-sm font-medium text-white/60">Никто не в зале</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
           <div
-            className="flex h-3 w-full overflow-hidden rounded-full bg-white/10"
+            className="flex h-3.5 w-full overflow-hidden rounded-md border-2 border-black/80 bg-black/35 shadow-[3px_3px_0_0_#0a0c0b]"
             role="img"
             aria-label={`Верно ${right}, неверно ${wrong}, пропуск ${skip}`}
           >
@@ -122,20 +137,20 @@ function ActiveCharts({ reportId, tgId, index, highlightOwn = false }: IProps) {
               />
             ))}
           </div>
-          <ul className="flex flex-col gap-1.5">
+          <ul className="flex flex-col gap-2">
             {ROWS.map((row) => {
               const active = mine === row.id
               return (
                 <li
                   key={row.id}
                   className={cn(
-                    "flex items-center gap-2 text-sm",
-                    active ? "font-medium text-white" : "text-white/65",
+                    "flex items-center gap-2 rounded-md border-2 px-2.5 py-1.5 text-sm font-semibold",
+                    row.rowClass,
+                    active ? cn(row.activeClass, "text-white") : "text-white/80",
                   )}
                 >
-                  <span className={cn("size-2 shrink-0 rounded-full", row.dotClass)} aria-hidden />
                   <span>{row.label}</span>
-                  <span className="ml-auto tabular-nums">
+                  <span className="ml-auto font-mono text-xs tabular-nums sm:text-sm">
                     {counts[row.id]} ({percents[row.id]}%)
                   </span>
                 </li>
@@ -151,11 +166,11 @@ function ActiveCharts({ reportId, tgId, index, highlightOwn = false }: IProps) {
 function ActiveChartsBodySkeleton() {
   return (
     <div className="flex flex-col gap-3" aria-hidden>
-      <Skeleton className="h-3 w-full rounded-full bg-white/10" />
+      <Skeleton className="h-3.5 w-full rounded-md border-2 border-black/50 bg-white/10" />
       <div className="flex flex-col gap-2">
-        <Skeleton className="h-4 w-full rounded-md bg-white/10" />
-        <Skeleton className="h-4 w-full rounded-md bg-white/10" />
-        <Skeleton className="h-4 w-3/4 rounded-md bg-white/10" />
+        <Skeleton className="h-8 w-full rounded-md border-2 border-black/40 bg-white/10" />
+        <Skeleton className="h-8 w-full rounded-md border-2 border-black/40 bg-white/10" />
+        <Skeleton className="h-8 w-3/4 rounded-md border-2 border-black/40 bg-white/10" />
       </div>
     </div>
   )

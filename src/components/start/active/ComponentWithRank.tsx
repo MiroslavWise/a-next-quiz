@@ -242,24 +242,20 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
       ) : null}
 
       {data.team_effects?.length ? (
-        <div className={cn(rankOutcomeBlockClass, "mt-3 overflow-hidden border-white/12 bg-black/25")} role="status" aria-live="polite">
+        <div className="mt-3" role="status" aria-live="polite">
           <ElementEffectsList effects={data.team_effects} variant="strip" />
         </div>
       ) : null}
 
       {endElementEffects?.length ? (
-        <div className={cn(rankOutcomeBlockClass, "mt-3 overflow-hidden border-white/12 bg-black/25")} role="status" aria-live="polite">
+        <div className="mt-3" role="status" aria-live="polite">
           <ElementEffectsList effects={endElementEffects} variant="strip" />
         </div>
       ) : null}
 
       {endSkillEffects?.length ? (
-        <div
-          className={cn(rankOutcomeBlockClass, "mt-3 overflow-hidden border-(--accent-orb)/25 bg-(--accent-orb)/8")}
-          role="status"
-          aria-live="polite"
-        >
-          <p className="mb-1.5 text-[0.6rem] font-semibold tracking-[0.14em] text-white/50 uppercase">Способности</p>
+        <div className="mt-3" role="status" aria-live="polite">
+          <p className="mb-1.5 text-[0.6rem] font-bold tracking-[0.14em] text-white/50 uppercase">Способности</p>
           <ElementEffectsList effects={endSkillEffects} variant="strip" />
         </div>
       ) : null}

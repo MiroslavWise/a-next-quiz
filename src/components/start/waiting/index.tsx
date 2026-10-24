@@ -199,7 +199,7 @@ function StatusWaiting(props: IProps) {
         <p className="glass-start-meta" role="status">
           {WAITING_STATUS_LABEL}
         </p>
-        <header className={cn("glass-start-liquid-palette relative shrink-0 rounded-2xl p-3.5 sm:p-4", styles.header)}>
+        <header className={cn("glass-start-liquid-palette relative shrink-0 rounded-xl p-3.5 sm:p-4", styles.header)}>
           <span className={styles.headerScan} aria-hidden />
           <span className={styles.headerSliceA} aria-hidden />
           <span className={styles.headerSliceB} aria-hidden />
@@ -209,27 +209,30 @@ function StatusWaiting(props: IProps) {
                 <SessionCodeCopyButton
                   code={code}
                   textToCopy={url}
-                  className={cn(waitingToolbarBtn, "gap-1 px-2 font-mono text-[0.68rem] tracking-[0.28em] tabular-nums")}
+                  className={cn(
+                    waitingToolbarBtn,
+                    "h-8 gap-1.5 px-2.5 font-mono text-[0.7rem] font-bold tracking-[0.28em] tabular-nums",
+                  )}
                 />
                 <button
                   type="button"
                   onClick={() => setIsQrCodeOpen(true)}
-                  className={waitingToolbarIconBtn}
+                  className={cn(waitingToolbarIconBtn, "h-8 w-8")}
                   aria-label="Показать QR-код на весь экран"
                   title="Показать QR-код на весь экран"
                 >
-                  <QrCode className="size-3.5 text-white/65" aria-hidden />
+                  <QrCode className="size-3.5 text-white/80" aria-hidden />
                 </button>
               </div>
             ) : null}
             {coverUrl ? (
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start sm:gap-4">
-                <div className="relative aspect-square w-full max-w-28 shrink-0 overflow-hidden rounded-xl border border-(--accent-orb)/40 bg-white/6 sm:w-28 sm:max-w-none">
+                <div className="relative aspect-square w-full max-w-28 shrink-0 overflow-hidden rounded-md border-2 border-black/80 bg-white/6 shadow-[4px_4px_0_0_#0a0c0b] sm:w-28 sm:max-w-none">
                   <Image src={coverUrl} alt="" fill sizes="7rem" className="object-cover" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1.5 text-center sm:text-left">
                   <h2
-                    className={cn("text-2xl font-semibold tracking-tight text-balance sm:text-[1.85rem]", styles.quizTitle)}
+                    className={cn("text-2xl font-bold tracking-tight text-balance sm:text-[1.85rem]", styles.quizTitle)}
                     data-text={name ?? ""}
                   >
                     {name}
@@ -244,7 +247,7 @@ function StatusWaiting(props: IProps) {
             ) : (
               <>
                 <h2
-                  className={cn("text-2xl font-semibold tracking-tight text-balance sm:text-[1.85rem]", styles.quizTitle)}
+                  className={cn("text-2xl font-bold tracking-tight text-balance sm:text-[1.85rem]", styles.quizTitle)}
                   data-text={name ?? ""}
                 >
                   {name}
@@ -270,7 +273,7 @@ function StatusWaiting(props: IProps) {
               </Suspense>
             )}
             <section
-              className="glass-start-liquid-palette flex min-w-0 w-full flex-row items-center justify-between gap-1.5 overflow-hidden rounded-2xl p-2.5 sm:p-3"
+              className="glass-start-liquid-palette flex min-w-0 w-full flex-row items-center justify-between gap-1.5 overflow-hidden rounded-xl p-2.5 sm:p-3"
               aria-label={meInUsers ? "Ваш профиль в игре" : "Ваш профиль наблюдателя"}
             >
                 <button
@@ -279,9 +282,9 @@ function StatusWaiting(props: IProps) {
                   title="Изменить профиль"
                   aria-label="Изменить профиль"
                   className={cn(
-                    "flex min-w-0 flex-1 items-center gap-2.5 rounded-lg text-left sm:gap-3",
+                    "flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-left sm:gap-3",
                     "cursor-pointer transition-colors hover:bg-white/6",
-                    "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/40",
+                    "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)/70",
                   )}
                 >
                   <UserAvatar
@@ -291,19 +294,22 @@ function StatusWaiting(props: IProps) {
                     pseudo={myDisplayName}
                     photoUrl={me?.photo_url}
                     element={me?.element}
-                    className={cn(meInUsers ? "border-(--accent-orb)/40" : "border-white/25")}
+                    className={cn(
+                      "border-2 shadow-[3px_3px_0_0_#0a0c0b]",
+                      meInUsers ? "border-(--accent-orb)" : "border-white/40",
+                    )}
                   />
                   <div className="min-w-0 flex-1 space-y-0.5">
                     <div className="flex min-w-0 items-baseline gap-2">
-                      <p className="min-w-0 truncate text-sm font-semibold tracking-tight text-white sm:text-base">{myDisplayName}</p>
+                      <p className="min-w-0 truncate text-sm font-bold tracking-tight text-white sm:text-base">{myDisplayName}</p>
                       {isAdminManager ? (
                         <span
                           title={meInUsers ? "Участвуете как игрок" : "Режим наблюдателя, ответы не отправляются"}
                           className={cn(
-                            "shrink-0 rounded border px-1 py-px text-[0.6rem] leading-none font-semibold tracking-wide uppercase",
+                            "shrink-0 rounded-md border-2 border-black/70 px-1.5 py-px text-[0.6rem] leading-none font-bold tracking-wide uppercase shadow-[2px_2px_0_0_#0a0c0b]",
                             meInUsers
-                              ? "border-(--accent-orb)/40 bg-(--accent-orb)/12 text-(--accent-orb)"
-                              : "border-white/20 bg-white/8 text-white/70",
+                              ? "bg-(--accent-orb)/18 text-(--accent-orb)"
+                              : "bg-white/8 text-white/70",
                           )}
                         >
                           {meInUsers ? "Игрок" : "Наблюдатель"}

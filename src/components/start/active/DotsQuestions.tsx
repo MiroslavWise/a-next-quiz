@@ -5,9 +5,9 @@ import { EReportMyPassedQuestionsResult, type IReportMyPassedQuestions } from "@
 import { useElementThemeSession } from "@/stores/element-theme-session"
 
 const RESULT_DOT_CLASS: Record<EReportMyPassedQuestionsResult, string> = {
-  [EReportMyPassedQuestionsResult.CORRECT]: "bg-(--faithful) outline outline-2 outline-black/80",
-  [EReportMyPassedQuestionsResult.WRONG]: "bg-(--unfaithful) outline outline-2 outline-black/80",
-  [EReportMyPassedQuestionsResult.SKIPPED]: "bg-slate-400 outline outline-2 outline-black/50",
+  [EReportMyPassedQuestionsResult.CORRECT]: "bg-(--faithful)",
+  [EReportMyPassedQuestionsResult.WRONG]: "bg-(--unfaithful)",
+  [EReportMyPassedQuestionsResult.SKIPPED]: "bg-slate-400",
 }
 
 export interface IDotsQuestionsProps {
@@ -42,10 +42,7 @@ function DotsQuestions({ activeIndex, totalQuestions, myPassedQuestions, showRes
     const isPassed = questionNumber < currentQuestion
     const passedResult = resultByIndex.get(index)
     const resultClass = passedResult ? RESULT_DOT_CLASS[passedResult] : undefined
-    const currentFallback =
-      anchored || isGameAvatar
-        ? "bg-white outline outline-2 outline-black/80"
-        : "bg-(--accent-orb) outline outline-2 outline-black/80"
+    const currentFallback = anchored || isGameAvatar ? "bg-white" : "bg-(--accent-orb)"
 
     return (
       <span
@@ -75,12 +72,12 @@ function DotsQuestions({ activeIndex, totalQuestions, myPassedQuestions, showRes
   if (anchored) {
     return (
       <div
-        className="absolute top-0 left-1/2 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-md bg-background p-0.5 shadow-[3px_3px_0_0_#0a0c0b]"
+        className="absolute top-0 left-1/2 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background p-0.5"
         aria-label={`Вопрос ${currentQuestion} из ${safeTotalQuestions}`}
       >
         <div
           className={cn(
-            "flex max-w-full flex-row flex-nowrap items-center justify-center gap-1.5 rounded-md border-2 border-black/80 px-2 py-1",
+            "flex max-w-full flex-row flex-nowrap items-center justify-center gap-1.5 rounded-full border-2 border-black/80 px-2.5 py-1",
             isGameAvatar ? "bg-white/20" : "bg-(--accent-orb)/90",
           )}
         >
