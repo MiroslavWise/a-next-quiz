@@ -55,7 +55,7 @@ function getRankMessage() {
 const rankOutcomeChipClass =
   "inline-flex shrink-0 items-center gap-1 rounded-md border px-1.5 py-0.5 text-[0.6rem] font-semibold leading-none"
 
-const rankOutcomeBlockClass = "mb-3 rounded-xl border px-3.5 py-2.5"
+const rankOutcomeBlockClass = "mb-3 rounded-lg border px-3.5 py-2.5"
 
 const STREAK_RING_RADIUS = 28
 const STREAK_RING_CIRCUMFERENCE = 2 * Math.PI * STREAK_RING_RADIUS
@@ -150,7 +150,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
   const partnerName = partner?.pseudo?.trim() || (partnerId ? `Участник ${partnerId}` : "")
 
   if (isFetching && !data) {
-    return <div className="glass-start-liquid-palette h-24 w-full animate-pulse rounded-xl xl:h-28" />
+    return <div className="glass-start-liquid-palette h-24 w-full animate-pulse rounded-lg xl:h-28" />
   }
 
   if (!data) return null
@@ -159,7 +159,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
   const hasNegativeTotal = !isTopThree && isNegativeQuizPoints(totalPoints)
 
   return (
-    <section className="glass-start-liquid-palette relative w-full rounded-xl px-4 py-3.5 sm:px-5 sm:py-4 xl:px-7 xl:py-5">
+    <section className="glass-start-liquid-palette relative w-full rounded-lg px-4 py-3.5 sm:px-5 sm:py-4 xl:px-7 xl:py-5">
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0 space-y-1">
           {isTopThree ? (
@@ -173,7 +173,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
           ) : (
               <div className="flex items-center gap-3">
                 <div
-                  className="grid size-12 shrink-0 place-items-center rounded-xl border-2 border-black/70 bg-(--accent-orb)/10 shadow-[3px_3px_0_0_#0a0c0b]"
+                  className="grid size-12 shrink-0 place-items-center rounded-lg border-2 border-black/70 bg-(--accent-orb)/10 shadow-[3px_3px_0_0_#0a0c0b]"
                   title={rank != null && rank > 0 ? `Ваше место: ${rank}` : "Место пока не определено"}
                 >
                   <div className="text-center leading-none">
@@ -200,7 +200,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
       </div>
 
       {hasNegativeTotal ? (
-        <div className="mt-3 rounded-xl border border-rose-400/35 bg-rose-500/10 px-3.5 py-2.5" role="status" aria-live="polite">
+        <div className="mt-3 rounded-lg border border-rose-400/35 bg-rose-500/10 px-3.5 py-2.5" role="status" aria-live="polite">
           <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
             <span className="text-[0.65rem] font-semibold tracking-[0.12em] text-white/50 uppercase xl:text-xs">Сумма очков</span>
             <span className={cn("inline-flex items-center gap-1 text-sm font-bold tabular-nums xl:text-base", quizPointsToneClass(totalPoints))}>

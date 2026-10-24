@@ -114,7 +114,7 @@ function DataPointsLeader({
       role="presentation"
     >
       <section
-        className="glass-start-liquid-palette flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl p-2 md:p-3"
+        className="glass-start-liquid-palette flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border-2 border-black/80 p-2 shadow-[6px_6px_0_0_#0a0c0b] md:p-3"
         role="region"
         aria-labelledby="data-points-leader-title"
         onKeyDown={(e) => e.stopPropagation()}
@@ -175,7 +175,7 @@ function DataPointsLeader({
                 )
               })}
               {!sortedData.length ? (
-                <li className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/65">Нет участников</li>
+                <li className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/65">Нет участников</li>
               ) : null}
               <li className="spacer-bottom-next hidden md:block" aria-hidden />
             </ul>

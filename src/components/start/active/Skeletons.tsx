@@ -26,7 +26,7 @@ export function LeaderNextQuestionFooterSkeleton() {
 
 export function ActiveChartsSkeleton() {
   return (
-    <div className="glass-start-liquid-palette w-full rounded-xl px-4 py-3.5" aria-hidden>
+    <div className="glass-start-liquid-palette w-full rounded-lg px-4 py-3.5" aria-hidden>
       <div className="flex flex-col gap-3">
         <Skeleton className="h-3.5 w-full rounded-md border-2 border-black/50 bg-white/10" />
         <Skeleton className="h-8 w-full rounded-md border-2 border-black/40 bg-white/10" />
@@ -39,7 +39,7 @@ export function ActiveChartsSkeleton() {
 
 export function WithRankSkeleton() {
   return (
-    <div className="glass-start-liquid-palette flex min-h-46 w-full flex-col items-center justify-center gap-4 rounded-xl px-4 py-5 text-center sm:min-h-52 sm:px-5 xl:min-h-58 xl:px-6">
+    <div className="glass-start-liquid-palette flex min-h-46 w-full flex-col items-center justify-center gap-4 rounded-lg px-4 py-5 text-center sm:min-h-52 sm:px-5 xl:min-h-58 xl:px-6">
       <Skeleton className="size-16 rounded-md bg-white/12 sm:size-18 xl:size-20" />
       <div className="flex w-full max-w-sm flex-col items-center gap-2">
         <Skeleton className="h-5 w-40 rounded-md bg-white/12" />
@@ -59,11 +59,11 @@ export function DefaultActiveSkeleton() {
           <Skeleton key={i} className="size-2 rounded-full bg-white/10" />
         ))}
       </div>
-      <Skeleton className="h-20 w-full rounded-xl border border-white/10 bg-white/8" />
+      <Skeleton className="h-20 w-full rounded-lg border border-white/10 bg-white/8" />
       <ul className="flex w-full flex-col gap-2">
         {Array.from({ length: 4 }).map((_, i) => (
           <li key={i} className="w-full">
-            <Skeleton className="h-13 w-full rounded-xl border border-white/10 bg-white/8 sm:h-14" />
+            <Skeleton className="h-13 w-full rounded-lg border border-white/10 bg-white/8 sm:h-14" />
           </li>
         ))}
       </ul>

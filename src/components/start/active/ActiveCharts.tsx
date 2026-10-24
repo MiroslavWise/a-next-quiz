@@ -114,7 +114,7 @@ function ActiveCharts({ reportId, tgId, index, highlightOwn = false }: IProps) {
   ).filter((segment) => segment.count > 0)
 
   return (
-    <div className="glass-start-liquid-palette w-full rounded-xl px-4 py-3.5">
+    <div className="glass-start-liquid-palette w-full rounded-lg px-4 py-3.5">
       {isLoading ? (
         <ActiveChartsBodySkeleton />
       ) : empty ? (

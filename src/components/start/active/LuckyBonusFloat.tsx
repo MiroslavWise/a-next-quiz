@@ -25,7 +25,7 @@ function LuckyBonusFloatCard({ burst, viewerTgId }: LuckyBonusFloatCardProps) {
   return (
     <div
       className={cn(
-        "pointer-events-none w-[min(14rem,calc(100vw-2rem))] overflow-hidden rounded-xl border px-3 py-2 shadow-[0_8px_28px_rgba(0,0,0,0.34)] backdrop-blur-md",
+        "pointer-events-none w-[min(14rem,calc(100vw-2rem))] overflow-hidden rounded-lg border-2 border-black/80 px-3 py-2 shadow-[4px_4px_0_0_#0a0c0b]",
         itsMe
           ? "border-amber-200/55 bg-linear-to-r from-amber-500/40 via-yellow-500/22 to-amber-400/28"
           : "border-amber-300/42 bg-linear-to-r from-amber-500/28 via-yellow-500/14 to-amber-400/20",

@@ -138,8 +138,8 @@ function StatusStart({ refetch, questionCount, quizName }: StatusStartProps) {
                 style={{ "--slot": index } as CSSProperties}
               >
                 <div className="flex h-5 items-center justify-between">
-                  <span className="text-[0.65rem] font-medium tracking-[0.2em] text-white/55">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="size-1.5 rounded-full bg-(--accent-orb)" />
+                  <span className="text-[0.65rem] font-bold tracking-[0.2em] text-white/55 uppercase">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="size-1.5 rounded-sm border border-black/70 bg-(--accent-orb) shadow-[1px_1px_0_0_#0a0c0b]" />
                 </div>
                 <div className={styles.bars}>
                   <span className={styles.bar} style={{ width: widths[0] }} />
@@ -150,8 +150,8 @@ function StatusStart({ refetch, questionCount, quizName }: StatusStartProps) {
           </div>
         </div>
 
-        <section className={cn(styles.panel, "glass-start-liquid-palette rounded-xl px-4 py-3.5")}>
-          <p className="text-[0.65rem] font-medium tracking-[0.18em] text-white/45 uppercase">{total > 0 ? "в колоде" : "колода"}</p>
+        <section className={cn(styles.panel, "glass-start-liquid-palette rounded-lg px-4 py-3.5")}>
+          <p className="text-[0.65rem] font-bold tracking-[0.18em] text-white/45 uppercase">{total > 0 ? "в колоде" : "колода"}</p>
           {total > 0 ? (
             <p className="mt-1 font-semibold tracking-tight text-white tabular-nums">
               <span className={cn(styles.liveCount, "text-2xl")}>{shown}</span>

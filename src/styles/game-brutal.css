@@ -5,7 +5,7 @@
 
 :root {
   --game-brutal-ink: #0a0c0b;
-  --game-brutal-radius: 0.75rem;
+  --game-brutal-radius: 0.5rem;
   --game-brutal-border: 2px solid
     color-mix(in srgb, var(--accent-orb) 55%, var(--game-brutal-ink) 45%);
   --game-brutal-shadow: 4px 4px 0 0 var(--game-brutal-ink);

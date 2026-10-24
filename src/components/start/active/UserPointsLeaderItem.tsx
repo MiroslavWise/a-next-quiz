@@ -59,7 +59,7 @@ function UserPointsLeaderItem({
 
   if (isLoading) {
     return (
-      <li data-flip-id={String(telegram_id)} className="glass-start-slab flex flex-col gap-1 rounded-xl px-2 py-1.5">
+      <li data-flip-id={String(telegram_id)} className="glass-start-slab flex flex-col gap-1 rounded-lg px-2 py-1.5">
         <div className="flex items-center gap-1.5">
           <Skeleton className="size-7 rounded-md" />
           <Skeleton className="h-3 w-24 rounded-md" />
@@ -84,7 +84,7 @@ function UserPointsLeaderItem({
       data-flip-id={String(telegram_id)}
       title={isGameAvatar ? "Аватар игры" : undefined}
       className={cn(
-        "glass-start-slab relative flex flex-col gap-1 rounded-xl px-2 py-1.5",
+        "glass-start-slab relative flex flex-col gap-1 rounded-lg px-2 py-1.5",
         isPrizePlace && "border-2 border-amber-400/70 bg-amber-500/12 shadow-[4px_4px_0_0_#78350f]",
         isGameAvatar && !isPrizePlace && "border-2 border-white/70 bg-white/12 shadow-[4px_4px_0_0_#e5e5e5]",
         isGameAvatar && isPrizePlace && "border-white/80",

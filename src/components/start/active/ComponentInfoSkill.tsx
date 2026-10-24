@@ -284,7 +284,7 @@ function ComponentInfoSkill() {
                 !questionId ||
                 !canAfford
               }
-              className="glass-start-btn-primary-palette mt-1 h-11 w-full rounded-xl font-bold text-white hover:bg-transparent"
+              className="glass-start-btn-primary-palette mt-1 h-11 w-full rounded-lg font-bold text-white hover:bg-transparent"
             >
               {activationPending ? <Loader2 className="animate-spin" aria-hidden /> : null}
               {selectedStatus === "active"

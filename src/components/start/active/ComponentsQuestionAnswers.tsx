@@ -11,7 +11,7 @@ import { type IAnswer } from "@/interface/answer"
 import { getReportsAnswersCorrectCounts, type IAnswerUserEntry, type IReportQuestionAnswerCounts } from "@/api/reports"
 
 const answerOptionGlassBase =
-  "glass-start-slab w-full rounded-xl px-3.5 py-3 text-sm font-semibold sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
+  "glass-start-slab w-full rounded-lg px-3.5 py-3 text-sm font-semibold sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
 
 function leaderAnswerEndTintClass(isCorrect: boolean) {
   return isCorrect ? "glass-start-slab-faithful text-white" : "glass-start-slab-muted"
@@ -145,7 +145,7 @@ function AnswerOptionsList({
           {Array.from({ length: 4 }).map((_, i) => (
             <li
               key={i}
-              className="glass-start-slab relative w-full rounded-xl px-3.5 py-3 text-sm font-medium text-transparent opacity-90 sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
+              className="glass-start-slab relative w-full rounded-lg px-3.5 py-3 text-sm font-medium text-transparent opacity-90 sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
               aria-hidden
             >
               --||--

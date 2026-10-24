@@ -53,10 +53,10 @@
   height: var(--card-h);
   overflow: hidden;
   border: 2px solid color-mix(in srgb, var(--accent-orb) 55%, #0a0c0b 45%);
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   background:
     linear-gradient(165deg, color-mix(in srgb, var(--accent-orb) 14%, transparent) 0%, transparent 42%),
-    color-mix(in srgb, var(--element-deep, #10141c) 82%, #07090d);
+    color-mix(in srgb, var(--element-surface, #121418) 70%, var(--element-deep, #10141c) 30%);
   box-shadow: 4px 4px 0 0 #0a0c0b;
   opacity: 0;
   animation-name: rise;
@@ -85,21 +85,16 @@
 .bar {
   display: block;
   height: 0.42rem;
-  border-radius: 999px;
-  background-image: linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0.08) 18%,
-    rgba(255, 255, 255, 0.32) 48%,
-    rgba(255, 255, 255, 0.08) 78%
-  );
-  background-size: 220% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
+  border: 1px solid #0a0c0b;
+  border-radius: 0.25rem;
+  background-color: color-mix(in srgb, var(--accent-orb) 35%, transparent);
+  box-shadow: 1px 1px 0 0 #0a0c0b;
+  animation: shimmer-brutal 1.5s ease-in-out infinite;
 }
 
 .settled .bar {
   animation: none;
-  background-color: rgba(255, 255, 255, 0.16);
-  background-image: none;
+  background-color: color-mix(in srgb, var(--accent-orb) 55%, transparent);
 }
 
 .panel {
@@ -179,23 +174,23 @@
 @keyframes pulse {
   0%,
   100% {
-    box-shadow: 0 0 18px color-mix(in srgb, var(--accent-orb) 16%, transparent);
+    box-shadow: 4px 4px 0 0 #0a0c0b;
   }
 
   50% {
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--accent-orb) 70%, transparent),
-      0 0 28px color-mix(in srgb, var(--accent-orb) 62%, transparent);
+    box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--accent-orb) 55%, #0a0c0b);
+    border-color: color-mix(in srgb, var(--accent-orb) 85%, white);
   }
 }
 
-@keyframes shimmer {
-  from {
-    background-position: 120% 0;
+@keyframes shimmer-brutal {
+  0%,
+  100% {
+    background-color: color-mix(in srgb, var(--accent-orb) 28%, transparent);
   }
 
-  to {
-    background-position: -120% 0;
+  50% {
+    background-color: color-mix(in srgb, var(--accent-orb) 58%, transparent);
   }
 }
 
@@ -243,8 +238,7 @@
   }
 
   .bar {
-    background-color: rgba(255, 255, 255, 0.16);
-    background-image: none;
+    background-color: color-mix(in srgb, var(--accent-orb) 45%, transparent);
   }
 
   .fill {

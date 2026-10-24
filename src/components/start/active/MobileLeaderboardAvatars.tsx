@@ -88,7 +88,7 @@ function MobileLeaderboardAvatars({ reportId, tgId, lastByType, prizes, onOpen, 
       type="button"
       onClick={onOpen}
       className={cn(
-        "top-button-fixed fixed right-0 z-50 flex flex-col items-end rounded-l-3xl bg-(--accent-orb) p-1.5 transition-[opacity,transform] duration-300 ease-out md:hidden",
+        "top-button-fixed fixed right-0 z-50 flex flex-col items-end rounded-l-md border-2 border-r-0 border-black/80 bg-(--accent-orb) p-1.5 shadow-[-4px_4px_0_0_#0a0c0b] transition-[opacity,transform] duration-300 ease-out md:hidden",
         showDataPointsLeader ? "pointer-events-none translate-x-full opacity-0" : "translate-x-0 opacity-100",
       )}
       aria-label="Открыть таблицу лидеров"
