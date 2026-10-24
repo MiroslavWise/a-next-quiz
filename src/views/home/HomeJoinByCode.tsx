@@ -118,39 +118,47 @@ export default function HomeJoinByCode() {
     void run()
   }, [rawStartParam, tgId, authStatus, isOpen, claims?.is_admin, claims?.is_manager, authUser?.pseudo, authUser?.avatar])
 
+  const otpSlotClass =
+    "size-9 rounded-md border-2 border-black/80 bg-black/40 text-sm font-bold shadow-[3px_3px_0_0_#0a0c0b] first:rounded-md first:border-l-2 last:rounded-md data-[active=true]:border-(--accent-orb) data-[active=true]:ring-0 data-[active=true]:shadow-[3px_3px_0_0_color-mix(in_srgb,var(--accent-orb)_55%,#0a0c0b)]"
+
   return (
-    <div className="border-border bg-card mt-auto flex flex-col items-center justify-center rounded-3xl border px-4 py-6 sm:px-6">
-      <p className="text-muted-foreground mb-4 text-xs font-medium tracking-wide uppercase">Перейти по коду</p>
+    <div className="game-liquid mt-auto flex flex-col items-center justify-center rounded-xl px-4 py-6 sm:px-6">
+      <p className="game-meta mb-4">Перейти по коду</p>
       <InputOTP
         maxLength={6}
         value={code}
         onChange={setQuickAccessCodeFromOtp}
-        containerClassName="gap-3"
+        containerClassName="gap-2.5"
         onComplete={handleSubmit}
         inputMode="numeric"
         pattern="\d*"
         disabled={isAwaitingReportByCode}
       >
-        <InputOTPGroup>
-          <InputOTPSlot index={0} />
+        <InputOTPGroup className="rounded-md">
+          <InputOTPSlot index={0} className={otpSlotClass} />
         </InputOTPGroup>
-        <InputOTPGroup>
-          <InputOTPSlot index={1} />
+        <InputOTPGroup className="rounded-md">
+          <InputOTPSlot index={1} className={otpSlotClass} />
         </InputOTPGroup>
-        <InputOTPGroup>
-          <InputOTPSlot index={2} />
+        <InputOTPGroup className="rounded-md">
+          <InputOTPSlot index={2} className={otpSlotClass} />
         </InputOTPGroup>
-        <InputOTPGroup>
-          <InputOTPSlot index={3} />
+        <InputOTPGroup className="rounded-md">
+          <InputOTPSlot index={3} className={otpSlotClass} />
         </InputOTPGroup>
-        <InputOTPGroup>
-          <InputOTPSlot index={4} />
+        <InputOTPGroup className="rounded-md">
+          <InputOTPSlot index={4} className={otpSlotClass} />
         </InputOTPGroup>
-        <InputOTPGroup>
-          <InputOTPSlot index={5} />
+        <InputOTPGroup className="rounded-md">
+          <InputOTPSlot index={5} className={otpSlotClass} />
         </InputOTPGroup>
       </InputOTP>
-      <Button type="button" className="mt-4" disabled={!isComplete || isAwaitingReportByCode} onClick={handleSubmit}>
+      <Button
+        type="button"
+        className="game-btn-primary mt-4 h-11 min-w-44 rounded-xl font-bold"
+        disabled={!isComplete || isAwaitingReportByCode}
+        onClick={handleSubmit}
+      >
         Перейти к квизу
       </Button>
     </div>

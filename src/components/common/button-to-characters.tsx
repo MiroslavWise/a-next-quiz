@@ -26,14 +26,14 @@ function ButtonToCharacters() {
   }).join(", ")
 
   return (
-    <Button asChild variant="outline" className={cn("h-auto justify-between overflow-hidden rounded-2xl px-4 py-3 text-left", styles.button, styles.toneOne)}>
+    <Button asChild variant="outline" className={cn("h-auto justify-between overflow-hidden rounded-xl px-4 py-3 text-left", styles.button, styles.toneOne)}>
       <Link href="/characters" aria-label={`Мои персонажи. ${levelLabel}`}>
         <span className="flex min-w-0 flex-1 items-center gap-3">
-          <span className={cn("bg-background/60 flex size-9 shrink-0 items-center justify-center rounded-xl border", styles.buttonIcon)}>
+          <span className={cn("flex size-9 shrink-0 items-center justify-center rounded-md", styles.buttonIcon)}>
             <Sparkles className="size-4 text-current" aria-hidden />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-sm font-semibold text-current">Мои персонажи</span>
+            <span className="block text-sm font-bold text-current">Мои персонажи</span>
             <span className="mt-1.5 flex flex-wrap gap-1">
               {CHARACTER_ELEMENTS.map((element) => {
                 const visual = GAME_ELEMENT_VISUAL_BY_ID[element]
@@ -41,7 +41,7 @@ function ButtonToCharacters() {
                 return (
                   <span
                     key={element}
-                    className="inline-flex items-center gap-1 rounded-md border border-current/15 bg-background/50 px-1.5 py-0.5 text-[11px] font-semibold tabular-nums text-current"
+                    className="inline-flex items-center gap-1 rounded-md border-2 border-black/70 bg-black/35 px-1.5 py-0.5 text-[11px] font-bold tabular-nums text-current shadow-[2px_2px_0_0_#0a0c0b]"
                     title={`${visual.name}, уровень ${level}`}
                   >
                     <Image src={visual.iconSrc} alt="" width={12} height={12} className="size-3 object-contain" />

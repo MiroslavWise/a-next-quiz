@@ -63,9 +63,9 @@ export default function CurrentUserIdentity({
 
       {showPseudo ? (
         <div className="min-w-0">
-          <p className="text-foreground truncate text-sm font-semibold">
+          <p className="truncate text-sm font-bold text-white">
             {pseudo}
-            {fullName ? <span className="text-muted-foreground ml-1 text-xs font-normal">({fullName})</span> : null}
+            {fullName ? <span className="ml-1 text-xs font-normal text-white/55">({fullName})</span> : null}
           </p>
         </div>
       ) : null}

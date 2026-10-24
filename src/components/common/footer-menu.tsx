@@ -8,7 +8,7 @@ import styles from "./footer-menu.module.scss"
 
 function FooterMenu() {
   return (
-    <footer className="glass-effect fixed right-5 bottom-5 left-5 rounded-lg px-4 py-2 backdrop-blur-sm">
+    <footer className="game-liquid fixed right-5 bottom-5 left-5 rounded-xl border-2 border-black/80 px-4 py-2.5 shadow-[6px_6px_0_0_#0a0c0b]">
       <nav className="grid w-full grid-cols-4 items-center justify-center gap-3 sm:gap-6">
         {LINKS_FOOTER_MENU.map(({ href, icon: Icon, label, textClass }) => (
           <Link
@@ -16,10 +16,16 @@ function FooterMenu() {
             href={href}
             className={cn("flex w-full flex-col items-center justify-center px-2", textClass, styles.menuLink)}
           >
-            <span className={styles.menuIcon} aria-hidden>
+            <span
+              className={cn(
+                styles.menuIcon,
+                "mb-0.5 size-9 rounded-md border-2 border-black/70 bg-black/35 shadow-[2px_2px_0_0_#0a0c0b]",
+              )}
+              aria-hidden
+            >
               <Icon className="size-5" />
             </span>
-            <span className="text-sm font-medium transition-colors duration-500">{label}</span>
+            <span className="text-sm font-bold transition-colors duration-500">{label}</span>
           </Link>
         ))}
       </nav>
