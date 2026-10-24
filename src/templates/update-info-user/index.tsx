@@ -136,7 +136,7 @@ function UpdateInfoUser() {
                   <FieldLabel className="text-foreground text-xs font-medium">Фон</FieldLabel>
                   <div className="-mx-4 w-[calc(100%+2rem)]! overflow-x-auto [-webkit-overflow-scrolling:touch]">
                     <div
-                      className="grid w-max auto-cols-[3.25rem] grid-flow-col grid-rows-1 gap-2 px-4 sm:auto-cols-[3.5rem]"
+                      className="grid w-max auto-cols-13 grid-flow-col grid-rows-1 gap-2 px-4 sm:auto-cols-14"
                       role="listbox"
                       aria-label="Выбор фона"
                     >
@@ -153,7 +153,7 @@ function UpdateInfoUser() {
                             onClick={() => field.onChange(color)}
                             className={cn(
                               "relative aspect-square overflow-hidden rounded-md border-2 transition-[transform,box-shadow] duration-150",
-                              "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)",
+                              "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)",
                               selected
                                 ? "border-(--accent-orb) shadow-[3px_3px_0_0_#0a0c0b]"
                                 : "border-black/60 bg-muted/30 hover:border-white/40",
@@ -176,7 +176,7 @@ function UpdateInfoUser() {
                       <FieldLabel className="text-foreground text-xs font-medium">Аватар</FieldLabel>
                       <div className="-mx-4 w-[calc(100%+2rem)]! overflow-x-auto [-webkit-overflow-scrolling:touch]">
                         <div
-                          className="grid w-max auto-cols-[2.75rem] grid-flow-col grid-rows-4 gap-2 px-4 sm:auto-cols-[3rem]"
+                          className="grid w-max auto-cols-11 grid-flow-col grid-rows-4 gap-2 px-4 sm:auto-cols-12"
                           role="listbox"
                           aria-label="Выбор аватара"
                         >
@@ -191,7 +191,7 @@ function UpdateInfoUser() {
                                 onClick={() => avatarField.onChange(url)}
                                 className={cn(
                                   "relative aspect-square overflow-hidden rounded-md border-2 transition-[transform,box-shadow] duration-150",
-                                  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)",
+                                  "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)",
                                   selected
                                     ? "border-(--accent-orb) shadow-[3px_3px_0_0_#0a0c0b]"
                                     : "border-black/60 hover:border-white/40",

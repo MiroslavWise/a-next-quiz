@@ -115,7 +115,7 @@ function ElementPickerOption({
       onClick={onSelect}
       className={cn(
         "relative flex min-w-0 flex-col overflow-hidden rounded-md border-2 p-2 text-left transition-[box-shadow,border-color] duration-150",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-(--accent-orb)",
+        "focus-visible:outline focus-visible:outline-offset-1 focus-visible:outline-(--accent-orb)",
         selected ? styles.optionSelected : "shadow-[2px_2px_0_0_#0a0c0b] hover:border-white/35",
       )}
       style={
