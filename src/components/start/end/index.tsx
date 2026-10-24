@@ -46,12 +46,12 @@ function StatusEnd({ data, tgId }: IProps) {
       <Suspense fallback={null}>
         <PrizesWinnersBanner reportId={data.id} tgId={tgId} elementAvatarId={data.element_avatar_id ?? null} />
       </Suspense>
-      <section className="glass-start-liquid-palette w-full overflow-visible rounded-2xl p-3.5 pt-5 sm:p-4 sm:pt-5">
+      <section className="glass-start-liquid-palette w-full overflow-visible rounded-xl p-3.5 pt-5 sm:p-4 sm:pt-5">
         <header className="mb-3 flex items-center justify-between gap-3">
-          <h2 className="text-base font-semibold text-white">{showLeaderboard ? "Таблица рейтинга" : "Ваш результат"}</h2>
+          <h2 className="text-base font-bold text-white">{showLeaderboard ? "Таблица рейтинга" : "Ваш результат"}</h2>
           <Link
             href="/"
-            className="glass-start-slab inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-white transition-colors hover:border-(--accent-orb)/50"
+            className="glass-start-slab inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-bold text-white transition-[transform,box-shadow] hover:translate-x-px hover:translate-y-px"
           >
             <HomeIcon className="size-3.5" aria-hidden />
             На главную

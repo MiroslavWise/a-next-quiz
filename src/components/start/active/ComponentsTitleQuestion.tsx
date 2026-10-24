@@ -107,19 +107,16 @@ function ComponentsTitleQuestion({
       <div className={cn("relative w-full overflow-visible", elementVisual && ROUND_CLASS)} style={SEAL_VARS}>
         <div
           className={cn(
-            "glass-start-liquid-palette relative isolate flex w-full flex-col items-center overflow-visible border text-center text-white shadow-none transition-all duration-300",
+            "glass-start-liquid-palette relative isolate flex w-full flex-col items-center overflow-visible text-center text-white transition-all duration-300",
             ROUND_CLASS,
-            elementVisual && "border-2",
-            !elementVisual &&
-              elementsBoosted &&
-              "border-(--accent-orb)/60 shadow-[0_0_28px_color-mix(in_srgb,var(--accent-orb)_30%,transparent)]",
+            !elementVisual && elementsBoosted && "border-(--accent-orb)",
           )}
           style={
             elementVisual
               ? {
                   borderColor: elementVisual.accentColor,
                   borderWidth: 2,
-                  boxShadow: `0 0 28px color-mix(in srgb, ${elementVisual.accentColor} 42%, transparent), inset 0 1px 0 rgba(255,255,255,0.14)`,
+                  boxShadow: `6px 6px 0 0 color-mix(in srgb, ${elementVisual.accentColor} 55%, #0a0c0b 45%)`,
                   maskImage: SEAL_FILL_MASK,
                   WebkitMaskImage: SEAL_FILL_MASK,
                   maskMode: "alpha",
@@ -131,13 +128,16 @@ function ComponentsTitleQuestion({
         >
           {elementsBoosted ? (
             <span
-              className={cn("pointer-events-none absolute inset-0 ring-2 ring-(--accent-orb)/50 motion-safe:animate-pulse", ROUND_CLASS)}
+              className={cn(
+                "pointer-events-none absolute inset-0 border-2 border-(--accent-orb) motion-safe:animate-pulse",
+                ROUND_CLASS,
+              )}
               aria-hidden
             />
           ) : null}
           <div className={cn("flex w-full flex-col items-center", dots && "pt-2.5")}>
             {elementsBoosted ? (
-              <p className="mt-2.5 inline-flex items-center gap-1 rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/15 px-2.5 py-0.5 text-[0.65rem] font-semibold tracking-[0.12em] text-white uppercase">
+              <p className="mt-2.5 inline-flex items-center gap-1 rounded-md border-2 border-black/80 bg-(--accent-orb)/20 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.12em] text-white uppercase shadow-[2px_2px_0_0_#0a0c0b]">
                 <Sparkles className="size-3 text-(--accent-orb)" aria-hidden />
                 Стихии усилены
               </p>

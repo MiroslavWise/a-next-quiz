@@ -54,7 +54,11 @@ function ItemButtonAnswer({
         "relative isolate overflow-hidden text-left transition-all duration-200 select-none disabled:cursor-not-allowed",
         results ? endTintClass : cn(isSelected && "glass-start-slab-selected"),
       )}
-      style={showPartner ? { boxShadow: `0 0 0 2px ${pairColor}` } : undefined}
+      style={
+        showPartner
+          ? { boxShadow: `4px 4px 0 0 color-mix(in srgb, ${pairColor} 70%, #0a0c0b 30%)`, borderColor: pairColor }
+          : undefined
+      }
       aria-pressed={isSelected}
     >
       {showBurst ? <span className="answer-burst" aria-hidden /> : null}

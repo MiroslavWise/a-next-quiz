@@ -90,7 +90,7 @@ function PodiumUserCard({
             />
             {isPrizePlace ? (
               <span
-                className="absolute -top-1.5 -right-1.5 z-10 flex size-5 items-center justify-center rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/80 shadow-[0_0_10px_color-mix(in_srgb,var(--accent-orb)_45%,transparent)]"
+                className="absolute -top-1.5 -right-1.5 z-10 flex size-5 items-center justify-center rounded-full border-2 border-black/80 bg-(--accent-orb) shadow-[2px_2px_0_0_#0a0c0b]"
                 aria-label="Призовое место"
                 title="Призовое место"
               >

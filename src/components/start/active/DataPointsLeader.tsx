@@ -114,7 +114,7 @@ function DataPointsLeader({
       role="presentation"
     >
       <section
-        className="glass-start-liquid-palette flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl p-2 shadow-none md:p-3"
+        className="glass-start-liquid-palette flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl p-2 md:p-3"
         role="region"
         aria-labelledby="data-points-leader-title"
         onKeyDown={(e) => e.stopPropagation()}
@@ -127,7 +127,7 @@ function DataPointsLeader({
             <span className="truncate">Таблица лидеров</span>
             {isBackgroundRefreshing && (
               <span
-                className="inline-flex size-1.5 shrink-0 animate-pulse rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,0.8)]"
+                className="inline-flex size-1.5 shrink-0 animate-pulse rounded-full bg-emerald-300 outline outline-1 outline-black/70"
                 aria-label="Обновляем таблицу лидеров"
                 title="Обновляем таблицу лидеров"
               />

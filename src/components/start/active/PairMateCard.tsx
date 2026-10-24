@@ -54,8 +54,8 @@ export function PairMateBanner({
   return (
     <section
       aria-label={`Пара с ${name}`}
-      className="glass-start-liquid-palette flex items-center gap-3 rounded-2xl border-2 px-3 py-2.5"
-      style={{ borderColor: color, boxShadow: `0 0 18px color-mix(in srgb, ${color} 35%, transparent)` }}
+      className="glass-start-liquid-palette flex items-center gap-3 rounded-xl border-2 px-3 py-2.5"
+      style={{ borderColor: color, boxShadow: `4px 4px 0 0 color-mix(in srgb, ${color} 55%, #0a0c0b 45%)` }}
     >
       <UserAvatar
         variant="waiting"

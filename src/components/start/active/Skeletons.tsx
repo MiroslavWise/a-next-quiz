@@ -26,7 +26,7 @@ export function LeaderNextQuestionFooterSkeleton() {
 
 export function ActiveChartsSkeleton() {
   return (
-    <div className="glass-start-liquid-palette w-full rounded-2xl px-4 py-3.5" aria-hidden>
+    <div className="glass-start-liquid-palette w-full rounded-xl px-4 py-3.5" aria-hidden>
       <div className="flex flex-col gap-3">
         <Skeleton className="h-3 w-full rounded-full bg-white/10" />
         <Skeleton className="h-4 w-full rounded-md bg-white/10" />
@@ -39,7 +39,7 @@ export function ActiveChartsSkeleton() {
 
 export function WithRankSkeleton() {
   return (
-    <div className="glass-start-liquid-palette flex min-h-46 w-full flex-col items-center justify-center gap-4 rounded-2xl px-4 py-5 text-center sm:min-h-52 sm:px-5 xl:min-h-58 xl:px-6">
+    <div className="glass-start-liquid-palette flex min-h-46 w-full flex-col items-center justify-center gap-4 rounded-xl px-4 py-5 text-center sm:min-h-52 sm:px-5 xl:min-h-58 xl:px-6">
       <Skeleton className="size-16 rounded-full bg-white/12 sm:size-18 xl:size-20" />
       <div className="flex w-full max-w-sm flex-col items-center gap-2">
         <Skeleton className="h-5 w-40 rounded-md bg-white/12" />

@@ -85,10 +85,9 @@ function UserPointsLeaderItem({
       title={isGameAvatar ? "Аватар игры" : undefined}
       className={cn(
         "glass-start-slab relative flex flex-col gap-1 rounded-xl px-2 py-1.5",
-        isPrizePlace && "border-amber-400/40 bg-amber-500/12 ring-1 ring-amber-400/25",
-        isGameAvatar && "shadow-[0_0_16px_rgba(255,255,255,0.42),0_0_1px_rgba(255,255,255,0.95)]",
-        isGameAvatar && !isPrizePlace && "border border-white/50 bg-white/12 ring-1 ring-white/40",
-        isGameAvatar && isPrizePlace && "ring-white/55",
+        isPrizePlace && "border-2 border-amber-400/70 bg-amber-500/12 shadow-[4px_4px_0_0_#78350f]",
+        isGameAvatar && !isPrizePlace && "border-2 border-white/70 bg-white/12 shadow-[4px_4px_0_0_#e5e5e5]",
+        isGameAvatar && isPrizePlace && "border-white/80",
       )}
     >
       <div

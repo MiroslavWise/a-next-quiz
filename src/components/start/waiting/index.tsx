@@ -64,9 +64,9 @@ function PrizesPickerSkeleton({ usersCount }: { usersCount: number }) {
 }
 
 const waitingToolbarBtn = cn(
-  "inline-flex h-7 shrink-0 items-center justify-center rounded-lg border border-(--accent-orb)/30 bg-(--accent-orb)/10",
-  "transition-colors hover:border-(--accent-orb)/50 hover:bg-(--accent-orb)/16",
-  "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)/50",
+  "inline-flex h-7 shrink-0 items-center justify-center rounded-md border-2 border-black/70 bg-(--accent-orb)/15 shadow-[2px_2px_0_0_#0a0c0b]",
+  "transition-[transform,box-shadow] hover:translate-x-px hover:translate-y-px hover:shadow-[1px_1px_0_0_#0a0c0b]",
+  "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)/70",
 )
 
 const waitingToolbarIconBtn = cn(waitingToolbarBtn, "w-7")

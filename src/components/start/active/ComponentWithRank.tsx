@@ -150,7 +150,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
   const partnerName = partner?.pseudo?.trim() || (partnerId ? `Участник ${partnerId}` : "")
 
   if (isFetching && !data) {
-    return <div className="glass-start-liquid-palette h-24 w-full animate-pulse rounded-2xl xl:h-28" />
+    return <div className="glass-start-liquid-palette h-24 w-full animate-pulse rounded-xl xl:h-28" />
   }
 
   if (!data) return null
@@ -159,7 +159,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
   const hasNegativeTotal = !isTopThree && isNegativeQuizPoints(totalPoints)
 
   return (
-    <section className="glass-start-liquid-palette relative w-full rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4 xl:px-7 xl:py-5">
+    <section className="glass-start-liquid-palette relative w-full rounded-xl px-4 py-3.5 sm:px-5 sm:py-4 xl:px-7 xl:py-5">
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0 space-y-1">
           {isTopThree ? (
@@ -173,7 +173,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
           ) : (
               <div className="flex items-center gap-3">
                 <div
-                  className="grid size-12 shrink-0 place-items-center rounded-xl border border-(--accent-orb)/35 bg-(--accent-orb)/10 shadow-[0_0_18px_rgba(45,212,191,0.1)]"
+                  className="grid size-12 shrink-0 place-items-center rounded-xl border-2 border-black/70 bg-(--accent-orb)/10 shadow-[3px_3px_0_0_#0a0c0b]"
                   title={rank != null && rank > 0 ? `Ваше место: ${rank}` : "Место пока не определено"}
                 >
                   <div className="text-center leading-none">
@@ -218,7 +218,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
         <div
           className={cn(
             rankOutcomeBlockClass,
-            "mt-3 overflow-hidden border-amber-300/45 bg-linear-to-r from-amber-500/20 via-yellow-500/10 to-amber-400/15 text-white/95 shadow-[0_0_28px_rgba(251,191,36,0.12)]",
+            "mt-3 overflow-hidden border-2 border-amber-300/70 bg-linear-to-r from-amber-500/20 via-yellow-500/10 to-amber-400/15 text-white/95 shadow-[4px_4px_0_0_#78350f]",
           )}
           role="status"
           aria-live="polite"

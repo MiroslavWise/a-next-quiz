@@ -1,0 +1,179 @@
+/**
+ * Neo-brutalist chrome for /start game flow.
+ * Form language from Lumina; colors from element tokens (--accent-orb, --element-*).
+ */
+
+:root {
+  --game-brutal-ink: #0a0c0b;
+  --game-brutal-radius: 0.75rem;
+  --game-brutal-border: 2px solid
+    color-mix(in srgb, var(--accent-orb) 55%, var(--game-brutal-ink) 45%);
+  --game-brutal-shadow: 4px 4px 0 0 var(--game-brutal-ink);
+  --game-brutal-shadow-lg: 8px 8px 0 0 var(--game-brutal-ink);
+  --game-brutal-shadow-accent: 4px 4px 0 0
+    color-mix(in srgb, var(--accent-orb) 70%, var(--game-brutal-ink) 30%);
+}
+
+/* Dot grid — accent-tinted, low opacity (not Lumina yellow paper) */
+.game-dot-grid {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--accent-orb) 22%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 32px 32px;
+  background-position: 0 0;
+}
+
+.game-meta,
+.glass-start-meta {
+  margin: 0;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent-orb) 88%, white 12%);
+}
+
+.game-slab,
+.glass-start-slab {
+  border: var(--game-brutal-border);
+  border-radius: var(--game-brutal-radius);
+  background: color-mix(in srgb, var(--element-surface, #121418) 82%, var(--element-deep, #2a3038) 18%);
+  box-shadow: var(--game-brutal-shadow);
+  color: oklch(0.99 0 0);
+  backdrop-filter: none;
+}
+
+.game-liquid,
+.glass-start-liquid-palette {
+  border: var(--game-brutal-border);
+  border-radius: var(--game-brutal-radius);
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--accent-orb) 16%, transparent) 0%,
+      transparent 42%
+    ),
+    color-mix(in srgb, var(--element-surface, #06141a) 70%, var(--element-deep, #0e3a44) 30%);
+  box-shadow: var(--game-brutal-shadow-lg);
+  color: oklch(0.99 0 0);
+  backdrop-filter: none;
+}
+
+.game-slab-selected,
+.glass-start-slab-selected {
+  border-color: color-mix(in srgb, var(--accent-orb) 85%, white 15%);
+  border-width: 2px;
+  box-shadow: var(--game-brutal-shadow-accent);
+  background: color-mix(in srgb, var(--accent-orb) 18%, var(--element-surface, #121418));
+}
+
+.game-slab-faithful,
+.glass-start-slab-faithful {
+  border: 2px solid color-mix(in srgb, var(--faithful) 80%, white 10%);
+  background: color-mix(in srgb, var(--faithful) 22%, var(--element-surface, #121418));
+  box-shadow: 4px 4px 0 0 color-mix(in srgb, var(--faithful) 55%, var(--game-brutal-ink) 45%);
+}
+
+.game-slab-unfaithful,
+.glass-start-slab-unfaithful {
+  border: 2px solid color-mix(in srgb, var(--unfaithful) 75%, white 8%);
+  background: color-mix(in srgb, var(--unfaithful) 18%, var(--element-surface, #121418));
+  box-shadow: 4px 4px 0 0 color-mix(in srgb, var(--unfaithful) 50%, var(--game-brutal-ink) 50%);
+}
+
+.game-slab-muted,
+.glass-start-slab-muted {
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, var(--element-surface, #121418) 55%, rgba(0, 0, 0, 0.55));
+  box-shadow: none;
+  color: rgba(255, 255, 255, 0.42);
+  filter: grayscale(0.35);
+}
+
+.game-btn-primary,
+.glass-start-btn-primary-palette {
+  border-radius: var(--game-brutal-radius);
+  border: 2px solid var(--game-brutal-ink);
+  background: color-mix(in srgb, var(--accent-orb) 72%, var(--game-brutal-ink) 28%);
+  box-shadow: 6px 6px 0 0 var(--game-brutal-ink);
+  color: oklch(0.99 0 0);
+  font-weight: 700;
+  backdrop-filter: none;
+  transition:
+    transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.game-btn-push,
+.game-btn-primary:hover:not(:disabled),
+.glass-start-btn-primary-palette:hover:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 0 var(--game-brutal-ink);
+}
+
+.game-btn-primary:active:not(:disabled),
+.glass-start-btn-primary-palette:active:not(:disabled) {
+  transform: translate(5px, 5px);
+  box-shadow: 1px 1px 0 0 var(--game-brutal-ink);
+}
+
+.game-btn-faithful,
+.glass-start-btn-faithful-palette {
+  border-radius: var(--game-brutal-radius);
+  border: 2px solid var(--game-brutal-ink);
+  background: color-mix(in srgb, var(--faithful) 85%, var(--game-brutal-ink) 15%);
+  box-shadow: 6px 6px 0 0 var(--game-brutal-ink);
+  color: oklch(0.99 0 0);
+  font-weight: 700;
+  transition:
+    transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.game-btn-faithful:hover:not(:disabled),
+.glass-start-btn-faithful-palette:hover:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 0 var(--game-brutal-ink);
+  filter: none;
+}
+
+.game-btn-faithful:active:not(:disabled),
+.glass-start-btn-faithful-palette:active:not(:disabled) {
+  transform: translate(5px, 5px);
+  box-shadow: 1px 1px 0 0 var(--game-brutal-ink);
+}
+
+/* Hard accent ring — skills / chips (no soft glow) */
+.game-hard-ring {
+  box-shadow: 3px 3px 0 0 var(--game-brutal-ink) !important;
+  outline: 2px solid color-mix(in srgb, var(--accent-orb) 80%, white 20%);
+  outline-offset: 0;
+}
+
+.game-hard-ring-ready {
+  box-shadow: 2px 2px 0 0
+    color-mix(in srgb, var(--accent-orb) 55%, var(--game-brutal-ink) 45%) !important;
+  outline: 2px solid color-mix(in srgb, var(--accent-orb) 65%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-btn-primary,
+  .game-btn-faithful,
+  .glass-start-btn-primary-palette,
+  .glass-start-btn-faithful-palette {
+    transition: none;
+  }
+
+  .game-btn-primary:hover:not(:disabled),
+  .game-btn-primary:active:not(:disabled),
+  .game-btn-faithful:hover:not(:disabled),
+  .game-btn-faithful:active:not(:disabled),
+  .glass-start-btn-primary-palette:hover:not(:disabled),
+  .glass-start-btn-primary-palette:active:not(:disabled),
+  .glass-start-btn-faithful-palette:hover:not(:disabled),
+  .glass-start-btn-faithful-palette:active:not(:disabled) {
+    transform: none;
+  }
+}

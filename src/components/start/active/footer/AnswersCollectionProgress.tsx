@@ -9,7 +9,7 @@ import { useAnswerOrderBy } from "../../hooks/use-answer-order-by"
 import styles from "../../styles/optimal.module.scss"
 
 export const footerActionSlotClass: HTMLAttributes<HTMLDivElement>["className"] =
-  "glass-start-btn-primary-palette flex h-fit w-full shrink-0 items-center justify-center rounded-2xl px-4 min-h-15"
+  "glass-start-btn-primary-palette flex h-fit w-full shrink-0 items-center justify-center rounded-xl px-4 min-h-15"
 
 export interface AnswersCollectionProgressProps {
   answeredCount: number

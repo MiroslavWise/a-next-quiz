@@ -104,23 +104,23 @@ export function AnswerersAvatarStack({
   const toneClass =
     tone === "correct"
       ? cn(
-          "border-emerald-400 bg-emerald-500/25 shadow-[0_0_12px_rgba(52,211,153,0.45)]",
+          "border-2 border-emerald-400 bg-emerald-500/25 shadow-[3px_3px_0_0_#064e3b]",
           "hover:border-emerald-300 hover:bg-emerald-500/35",
-          "focus-visible:ring-2 focus-visible:ring-emerald-300/80",
-          expanded && "border-emerald-300 bg-emerald-500/40 ring-2 ring-emerald-300/50",
+          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300",
+          expanded && "border-emerald-300 bg-emerald-500/40",
         )
       : tone === "abstained"
         ? cn(
-            "border-amber-300 bg-amber-500/20 shadow-[0_0_12px_rgba(251,191,36,0.4)]",
+            "border-2 border-amber-300 bg-amber-500/20 shadow-[3px_3px_0_0_#78350f]",
             "hover:border-amber-200 hover:bg-amber-500/30",
-            "focus-visible:ring-2 focus-visible:ring-amber-300/80",
-            expanded && "border-amber-200 bg-amber-500/35 ring-2 ring-amber-300/45",
+            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300",
+            expanded && "border-amber-200 bg-amber-500/35",
           )
         : cn(
-            "border-rose-400 bg-rose-500/25 shadow-[0_0_12px_rgba(251,113,133,0.45)]",
+            "border-2 border-rose-400 bg-rose-500/25 shadow-[3px_3px_0_0_#881337]",
             "hover:border-rose-300 hover:bg-rose-500/35",
-            "focus-visible:ring-2 focus-visible:ring-rose-300/80",
-            expanded && "border-rose-300 bg-rose-500/40 ring-2 ring-rose-300/50",
+            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-300",
+            expanded && "border-rose-300 bg-rose-500/40",
           )
 
   return (

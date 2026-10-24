@@ -11,7 +11,9 @@ export function SocketConnectionIndicator({ isConnected }: SocketConnectionIndic
     <span
       className={cn(
         "bottom-next pointer-events-none fixed left-3 z-50 size-2.5 animate-pulse rounded-full",
-        isConnected ? "bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" : "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.9)]",
+        isConnected
+          ? "bg-emerald-400 outline outline-2 outline-black/80"
+          : "bg-red-500 outline outline-2 outline-black/80",
       )}
       aria-live="polite"
       aria-label={isConnected ? "Соединение установлено" : "Соединение потеряно, переподключение…"}

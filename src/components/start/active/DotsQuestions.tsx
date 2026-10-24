@@ -5,9 +5,9 @@ import { EReportMyPassedQuestionsResult, type IReportMyPassedQuestions } from "@
 import { useElementThemeSession } from "@/stores/element-theme-session"
 
 const RESULT_DOT_CLASS: Record<EReportMyPassedQuestionsResult, string> = {
-  [EReportMyPassedQuestionsResult.CORRECT]: "bg-(--faithful) shadow-[0_0_8px_color-mix(in_srgb,var(--faithful)_70%,transparent)]",
-  [EReportMyPassedQuestionsResult.WRONG]: "bg-(--unfaithful) shadow-[0_0_8px_color-mix(in_srgb,var(--unfaithful)_70%,transparent)]",
-  [EReportMyPassedQuestionsResult.SKIPPED]: "bg-slate-400",
+  [EReportMyPassedQuestionsResult.CORRECT]: "bg-(--faithful) outline outline-2 outline-black/80",
+  [EReportMyPassedQuestionsResult.WRONG]: "bg-(--unfaithful) outline outline-2 outline-black/80",
+  [EReportMyPassedQuestionsResult.SKIPPED]: "bg-slate-400 outline outline-2 outline-black/50",
 }
 
 export interface IDotsQuestionsProps {
@@ -44,8 +44,8 @@ function DotsQuestions({ activeIndex, totalQuestions, myPassedQuestions, showRes
     const resultClass = passedResult ? RESULT_DOT_CLASS[passedResult] : undefined
     const currentFallback =
       anchored || isGameAvatar
-        ? "bg-white shadow-[0_0_8px_rgba(255,255,255,0.55)]"
-        : "bg-(--accent-orb) shadow-[0_0_8px_color-mix(in_srgb,var(--accent-orb)_80%,transparent)]"
+        ? "bg-white outline outline-2 outline-black/80"
+        : "bg-(--accent-orb) outline outline-2 outline-black/80"
 
     return (
       <span
@@ -75,13 +75,13 @@ function DotsQuestions({ activeIndex, totalQuestions, myPassedQuestions, showRes
   if (anchored) {
     return (
       <div
-        className="absolute top-0 left-1/2 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background/95 p-0.5 shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_8px_20px_rgba(0,0,0,0.24)]"
+        className="absolute top-0 left-1/2 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-md bg-background p-0.5 shadow-[3px_3px_0_0_#0a0c0b]"
         aria-label={`Вопрос ${currentQuestion} из ${safeTotalQuestions}`}
       >
         <div
           className={cn(
-            "flex max-w-full flex-row flex-nowrap items-center justify-center gap-1.5 rounded-full border px-2 py-1 shadow-lg shadow-black/20 backdrop-blur-md",
-            isGameAvatar ? "border-white/30 bg-white/18" : "border-white/15 bg-(--accent-orb)/90",
+            "flex max-w-full flex-row flex-nowrap items-center justify-center gap-1.5 rounded-md border-2 border-black/80 px-2 py-1",
+            isGameAvatar ? "bg-white/20" : "bg-(--accent-orb)/90",
           )}
         >
           <span className="relative flex min-w-0 flex-row flex-nowrap items-center justify-center gap-1 overflow-x-auto" aria-hidden>

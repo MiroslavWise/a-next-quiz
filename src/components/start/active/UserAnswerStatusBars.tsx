@@ -16,12 +16,10 @@ function isWaitingEntry(entry: TResolvedAnswerStatus): entry is { result: EUsers
 }
 
 const STATUS_BAR_CLASS: Record<EUsersAnswerStatus, string> = {
-  [EUsersAnswerStatus.CORRECT]:
-    "bg-(--faithful) shadow-[0_0_6px_color-mix(in_srgb,var(--faithful)_60%,transparent)]",
-  [EUsersAnswerStatus.WRONG]:
-    "bg-(--unfaithful) shadow-[0_0_6px_color-mix(in_srgb,var(--unfaithful)_60%,transparent)]",
-  [EUsersAnswerStatus.SKIPPED]: "bg-slate-400",
-  [EUsersAnswerStatus.WAITING]: "bg-white/25",
+  [EUsersAnswerStatus.CORRECT]: "bg-(--faithful) outline outline-1 outline-black/70",
+  [EUsersAnswerStatus.WRONG]: "bg-(--unfaithful) outline outline-1 outline-black/70",
+  [EUsersAnswerStatus.SKIPPED]: "bg-slate-400 outline outline-1 outline-black/50",
+  [EUsersAnswerStatus.WAITING]: "bg-white/25 outline outline-1 outline-white/20",
 }
 
 const STATUS_LABEL: Record<EUsersAnswerStatus, string> = {

@@ -104,7 +104,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                   onSelect={open}
                   className={cn(
                     isUsed && "border-white/8 bg-white/4 text-white/35 grayscale",
-                    isPvpBlocked && "border-white/8 bg-white/4 text-white/30 grayscale",
+                    isPvpBlocked && "z-20 border-white/8 bg-white/4 text-white/30 grayscale",
                     !isUsed && !isPvpBlocked && !canAfford && status === "available" && "border-white/10 text-white/55",
                   )}
                 >
@@ -160,6 +160,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                     className={cn(
                       "border-amber-200/80 text-amber-50",
                       (isUsed || isLocked) && "border-white/10 bg-white/4 text-white/40 grayscale",
+                      isLocked && "z-20",
                       !isUsed && !isLocked && !canAfford && status === "available" && "border-white/10 text-white/55",
                     )}
                   >

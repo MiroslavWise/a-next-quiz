@@ -21,8 +21,8 @@ function StateChip({ icon, label, hint, accent }: { icon: ReactNode; label: stri
     <li
       title={hint}
       aria-label={`${label}. ${hint}`}
-      className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide text-white/90"
-      style={{ borderColor: `${accent}80`, backgroundColor: `${accent}1f` }}
+      className="inline-flex items-center gap-1 rounded-md border-2 border-black/70 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide text-white/90 shadow-[2px_2px_0_0_#0a0c0b]"
+      style={{ borderColor: accent, backgroundColor: `${accent}28` }}
     >
       {icon}
       {label}

@@ -7,7 +7,7 @@ interface IProps {
 
 function ImageThumb({ thumbUrl, titleText }: IProps) {
   return (
-    <div className="question-thumb-reveal relative mx-auto aspect-video w-full max-w-[min(100%,15rem)] shrink-0 overflow-hidden rounded-lg border border-(--accent-orb)/40 bg-white/6 sm:max-w-[min(100%,22rem)] lg:max-w-[min(100%,27rem)]">
+    <div className="question-thumb-reveal relative mx-auto aspect-video w-full max-w-[min(100%,15rem)] shrink-0 overflow-hidden rounded-lg border-2 border-black/80 bg-white/6 shadow-[4px_4px_0_0_#0a0c0b] sm:max-w-[min(100%,22rem)] lg:max-w-[min(100%,27rem)]">
       <Image
         fill
         src={thumbUrl}

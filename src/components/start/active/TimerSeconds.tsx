@@ -52,18 +52,18 @@ function TimerSeconds({ remainingSeconds, totalSeconds }: IProps) {
           strokeDasharray={RING_CIRCUMFERENCE}
           strokeDashoffset={dashOffset}
           className="transition-[stroke-dashoffset,stroke] duration-300 ease-linear"
-          style={{
-            filter: isPanic
-              ? "drop-shadow(0 0 2px color-mix(in srgb, var(--unfaithful) 80%, transparent))"
-              : "drop-shadow(0 0 2px color-mix(in srgb, var(--accent-orb) 75%, transparent))",
-          }}
         />
       </svg>
       {isPanic ? <span key={remainingSeconds} className={waveSt.timerRingPulse} aria-hidden /> : null}
-      <div className="relative z-10 flex flex-col items-center leading-none">
+      <div
+        className={cn(
+          "relative z-10 flex flex-col items-center rounded-xl border-2 border-black/80 bg-black/40 px-3 py-2 leading-none shadow-[3px_3px_0_0_#0a0c0b]",
+          isPanic && "border-(--unfaithful)/80",
+        )}
+      >
         <span
           className={cn(
-            "font-mono text-3xl font-semibold tracking-tight text-white tabular-nums sm:text-4xl",
+            "font-mono text-3xl font-bold tracking-tight text-white tabular-nums sm:text-4xl",
             isPanic && "text-unfaithful",
           )}
         >

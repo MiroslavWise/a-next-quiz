@@ -184,7 +184,7 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
 
         <section className="relative w-full flex-1 py-1" aria-label={`Участники: ${gridUsers.length}`}>
           {gridUsers.length === 0 ? (
-            <div className="flex h-full min-h-48 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-(--accent-orb)/25 bg-(--accent-orb)/6 px-4 py-10 text-center">
+            <div className="flex h-full min-h-48 flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-(--accent-orb)/40 bg-(--accent-orb)/6 px-4 py-10 text-center">
               <UserRoundCheck className="size-10 text-white/25" aria-hidden />
               <p className="max-w-xs text-sm text-white/50">Список участников пуст.</p>
             </div>
@@ -202,7 +202,7 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
       {canConfirm && (
         <div className={PHASE_FOOTER_CLASS}>
           {selfConfirmed ? (
-            <div className="glass-start-slab-faithful flex min-h-15 items-center justify-center gap-2 rounded-2xl px-5 text-sm font-semibold text-white">
+            <div className="glass-start-slab-faithful flex min-h-15 items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold text-white">
               <CheckCircle2 className="size-5 shrink-0" aria-hidden />
               Вы подтвердили участие — ждём остальных
             </div>
@@ -213,9 +213,9 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
               disabled={submitting || timeUp}
               className={cn(
                 PHASE_FOOTER_PRIMARY_CLASS,
-                "gap-2.5 text-base transition-all active:scale-[0.98]",
+                "gap-2.5 text-base",
                 "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)/60",
-                "disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100",
+                "disabled:cursor-not-allowed disabled:opacity-60 disabled:translate-none disabled:shadow-[6px_6px_0_0_#0a0c0b]",
               )}
             >
               {submitting ? (

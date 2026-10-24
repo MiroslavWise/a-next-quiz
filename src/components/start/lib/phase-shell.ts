@@ -17,4 +17,4 @@ export const PHASE_FOOTER_CLASS = "bottom-next fixed inset-x-0 z-50 shrink-0 p-4
 
 /** Основная кнопка в футере фазы. */
 export const PHASE_FOOTER_PRIMARY_CLASS =
-  "glass-start-btn-primary-palette flex h-fit min-h-15 w-full shrink-0 items-center justify-center rounded-2xl px-4 text-sm font-semibold"
+  "glass-start-btn-primary-palette flex h-fit min-h-15 w-full shrink-0 items-center justify-center rounded-xl px-4 text-sm font-bold"

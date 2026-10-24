@@ -73,7 +73,7 @@ function PrizeWinnerRow({
           className={cn(itsMe ? "ring-2 ring-(--accent-orb)/40" : undefined)}
         />
         <span
-          className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full border border-(--accent-orb)/50 bg-(--accent-orb)/80 shadow-[0_0_10px_color-mix(in_srgb,var(--accent-orb)_45%,transparent)]"
+          className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full border-2 border-black/80 bg-(--accent-orb) shadow-[2px_2px_0_0_#0a0c0b]"
           aria-hidden
         >
           <Gift className="size-3 text-white" aria-hidden />

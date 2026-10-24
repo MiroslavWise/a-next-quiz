@@ -59,8 +59,8 @@ export function ManaVial({ mana, manaMax, className }: ManaVialProps) {
       >
         <div
           className={cn(
-            "relative h-10 w-7 overflow-hidden rounded-md border border-white/20 bg-black/35 shadow-inner",
-            pulse && "ring-2 ring-(--accent-orb)/55",
+            "relative h-10 w-7 overflow-hidden rounded-md border-2 border-black/80 bg-black/35 shadow-[2px_2px_0_0_#0a0c0b]",
+            pulse && "outline outline-2 outline-(--accent-orb)",
           )}
           role="meter"
           aria-valuemin={0}

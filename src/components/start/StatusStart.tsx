@@ -150,7 +150,7 @@ function StatusStart({ refetch, questionCount, quizName }: StatusStartProps) {
           </div>
         </div>
 
-        <section className={cn(styles.panel, "glass-start-liquid-palette rounded-2xl px-4 py-3.5")}>
+        <section className={cn(styles.panel, "glass-start-liquid-palette rounded-xl px-4 py-3.5")}>
           <p className="text-[0.65rem] font-medium tracking-[0.18em] text-white/45 uppercase">{total > 0 ? "в колоде" : "колода"}</p>
           {total > 0 ? (
             <p className="mt-1 font-semibold tracking-tight text-white tabular-nums">
