@@ -120,10 +120,10 @@ function StatusStart({ refetch, questionCount, quizName }: StatusStartProps) {
         <header className={cn(styles.header, "flex w-full max-w-82 flex-col items-center gap-2 text-center")}>
           {quizTitle ? <p className="glass-start-meta w-full truncate">{quizTitle}</p> : null}
           <div className={styles.captionSlot}>
-            <h2 className={cn(styles.loadLine, "text-xl font-semibold tracking-tight text-balance text-white sm:text-2xl")}>
+            <h2 className={cn(styles.loadLine, "text-xl font-bold tracking-tight text-balance text-white sm:text-2xl")}>
               Собираем колоду
             </h2>
-            <h2 className={cn(styles.finaleLine, "text-xl font-semibold tracking-tight text-balance text-white sm:text-2xl")}>
+            <h2 className={cn(styles.finaleLine, "text-xl font-bold tracking-tight text-balance text-white sm:text-2xl")}>
               Игра начинается
             </h2>
           </div>

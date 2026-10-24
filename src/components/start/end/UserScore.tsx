@@ -74,15 +74,15 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
   return myScore ? (
     <div className="space-y-4">
       {isRandomPrizeWinner ? (
-        <div className="glass-start-slab-faithful flex flex-col items-center gap-2 rounded-2xl p-4 text-center text-white" role="status">
+        <div className="glass-start-slab-faithful flex flex-col items-center gap-2 rounded-xl p-4 text-center text-white" role="status">
           <Gift className="size-16 text-amber-300 sm:size-20" aria-hidden />
-          <p className="text-sm font-semibold xl:text-base">Вы получаете случайный приз!</p>
+          <p className="text-sm font-bold xl:text-base">Вы получаете случайный приз!</p>
         </div>
       ) : null}
       {isPrizeWinner && myScore.rank != null ? (
-        <div className="glass-start-slab-selected flex flex-col items-center gap-2 rounded-2xl p-4 text-center text-white" role="status">
+        <div className="glass-start-slab-selected flex flex-col items-center gap-2 rounded-xl p-4 text-center text-white" role="status">
           <Gift className="size-16 text-amber-300 sm:size-20" aria-hidden />
-          <p className="text-sm font-semibold xl:text-base">Вы получаете приз за {placeLabel(myScore.rank)}</p>
+          <p className="text-sm font-bold xl:text-base">Вы получаете приз за {placeLabel(myScore.rank)}</p>
         </div>
       ) : null}
       {myScore.rank != null && (
@@ -90,7 +90,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
           <MatchTitleSeals titles={myScore.titles} />
           <div
             className={cn(
-              "glass-start-slab flex flex-col items-center rounded-2xl px-5 py-4 text-center",
+              "glass-start-slab flex flex-col items-center rounded-xl px-5 py-4 text-center",
               rankPodiumClass(myScore.rank),
             )}
           >
@@ -117,7 +117,7 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
       ) : null}
       {myScore.rank == null && (myScore.titles?.length ?? 0) > 0 ? (
         <div className="relative min-h-8 overflow-visible has-aria-expanded:z-30">
-          <div className="glass-start-slab min-h-10 rounded-2xl" />
+          <div className="glass-start-slab min-h-10 rounded-xl" />
           <MatchTitleSeals titles={myScore.titles} />
         </div>
       ) : null}

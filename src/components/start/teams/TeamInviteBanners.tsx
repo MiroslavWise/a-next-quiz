@@ -38,16 +38,17 @@ function IncomingInviteBanner({
 
   return (
     <div
-      className="glass-start-liquid-palette flex w-full max-w-[calc(100vw-2rem)] flex-col gap-2 rounded-2xl p-3 sm:flex-row sm:items-center sm:justify-between"
+      className="glass-start-liquid-palette flex w-full max-w-[calc(100vw-2rem)] flex-col gap-2 rounded-xl p-3 sm:flex-row sm:items-center sm:justify-between"
       role="status"
     >
       <p className="min-w-0 text-sm text-white/90">
-        <span className="font-semibold text-white">{name}</span> зовёт в пару
+        <span className="font-bold text-white">{name}</span> зовёт в пару
       </p>
       <div className="flex shrink-0 gap-2">
         <Button
           type="button"
           size="sm"
+          className="game-btn-primary rounded-md font-bold"
           disabled={pending != null}
           onClick={() => {
             setPending("accept")
@@ -66,7 +67,7 @@ function IncomingInviteBanner({
           type="button"
           size="sm"
           variant="outline"
-          className="border-white/20 bg-transparent text-white hover:bg-white/10"
+          className="rounded-md border-2 border-black/70 bg-transparent text-white shadow-[2px_2px_0_0_#0a0c0b] hover:bg-white/10"
           disabled={pending != null}
           onClick={() => {
             setPending("decline")

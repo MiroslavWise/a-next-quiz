@@ -92,7 +92,7 @@ function UpdateInfoUser() {
     >
       <form
         onSubmit={onSubmit}
-        className="bg-background border-border/80 relative z-10 my-auto w-full max-w-md overflow-hidden rounded-2xl border backdrop-blur-xl"
+        className="game-liquid relative z-10 my-auto w-full max-w-md overflow-hidden rounded-xl border-2 border-black/80 bg-[color-mix(in_srgb,var(--element-surface,#121418)_90%,black)] shadow-[8px_8px_0_0_#0a0c0b]"
       >
         {!!avatar && !!pseudo && (
           <Button
@@ -121,7 +121,7 @@ function UpdateInfoUser() {
                   autoComplete="off"
                   placeholder="Например, «Кот в сапогах»"
                   aria-invalid={fieldState.invalid}
-                  className="border-border/80 bg-background/80 h-11 rounded-xl"
+                  className="h-11 rounded-md border-2 border-black/70 bg-black/40 shadow-[3px_3px_0_0_#0a0c0b] focus-visible:border-(--accent-orb) focus-visible:shadow-[3px_3px_0_0_color-mix(in_srgb,var(--accent-orb)_55%,#0a0c0b)]"
                 />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
@@ -152,15 +152,15 @@ function UpdateInfoUser() {
                             aria-selected={selected}
                             onClick={() => field.onChange(color)}
                             className={cn(
-                              "relative aspect-square overflow-hidden rounded-full border-2 transition-[transform,ring] duration-150",
-                              "focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2",
+                              "relative aspect-square overflow-hidden rounded-md border-2 transition-[transform,box-shadow] duration-150",
+                              "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)",
                               selected
-                                ? "border-primary ring-primary/35 ring-offset-background ring-2 ring-offset-2"
-                                : "border-border/70 bg-muted/30 hover:border-border hover:bg-muted/50",
+                                ? "border-(--accent-orb) shadow-[3px_3px_0_0_#0a0c0b]"
+                                : "border-black/60 bg-muted/30 hover:border-white/40",
                             )}
                             style={inlineBg}
                           >
-                            {selected ? <span className="bg-primary absolute inset-x-2 bottom-1 h-1 rounded-full" aria-hidden /> : null}
+                            {selected ? <span className="absolute inset-x-2 bottom-1 h-1 rounded-sm bg-(--accent-orb)" aria-hidden /> : null}
                           </button>
                         )
                       })}
@@ -190,19 +190,19 @@ function UpdateInfoUser() {
                                 aria-selected={selected}
                                 onClick={() => avatarField.onChange(url)}
                                 className={cn(
-                                  "relative aspect-square overflow-hidden rounded-xl border-2 transition-[transform,ring] duration-150",
-                                  "focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2",
+                                  "relative aspect-square overflow-hidden rounded-md border-2 transition-[transform,box-shadow] duration-150",
+                                  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)",
                                   selected
-                                    ? "border-primary ring-primary/35 ring-offset-background ring-2 ring-offset-2"
-                                    : "border-border/70 hover:border-border",
+                                    ? "border-(--accent-orb) shadow-[3px_3px_0_0_#0a0c0b]"
+                                    : "border-black/60 hover:border-white/40",
                                 )}
                                 style={{ backgroundColor: field.value || "transparent" }}
                               >
-                                <Avatar className="size-full rounded-xl">
-                                  <AvatarImage src={url} alt="" className="rounded-xl border-none! object-cover" />
-                                  <AvatarFallback className="rounded-xl text-[0.65rem]">?</AvatarFallback>
+                                <Avatar className="size-full rounded-md">
+                                  <AvatarImage src={url} alt="" className="rounded-md border-none! object-cover" />
+                                  <AvatarFallback className="rounded-md text-[0.65rem]">?</AvatarFallback>
                                 </Avatar>
-                                {selected ? <span className="bg-primary absolute inset-x-1 bottom-1 h-1 rounded-full" aria-hidden /> : null}
+                                {selected ? <span className="absolute inset-x-1 bottom-1 h-1 rounded-sm bg-(--accent-orb)" aria-hidden /> : null}
                               </button>
                             )
                           })}
@@ -216,8 +216,8 @@ function UpdateInfoUser() {
             )}
           />
         </div>
-        <div className="border-border/60 bg-muted/20 flex w-full flex-col-reverse gap-2 border-t px-6 py-4">
-          <Button type="submit" disabled={submitting} className="h-11 w-full rounded-xl font-semibold">
+        <div className="flex w-full flex-col-reverse gap-2 border-t-2 border-black/70 bg-black/25 px-6 py-4">
+          <Button type="submit" disabled={submitting} className="game-btn-primary h-11 w-full rounded-xl font-bold">
             {submitting ? (
               <span className="inline-flex items-center gap-2">
                 <Loader2Icon className="size-4 animate-spin" aria-hidden />

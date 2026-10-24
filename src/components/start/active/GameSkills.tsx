@@ -109,16 +109,16 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                   )}
                 >
                   {isPvpBlocked ? (
-                    <span className="absolute -top-1 -right-1 z-20 flex size-4 items-center justify-center rounded-full border border-white/15 bg-background text-white/60">
+                    <span className="absolute -top-1 -right-1 z-20 flex size-4 items-center justify-center rounded-md border-2 border-black/80 bg-background text-white/60 shadow-[1px_1px_0_0_#0a0c0b]">
                       <Lock className="size-2.5" aria-hidden />
                     </span>
                   ) : null}
                   {isActive ? (
-                    <span className="absolute -top-0.5 -right-0.5 z-20 size-2.5 rounded-full border-2 border-background bg-(--accent-orb)" />
+                    <span className="absolute -top-0.5 -right-0.5 z-20 size-2.5 rounded-md border-2 border-black/80 bg-(--accent-orb) shadow-[1px_1px_0_0_#0a0c0b]" />
                   ) : null}
                   {resonance && !isUsed ? (
                     <span
-                      className="bg-background absolute -bottom-1 -left-1 z-20 flex size-4 items-center justify-center rounded-full border"
+                      className="bg-background absolute -bottom-1 -left-1 z-20 flex size-4 items-center justify-center rounded-md border-2 shadow-[1px_1px_0_0_#0a0c0b]"
                       style={{ borderColor: getResonanceAccent(resonance.element) }}
                       aria-hidden
                     >
@@ -165,11 +165,13 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                     )}
                   >
                     {isLocked ? (
-                      <span className="absolute -top-1 -right-1 z-20 flex size-4 items-center justify-center rounded-full border border-amber-200/40 bg-background text-amber-100">
+                      <span className="absolute -top-1 -right-1 z-20 flex size-4 items-center justify-center rounded-md border-2 border-black/80 bg-background text-amber-100 shadow-[1px_1px_0_0_#0a0c0b]">
                         <Lock className="size-2.5" aria-hidden />
                       </span>
                     ) : null}
-                    {isActive ? <span className="absolute -top-0.5 -right-0.5 z-20 size-2.5 rounded-full border-2 border-background bg-amber-200" /> : null}
+                    {isActive ? (
+                      <span className="absolute -top-0.5 -right-0.5 z-20 size-2.5 rounded-md border-2 border-black/80 bg-amber-200 shadow-[1px_1px_0_0_#0a0c0b]" />
+                    ) : null}
                   </SkillIconButton>
                 )
               })}

@@ -27,23 +27,23 @@ function FullscreenQrCode({ open, onOpenChange, url, sessionCode }: FullscreenQr
 
   return (
     <div
-      className="fixed inset-0 z-100 flex min-h-svh flex-col items-center justify-center bg-black/80 p-5 text-center text-white backdrop-blur-md"
+      className="fixed inset-0 z-100 flex min-h-svh flex-col items-center justify-center bg-black/80 p-5 text-center text-white"
       role="dialog"
       aria-modal="true"
       aria-labelledby="fullscreen-qr-title"
       onClick={() => onOpenChange(false)}
     >
       <div
-        className="glass-start-liquid-palette flex w-full max-w-lg flex-col items-center gap-5 rounded-2xl p-5 sm:p-6"
+        className="glass-start-liquid-palette flex w-full max-w-lg flex-col items-center gap-5 rounded-xl p-5 sm:p-6"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center gap-2 text-(--accent-orb)/85">
           <QrCode className="size-5" aria-hidden />
-          <h2 id="fullscreen-qr-title" className="text-lg font-semibold text-white sm:text-xl">
+          <h2 id="fullscreen-qr-title" className="text-lg font-bold text-white sm:text-xl">
             Присоединиться к игре
           </h2>
         </div>
-        <div className="rounded-2xl bg-white p-4 sm:p-5">
+        <div className="rounded-xl border-2 border-black bg-white p-4 shadow-[6px_6px_0_0_#0a0c0b] sm:p-5">
           <QRCodeSVG
             value={url}
             size={640}

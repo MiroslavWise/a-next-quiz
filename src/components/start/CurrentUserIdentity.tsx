@@ -15,9 +15,9 @@ import { dispatchUpdateInfo } from "@/stores/update-info"
 const ElementsUserButton = lazy(() => import("@/components/common/ElementsUserButton"))
 
 const IDENTITY_ELEMENTS_BUTTON_CLASS = cn(
-  "inline-flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background",
-  "transition-colors hover:bg-muted hover:text-foreground",
-  "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+  "inline-flex size-8 shrink-0 items-center justify-center rounded-md border-2 border-black/70 bg-black/35 shadow-[2px_2px_0_0_#0a0c0b]",
+  "transition-[transform,box-shadow] hover:translate-x-px hover:translate-y-px hover:shadow-[1px_1px_0_0_#0a0c0b]",
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)",
   "disabled:pointer-events-none disabled:opacity-50",
 )
 
@@ -76,6 +76,7 @@ export default function CurrentUserIdentity({
           size="icon"
           variant="outline"
           disabled={!user}
+          className="rounded-md border-2 border-black/70 bg-black/35 shadow-[2px_2px_0_0_#0a0c0b] hover:translate-x-px hover:translate-y-px hover:bg-black/45 hover:shadow-[1px_1px_0_0_#0a0c0b]"
           onClick={() => {
             dispatchUpdateInfo(avatar ?? "", pseudo ?? fullName ?? "", bg ?? "")
           }}

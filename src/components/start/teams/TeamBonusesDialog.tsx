@@ -34,13 +34,13 @@ export function TeamBonusesDialog({ team, viewerTgId, onClose }: { team: ITeam; 
         role="dialog"
         aria-modal="true"
         aria-labelledby="team-bonus-title"
-        className="skill-info-card glass3d"
+        className="skill-info-card game-liquid relative z-50 rounded-xl border-2 border-black/80 shadow-[8px_8px_0_0_#0a0c0b]"
         style={{ maxHeight: "min(78svh, 40rem)" }}
       >
         <div className="flex max-h-[inherit] flex-col gap-3 overflow-y-auto overscroll-contain p-4">
           <header className="flex items-start gap-3">
             <div className="min-w-0 flex-1">
-              <h2 id="team-bonus-title" className="text-base leading-tight font-semibold text-white">
+              <h2 id="team-bonus-title" className="text-base leading-tight font-bold text-white">
                 Бонусы пары
               </h2>
               <p className="mt-0.5 text-xs font-medium text-(--accent-orb)">Места и призы остаются личными</p>
@@ -58,7 +58,7 @@ export function TeamBonusesDialog({ team, viewerTgId, onClose }: { team: ITeam; 
           </header>
           <ul className="flex flex-col gap-2">
             {TEAM_BONUSES.map((bonus) => (
-              <li key={bonus.id} className="rounded-xl border border-white/12 bg-white/5 px-3 py-2.5">
+              <li key={bonus.id} className="rounded-md border-2 border-black/60 bg-black/25 px-3 py-2.5 shadow-[3px_3px_0_0_#0a0c0b]">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
                   <span className="text-sm font-semibold text-white">{bonus.title}</span>
                   <code className="text-[0.6rem] tracking-wide text-white/45">{bonus.id}</code>

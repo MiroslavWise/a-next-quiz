@@ -106,14 +106,14 @@ function PrizesPickerContent({ reportId, prizes, usersCount }: Omit<PrizesPicker
 
   return (
     <section
-      className="glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 space-y-2.5 overflow-hidden rounded-2xl p-3 sm:p-4"
+      className="glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 space-y-2.5 overflow-hidden rounded-xl p-3 sm:p-4"
       aria-label="Призовые места"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="space-y-1">
           <div className="flex items-center gap-1.5">
             <Gift className="size-3.5 shrink-0 text-amber-300" aria-hidden />
-            <h2 className="text-sm font-semibold text-white">Призовые места</h2>
+            <h2 className="text-sm font-bold text-white">Призовые места</h2>
           </div>
           <p className="text-[0.7rem] leading-relaxed text-white/55 sm:text-xs">
             {usersCount > 0
@@ -138,10 +138,10 @@ function PrizesPickerContent({ reportId, prizes, usersCount }: Omit<PrizesPicker
                   aria-label={placeLabel(place)}
                   onClick={() => togglePlace(place)}
                   className={cn(
-                    "flex size-9 shrink-0 items-center justify-center rounded-xl text-sm font-semibold tabular-nums transition-colors",
-                    "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/40",
+                    "flex size-9 shrink-0 items-center justify-center rounded-md text-sm font-bold tabular-nums transition-[transform,box-shadow]",
+                    "focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)/70",
                     "disabled:cursor-not-allowed disabled:opacity-60",
-                    isActive ? "glass-start-slab-selected" : "glass-start-slab hover:border-(--accent-orb)/50",
+                    isActive ? "glass-start-slab-selected" : "glass-start-slab",
                   )}
                 >
                   {place}

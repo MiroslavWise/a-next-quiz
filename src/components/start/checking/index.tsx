@@ -150,9 +150,9 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
         <div className="relative flex w-full flex-col items-center gap-3">
           <p className="glass-start-meta">подтверждение участия</p>
           <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={CHECKING_WINDOW_SECONDS} />
-          <div className="glass-start-liquid-palette relative isolate flex w-full flex-col rounded-2xl text-white">
+          <div className="glass-start-liquid-palette relative isolate flex w-full flex-col rounded-xl text-white">
             <div className="relative flex w-full flex-col gap-3 p-3.5 sm:p-4">
-              <h2 className="text-center text-xl leading-snug font-semibold text-balance text-white sm:text-2xl">
+              <h2 className="text-center text-xl leading-snug font-bold text-balance text-white sm:text-2xl">
                 {data?.quiz?.name ?? "Готовимся к старту"}
               </h2>
               <p className="text-center text-sm leading-relaxed text-pretty text-white/65">
@@ -174,8 +174,8 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
                     <span className="text-white/70">{totalToConfirm}</span>
                   </span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                  <div className="h-full w-full origin-left rounded-full bg-faithful" style={{ transform: `scaleX(${progress})` }} />
+                <div className="h-2.5 w-full overflow-hidden rounded-md border-2 border-black/70 bg-black/35 shadow-[2px_2px_0_0_#0a0c0b]">
+                  <div className="h-full w-full origin-left bg-faithful" style={{ transform: `scaleX(${progress})` }} />
                 </div>
               </div>
             </div>
@@ -272,13 +272,15 @@ function CheckingUserCard({
           photoUrl={data?.photo_url}
           element={data?.element}
           className={cn(
-            "transition-all duration-500",
-            confirmed ? "border-faithful/80 ring-2 ring-faithful/30" : "border-white/15 opacity-45 grayscale saturate-0",
+            "border-2 transition-all duration-500",
+            confirmed
+              ? "border-faithful shadow-[3px_3px_0_0_color-mix(in_srgb,var(--faithful)_55%,#0a0c0b)]"
+              : "border-white/20 opacity-45 grayscale saturate-0",
           )}
         />
         {confirmed ? (
           <span
-            className="absolute -right-0.5 -bottom-0.5 z-10 flex size-5 items-center justify-center rounded-full border-2 border-black/60 bg-faithful sm:size-5.5"
+            className="absolute -right-0.5 -bottom-0.5 z-10 flex size-5 items-center justify-center rounded-md border-2 border-black/80 bg-faithful shadow-[2px_2px_0_0_#0a0c0b] sm:size-5.5"
             aria-hidden
           >
             <CheckCircle2 className="size-3 text-white sm:size-3.5" />

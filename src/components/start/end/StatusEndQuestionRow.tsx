@@ -14,9 +14,9 @@ function StatusEndQuestionRow({ q }: { q: IReportQuestionScore }) {
     <div
       className={cn(
         "flex flex-col gap-2 px-3 py-2 text-sm",
-        variant === "muted" && "glass-start-slab-muted rounded-2xl",
-        variant === "ok" && "glass-start-slab-faithful rounded-2xl",
-        variant === "bad" && "glass-start-slab-unfaithful rounded-2xl",
+        variant === "muted" && "glass-start-slab-muted rounded-xl",
+        variant === "ok" && "glass-start-slab-faithful rounded-xl",
+        variant === "bad" && "glass-start-slab-unfaithful rounded-xl",
       )}
     >
       <div className="flex flex-row items-center justify-between gap-3">

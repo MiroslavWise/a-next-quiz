@@ -114,9 +114,9 @@ function ElementPickerOption({
       aria-checked={selected}
       onClick={onSelect}
       className={cn(
-        "relative flex min-w-0 flex-col overflow-hidden rounded-lg border p-2 text-left transition-[box-shadow,border-color,ring-color] duration-150",
-        "focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-1",
-        selected ? cn(styles.optionSelected, "ring-2 ring-white/55") : "hover:border-white/22",
+        "relative flex min-w-0 flex-col overflow-hidden rounded-md border-2 p-2 text-left transition-[box-shadow,border-color] duration-150",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-(--accent-orb)",
+        selected ? styles.optionSelected : "shadow-[2px_2px_0_0_#0a0c0b] hover:border-white/35",
       )}
       style={
         selected
@@ -278,15 +278,15 @@ function ElementsUser() {
         onClick={(e) => e.stopPropagation()}
         className={cn(
           styles.form,
-          "bg-background border-border/80 relative z-10 flex w-full max-w-md flex-col overflow-hidden rounded-t-2xl border sm:rounded-2xl sm:backdrop-blur-xl",
+          "game-liquid relative z-10 flex w-full max-w-md flex-col overflow-hidden rounded-t-xl border-2 border-black/80 bg-[color-mix(in_srgb,var(--element-surface,#121418)_90%,black)] shadow-[8px_8px_0_0_#0a0c0b] sm:rounded-xl",
         )}
       >
-        <header className="border-border/60 flex shrink-0 items-start justify-between gap-2 border-b px-3 py-3 sm:px-4">
+        <header className="flex shrink-0 items-start justify-between gap-2 border-b-2 border-black/70 px-3 py-3 sm:px-4">
           <div className="min-w-0 space-y-0.5">
-            <h2 id="elements-user-title" className="text-foreground text-sm font-semibold tracking-tight">
+            <h2 id="elements-user-title" className="text-sm font-bold tracking-tight text-white">
               {profile?.element ? "Сменить стихию" : "Выберите стихию"}
             </h2>
-            <p className="text-muted-foreground text-[0.65rem] leading-snug">
+            <p className="text-[0.65rem] leading-snug text-white/55">
               Необязательно, но даёт бонусы и недостатки в игре. Серые способности ещё не открыты уровнем персонажа. Можно изменить до
               старта раунда.
             </p>
@@ -326,8 +326,8 @@ function ElementsUser() {
           />
         </div>
 
-        <div className="border-border/60 bg-muted/20 flex shrink-0 flex-col gap-1.5 border-t px-3 py-3 sm:px-4">
-          <Button type="submit" disabled={submitting} size="sm" className="h-9 w-full rounded-lg font-semibold">
+        <div className="flex shrink-0 flex-col gap-1.5 border-t-2 border-black/70 bg-black/25 px-3 py-3 sm:px-4">
+          <Button type="submit" disabled={submitting} size="sm" className="game-btn-primary h-10 w-full rounded-xl font-bold">
             {submitting ? (
               <span className="inline-flex items-center gap-1.5 text-xs">
                 <Loader2Icon className="size-3.5 animate-spin" aria-hidden />
@@ -342,7 +342,7 @@ function ElementsUser() {
             variant="ghost"
             size="sm"
             disabled={submitting}
-            className="h-8 w-full rounded-lg text-xs"
+            className="h-8 w-full rounded-md border-2 border-black/50 text-xs text-white/80 hover:bg-white/8"
             onClick={dispatchCloseElementsUser}
           >
             Позже

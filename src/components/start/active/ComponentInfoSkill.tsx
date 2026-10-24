@@ -167,15 +167,20 @@ function ComponentInfoSkill() {
         aria-label="Закрыть карточку способности"
         onClick={close}
       />
-      <article role="dialog" aria-modal="true" aria-labelledby="skill-info-title" className="skill-info-card glass3d">
+      <article
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="skill-info-title"
+        className="skill-info-card game-liquid border-2 border-black/80 shadow-[8px_8px_0_0_#0a0c0b]"
+      >
         <div className="skill-info-card-art" data-skill={definition.id} aria-hidden />
         <div className="flex max-h-[inherit] flex-col gap-3 overflow-y-auto overscroll-contain p-4">
           <header className="flex items-start gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/15 text-(--accent-orb)">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-md border-2 border-black/80 bg-(--accent-orb)/15 text-(--accent-orb) shadow-[3px_3px_0_0_#0a0c0b]">
               <GameSkillIcon skillId={definition.id} className="size-5" />
             </span>
             <div className="min-w-0 flex-1">
-              <h2 id="skill-info-title" className="text-base leading-tight font-semibold text-white">
+              <h2 id="skill-info-title" className="text-base leading-tight font-bold text-white">
                 {definition.title}
               </h2>
               <p className="mt-0.5 text-xs font-medium text-(--accent-orb)">{definition.short}</p>
@@ -193,7 +198,7 @@ function ComponentInfoSkill() {
           </header>
           <p className="text-sm leading-relaxed text-white/80">{definition.detail}</p>
           {definition.condition ? (
-            <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs leading-relaxed text-white/70">
+            <p className="rounded-md border-2 border-black/60 bg-black/25 px-3 py-2 text-xs leading-relaxed text-white/70 shadow-[2px_2px_0_0_#0a0c0b]">
               {definition.condition}
             </p>
           ) : null}
@@ -223,7 +228,7 @@ function ComponentInfoSkill() {
             </p>
           ) : null}
           {!isStaff && manaCost > 0 ? (
-            <div className="space-y-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+            <div className="space-y-1.5 rounded-md border-2 border-black/60 bg-black/25 px-3 py-2 shadow-[2px_2px_0_0_#0a0c0b]">
               <div className="flex items-center justify-between gap-2 text-xs text-white/75">
                 <span>
                   Стоимость <span className="font-semibold tabular-nums text-white">{manaCost}</span>
@@ -260,7 +265,7 @@ function ComponentInfoSkill() {
                   ))}
                 </ul>
               ) : (
-                <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs leading-relaxed text-white/70">
+                <p className="rounded-md border-2 border-black/60 bg-black/25 px-3 py-2 text-xs leading-relaxed text-white/70 shadow-[2px_2px_0_0_#0a0c0b]">
                   Пока никто не активировал
                 </p>
               )}
@@ -279,7 +284,7 @@ function ComponentInfoSkill() {
                 !questionId ||
                 !canAfford
               }
-              className="glass-start-btn-primary-palette mt-1 h-11 w-full rounded-2xl text-white hover:bg-transparent"
+              className="glass-start-btn-primary-palette mt-1 h-11 w-full rounded-xl font-bold text-white hover:bg-transparent"
             >
               {activationPending ? <Loader2 className="animate-spin" aria-hidden /> : null}
               {selectedStatus === "active"

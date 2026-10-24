@@ -164,7 +164,7 @@ main.start-shell {
   isolation: isolate;
   overflow: hidden;
   max-height: min(56svh, 28rem);
-  border-radius: 1.25rem;
+  border-radius: 0.75rem;
 }
 
 .skill-info-card-art {

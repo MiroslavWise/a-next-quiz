@@ -5,19 +5,19 @@ import { RANDOM_PRIZE_MIN_CORRECT_PERCENT } from "@/lib/report-prizes"
 function RandomPrizeLobbyBanner() {
   return (
     <section
-      className="glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 rounded-2xl p-3 sm:p-4"
+      className="glass-start-liquid-palette w-full max-w-[calc(100vw-2rem)] shrink-0 rounded-xl p-3 sm:p-4"
       aria-label="Случайный приз"
     >
       <div className="flex items-start gap-3">
         <span
-          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 sm:size-11"
+          className="flex size-10 shrink-0 items-center justify-center rounded-md border-2 border-black/80 bg-(--accent-orb)/15 shadow-[3px_3px_0_0_#0a0c0b] sm:size-11"
           aria-hidden
         >
           <Gift className="size-6 text-(--accent-orb)" aria-hidden />
         </span>
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold tracking-tight text-white sm:text-[0.95rem]">Случайный приз</h2>
+            <h2 className="text-sm font-bold tracking-tight text-white sm:text-[0.95rem]">Случайный приз</h2>
             <Sparkles className="size-3.5 shrink-0 text-(--accent-orb)" aria-hidden />
           </div>
           <p className="text-[0.68rem] leading-snug text-white/60 sm:text-xs">
