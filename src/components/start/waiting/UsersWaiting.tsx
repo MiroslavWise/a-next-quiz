@@ -475,26 +475,26 @@ function UserWaiting({
     >
       {isLoading ? (
         <>
-          <Skeleton className="size-12 rounded-full sm:size-13 md:size-14 lg:size-15" />
+          <Skeleton className="size-12 rounded-md sm:size-13 md:size-14 lg:size-15" />
           <Skeleton className="h-3 w-full rounded-md" />
         </>
       ) : (
         <>
           <div
-            className="relative z-10 inline-grid shrink-0 rounded-full"
+            className="relative z-10 inline-grid shrink-0 rounded-md"
             data-pair-anchor={color ? user : undefined}
             style={color ? pairAvatarRingStyle(color) : undefined}
           >
             {color && isSelfPair ? (
               <span
                 aria-hidden
-                className="pointer-events-none absolute -inset-px animate-pulse rounded-full"
-                style={{ boxShadow: `0 0 12px ${color}` }}
+                className="pointer-events-none absolute -inset-px animate-pulse rounded-md"
+                style={{ boxShadow: `4px 4px 0 0 ${color}` }}
               />
             ) : null}
             {isObserver ? (
               <span
-                className="absolute -top-1 -right-1 z-10 flex size-6 items-center justify-center rounded-full border border-white/20 bg-black/55 sm:size-7"
+                className="absolute -top-1 -right-1 z-10 flex size-6 items-center justify-center rounded-md border-2 border-black/70 bg-black/55 shadow-[2px_2px_0_0_#0a0c0b] sm:size-7"
                 aria-hidden
               >
                 <Eye className="size-3.5 text-white/80" />

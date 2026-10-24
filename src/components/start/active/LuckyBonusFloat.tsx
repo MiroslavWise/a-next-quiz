@@ -41,7 +41,7 @@ function LuckyBonusFloatCard({ burst, viewerTgId }: LuckyBonusFloatCardProps) {
         <UserAvatarById
           telegramId={burst.telegramId}
           viewerTgId={viewerTgId}
-          className={cn("size-8 shrink-0 rounded-full border-2", itsMe ? "border-amber-200/70" : "border-amber-300/50")}
+          className={cn("size-8 shrink-0 rounded-md border-2", itsMe ? "border-amber-200/70" : "border-amber-300/50")}
           loadingClassName="size-8"
           pseudoFallback={(id) => `Участник ${id}`}
         />

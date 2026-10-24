@@ -248,7 +248,7 @@ function CheckingUserCard({
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center gap-1">
-        <Skeleton className="size-12 rounded-full sm:size-13 md:size-14" />
+        <Skeleton className="size-12 rounded-md sm:size-13 md:size-14" />
         <Skeleton className="h-3 w-full rounded-md" />
       </div>
     )

@@ -33,7 +33,7 @@ interface IProps extends Partial<IQuestion> {
   staffSkills?: ReactNode
 }
 
-const ROUND_CLASS = "rounded-2xl xl:rounded-3xl"
+const ROUND_CLASS = "rounded-xl"
 
 const SEAL_VARS = {
   "--seal-size": "1.75rem",

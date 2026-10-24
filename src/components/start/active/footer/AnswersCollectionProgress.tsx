@@ -75,7 +75,7 @@ function UserAvatar({ index, user, length, answerOrder }: { index: number; user:
     >
       {!!answerOrder && answerOrder > 0 && (
         <span
-          className="pointer-events-none absolute -bottom-0.5 left-1/2 flex size-5 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full bg-black/75 text-center font-mono text-xs leading-none font-normal whitespace-nowrap text-white tabular-nums"
+          className="pointer-events-none absolute -bottom-0.5 left-1/2 flex size-5 -translate-x-1/2 items-center justify-center overflow-hidden rounded-md border border-black/80 bg-black/75 text-center font-mono text-xs leading-none font-normal whitespace-nowrap text-white tabular-nums shadow-[1px_1px_0_0_#0a0c0b]"
           style={{
             zIndex: 21 + length - index,
           }}
@@ -89,7 +89,7 @@ function UserAvatar({ index, user, length, answerOrder }: { index: number; user:
         variant="footer"
         bare
         className="transition-transform duration-200"
-        loading={<Skeleton className="size-10 shrink-0 rounded-full" />}
+        loading={<Skeleton className="size-10 shrink-0 rounded-md" />}
       />
     </div>
   )

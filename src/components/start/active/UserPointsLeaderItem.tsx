@@ -61,7 +61,7 @@ function UserPointsLeaderItem({
     return (
       <li data-flip-id={String(telegram_id)} className="glass-start-slab flex flex-col gap-1 rounded-xl px-2 py-1.5">
         <div className="flex items-center gap-1.5">
-          <Skeleton className="size-7 rounded-full" />
+          <Skeleton className="size-7 rounded-md" />
           <Skeleton className="h-3 w-24 rounded-md" />
           <Skeleton className="ml-auto h-3 w-10 rounded-md" />
         </div>
@@ -111,7 +111,7 @@ function UserPointsLeaderItem({
         ) : null}
         {isPrizePlace ? (
           <span
-            className="absolute -top-px -right-px z-10 flex size-3.25 items-center justify-center overflow-hidden rounded-full border border-amber-200/70 bg-linear-to-br from-amber-400 to-amber-600"
+            className="absolute -top-px -right-px z-10 flex size-3.25 items-center justify-center overflow-hidden rounded-sm border-2 border-black/70 bg-linear-to-br from-amber-400 to-amber-600 shadow-[1px_1px_0_0_#0a0c0b]"
             aria-label="Призовое место"
             title="Призовое место"
           >
@@ -119,7 +119,7 @@ function UserPointsLeaderItem({
           </span>
         ) : null}
         <div
-          className="relative inline-grid shrink-0 rounded-full"
+          className="relative inline-grid shrink-0 rounded-md"
           data-pair-anchor={pairColor && Number.isFinite(anchorId) ? anchorId : undefined}
           style={pairColor ? pairAvatarRingStyle(pairColor) : undefined}
         >

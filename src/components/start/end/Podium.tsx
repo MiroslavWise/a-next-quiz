@@ -59,7 +59,7 @@ function PodiumUserCard({
     return (
       <div className={cn("min-w-0 rounded-2xl px-4 py-3", rankCardClass(user.rank))}>
         <Skeleton className="mx-auto h-3 w-14 rounded-md" />
-        <Skeleton className="mx-auto mt-2 size-9 rounded-full" />
+        <Skeleton className="mx-auto mt-2 size-9 rounded-md" />
         <Skeleton className="mx-auto mt-2 h-4 w-24 rounded-md" />
         <Skeleton className="mx-auto mt-2 h-4 w-20 rounded-md" />
       </div>
@@ -86,11 +86,11 @@ function PodiumUserCard({
               element={data?.element}
               isGameAvatar={isGameAvatar}
               photoOverlay="never"
-              className={cn("size-full rounded-full border-2", user.rank === 1 ? "border-(--accent-orb)/55" : "border-white/25")}
+              className={cn("size-full rounded-md border-2", user.rank === 1 ? "border-(--accent-orb)/55" : "border-white/25")}
             />
             {isPrizePlace ? (
               <span
-                className="absolute -top-1.5 -right-1.5 z-10 flex size-5 items-center justify-center rounded-full border-2 border-black/80 bg-(--accent-orb) shadow-[2px_2px_0_0_#0a0c0b]"
+                className="absolute -top-1.5 -right-1.5 z-10 flex size-5 items-center justify-center rounded-md border-2 border-black/80 bg-(--accent-orb) shadow-[2px_2px_0_0_#0a0c0b]"
                 aria-label="Призовое место"
                 title="Призовое место"
               >

@@ -44,7 +44,7 @@ function AnswererRow({ entry, viewerTgId }: { entry: IAnswerUserEntry; viewerTgI
         wrapperClassName="shrink-0"
         pseudoFallback={() => pseudo}
         className="border-white/25"
-        loading={<Skeleton className="size-9 shrink-0 rounded-full border-2 border-white/15" />}
+        loading={<Skeleton className="size-9 shrink-0 rounded-md border-2 border-white/15" />}
       />
       {isLoading ? (
         <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -158,14 +158,14 @@ export function AnswerersAvatarStack({
                 variant="leaderboard"
                 bare
                 wrapperClassName="size-7 shrink-0"
-                className="size-7 border-2 border-black/50"
-                loading={<Skeleton className="size-7 shrink-0 rounded-full border-2 border-white/15" />}
+                className="size-7 rounded-md border-2 border-black/50"
+                loading={<Skeleton className="size-7 shrink-0 rounded-md border-2 border-white/15" />}
               />
             </span>
           ))}
           {overflow > 0 ? (
             <span
-              className="relative z-0 -ml-2 inline-flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-black/50 bg-black/70 text-[0.6rem] font-bold text-white/85 tabular-nums"
+              className="relative z-0 -ml-2 inline-flex size-7 shrink-0 items-center justify-center rounded-md border-2 border-black/50 bg-black/70 text-[0.6rem] font-bold text-white/85 tabular-nums"
               style={{ zIndex: 0 }}
             >
               +{overflow}

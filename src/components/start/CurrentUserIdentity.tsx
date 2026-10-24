@@ -43,7 +43,7 @@ export default function CurrentUserIdentity({
   if (isLoading) {
     return (
       <div className="flex items-center gap-3">
-        <Skeleton className="size-11 rounded-full" />
+        <Skeleton className="size-11 rounded-md" />
         {showPseudo ? <Skeleton className="h-5 w-40 rounded-md" /> : null}
       </div>
     )

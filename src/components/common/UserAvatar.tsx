@@ -24,12 +24,15 @@ export type UserAvatarPhotoOverlay = "admin-toggle" | "admin-only" | "always" | 
 
 /** Фото (справа снизу) и стихия (слева снизу) — 1/3 стороны аватара. */
 const AVATAR_CORNER_BADGE_SIZE = "block h-1/3 w-1/3"
-/** Аватар и слой бейджей в одной ячейке grid — проценты считаются от реального размера круга. */
+/** Аватар и слой бейджей в одной ячейке grid — проценты от размера аватара. */
 const AVATAR_STACK_CLASS = "relative inline-grid shrink-0"
+
+/** Квадрат с лёгким радиусом — neo-brutal в игре. */
+const AVATAR_SHAPE = "rounded-md"
 
 function avatarCornerBadgeClass(side: "left" | "right", extra?: string) {
   return cn(
-    "pointer-events-none absolute bottom-0 z-10 box-border overflow-hidden rounded-full border-2",
+    "pointer-events-none absolute bottom-0 z-10 box-border overflow-hidden rounded-sm border-2",
     AVATAR_CORNER_BADGE_SIZE,
     side === "left" ? "left-0" : "right-0",
     extra,
@@ -94,71 +97,71 @@ const variantStyles: Record<
   }
 > = {
   report: {
-    root: "bg-muted/50 size-11 border",
-    fallback: "",
+    root: cn(AVATAR_SHAPE, "bg-muted/50 size-11 border"),
+    fallback: AVATAR_SHAPE,
     overlayBorder: "border-background",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "admin-toggle",
   },
   identity: {
-    root: "size-11 border bg-muted/50",
-    fallback: "",
+    root: cn(AVATAR_SHAPE, "size-11 border bg-muted/50"),
+    fallback: AVATAR_SHAPE,
     overlayBorder: "border-background",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "always",
   },
   leader: {
-    root: "size-10 border border-white/20 bg-white/10",
-    fallback: "text-xs text-white",
+    root: cn(AVATAR_SHAPE, "size-10 border border-white/20 bg-white/10"),
+    fallback: cn(AVATAR_SHAPE, "text-xs text-white"),
     overlayBorder: "border-white/30",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "admin-toggle",
   },
   waiting: {
-    root: "size-12 border sm:size-13 md:size-14",
-    fallback: "bg-white/15 text-sm font-medium text-white/95",
+    root: cn(AVATAR_SHAPE, "size-12 border sm:size-13 md:size-14"),
+    fallback: cn(AVATAR_SHAPE, "bg-white/15 text-sm font-medium text-white/95"),
     overlayBorder: "border-white/30",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "admin-toggle",
   },
   "waiting-profile": {
-    root: "size-11 shrink-0 border-2 sm:size-12",
-    fallback: "bg-white/12 text-sm font-semibold text-white/90 sm:text-base",
+    root: cn(AVATAR_SHAPE, "size-11 shrink-0 border-2 sm:size-12"),
+    fallback: cn(AVATAR_SHAPE, "bg-white/12 text-sm font-semibold text-white/90 sm:text-base"),
     overlayBorder: "border-background",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "always",
   },
   podium: {
-    root: "relative z-10 size-16 border border-white/20 xl:size-20 2xl:size-24",
-    fallback: "text-sm font-bold xl:text-base 2xl:text-lg",
+    root: cn(AVATAR_SHAPE, "relative z-10 size-16 border border-white/20 xl:size-20 2xl:size-24"),
+    fallback: cn(AVATAR_SHAPE, "text-sm font-bold xl:text-base 2xl:text-lg"),
     overlayBorder: "border-background bg-transparent",
     overlayPlacement: "nested",
     defaultPhotoOverlay: "admin-toggle",
   },
   emoji: {
-    root: "ring-background/80 ring-1.5 size-5",
-    fallback: "text-[9px] font-semibold",
+    root: cn(AVATAR_SHAPE, "ring-background/80 ring-1.5 size-5"),
+    fallback: cn(AVATAR_SHAPE, "text-[9px] font-semibold"),
     overlayBorder: "",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "never",
   },
   leaderboard: {
-    root: "size-9 border-2 ring-offset-1 ring-offset-black/50",
-    fallback: "bg-white/12 text-[0.65rem] font-semibold text-white/90",
+    root: cn(AVATAR_SHAPE, "size-9 border-2"),
+    fallback: cn(AVATAR_SHAPE, "bg-white/12 text-[0.65rem] font-semibold text-white/90"),
     overlayBorder: "",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "never",
   },
   footer: {
-    root: "size-10 border ring-offset-1 ring-offset-black/50",
-    fallback: "bg-white/12 text-[0.65rem] font-semibold text-white/90",
+    root: cn(AVATAR_SHAPE, "size-10 border"),
+    fallback: cn(AVATAR_SHAPE, "bg-white/12 text-[0.65rem] font-semibold text-white/90"),
     overlayBorder: "",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "never",
   },
   staff: {
-    root: "size-9 border border-border bg-muted/40",
-    fallback: "text-xs font-medium",
+    root: cn(AVATAR_SHAPE, "size-9 border border-border bg-muted/40"),
+    fallback: cn(AVATAR_SHAPE, "text-xs font-medium"),
     overlayBorder: "border-background",
     overlayPlacement: "sibling",
     defaultPhotoOverlay: "always",
@@ -219,7 +222,7 @@ function UserPartnerBadge({
   return (
     <span
       className={cn(
-        "pointer-events-none absolute top-0 z-10 block h-2/5 w-2/5 overflow-hidden rounded-full border-2 border-background bg-white/15",
+        "pointer-events-none absolute top-0 z-10 block h-2/5 w-2/5 overflow-hidden rounded-sm border-2 border-background bg-white/15",
         side === "left" ? "left-0" : "right-0",
       )}
       style={{ borderColor: borderColor || undefined, backgroundColor: data?.bg?.trim() || undefined }}
@@ -243,7 +246,7 @@ function UserGameAvatarBadge({ variant, badgeClassName }: { variant: UserAvatarV
     <span
       className={cn(
         // Как бейдж стихии: сплошной фон, чтобы дырка в центре иконки не просвечивала фон аватара.
-        "pointer-events-none absolute top-0 right-0 z-10 box-border overflow-hidden rounded-full border-2 border-background isolate bg-white p-[10%]",
+        "pointer-events-none absolute top-0 right-0 z-10 box-border overflow-hidden rounded-sm border-2 border-background isolate bg-white p-[10%]",
         AVATAR_CORNER_BADGE_SIZE,
         badgeClassName,
       )}
@@ -346,7 +349,9 @@ export function UserAvatar({
       title={title}
       onClick={onClick}
     >
-      {avatar?.trim() ? <AvatarImage src={avatar.trim()} alt={alt || pseudo} className={cn("object-cover", imageClassName)} /> : null}
+      {avatar?.trim() ? (
+        <AvatarImage src={avatar.trim()} alt={alt || pseudo} className={cn(AVATAR_SHAPE, "object-cover", imageClassName)} />
+      ) : null}
       <AvatarFallback
         className={cn(styles.fallback, fallbackClassName)}
         style={variant === "emoji" ? { backgroundColor: bgColor } : undefined}
@@ -397,7 +402,7 @@ export function UserAvatarById({
   })
 
   if (isLoading) {
-    return loading ?? <Skeleton className={cn("rounded-full", loadingClassName ?? "size-11")} />
+    return loading ?? <Skeleton className={cn(AVATAR_SHAPE, loadingClassName ?? "size-11")} />
   }
 
   const pseudo = data?.pseudo?.trim() || (pseudoFallback ? pseudoFallback(telegramId) : `Пользователь ${telegramId}`)

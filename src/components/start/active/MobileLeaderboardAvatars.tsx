@@ -59,11 +59,11 @@ function LeaderboardAvatarFace({
         bare
         pseudoFallback={titleFallback}
         className={avatarBorderClass(rank, isPrizePlace)}
-        loading={<Skeleton className="size-9 shrink-0 rounded-full border-2 border-white/15" />}
+        loading={<Skeleton className="size-9 shrink-0 rounded-md border-2 border-white/15" />}
       />
       {isPrizePlace ? (
         <span
-          className="absolute -top-1 -right-1 z-10 flex size-4.5 items-center justify-center rounded-full border border-amber-200/70 bg-linear-to-br from-amber-400 to-amber-600"
+          className="absolute -top-1 -right-1 z-10 flex size-4.5 items-center justify-center rounded-sm border-2 border-black/70 bg-linear-to-br from-amber-400 to-amber-600 shadow-[1px_1px_0_0_#0a0c0b]"
           aria-hidden
         >
           <Gift className="size-2.5 text-white" aria-hidden />
@@ -97,7 +97,7 @@ function MobileLeaderboardAvatars({ reportId, tgId, lastByType, prizes, onOpen, 
         LEADER_SKELETON_SLOTS.slice(0, VISIBLE_LEADERS + (overflow ? 1 : 0)).map((slotKey, slotIndex) => (
           <Skeleton
             key={slotKey}
-            className="size-9 shrink-0 rounded-full border-2 border-white/10"
+            className="size-9 shrink-0 rounded-md border-2 border-white/10"
             style={{ marginTop: slotIndex === 0 ? 0 : -10 }}
           />
         ))
@@ -118,7 +118,7 @@ function MobileLeaderboardAvatars({ reportId, tgId, lastByType, prizes, onOpen, 
           })}
           {overflow > 0 ? (
             <span
-              className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-white/20 bg-black/45 text-[0.65rem] font-bold text-white/85 tabular-nums ring-offset-1 ring-offset-black/50"
+              className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-md border-2 border-white/20 bg-black/45 text-[0.65rem] font-bold text-white/85 tabular-nums"
               style={{ marginTop: leaders.length > 0 ? -10 : 0, zIndex: 0 }}
               aria-hidden
             >
