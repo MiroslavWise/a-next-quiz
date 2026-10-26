@@ -43,7 +43,7 @@ function StaffRow({ entry }: { entry: IStaffRoleEntry }) {
 
 function StaffSection({ title, entries }: { title: string; entries: IStaffRoleEntry[] }) {
   return (
-    <div className="game-liquid flex flex-col gap-2.5 rounded-lg p-3.5 sm:p-4">
+    <div className="flex flex-col gap-2.5">
       <h3 className="text-sm font-bold tracking-tight text-white">{title}</h3>
       {entries.length > 0 ? (
         <ItemGroup className="gap-2.5">

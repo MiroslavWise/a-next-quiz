@@ -268,16 +268,14 @@ export default function AdminReportDetailsClient({ uuid }: { uuid: string }) {
         enabled={!!tgId && (report?.status === EReportStatus.END || report?.status === EReportStatus.GAME)}
       />
 
-      <section className="game-liquid overflow-visible rounded-lg p-3.5 sm:p-4">
-        <header className="mb-3 flex items-end justify-between gap-3 px-0.5">
-          <div>
-            <h2 className="text-base font-bold text-white">Таблица очков</h2>
-            <p className="mt-0.5 text-xs text-white/45">Нажмите строку, чтобы раскрыть детализацию</p>
-          </div>
+      <section className="overflow-visible">
+        <header className="mb-3">
+          <h2 className="text-base font-bold text-white">Таблица очков</h2>
+          <p className="mt-0.5 text-xs text-white/45">Нажмите строку, чтобы раскрыть детализацию</p>
         </header>
 
         {sortedUserPoints.length > 0 ? (
-          <ItemGroup className="space-y-4 overflow-visible pt-3">
+          <ItemGroup className="space-y-3 overflow-visible">
             {sortedUserPoints.map((item: IReportUserPoints & { rank: number }) => {
               const isPrizePlace = item.rank > 0 && prizes.includes(item.rank)
               return (
