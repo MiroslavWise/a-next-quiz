@@ -31,33 +31,33 @@ const STATUS_LABEL: Record<EReportStatus, string> = {
 }
 
 function statusTone(status?: EReportStatus) {
-  if (status === EReportStatus.END) return "border-white/15 bg-white/8 text-white/80"
+  if (status === EReportStatus.END) return "border-black/70 bg-white/10 text-white/80"
   if (status === EReportStatus.GAME || status === EReportStatus.START) {
-    return "border-(--accent-orb)/40 bg-(--accent-orb)/15 text-(--accent-orb)"
+    return "border-black/70 bg-(--accent-orb)/20 text-(--accent-orb)"
   }
-  if (status === EReportStatus.CHECKING) return "border-amber-400/35 bg-amber-500/12 text-amber-100"
-  return "border-white/12 bg-white/6 text-white/70"
+  if (status === EReportStatus.CHECKING) return "border-black/70 bg-amber-500/20 text-amber-100"
+  return "border-black/70 bg-black/35 text-white/70"
 }
 
 function ReportDetailsSkeleton() {
   return (
-    <div className="flex w-full flex-col gap-5" aria-busy="true" aria-label="Загрузка отчёта">
+    <div className="flex w-full flex-col gap-4" aria-busy="true" aria-label="Загрузка отчёта">
       <header className="flex items-center gap-2">
-        <Skeleton className="size-9 shrink-0 rounded-xl" />
+        <Skeleton className="size-9 shrink-0 rounded-lg border-2 border-black/60" />
         <div className="min-w-0 flex-1 space-y-2">
-          <Skeleton className="h-5 w-40 rounded-md" />
-          <Skeleton className="h-3.5 w-24 rounded-md" />
+          <Skeleton className="h-5 w-40 rounded-md bg-white/12" />
+          <Skeleton className="h-3.5 w-24 rounded-md bg-white/8" />
         </div>
-        <Skeleton className="size-9 shrink-0 rounded-xl" />
+        <Skeleton className="size-9 shrink-0 rounded-lg border-2 border-black/60" />
       </header>
-      <Skeleton className="aspect-[2.2/1] w-full rounded-2xl" />
-      <div className="grid grid-cols-2 gap-2">
-        <Skeleton className="h-16 rounded-2xl" />
-        <Skeleton className="h-16 rounded-2xl" />
+      <Skeleton className="aspect-[2.2/1] w-full rounded-lg border-2 border-black/60" />
+      <div className="grid grid-cols-2 gap-2.5">
+        <Skeleton className="h-16 rounded-lg border-2 border-black/60" />
+        <Skeleton className="h-16 rounded-lg border-2 border-black/60" />
       </div>
       <div className="space-y-3 pt-1">
         {Array.from({ length: 4 }).map((_, index) => (
-          <Skeleton key={`report-user-skeleton-${index}`} className="h-16 w-full rounded-2xl" />
+          <Skeleton key={`report-user-skeleton-${index}`} className="h-16 w-full rounded-lg border-2 border-black/60" />
         ))}
       </div>
     </div>
@@ -160,9 +160,15 @@ export default function AdminReportDetailsClient({ uuid }: { uuid: string }) {
   if (isLoadingUserPoints || isLoadingReport) return <ReportDetailsSkeleton />
 
   return (
-    <div className="flex w-full flex-col gap-5">
-      <header className="flex items-start gap-2">
-        <Button asChild variant="outline" size="icon" className="mt-0.5 shrink-0 rounded-xl" aria-label="К списку отчётов">
+    <div className="flex w-full flex-col gap-4">
+      <header className="game-liquid flex items-start gap-2 rounded-lg p-3 sm:p-3.5">
+        <Button
+          asChild
+          variant="outline"
+          size="icon"
+          className="mt-0.5 size-9 shrink-0 rounded-lg border-2 border-black/80 bg-black/35 text-white shadow-[3px_3px_0_0_#0a0c0b]"
+          aria-label="К списку отчётов"
+        >
           <Link href="/admin/reports">
             <ArrowLeft className="size-3.5" />
           </Link>
@@ -170,14 +176,19 @@ export default function AdminReportDetailsClient({ uuid }: { uuid: string }) {
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <p className="text-[0.65rem] font-medium tracking-[0.18em] text-white/45 uppercase">Отчёт #{reportIdLabel}</p>
+            <p className="text-[0.65rem] font-bold tracking-[0.18em] text-(--accent-orb) uppercase">Отчёт #{reportIdLabel}</p>
             {report?.status ? (
-              <span className={cn("rounded-full border px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide", statusTone(report.status))}>
+              <span
+                className={cn(
+                  "rounded-md border-2 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide shadow-[1px_1px_0_0_#0a0c0b]",
+                  statusTone(report.status),
+                )}
+              >
                 {STATUS_LABEL[report.status] ?? report.status}
               </span>
             ) : null}
           </div>
-          <h1 className="mt-1 text-xl leading-tight font-semibold text-balance text-white">{quizName}</h1>
+          <h1 className="mt-1 text-xl leading-tight font-bold text-balance text-white">{quizName}</h1>
           <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-white/45">
             {report?.created_at ? <span>{formatDateTimeHHmmDDMMYY(report.created_at)}</span> : null}
             {report?.code ? (
@@ -193,20 +204,30 @@ export default function AdminReportDetailsClient({ uuid }: { uuid: string }) {
 
         <div className="mt-0.5 flex shrink-0 items-center gap-1.5">
           {canGoToGame ? (
-            <Button asChild variant="secondary" size="icon" className="rounded-xl" aria-label="Открыть игру">
+            <Button
+              asChild
+              size="icon"
+              className="game-btn-primary size-9 rounded-lg"
+              aria-label="Открыть игру"
+            >
               <Link href={`/start/${report.id}`}>
                 <Play className="size-3.5" />
               </Link>
             </Button>
           ) : null}
-          <Button variant="destructive" size="icon" className="rounded-xl" aria-label="Удалить отчёт" onClick={handleDeleteQuiz}>
+          <Button
+            size="icon"
+            className="size-9 rounded-lg border-2 border-black/80 bg-(--unfaithful)/85 text-white shadow-[3px_3px_0_0_#0a0c0b]"
+            aria-label="Удалить отчёт"
+            onClick={handleDeleteQuiz}
+          >
             <Trash className="size-3.5" />
           </Button>
         </div>
       </header>
 
       {coverUrl ? (
-        <div className="relative aspect-[2.2/1] overflow-hidden rounded-2xl border border-white/10 bg-white/4">
+        <div className="relative aspect-[2.2/1] overflow-hidden rounded-lg border-2 border-black/80 bg-black/35 shadow-[4px_4px_0_0_#0a0c0b]">
           <Image
             src={coverUrl}
             alt={`Обложка: ${quizName}`}
@@ -218,25 +239,25 @@ export default function AdminReportDetailsClient({ uuid }: { uuid: string }) {
           <div className="absolute inset-0 bg-linear-to-t from-black/55 via-transparent to-transparent" />
         </div>
       ) : (
-        <div className="flex aspect-[2.8/1] items-center justify-center rounded-2xl border border-dashed border-white/12 bg-white/3">
+        <div className="game-slab flex aspect-[2.8/1] items-center justify-center rounded-lg border-dashed">
           <FileBarChart className="size-8 text-white/25" aria-hidden />
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-2">
-        <div className="rounded-2xl border border-white/10 bg-white/4 px-3.5 py-3">
-          <p className="flex items-center gap-1.5 text-[0.65rem] tracking-[0.14em] text-white/45 uppercase">
+      <div className="grid grid-cols-2 gap-2.5">
+        <div className="game-slab rounded-lg px-3.5 py-3">
+          <p className="flex items-center gap-1.5 text-[0.65rem] font-bold tracking-[0.14em] text-white/45 uppercase">
             <Users className="size-3" aria-hidden />
             Игроки
           </p>
-          <p className="mt-1 text-2xl font-semibold tabular-nums text-white">{sortedUserPoints.length}</p>
+          <p className="mt-1 text-2xl font-bold tabular-nums text-white">{sortedUserPoints.length}</p>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/4 px-3.5 py-3">
-          <p className="flex items-center gap-1.5 text-[0.65rem] tracking-[0.14em] text-white/45 uppercase">
+        <div className="game-slab rounded-lg px-3.5 py-3">
+          <p className="flex items-center gap-1.5 text-[0.65rem] font-bold tracking-[0.14em] text-white/45 uppercase">
             <Trophy className="size-3" aria-hidden />
             Призы
           </p>
-          <p className="mt-1 text-2xl font-semibold tabular-nums text-white">{prizePlacesLabel ?? "—"}</p>
+          <p className="mt-1 text-2xl font-bold tabular-nums text-white">{prizePlacesLabel ?? "—"}</p>
           {prizePlacesLabel ? <p className="mt-0.5 text-[0.65rem] text-white/40">места</p> : null}
         </div>
       </div>
@@ -247,10 +268,10 @@ export default function AdminReportDetailsClient({ uuid }: { uuid: string }) {
         enabled={!!tgId && (report?.status === EReportStatus.END || report?.status === EReportStatus.GAME)}
       />
 
-      <section className="overflow-visible rounded-2xl border border-white/10 bg-white/3 p-3.5 sm:p-4">
+      <section className="game-liquid overflow-visible rounded-lg p-3.5 sm:p-4">
         <header className="mb-3 flex items-end justify-between gap-3 px-0.5">
           <div>
-            <h2 className="text-base font-semibold text-white">Таблица очков</h2>
+            <h2 className="text-base font-bold text-white">Таблица очков</h2>
             <p className="mt-0.5 text-xs text-white/45">Нажмите строку, чтобы раскрыть детализацию</p>
           </div>
         </header>
@@ -269,14 +290,15 @@ export default function AdminReportDetailsClient({ uuid }: { uuid: string }) {
                   points={reportUserTotalPoints(item)}
                   isPrizePlace={isPrizePlace}
                   isRandomPrize={randomWinners.has(Number(item.telegram_id))}
+                  gameTone
                 />
               )
             })}
           </ItemGroup>
         ) : (
-          <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-white/12 px-4 py-10 text-center">
+          <div className="game-slab flex flex-col items-center gap-2 rounded-lg border-dashed px-4 py-10 text-center">
             <Users className="size-6 text-white/30" aria-hidden />
-            <p className="text-sm font-medium text-white/80">Нет данных по очкам</p>
+            <p className="text-sm font-bold text-white/80">Нет данных по очкам</p>
             <p className="max-w-xs text-xs text-white/45">Когда игроки наберут баллы, рейтинг появится здесь.</p>
           </div>
         )}

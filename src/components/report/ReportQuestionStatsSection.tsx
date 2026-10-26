@@ -114,7 +114,7 @@ function QuestionStatCard({ row, tgId }: { row: IQuestionOutcomeStat; tgId: numb
   return (
     <article
       className={cn(
-        "relative overflow-visible rounded-xl border border-white/10 bg-white/4",
+        "game-slab relative overflow-visible rounded-lg",
         hasElement && "pt-1",
       )}
       style={hasElement ? STATS_SEAL_VARS : undefined}
@@ -132,13 +132,13 @@ function QuestionStatCard({ row, tgId }: { row: IQuestionOutcomeStat; tgId: numb
         className={cn(
           "relative z-1 flex w-full flex-col gap-2 px-3 py-2.5 text-left transition-colors hover:bg-white/4",
           hasElement && "pt-3.5 pl-3.5",
-          open && "rounded-t-xl",
-          !open && "rounded-xl",
+          open && "rounded-t-lg",
+          !open && "rounded-lg",
         )}
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[0.65rem] font-medium tracking-[0.14em] text-white/40 uppercase">Вопрос {row.index + 1}</p>
+            <p className="text-[0.65rem] font-bold tracking-[0.14em] text-white/40 uppercase">Вопрос {row.index + 1}</p>
             <p className="mt-0.5 truncate text-sm font-medium text-white/90" title={displayTitle}>
               {displayTitle}
             </p>
@@ -149,7 +149,7 @@ function QuestionStatCard({ row, tgId }: { row: IQuestionOutcomeStat; tgId: numb
           </span>
         </div>
         <div
-          className="flex h-2 overflow-hidden rounded-full bg-white/8"
+          className="flex h-2 overflow-hidden rounded-sm border border-black/70 bg-black/35 shadow-[1px_1px_0_0_#0a0c0b]"
           role="img"
           aria-label={`Верно ${row.right_pct}%, неверно ${row.wrong_pct}%, пропуск ${row.abstained_pct}%`}
         >
@@ -206,11 +206,11 @@ export default function ReportQuestionStatsSection({
 
   if (isLoading) {
     return (
-      <section className="rounded-2xl border border-white/10 bg-white/3 p-3.5 sm:p-4">
-        <Skeleton className="mb-3 h-5 w-40 rounded-md" />
+      <section className="game-liquid rounded-lg p-3.5 sm:p-4">
+        <Skeleton className="mb-3 h-5 w-40 rounded-md bg-white/12" />
         <div className="space-y-2.5">
           {Array.from({ length: 2 }).map((_, index) => (
-            <Skeleton key={`q-stat-skeleton-${index}`} className="h-16 w-full rounded-xl" />
+            <Skeleton key={`q-stat-skeleton-${index}`} className="h-16 w-full rounded-lg border-2 border-black/60" />
           ))}
         </div>
       </section>
@@ -219,7 +219,7 @@ export default function ReportQuestionStatsSection({
 
   if (isError) {
     return (
-      <section className="rounded-2xl border border-white/10 bg-white/3 p-3.5 sm:p-4">
+      <section className="game-liquid rounded-lg p-3.5 sm:p-4">
         <p className="text-sm text-rose-300/90">
           {error instanceof Error ? error.message : "Не удалось загрузить статистику по вопросам"}
         </p>
@@ -230,15 +230,15 @@ export default function ReportQuestionStatsSection({
   if (questions.length === 0) return null
 
   return (
-    <section className="overflow-visible rounded-2xl border border-white/10 bg-white/3 p-3.5 sm:p-4">
+    <section className="game-liquid overflow-visible rounded-lg p-3.5 sm:p-4">
       <button
         type="button"
         aria-expanded={sectionOpen}
         onClick={() => setSectionOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-3 rounded-xl px-0.5 py-0.5 text-left transition-colors hover:bg-white/4"
+        className="flex w-full items-center justify-between gap-3 rounded-lg px-0.5 py-0.5 text-left transition-colors hover:bg-white/4"
       >
         <div>
-          <h2 className="text-base font-semibold text-white">По вопросам</h2>
+          <h2 className="text-base font-bold text-white">По вопросам</h2>
           <p className="mt-0.5 text-xs text-white/45">
             {sectionOpen
               ? "Доля верных, неверных и пропусков · нажмите вопрос для списка игроков"

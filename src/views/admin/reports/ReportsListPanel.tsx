@@ -26,13 +26,13 @@ export default function ReportsListPanel() {
 
   if (isLoading) {
     return (
-      <ItemGroup className="gap-2">
+      <ItemGroup className="gap-2.5">
         {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index + "skeleton"} className="flex w-full items-center gap-4">
-            <Skeleton className="size-10 shrink-0 rounded-full" />
+          <div key={index + "skeleton"} className="game-slab flex w-full items-center gap-3 rounded-lg p-3">
+            <Skeleton className="size-10 shrink-0 rounded-md border-2 border-black/60" />
             <div className="flex w-full flex-col gap-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-4 w-full bg-white/12" />
+              <Skeleton className="h-4 w-3/4 bg-white/8" />
             </div>
           </div>
         ))}
@@ -42,12 +42,18 @@ export default function ReportsListPanel() {
 
   if (reports && reports.length > 0) {
     return (
-      <ItemGroup className="gap-2">
+      <ItemGroup className="gap-2.5">
         {reports.map((report) => (
-          <Item key={report.id} variant="outline" asChild role="listitem" className="bg-background w-full">
+          <Item
+            key={report.id}
+            variant="outline"
+            asChild
+            role="listitem"
+            className="game-slab w-full rounded-lg border-2 border-black/80 bg-transparent text-white shadow-[4px_4px_0_0_#0a0c0b] [a]:hover:bg-white/5"
+          >
             <Link href={`/admin/reports/${report.id}`}>
               {report.quiz?.imageUrl ? (
-                <ItemMedia variant="image">
+                <ItemMedia variant="image" className="rounded-md border-2 border-black/70 shadow-[2px_2px_0_0_#0a0c0b]">
                   <img
                     src={report.quiz.imageUrl}
                     alt={report.quiz.name}
@@ -59,18 +65,20 @@ export default function ReportsListPanel() {
                 </ItemMedia>
               ) : (
                 <ItemMedia variant="image">
-                  <div className="bg-muted flex size-8 items-center justify-center rounded-full">
-                    <FileBarChart className="text-muted-foreground size-4" />
+                  <div className="flex size-8 items-center justify-center rounded-md border-2 border-black/70 bg-black/40 shadow-[2px_2px_0_0_#0a0c0b]">
+                    <FileBarChart className="size-4 text-white/55" />
                   </div>
                 </ItemMedia>
               )}
               <ItemContent>
-                <ItemTitle className="line-clamp-1 truncate">Отчёт #{report?.id}</ItemTitle>
-                <ItemDescription className="font-mono text-xs">{report?.quiz?.name}</ItemDescription>
-                <ItemSeparator />
+                <ItemTitle className="line-clamp-1 truncate text-white">Отчёт #{report?.id}</ItemTitle>
+                <ItemDescription className="font-mono text-xs text-white/55">{report?.quiz?.name}</ItemDescription>
+                <ItemSeparator className="bg-white/10" />
                 <ItemFooter className="flex flex-wrap gap-x-2 gap-y-0.5">
-                  <span className="text-foreground text-xs font-medium">{report?.status}</span>
-                  <span className="text-muted-foreground text-xs">{formatDateTimeHHmmDDMMYY(report.created_at)}</span>
+                  <span className="rounded-md border-2 border-black/70 bg-(--accent-orb)/15 px-1.5 py-0.5 text-[0.65rem] font-bold text-(--accent-orb) shadow-[1px_1px_0_0_#0a0c0b]">
+                    {report?.status}
+                  </span>
+                  <span className="text-xs text-white/45">{formatDateTimeHHmmDDMMYY(report.created_at)}</span>
                 </ItemFooter>
               </ItemContent>
             </Link>
@@ -81,15 +89,15 @@ export default function ReportsListPanel() {
   }
 
   return (
-    <div className="border-border flex flex-col items-center gap-3 rounded-xl border border-dashed p-3 text-center">
-      <div className="border-border bg-muted/60 flex size-10 items-center justify-center rounded-full border">
-        <FileBarChart className="text-muted-foreground size-4" />
+    <div className="game-slab flex flex-col items-center gap-3 rounded-lg border-dashed p-4 text-center">
+      <div className="flex size-10 items-center justify-center rounded-md border-2 border-black/70 bg-black/35 shadow-[2px_2px_0_0_#0a0c0b]">
+        <FileBarChart className="size-4 text-white/45" />
       </div>
       <div className="space-y-1">
-        <p className="text-foreground text-sm font-medium">Отчётов пока нет</p>
-        <p className="text-muted-foreground text-xs">Когда появятся данные с сервера, они отобразятся здесь.</p>
+        <p className="text-sm font-bold text-white">Отчётов пока нет</p>
+        <p className="text-xs text-white/55">Когда появятся данные с сервера, они отобразятся здесь.</p>
       </div>
-      <Button asChild variant="outline" aria-label="К списку квизов">
+      <Button asChild className="game-btn-primary h-10 rounded-lg font-bold" aria-label="К списку квизов">
         <Link href="/admin">К списку квизов</Link>
       </Button>
     </div>

@@ -8,7 +8,7 @@ import ReportsListPanel from "@/views/admin/reports/ReportsListPanel"
  */
 export default function AdminReportsPage() {
   return (
-    <section className="flex w-full flex-col pt-5">
+    <section className="flex w-full flex-col pt-2">
       <AppPageHeaders
         title="Отчёты"
         description="Список сохранённых отчётов"

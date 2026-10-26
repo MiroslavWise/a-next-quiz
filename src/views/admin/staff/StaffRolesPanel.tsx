@@ -20,18 +20,22 @@ function StaffRow({ entry }: { entry: IStaffRoleEntry }) {
   const pseudo = fullName || u?.pseudo?.trim() || "?"
 
   return (
-    <Item variant="outline" role="listitem">
+    <Item
+      variant="outline"
+      role="listitem"
+      className="game-slab rounded-lg border-2 border-black/80 bg-transparent text-white shadow-[4px_4px_0_0_#0a0c0b]"
+    >
       <ItemMedia variant="image">
         <UserAvatar variant="staff" avatar={u?.avatar} bg={u?.bg} pseudo={pseudo} photoUrl={u?.photo_url} />
       </ItemMedia>
       <ItemContent>
-        <ItemTitle className="line-clamp-1">{title ?? "Нет в базе"}</ItemTitle>
+        <ItemTitle className="line-clamp-1 text-white">{title ?? "Нет в базе"}</ItemTitle>
         {fullName ? (
-          <ItemDescription className="text-muted-foreground text-xs">{fullName}</ItemDescription>
+          <ItemDescription className="text-xs text-white/55">{fullName}</ItemDescription>
         ) : (
-          <ItemDescription className="text-muted-foreground font-mono text-xs">ID {entry.telegram_id}</ItemDescription>
+          <ItemDescription className="font-mono text-xs text-white/55">ID {entry.telegram_id}</ItemDescription>
         )}
-        {u?.username ? <ItemDescription className="text-muted-foreground text-xs">@{u.username}</ItemDescription> : null}
+        {u?.username ? <ItemDescription className="text-xs text-white/45">@{u.username}</ItemDescription> : null}
       </ItemContent>
     </Item>
   )
@@ -39,16 +43,16 @@ function StaffRow({ entry }: { entry: IStaffRoleEntry }) {
 
 function StaffSection({ title, entries }: { title: string; entries: IStaffRoleEntry[] }) {
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-foreground text-sm font-semibold tracking-tight">{title}</h3>
+    <div className="game-liquid flex flex-col gap-2.5 rounded-lg p-3.5 sm:p-4">
+      <h3 className="text-sm font-bold tracking-tight text-white">{title}</h3>
       {entries.length > 0 ? (
-        <ItemGroup className="gap-2">
+        <ItemGroup className="gap-2.5">
           {entries.map((entry) => (
             <StaffRow key={`${title}-${entry.telegram_id}`} entry={entry} />
           ))}
         </ItemGroup>
       ) : (
-        <p className="text-muted-foreground text-xs">Список пуст.</p>
+        <p className="text-xs text-white/45">Список пуст.</p>
       )}
     </div>
   )
@@ -68,13 +72,13 @@ export default function StaffRolesPanel() {
 
   if (isFetching) {
     return (
-      <ItemGroup className="gap-2">
+      <ItemGroup className="gap-2.5">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="flex w-full items-center gap-4">
-            <Skeleton className="size-9 shrink-0 rounded-full" />
+          <div key={i} className="game-slab flex w-full items-center gap-3 rounded-lg p-3">
+            <Skeleton className="size-9 shrink-0 rounded-md border-2 border-black/60" />
             <div className="flex w-full flex-col gap-2">
-              <Skeleton className="h-4 w-2/3" />
-              <Skeleton className="h-3 w-1/2" />
+              <Skeleton className="h-4 w-2/3 bg-white/12" />
+              <Skeleton className="h-3 w-1/2 bg-white/8" />
             </div>
           </div>
         ))}
@@ -84,10 +88,10 @@ export default function StaffRolesPanel() {
 
   if (isError) {
     return (
-      <div className="border-border flex flex-col items-center gap-3 rounded-xl border border-dashed p-4 text-center">
-        <Users className="text-muted-foreground size-8" aria-hidden />
-        <p className="text-muted-foreground text-sm">{error instanceof Error ? error.message : "Не удалось загрузить"}</p>
-        <Button asChild variant="outline">
+      <div className="game-slab flex flex-col items-center gap-3 rounded-lg border-dashed p-4 text-center">
+        <Users className="size-8 text-white/45" aria-hidden />
+        <p className="text-sm text-white/65">{error instanceof Error ? error.message : "Не удалось загрузить"}</p>
+        <Button asChild className="game-btn-primary h-10 rounded-lg font-bold">
           <Link href="/admin">К списку квизов</Link>
         </Button>
       </div>
@@ -97,9 +101,9 @@ export default function StaffRolesPanel() {
   if (!data) return null
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <StaffSection title="Администраторы" entries={data.admins} />
       <StaffSection title="Менеджеры" entries={data.managers} />
-    </>
+    </div>
   )
 }

@@ -32,7 +32,9 @@ export function ElementAbilityEffectList({
   const titleCls = compact
     ? "mb-1 text-[0.55rem] font-semibold tracking-[0.12em] text-white/45 uppercase"
     : "mb-1.5 text-[0.65rem] font-semibold tracking-[0.14em] text-white/50 uppercase"
-  const itemPad = compact ? "rounded-md border px-2 py-1.5" : "rounded-lg border px-2.5 py-2"
+  const itemPad = compact
+    ? "rounded-md border-2 border-black/70 px-2 py-1.5 shadow-[1px_1px_0_0_#0a0c0b]"
+    : "rounded-lg border-2 border-black/70 px-2.5 py-2 shadow-[2px_2px_0_0_#0a0c0b]"
   const nameCls = compact ? "text-[0.65rem] font-semibold" : "text-xs font-semibold"
   const shortCls = compact
     ? "text-[0.55rem] font-medium tracking-wide text-white/50 tabular-nums"

@@ -159,9 +159,9 @@ function ItemUserReportPoints({
 
   if (isLoading) {
     return (
-      <Item variant="outline" size="sm" role="listitem" className={cn("justify-between", gameTone && "glass-start-slab rounded-2xl")}>
+      <Item variant="outline" size="sm" role="listitem" className={cn("justify-between", gameTone && "glass-start-slab rounded-lg")}>
         <div className="flex min-w-0 items-center gap-3">
-          <Skeleton className="size-11 rounded-full" />
+          <Skeleton className="size-11 rounded-md border-2 border-black/60" />
           <div className="flex flex-col gap-1.5">
             <Skeleton className="h-4 w-40 rounded-md" />
             <Skeleton className="h-3 w-28 rounded-md" />
@@ -175,8 +175,8 @@ function ItemUserReportPoints({
   const scorePanel = reportId ? (
     <div
       className={cn(
-        "border-border bg-card/40 overflow-visible rounded-b-xl border border-t-0 px-3 py-3",
-        gameTone && "glass-start-slab rounded-t-none border-white/10",
+        "border-border bg-card/40 overflow-visible rounded-b-lg border border-t-0 px-3 py-3",
+        gameTone && "glass-start-slab rounded-t-none",
         !scoreOpen && "hidden",
       )}
       id={`user-score-${String(telegram_id)}`}
@@ -225,18 +225,18 @@ function ItemUserReportPoints({
     <div
       className={cn(
         "relative space-y-0 overflow-visible has-aria-expanded:z-30",
-        isPrizePlace && (gameTone ? "rounded-2xl ring-1 ring-(--accent-orb)/45" : "rounded-2xl ring-1 ring-amber-400/35"),
+        isPrizePlace && (gameTone ? "rounded-lg outline outline-2 outline-(--accent-orb)/70" : "rounded-lg ring-1 ring-amber-400/35"),
         isRandomPrize &&
           !isPrizePlace &&
-          (gameTone ? "rounded-2xl ring-1 ring-faithful/45" : "rounded-2xl ring-1 ring-emerald-400/30"),
+          (gameTone ? "rounded-lg outline outline-2 outline-faithful/70" : "rounded-lg ring-1 ring-emerald-400/30"),
       )}
     >
       {isPrizePlace ? (
         <div
           className={cn(
-            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-7 items-center justify-center rounded-full border",
+            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-7 items-center justify-center rounded-md border-2 border-black/80 shadow-[2px_2px_0_0_#0a0c0b]",
             gameTone
-              ? "border-(--accent-orb)/50 bg-(--accent-orb)/80"
+              ? "bg-(--accent-orb)/90"
               : "border-amber-300/50 bg-amber-500/85",
           )}
           aria-hidden
@@ -246,9 +246,9 @@ function ItemUserReportPoints({
       ) : isRandomPrize ? (
         <div
           className={cn(
-            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-7 items-center justify-center rounded-full border",
+            "pointer-events-none absolute -top-2 -left-2 z-10 flex size-7 items-center justify-center rounded-md border-2 border-black/80 shadow-[2px_2px_0_0_#0a0c0b]",
             gameTone
-              ? "border-faithful/60 bg-faithful/80"
+              ? "bg-faithful/90"
               : "border-emerald-300/45 bg-emerald-500/80",
           )}
           aria-hidden
@@ -263,7 +263,7 @@ function ItemUserReportPoints({
         role="listitem"
         className={cn(
           "bg-card/60 flex flex-row flex-nowrap items-center justify-between gap-2",
-          gameTone && "glass-start-slab rounded-2xl bg-transparent text-white",
+          gameTone && "glass-start-slab rounded-lg bg-transparent text-white",
           showSeals && "pt-4",
           reportId && scoreOpen && "rounded-b-none border-b-0",
           isPrizePlace && !gameTone && "border-transparent bg-transparent",

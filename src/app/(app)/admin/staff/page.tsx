@@ -10,7 +10,7 @@ import StaffRolesPanel from "@/views/admin/staff/StaffRolesPanel"
  */
 export default function AdminStaffPage() {
   return (
-    <section className="flex w-full flex-col pt-5">
+    <section className="flex w-full flex-col pt-2">
       <AppPageHeaders
         title="Команда"
         description="Администраторы и менеджеры из конфигурации сервера"
@@ -19,7 +19,7 @@ export default function AdminStaffPage() {
         backTo="/"
         backAriaLabel="На главную"
       />
-      <div className="flex w-full flex-col gap-8 py-4">
+      <div className="flex w-full flex-col gap-5 py-4">
         <StaffRolesPanel />
         <AdminCacheReset />
       </div>

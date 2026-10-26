@@ -53,15 +53,15 @@ export default function AdminCacheReset() {
   if (!isAdmin) return null
 
   return (
-    <div className="border-destructive/30 bg-destructive/5 flex flex-col gap-3 rounded-xl border p-4">
+    <div className="game-slab flex flex-col gap-3 rounded-lg border-(--unfaithful)/60 p-4 shadow-[4px_4px_0_0_color-mix(in_srgb,var(--unfaithful)_45%,#0a0c0b)]">
       <div className="flex flex-col gap-1">
-        <h3 className="text-foreground text-sm font-semibold tracking-tight">Кэш сервера</h3>
-        <p className="text-muted-foreground text-xs">Полный сброс процессных кэшей на бэкенде. Доступно только администраторам.</p>
+        <p className="text-[0.65rem] font-bold tracking-[0.18em] text-(--unfaithful) uppercase">опасно</p>
+        <h3 className="text-sm font-bold tracking-tight text-white">Кэш сервера</h3>
+        <p className="text-xs text-white/60">Полный сброс процессных кэшей на бэкенде. Доступно только администраторам.</p>
       </div>
       <Button
         type="button"
-        variant="destructive"
-        className="w-full sm:w-auto"
+        className="h-11 w-full rounded-lg border-2 border-black/80 bg-(--unfaithful)/85 font-bold text-white shadow-[4px_4px_0_0_#0a0c0b] hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-(--unfaithful) hover:shadow-[2px_2px_0_0_#0a0c0b] sm:w-auto"
         disabled={cacheResetLoading}
         onClick={openCacheResetConfirm}
       >

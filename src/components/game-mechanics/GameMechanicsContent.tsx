@@ -46,14 +46,14 @@ import { TEAM_BONUSES, type TeamBonusDefinition } from "@/lib/game-team-bonuses"
 
 function MechanicsSection({ title, children }: PropsWithChildren<{ title: string }>) {
   return (
-    <section className="flex min-w-0 flex-col gap-3">
-      <h3 className="text-foreground text-base font-semibold tracking-tight">{title}</h3>
-      <div className="text-muted-foreground flex min-w-0 flex-col gap-2 text-sm leading-relaxed">{children}</div>
+    <section className="game-liquid flex min-w-0 flex-col gap-3 rounded-lg p-3.5 sm:p-4">
+      <h3 className="text-base font-bold tracking-tight text-white">{title}</h3>
+      <div className="flex min-w-0 flex-col gap-2 text-sm leading-relaxed text-white/70">{children}</div>
     </section>
   )
 }
 
-/** РРєРѕРЅРєР° + С‚РµРєСЃС‚: РІРµСЃСЊ С‚РµРєСЃС‚ РІ РѕРґРЅРѕРј Р±Р»РѕРєРµ, РёРЅР°С‡Рµ flex СЂР°Р·Р»РѕР¶РёС‚ <strong> Рё С„СЂР°РіРјРµРЅС‚С‹ РїРѕ РіРѕСЂРёР·РѕРЅС‚Р°Р»Рё. */
+/** Иконка + текст: весь текст в одном блоке, иначе flex разложит <strong> и фрагменты по горизонтали. */
 function IconNote({ icon, children, className }: PropsWithChildren<{ icon: ReactNode; className?: string }>) {
   return (
     <p className={cn("flex min-w-0 items-start gap-2", className)}>
@@ -65,24 +65,24 @@ function IconNote({ icon, children, className }: PropsWithChildren<{ icon: React
 
 function PhaseCard({ phase, title, description }: { phase: string; title: string; description: string }) {
   return (
-    <div className="border-border bg-background rounded-xl border p-3 sm:p-4">
+    <div className="game-slab rounded-lg p-3 sm:p-3.5">
       <div className="mb-1 flex min-w-0 flex-wrap items-center gap-2">
-        <span className="shrink-0 rounded-md border border-white/15 bg-white/8 px-2 py-0.5 font-mono text-[0.65rem] font-semibold tracking-wider text-white/70 uppercase">
+        <span className="shrink-0 rounded-md border-2 border-black/70 bg-(--accent-orb)/15 px-2 py-0.5 font-mono text-[0.65rem] font-bold tracking-wider text-(--accent-orb) uppercase shadow-[2px_2px_0_0_#0a0c0b]">
           {phase}
         </span>
-        <span className="text-foreground min-w-0 text-sm font-semibold">{title}</span>
+        <span className="min-w-0 text-sm font-bold text-white">{title}</span>
       </div>
-      <p className="text-muted-foreground text-xs leading-relaxed">{description}</p>
+      <p className="text-xs leading-relaxed text-white/65">{description}</p>
     </div>
   )
 }
 
 function TeamBonusMechanicsCard({ bonus }: { bonus: TeamBonusDefinition }) {
   return (
-    <article className="border-border bg-background flex min-w-0 flex-col rounded-xl border p-3 sm:p-4">
+    <article className="game-slab flex min-w-0 flex-col rounded-lg p-3 sm:p-3.5">
       <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
-        <h4 className="text-foreground text-sm font-semibold">{bonus.title}</h4>
-        <code className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[0.6rem] tracking-wide text-white/45">
+        <h4 className="text-sm font-bold text-white">{bonus.title}</h4>
+        <code className="rounded-md border-2 border-black/70 bg-black/35 px-1.5 py-0.5 text-[0.6rem] tracking-wide text-white/50 shadow-[1px_1px_0_0_#0a0c0b]">
           {bonus.id}
         </code>
       </div>
@@ -94,15 +94,15 @@ function TeamBonusMechanicsCard({ bonus }: { bonus: TeamBonusDefinition }) {
 
 function SkillMechanicsCard({ skill }: { skill: GameSkillDefinition }) {
   return (
-    <article className="border-border bg-background flex min-w-0 flex-col rounded-xl border p-3 sm:p-4">
+    <article className="game-slab flex min-w-0 flex-col rounded-lg p-3 sm:p-3.5">
       <div className="flex min-w-0 items-start gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 text-(--accent-orb)">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border-2 border-black/80 bg-(--accent-orb)/15 text-(--accent-orb) shadow-[3px_3px_0_0_#0a0c0b]">
           <GameSkillIcon skillId={skill.id} className="size-5" />
         </span>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h4 className="text-foreground text-sm font-semibold">{skill.title}</h4>
-            <code className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[0.6rem] tracking-wide text-white/45">
+            <h4 className="text-sm font-bold text-white">{skill.title}</h4>
+            <code className="rounded-md border-2 border-black/70 bg-black/35 px-1.5 py-0.5 text-[0.6rem] tracking-wide text-white/50 shadow-[1px_1px_0_0_#0a0c0b]">
               {skill.id}
             </code>
           </div>
@@ -111,7 +111,7 @@ function SkillMechanicsCard({ skill }: { skill: GameSkillDefinition }) {
       </div>
       <p className="mt-3 text-xs leading-relaxed text-white/70">{skill.detail}</p>
       {skill.condition ? (
-        <p className="mt-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs leading-relaxed text-white/60">
+        <p className="mt-2 rounded-lg border-2 border-black/70 bg-black/30 px-3 py-2 text-xs leading-relaxed text-white/60 shadow-[2px_2px_0_0_#0a0c0b]">
           {skill.condition}
         </p>
       ) : null}
@@ -130,23 +130,23 @@ function ResonanceList() {
         return (
           <li
             key={skill.id}
-            className="flex min-w-0 items-start gap-3 rounded-xl border bg-black/20 p-3"
-            style={{ borderColor: `${accent}55` }}
+            className="game-slab flex min-w-0 items-start gap-3 rounded-lg border-2 p-3"
+            style={{ borderColor: `${accent}88` }}
           >
-            <span className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-(--accent-orb)/40 bg-(--accent-orb)/12 text-(--accent-orb)">
+            <span className="relative flex size-10 shrink-0 items-center justify-center rounded-lg border-2 border-black/80 bg-(--accent-orb)/15 text-(--accent-orb) shadow-[3px_3px_0_0_#0a0c0b]">
               <GameSkillIcon skillId={skill.id} className="size-5" />
               <Image
                 src={getResonanceIconSrc(resonance.element)}
                 alt=""
                 width={16}
                 height={16}
-                className="absolute -right-1 -bottom-1 size-4 rounded-full bg-black/60 object-contain p-px"
+                className="absolute -right-1 -bottom-1 size-4 rounded-md border border-black/70 bg-black/70 object-contain p-px"
               />
             </span>
             <div className="min-w-0">
               <p className="text-sm font-semibold" style={{ color: accent }}>
                 {resonance.title}
-                <span className="ml-1.5 text-xs font-medium text-white/50">В· {skill.title}</span>
+                <span className="ml-1.5 text-xs font-medium text-white/50">· {skill.title}</span>
               </p>
               <p className="mt-0.5 text-xs leading-relaxed text-white/70">{resonance.detail}</p>
             </div>
@@ -177,20 +177,20 @@ function StreakTierCard({
   pulse: boolean
 }) {
   return (
-    <li className={cn("rounded-xl border px-4 py-3", containerClass)}>
+    <li className={cn("rounded-lg border-2 border-black/70 px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]", containerClass)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className={cn("text-xs font-semibold tracking-[0.16em] uppercase", titleClass)}>{title}</span>
+            <span className={cn("text-xs font-bold tracking-[0.16em] uppercase", titleClass)}>{title}</span>
             <span
               className={cn(
-                "inline-flex items-center rounded-full border px-2 py-0.5 text-[0.65rem] font-semibold tracking-[0.14em]",
+                "inline-flex items-center rounded-md border-2 border-black/70 px-2 py-0.5 text-[0.65rem] font-bold tracking-[0.14em] shadow-[1px_1px_0_0_#0a0c0b]",
                 badgeClass,
               )}
             >
               {badgeText}
             </span>
-            {pulse ? <span className="text-[0.65rem] font-medium tracking-wide text-white/50 uppercase">СЃРІРµС‡РµРЅРёРµ</span> : null}
+            {pulse ? <span className="text-[0.65rem] font-medium tracking-wide text-white/50 uppercase">свечение</span> : null}
           </div>
           <p className="mt-1 text-xs text-white/65">{rangeLabel}</p>
         </div>
@@ -210,8 +210,8 @@ function QuestionBonusTimingGroup({
   bonuses: readonly QuestionBonus[]
 }) {
   return (
-    <div className="min-w-0 rounded-xl border border-white/12 bg-white/5 px-4 py-3">
-      <p className="text-sm font-semibold text-white/90">{title}</p>
+    <div className="game-slab min-w-0 rounded-lg px-4 py-3">
+      <p className="text-sm font-bold text-white/90">{title}</p>
       <p className="mt-1 text-xs leading-relaxed text-white/60">{description}</p>
       <ul className="mt-2 flex flex-wrap gap-1.5">
         {bonuses.map((bonus) => {
@@ -222,10 +222,10 @@ function QuestionBonusTimingGroup({
             <li
               key={bonus}
               className={cn(
-                "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[0.65rem] font-medium",
-                team && "border-sky-300/45 bg-sky-400/12 text-sky-50",
-                negative && "border-(--unfaithful)/40 bg-(--unfaithful)/10 text-rose-50",
-                !team && !negative && "border-(--accent-orb)/40 bg-(--accent-orb)/10 text-amber-50",
+                "inline-flex items-center gap-1 rounded-md border-2 border-black/70 px-2 py-0.5 text-[0.65rem] font-bold shadow-[1px_1px_0_0_#0a0c0b]",
+                team && "bg-sky-400/15 text-sky-50",
+                negative && "bg-(--unfaithful)/15 text-rose-50",
+                !team && !negative && "bg-(--accent-orb)/15 text-amber-50",
               )}
             >
               <QuestionBonusIcon bonus={bonus} className="size-3 shrink-0 opacity-90" />
@@ -240,13 +240,13 @@ function QuestionBonusTimingGroup({
 
 function AllElementsBoostTable() {
   return (
-    <div className="min-w-0 overflow-x-auto rounded-xl border border-(--accent-orb)/30 bg-(--accent-orb)/6">
+    <div className="game-slab min-w-0 overflow-x-auto rounded-lg">
       <table className="w-full min-w-136 border-collapse text-left text-xs">
         <thead>
-          <tr className="border-b border-white/10 text-[0.65rem] tracking-[0.12em] text-white/50 uppercase">
-            <th className="px-3 py-2.5 font-semibold">РЎС‚РёС…РёСЏ</th>
-            <th className="px-3 py-2.5 font-semibold">РћР±С‹С‡РЅРѕ</th>
-            <th className="px-3 py-2.5 font-semibold">РЎ ALL_ELEMENTS_BOOST</th>
+          <tr className="border-b border-black/50 text-[0.65rem] tracking-[0.12em] text-white/50 uppercase">
+            <th className="px-3 py-2.5 font-bold">Стихия</th>
+            <th className="px-3 py-2.5 font-bold">Обычно</th>
+            <th className="px-3 py-2.5 font-bold">С ALL_ELEMENTS_BOOST</th>
           </tr>
         </thead>
         <tbody>
@@ -265,9 +265,9 @@ function AllElementsBoostTable() {
         </tbody>
       </table>
       <p className="border-t border-white/10 px-3 py-2 text-[0.68rem] leading-relaxed text-white/55">
-        Р­С„С„РµРєС‚С‹ РІ API вЂ” С‚Рµ Р¶Рµ id (<code className="text-[0.65rem]">fire_speed</code>, <code className="text-[0.65rem]">earth_patience</code>
-        , <code className="text-[0.65rem]">air_gust_double</code> Рё С‚.Рґ.), РјРµРЅСЏСЋС‚СЃСЏ С‚РѕР»СЊРєРѕ С‡РёСЃР»Р°. РђРІР°С‚Р°СЂ РёРіСЂС‹ Рё РёРіСЂРѕРєРё Р±РµР· СЃС‚РёС…РёРё вЂ” Р±РµР·
-        РёР·РјРµРЅРµРЅРёР№.
+        Эффекты в API — те же id (<code className="text-[0.65rem]">fire_speed</code>, <code className="text-[0.65rem]">earth_patience</code>
+        , <code className="text-[0.65rem]">air_gust_double</code> и т.д.), меняются только числа. Аватар игры и игроки без стихии — без
+        изменений.
       </p>
     </div>
   )
@@ -275,12 +275,12 @@ function AllElementsBoostTable() {
 
 function ProgressiveBonusTable() {
   return (
-    <div className="min-w-0 overflow-x-auto rounded-xl border border-(--accent-orb)/30 bg-(--accent-orb)/6">
+    <div className="game-slab min-w-0 overflow-x-auto rounded-lg">
       <table className="w-full min-w-64 border-collapse text-left text-xs">
         <thead>
-          <tr className="border-b border-white/10 text-[0.65rem] tracking-[0.12em] text-white/50 uppercase">
-            <th className="px-3 py-2.5 font-semibold">РњРµСЃС‚Рѕ РІ РѕС‡РµСЂРµРґРё РІРµСЂРЅС‹С…</th>
-            <th className="px-3 py-2.5 font-semibold">Р‘РѕРЅСѓСЃ</th>
+          <tr className="border-b border-black/50 text-[0.65rem] tracking-[0.12em] text-white/50 uppercase">
+            <th className="px-3 py-2.5 font-bold">Место в очереди верных</th>
+            <th className="px-3 py-2.5 font-bold">Бонус</th>
           </tr>
         </thead>
         <tbody>
@@ -293,9 +293,9 @@ function ProgressiveBonusTable() {
         </tbody>
       </table>
       <p className="border-t border-white/10 px-3 py-2 text-[0.68rem] leading-relaxed text-white/55">
-        Р”Р°Р»РµРµ +2% Р·Р° РєР°Р¶РґРѕРіРѕ СЃР»РµРґСѓСЋС‰РµРіРѕ РІРµСЂРЅРѕРіРѕ (7-Р№ в†’ +15%, 8-Р№ в†’ +17% вЂ¦). РћС‡РµСЂРµРґСЊ:{" "}
-        <code className="text-[0.65rem]">priorCorrect + 1</code> вЂ” РЅРµРІРµСЂРЅС‹Рµ РѕС‚РІРµС‚С‹ РґРѕ РІР°СЃ РЅРµ СЃРґРІРёРіР°СЋС‚ РјРµСЃС‚Рѕ. РџСЂРѕС†РµРЅС‚ СЃС‡РёС‚Р°РµС‚СЃСЏ РѕС‚ speed, СЃРµСЂРёРё Рё
-        РїР»РѕСЃРєРёС… Р±РѕРЅСѓСЃРѕРІ СЃС‚РёС…РёРё РґРѕ С€Р°РЅСЃРѕРІС‹С… РЅРµРґРѕСЃС‚Р°С‚РєРѕРІ; РјРµС‚РєР° СЃС‚РёС…РёРё РІРѕРїСЂРѕСЃР° Рё Р±РѕРЅСѓСЃ СѓСЂРѕРІРЅСЏ РёРґСѓС‚ РїРѕСЃР»Рµ. РўРѕР»СЊРєРѕ РІРµСЂРЅС‹Р№ РѕС‚РІРµС‚; effect id:{" "}
+        Далее +2% за каждого следующего верного (7-й > +15%, 8-й > +17% …). Очередь:{" "}
+        <code className="text-[0.65rem]">priorCorrect + 1</code> — неверные ответы до вас не сдвигают место. Процент считается от speed, серии и
+        плоских бонусов стихии до шансовых недостатков; метка стихии вопроса и бонус уровня идут после. Только верный ответ; effect id:{" "}
         <code className="text-[0.65rem]">q_progressive_bonus</code>.
       </p>
     </div>
@@ -304,13 +304,13 @@ function ProgressiveBonusTable() {
 
 function SequentialOrderBonusTable() {
   return (
-    <div className="min-w-0 overflow-x-auto rounded-xl border border-(--unfaithful)/30 bg-(--unfaithful)/6">
+    <div className="game-slab min-w-0 overflow-x-auto rounded-lg">
       <table className="w-full min-w-80 border-collapse text-left text-xs">
         <thead>
-          <tr className="border-b border-white/10 text-[0.65rem] tracking-[0.12em] text-white/50 uppercase">
-            <th className="px-3 py-2.5 font-semibold">РњРµСЃС‚Рѕ СЃСЂРµРґРё РІРµСЂРЅС‹С…</th>
-            <th className="px-3 py-2.5 font-semibold">% РѕС‚ base</th>
-            <th className="px-3 py-2.5 font-semibold">РћС‡РєРё (base 1000)</th>
+          <tr className="border-b border-black/50 text-[0.65rem] tracking-[0.12em] text-white/50 uppercase">
+            <th className="px-3 py-2.5 font-bold">Место среди верных</th>
+            <th className="px-3 py-2.5 font-bold">% от base</th>
+            <th className="px-3 py-2.5 font-bold">Очки (base 1000)</th>
           </tr>
         </thead>
         <tbody>
@@ -338,9 +338,9 @@ function SequentialOrderBonusTable() {
         </tbody>
       </table>
       <p className="border-t border-white/10 px-3 py-2 text-[0.68rem] leading-relaxed text-white/55">
-        РџСЂРёРјРµСЂ РїСЂРё <strong className="font-medium text-white/75">N = 10</strong> РёРіСЂРѕРєРѕРІ. Р¤РѕСЂРјСѓР»Р° РґР»СЏ i-РіРѕ РІРµСЂРЅРѕРіРѕ:{" "}
-        <code className="text-[0.65rem]">в€’N + 2NВ·(iв€’1)/(Nв€’1)</code> % РѕС‚ base. РЁР°Рі РјРµР¶РґСѓ РјРµСЃС‚Р°РјРё вЂ”{" "}
-        <code className="text-[0.65rem]">2N/(Nв€’1)</code> %. РЁС‚СЂР°С„ РЅРµ РіР»СѓР±Р¶Рµ в€’15% base РґР°Р¶Рµ РІ Р±РѕР»СЊС€РѕРј Р·Р°Р»Рµ. РўРѕР»СЊРєРѕ РІРµСЂРЅС‹Р№ РѕС‚РІРµС‚; effect id:{" "}
+        Пример при <strong className="font-medium text-white/75">N = 10</strong> игроков. Формула для i-го верного:{" "}
+        <code className="text-[0.65rem]">?N + 2N·(i?1)/(N?1)</code> % от base. Шаг между местами —{" "}
+        <code className="text-[0.65rem]">2N/(N?1)</code> %. Штраф не глубже ?15% base даже в большом зале. Только верный ответ; effect id:{" "}
         <code className="text-[0.65rem]">q_sequential_order_bonus</code>.
       </p>
     </div>
@@ -349,8 +349,8 @@ function SequentialOrderBonusTable() {
 
 function CharacterLadder({ title, lines }: { title: string; lines: string[] }) {
   return (
-    <article className="border-border bg-background rounded-xl border p-3 sm:p-4">
-      <h4 className="text-foreground text-sm font-semibold">{title}</h4>
+    <article className="game-slab rounded-lg p-3 sm:p-3.5">
+      <h4 className="text-sm font-bold text-white">{title}</h4>
       <ul className="mt-2 space-y-1 text-xs leading-relaxed text-white/70">
         {lines.map((line) => (
           <li key={line}>{line}</li>
@@ -367,49 +367,44 @@ function ElementMechanicsCard({ card }: { card: GameElementCard }) {
   return (
     <article
       className={cn(
-        "relative flex min-w-0 flex-col overflow-hidden rounded-2xl border p-4 shadow-lg backdrop-blur-sm",
+        "game-slab relative flex min-w-0 flex-col overflow-hidden rounded-lg p-4",
         card.wide ? "md:p-5" : "h-full",
-        isAvatar ? "border-white/25 bg-white/6" : "bg-black/20",
       )}
       style={
         {
-          borderColor: isAvatar ? "rgb(255 255 255 / 0.22)" : `${accent}55`,
-          boxShadow: isAvatar ? "0 0 40px rgb(255 255 255 / 0.06)" : `0 0 32px ${accent}22`,
+          borderColor: isAvatar ? "color-mix(in srgb, white 35%, #0a0c0b)" : `${accent}88`,
+          boxShadow: "4px 4px 0 0 #0a0c0b",
           "--element-accent": accent,
         } as CSSProperties
       }
     >
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-80"
+        className="pointer-events-none absolute inset-x-0 top-0 h-20 opacity-70"
         style={{
           background: isAvatar
-            ? "linear-gradient(180deg, rgb(255 255 255 / 0.12) 0%, transparent 100%)"
-            : `linear-gradient(180deg, ${accent}33 0%, transparent 100%)`,
+            ? "linear-gradient(180deg, rgb(255 255 255 / 0.1) 0%, transparent 100%)"
+            : `linear-gradient(180deg, ${accent}28 0%, transparent 100%)`,
         }}
         aria-hidden
       />
 
       <div className="relative flex min-w-0 items-start gap-3">
         <div
-          className={cn(
-            "flex size-14 shrink-0 items-center justify-center rounded-xl border p-2",
-            isAvatar ? "border-white/20 bg-white/10" : "border-white/10 bg-black/30",
-          )}
-          style={isAvatar ? undefined : { borderColor: `${accent}66`, backgroundColor: `${accent}18` }}
+          className="flex size-14 shrink-0 items-center justify-center rounded-lg border-2 border-black/80 p-2 shadow-[3px_3px_0_0_#0a0c0b]"
+          style={isAvatar ? { backgroundColor: "rgb(255 255 255 / 0.1)" } : { backgroundColor: `${accent}22` }}
         >
           <Image src={card.iconSrc} alt="" className="size-10 object-contain" width={40} height={40} />
         </div>
         <div className="min-w-0 flex-1 pt-0.5">
           <div className="flex flex-wrap items-center gap-2">
-            <h4 className="text-base font-semibold tracking-tight" style={{ color: isAvatar ? "#fff" : accent }}>
+            <h4 className="text-base font-bold tracking-tight" style={{ color: isAvatar ? "#fff" : accent }}>
               {card.name}
             </h4>
             <span
-              className="inline-flex rounded-full border px-2 py-0.5 text-[0.6rem] font-semibold tracking-[0.12em] uppercase"
+              className="inline-flex rounded-md border-2 border-black/70 px-2 py-0.5 text-[0.6rem] font-bold tracking-[0.12em] uppercase shadow-[1px_1px_0_0_#0a0c0b]"
               style={{
-                borderColor: isAvatar ? "rgb(255 255 255 / 0.25)" : `${accent}55`,
                 color: isAvatar ? "rgb(255 255 255 / 0.85)" : accent,
-                backgroundColor: isAvatar ? "rgb(255 255 255 / 0.08)" : `${accent}14`,
+                backgroundColor: isAvatar ? "rgb(255 255 255 / 0.08)" : `${accent}18`,
               }}
             >
               {card.tagline}
@@ -421,18 +416,17 @@ function ElementMechanicsCard({ card }: { card: GameElementCard }) {
       </div>
 
       <blockquote
-        className="relative mt-3 rounded-xl border px-3 py-2.5 text-xs leading-relaxed text-white/75 italic"
+        className="relative mt-3 rounded-lg border-2 border-black/70 px-3 py-2.5 text-xs leading-relaxed text-white/75 italic shadow-[2px_2px_0_0_#0a0c0b]"
         style={{
-          borderColor: isAvatar ? "rgb(255 255 255 / 0.15)" : `${accent}33`,
-          backgroundColor: isAvatar ? "rgb(255 255 255 / 0.05)" : `${accent}0d`,
+          backgroundColor: isAvatar ? "rgb(255 255 255 / 0.05)" : `${accent}12`,
         }}
       >
         {card.uiHint}
       </blockquote>
 
       <div className={cn("relative mt-3 grid min-w-0 gap-3", card.shortcomings.length > 0 ? "sm:grid-cols-2" : "grid-cols-1")}>
-        <ElementAbilityEffectList title="Р‘РѕРЅСѓСЃС‹" effects={card.bonuses} variant="bonus" accentColor={accent} />
-        <ElementAbilityEffectList title="РќРµРґРѕСЃС‚Р°С‚РєРё" effects={card.shortcomings} variant="penalty" accentColor={accent} />
+        <ElementAbilityEffectList title="Бонусы" effects={card.bonuses} variant="bonus" accentColor={accent} />
+        <ElementAbilityEffectList title="Недостатки" effects={card.shortcomings} variant="penalty" accentColor={accent} />
       </div>
     </article>
   )
@@ -442,110 +436,110 @@ export default function GameMechanicsContent() {
   return (
     <div className="flex w-full min-w-0 flex-col">
       <AppPageHeaders
-        title="РњРµС…Р°РЅРёРєР° РёРіСЂС‹"
-        description="РљР°Рє РїСЂРѕС…РѕРґРёС‚ РІРёРєС‚РѕСЂРёРЅР°, РѕС‡РєРё Рё Р±РѕРЅСѓСЃС‹"
-        toolbarTitle="РџСЂР°РІРёР»Р° Рё Р±РѕРЅСѓСЃС‹"
+        title="Механика игры"
+        description="Как проходит викторина, очки и бонусы"
+        toolbarTitle="Правила и бонусы"
         accent="four"
         backTo="/"
-        backAriaLabel="РќР° РіР»Р°РІРЅСѓСЋ"
+        backAriaLabel="На главную"
         toolbarClassName="mb-4"
       />
 
       <div className="flex min-w-0 flex-col gap-6 sm:gap-8">
-            <MechanicsSection title="РљР°Рє РїСЂРѕС…РѕРґРёС‚ РёРіСЂР°">
+            <MechanicsSection title="Как проходит игра">
               <p>
-                Р’РµРґСѓС‰РёР№ СЃРѕР·РґР°С‘С‚ СЃРµСЃСЃРёСЋ РѕС‚С‡С‘С‚Р° РїРѕ РєРІРёР·Сѓ Рё РґРµР»РёС‚СЃСЏ РєРѕРґРѕРј РїРѕРґРєР»СЋС‡РµРЅРёСЏ. РЈС‡Р°СЃС‚РЅРёРєРё РІС…РѕРґСЏС‚ РІ Р»РѕР±Р±Рё, Р·Р°С‚РµРј РёРіСЂР° РїСЂРѕС…РѕРґРёС‚ С‡РµСЂРµР·
-                РЅРµСЃРєРѕР»СЊРєРѕ С„Р°Р· вЂ” РѕС‚ РѕР¶РёРґР°РЅРёСЏ РґРѕ С„РёРЅР°Р»СЊРЅРѕР№ С‚Р°Р±Р»РёС†С‹.
+                Ведущий создаёт сессию отчёта по квизу и делится кодом подключения. Участники входят в лобби, затем игра проходит через
+                несколько фаз — от ожидания до финальной таблицы.
               </p>
               <div className="mt-2 flex flex-col gap-2">
                 <PhaseCard
                   phase="WAITING"
-                  title="Р›РѕР±Р±Рё"
-                  description="РЈС‡Р°СЃС‚РЅРёРєРё РїРѕРґРєР»СЋС‡Р°СЋС‚СЃСЏ РїРѕ РєРѕРґСѓ РёР»Рё QR, РІС‹Р±РёСЂР°СЋС‚ СЃС‚РёС…РёСЋ Рё РјРѕРіСѓС‚ СЃРѕР±СЂР°С‚СЊ РїР°СЂСѓ РёР· РґРІСѓС…. Р’РµРґСѓС‰РёР№ РЅР°СЃС‚СЂР°РёРІР°РµС‚ РїСЂРёР·РѕРІС‹Рµ РјРµСЃС‚Р° Рё СЃР°Рј РІ СЃРїРёСЃРѕРє РёРіСЂРѕРєРѕРІ РЅРµ РІС…РѕРґРёС‚. РџРѕСЃР»Рµ СЃС‚Р°СЂС‚Р° СЃРѕСЃС‚Р°РІ РїР°СЂС‹ Р·Р°РјРѕСЂРѕР¶РµРЅ."
+                  title="Лобби"
+                  description="Участники подключаются по коду или QR, выбирают стихию и могут собрать пару из двух. Ведущий настраивает призовые места и сам в список игроков не входит. После старта состав пары заморожен."
                 />
                 <PhaseCard
                   phase="CHECKING"
-                  title={`РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СѓС‡Р°СЃС‚РёСЏ (${CHECKING_WINDOW_SECONDS} СЃ)`}
-                  description={`Р’РµРґСѓС‰РёР№ Р·Р°РїСѓСЃРєР°РµС‚ РёРіСЂСѓ вЂ” РѕС‚РєСЂС‹РІР°РµС‚СЃСЏ РѕРєРЅРѕ В«РЈС‡Р°СЃС‚РІСѓСЋВ» РЅР° ${CHECKING_WINDOW_SECONDS} СЃРµРєСѓРЅРґ. РќРµ РїРѕРґС‚РІРµСЂРґРёРІС€РёРµ СѓРґР°Р»СЏСЋС‚СЃСЏ РёР· РёРіСЂС‹. РќР°Р±Р»СЋРґР°С‚РµР»Рё РїРѕРґС‚РІРµСЂР¶РґР°С‚СЊ РЅРµ РґРѕР»Р¶РЅС‹.`}
+                  title={`Подтверждение участия (${CHECKING_WINDOW_SECONDS} с)`}
+                  description={`Ведущий запускает игру — открывается окно «Участвую» на ${CHECKING_WINDOW_SECONDS} секунд. Не подтвердившие удаляются из игры. Наблюдатели подтверждать не должны.`}
                 />
                 <PhaseCard
                   phase="START"
-                  title={`Р­РєСЂР°РЅ СЃС‚Р°СЂС‚Р° (${START_SPLASH_SECONDS} СЃ)`}
-                  description="РљРѕСЂРѕС‚РєР°СЏ Р·Р°СЃС‚Р°РІРєР°: СЃР±РѕСЂРєР° РєРѕР»РѕРґС‹ РїРµСЂРµРґ РїРµСЂРІС‹Рј РІРѕРїСЂРѕСЃРѕРј."
+                  title={`Экран старта (${START_SPLASH_SECONDS} с)`}
+                  description="Короткая заставка: сборка колоды перед первым вопросом."
                 />
                 <PhaseCard
                   phase="GAME"
-                  title="Р’РѕРїСЂРѕСЃС‹"
-                  description="РЈ РєР°Р¶РґРѕРіРѕ РІРѕРїСЂРѕСЃР° СЃРІРѕР№ С‚Р°Р№РјРµСЂ Рё Р±Р°Р·РѕРІС‹Рµ РѕС‡РєРё. РќР° Р°РєС‚РёРІРЅС‹Р№ РІРѕРїСЂРѕСЃ РјРѕР¶РЅРѕ РѕС‚РІРµС‚РёС‚СЊ РѕРґРёРЅ СЂР°Р·. Р’РµРґСѓС‰РёР№ РїРµСЂРµРєР»СЋС‡Р°РµС‚ РІРѕРїСЂРѕСЃС‹; РїРѕ С‚Р°Р№РјРµСЂСѓ РІРѕРїСЂРѕСЃ Р·Р°РєСЂС‹РІР°РµС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё."
+                  title="Вопросы"
+                  description="У каждого вопроса свой таймер и базовые очки. На активный вопрос можно ответить один раз. Ведущий переключает вопросы; по таймеру вопрос закрывается автоматически."
                 />
                 <PhaseCard
                   phase="END"
-                  title="Р¤РёРЅРёС€"
-                  description={`РџРѕРєР°Р·С‹РІР°РµС‚СЃСЏ РёС‚РѕРіРѕРІР°СЏ С‚Р°Р±Р»РёС†Р° Рё РїРѕРґРёСѓРј. РЎРµСЂРІРµСЂ РІС‹Р±РёСЂР°РµС‚ СЃР»СѓС‡Р°Р№РЅРѕРіРѕ РїСЂРёР·С‘СЂР° СЃСЂРµРґРё РёРіСЂРѕРєРѕРІ РІРЅРµ РЅР°СЃС‚СЂРѕРµРЅРЅС‹С… РїСЂРёР·РѕРІС‹С… РјРµСЃС‚, РѕС‚РІРµС‚РёРІС€РёС… РІРµСЂРЅРѕ РјРёРЅРёРјСѓРј РЅР° ${RANDOM_PRIZE_MIN_CORRECT_PERCENT}% РІРѕРїСЂРѕСЃРѕРІ; РІСЃРµРј РїСЂРёР·С‘СЂР°Рј СѓС…РѕРґРёС‚ РїРѕР·РґСЂР°РІР»РµРЅРёРµ РІ Telegram-Р±РѕС‚Р°.`}
+                  title="Финиш"
+                  description={`Показывается итоговая таблица и подиум. Сервер выбирает случайного призёра среди игроков вне настроенных призовых мест, ответивших верно минимум на ${RANDOM_PRIZE_MIN_CORRECT_PERCENT}% вопросов; всем призёрам уходит поздравление в Telegram-бота.`}
                 />
               </div>
             </MechanicsSection>
 
-            <MechanicsSection title="Р РѕР»Рё РІ РёРіСЂРµ">
+            <MechanicsSection title="Роли в игре">
               <ul className="space-y-1.5 *:indent-3">
                 <li>
-                  <strong className="text-foreground">РЈС‡Р°СЃС‚РЅРёРє</strong> вЂ” РІ СЃРїРёСЃРєРµ <code className="text-xs">users</code>, РѕС‚РІРµС‡Р°РµС‚ РЅР°
-                  РІРѕРїСЂРѕСЃС‹, РїРѕР»СѓС‡Р°РµС‚ РѕС‡РєРё Рё Р±РѕРЅСѓСЃС‹.
+                  <strong className="text-white">Участник</strong> — в списке <code className="text-xs">users</code>, отвечает на
+                  вопросы, получает очки и бонусы.
                 </li>
                 <li>
-                  <strong className="text-foreground">Р’РµРґСѓС‰РёР№</strong> вЂ” СЃРѕР·РґР°С‚РµР»СЊ СЃРµСЃСЃРёРё: Р·Р°РїСѓСЃРєР°РµС‚ РёРіСЂСѓ, РїРµСЂРµРєР»СЋС‡Р°РµС‚ РІРѕРїСЂРѕСЃС‹, РЅРµ РёРіСЂР°РµС‚
-                  СЃР°Рј.
+                  <strong className="text-white">Ведущий</strong> — создатель сессии: запускает игру, переключает вопросы, не играет
+                  сам.
                 </li>
                 <li>
-                  <strong className="text-foreground">РќР°Р±Р»СЋРґР°С‚РµР»СЊ</strong> вЂ” РІ <code className="text-xs">observers</code>, СЃРјРѕС‚СЂРёС‚ РёРіСЂСѓ Р±РµР·
-                  РїСЂР°РІР° РѕС‚РІРµС‡Р°С‚СЊ (РѕС‚РІРµС‚ РґР°СЃС‚ 403).
+                  <strong className="text-white">Наблюдатель</strong> — в <code className="text-xs">observers</code>, смотрит игру без
+                  права отвечать (ответ даст 403).
                 </li>
                 <li>
-                  <strong className="text-foreground">РђРґРјРёРЅ / РјРµРЅРµРґР¶РµСЂ</strong> вЂ” РјРѕР¶РµС‚ РїРµСЂРµРІРµСЃС‚Рё СЃРµР±СЏ РІ РЅР°Р±Р»СЋРґР°С‚РµР»Рё, СЃРјРѕС‚СЂРµС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ
-                  РѕС‚РІРµС‚РѕРІ Рё РѕС‡РєРё РІСЃРµС… РёРіСЂРѕРєРѕРІ.
+                  <strong className="text-white">Админ / менеджер</strong> — может перевести себя в наблюдатели, смотреть статистику
+                  ответов и очки всех игроков.
                 </li>
               </ul>
             </MechanicsSection>
 
-            <MechanicsSection title="РћС‡РєРё Рё СЂРµР№С‚РёРЅРі">
+            <MechanicsSection title="Очки и рейтинг">
               <div className="flex flex-col gap-2">
-                <IconNote icon={<Clock className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                  РЈ РІРѕРїСЂРѕСЃР° РµСЃС‚СЊ Р±Р°Р·РѕРІР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ (<code className="text-xs">base points</code>). Р—Р° РІРµСЂРЅС‹Р№ РѕС‚РІРµС‚ РІ РїРµСЂРІС‹Рµ 3 СЃРµРєСѓРЅРґС‹
-                  РЅР°С‡РёСЃР»СЏРµС‚СЃСЏ 100% speed-С‡Р°СЃС‚Рё, Р·Р°С‚РµРј РєРІР°РґСЂР°С‚РёС‡РЅРѕРµ РїР°РґРµРЅРёРµ РґРѕ 30% Рє РєРѕРЅС†Сѓ С‚Р°Р№РјРµСЂР°. РќРµРІРµСЂРЅС‹Р№ РѕС‚РІРµС‚ Рё РїСЂРѕРїСѓСЃРє speed-РѕС‡РєРѕРІ РЅРµ
-                  РґР°СЋС‚.
+                <IconNote icon={<Clock className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
+                  У вопроса есть базовая стоимость (<code className="text-xs">base points</code>). За верный ответ в первые 3 секунды
+                  начисляется 100% speed-части, затем квадратичное падение до 30% к концу таймера. Неверный ответ и пропуск speed-очков не
+                  дают.
                 </IconNote>
-                <IconNote icon={<Trophy className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                  Р РµР№С‚РёРЅРі СЃС‚СЂРѕРёС‚СЃСЏ РїРѕ РёС‚РѕРіРѕРІРѕР№ СЃСѓРјРјРµ speed-РѕС‡РєРѕРІ, СЃРµСЂРёРё, СЃС‚РёС…РёР№, Р±РѕРЅСѓСЃРѕРІ РІРѕРїСЂРѕСЃР°, СЃРїРѕСЃРѕР±РЅРѕСЃС‚РµР№ Рё Р±РѕРЅСѓСЃРѕРІ РїР°СЂС‹. РџСЂРё СЂР°РІРµРЅСЃС‚РІРµ РІС‹С€Рµ С‚РѕС‚, Сѓ
-                  РєРѕРіРѕ РјРµРЅСЊС€Рµ{" "}
-                  <code className="text-xs">telegram_id</code>. РС‚РѕРіРѕРІР°СЏ СЃСѓРјРјР° (<code className="text-xs">total_points</code>) Рё РѕС‡РєРё Р·Р°
-                  РѕС‚РґРµР»СЊРЅС‹Р№ РІРѕРїСЂРѕСЃ РјРѕРіСѓС‚ СѓР№С‚Рё <strong className="text-foreground">РЅРёР¶Рµ РЅСѓР»СЏ</strong> вЂ” РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рµ СЌС„С„РµРєС‚С‹ РЅРµРґРѕСЃС‚Р°С‚РєРѕРІ СЃС‚РёС…РёР№ (РѕР¶РѕРі, РІРѕРґРѕРІРѕСЂРѕС‚, РѕР±РІР°Р»,
-                  СЃРєРІРѕР·РЅСЏРє Рё СЂР°Р·Р»РѕРј) Рё
-                  С‚.Рґ.) СЃСѓРјРјРёСЂСѓСЋС‚СЃСЏ Р±РµР· РЅРёР¶РЅРµРіРѕ РїСЂРµРґРµР»Р°.
+                <IconNote icon={<Trophy className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
+                  Рейтинг строится по итоговой сумме speed-очков, серии, стихий, бонусов вопроса, способностей и бонусов пары. При равенстве выше тот, у
+                  кого меньше{" "}
+                  <code className="text-xs">telegram_id</code>. Итоговая сумма (<code className="text-xs">total_points</code>) и очки за
+                  отдельный вопрос могут уйти <strong className="text-white">ниже нуля</strong> — отрицательные эффекты недостатков стихий (ожог, водоворот, обвал,
+                  сквозняк и разлом) и
+                  т.д.) суммируются без нижнего предела.
                 </IconNote>
-                <IconNote icon={<Target className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                  Р’ Р±Р»РѕРєРµ В«Р’Р°С€ СЂРµР№С‚РёРЅРіВ» РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ РјРµСЃС‚Рѕ, СЃРµСЂРёСЏ РІРµСЂРЅС‹С… РѕС‚РІРµС‚РѕРІ Рё СЃРєРѕР»СЊРєРѕ РѕС‡РєРѕРІ РЅРµ С…РІР°С‚Р°РµС‚ РґРѕ СѓС‡Р°СЃС‚РЅРёРєР° РІС‹С€Рµ (
-                  <code className="text-xs">points_to_prev</code>). Р”Р»СЏ С‚РѕРї-3 вЂ” РѕС‚РґРµР»СЊРЅС‹Рµ РјРѕС‚РёРІР°С†РёРѕРЅРЅС‹Рµ СЃРѕРѕР±С‰РµРЅРёСЏ. Р Р°Р·Р±РёРІРєР° РїРѕ СЌС„С„РµРєС‚Р°Рј вЂ” РІ{" "}
-                  <code className="text-xs">element_effects</code> Рё <code className="text-xs">team_effects</code> (СЃСЂР°Р·Сѓ РїРѕСЃР»Рµ РѕС‚РІРµС‚Р° Рё РІ С„РёРЅР°Р»СЊРЅРѕР№ СЃС‚Р°С‚РёСЃС‚РёРєРµ).
+                <IconNote icon={<Target className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
+                  В блоке «Ваш рейтинг» показывается место, серия верных ответов и сколько очков не хватает до участника выше (
+                  <code className="text-xs">points_to_prev</code>). Для топ-3 — отдельные мотивационные сообщения. Разбивка по эффектам — в{" "}
+                  <code className="text-xs">element_effects</code> и <code className="text-xs">team_effects</code> (сразу после ответа и в финальной статистике).
                 </IconNote>
-                <IconNote icon={<Crown className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                  РџСЂРёР·РѕРІС‹Рµ РјРµСЃС‚Р° Р·Р°РґР°С‘С‚ РІРµРґСѓС‰РёР№ РІ Р»РѕР±Р±Рё. РРіСЂРѕРє РЅР° РїСЂРёР·РѕРІРѕРј РјРµСЃС‚Рµ РІРёРґРёС‚ Р±РµР№РґР¶ В«РџСЂРёР·РѕРІРѕРµ РјРµСЃС‚РѕВ»; СЃРїРёСЃРѕРє РїСЂРёР·С‘СЂРѕРІ РѕР±РЅРѕРІР»СЏРµС‚СЃСЏ
-                  РїРѕСЃР»Рµ Р·Р°РІРµСЂС€РµРЅРёСЏ РёРіСЂС‹. Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕ СЃРµСЂРІРµСЂ РІС‹Р±РёСЂР°РµС‚ РѕРґРЅРѕРіРѕ СЃР»СѓС‡Р°Р№РЅРѕРіРѕ РїСЂРёР·С‘СЂР° СЃСЂРµРґРё СѓС‡Р°СЃС‚РЅРёРєРѕРІ РІРЅРµ Р·Р°РґР°РЅРЅС‹С… РјРµСЃС‚ вЂ” РЅРѕ
-                  С‚РѕР»СЊРєРѕ СЃСЂРµРґРё С‚РµС…, РєС‚Рѕ РѕС‚РІРµС‚РёР» РІРµСЂРЅРѕ РЅР°{" "}
-                  <strong className="text-foreground">{RANDOM_PRIZE_MIN_CORRECT_PERCENT}% Р·Р°РєСЂС‹С‚С‹С… РІРѕРїСЂРѕСЃРѕРІ Рё Р±РѕР»СЊС€Рµ</strong>. Р”РѕР»СЏ СЃС‡РёС‚Р°РµС‚СЃСЏ
-                  РїРѕ Р·Р°РєСЂС‹С‚С‹Рј РІРѕРїСЂРѕСЃР°Рј, РїСЂРѕРїСѓСЃРє СЂР°РІРµРЅ РЅРµРІРµСЂРЅРѕРјСѓ РѕС‚РІРµС‚Сѓ, СЂРѕРІРЅРѕ {RANDOM_PRIZE_MIN_CORRECT_PERCENT}% РїСЂРѕС…РѕРґСЏС‚. Р•СЃР»Рё РїРѕРґС…РѕРґСЏС‰РёС…
-                  РёРіСЂРѕРєРѕРІ РЅРµС‚, СЃР»СѓС‡Р°Р№РЅС‹Р№ РїСЂРёР· РЅРµ СЂР°Р·С‹РіСЂС‹РІР°РµС‚СЃСЏ.
+                <IconNote icon={<Crown className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
+                  Призовые места задаёт ведущий в лобби. Игрок на призовом месте видит бейдж «Призовое место»; список призёров обновляется
+                  после завершения игры. Дополнительно сервер выбирает одного случайного призёра среди участников вне заданных мест — но
+                  только среди тех, кто ответил верно на{" "}
+                  <strong className="text-white">{RANDOM_PRIZE_MIN_CORRECT_PERCENT}% закрытых вопросов и больше</strong>. Доля считается
+                  по закрытым вопросам, пропуск равен неверному ответу, ровно {RANDOM_PRIZE_MIN_CORRECT_PERCENT}% проходят. Если подходящих
+                  игроков нет, случайный приз не разыгрывается.
                 </IconNote>
               </div>
             </MechanicsSection>
 
-            <MechanicsSection title="РџР°СЂС‹">
+            <MechanicsSection title="Пары">
               <p>
-                Р’ Р»РѕР±Р±Рё РґРІРѕРµ РёРіСЂРѕРєРѕРІ РјРѕРіСѓС‚ РІСЃС‚Р°С‚СЊ РІ РїР°СЂСѓ. РљР°СЂС‚РѕС‡РєРё СЃС‚РѕСЏС‚ СЂСЏРґРѕРј Рё РґРµР»СЏС‚ РѕРґРЅСѓ РѕР±РІРѕРґРєСѓ вЂ” РЅРµ С†РІРµС‚ СЃС‚РёС…РёРё. РЎРІРѕСЏ РїР°СЂР° РїРѕРґСЃРІРµС‡РµРЅР° СЏСЂС‡Рµ:
-                РЅР°Р¶Р°С‚РёРµ РЅР° СЃРІРѕСЋ РєР°СЂС‚РѕС‡РєСѓ, РїР°СЂС‚РЅС‘СЂР° РёР»Рё Р±РµР№РґР¶ В«РїР°СЂР°В» РѕС‚РєСЂС‹РІР°РµС‚ Р±РѕРЅСѓСЃС‹. РњРµСЃС‚Р°, РїСЂРёР·С‹ Рё СЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё РѕСЃС‚Р°СЋС‚СЃСЏ Р»РёС‡РЅС‹РјРё. РћР±С‰РµРіРѕ СЂРµР№С‚РёРЅРіР° РїР°СЂС‹ РЅРµС‚.
+                В лобби двое игроков могут встать в пару. Карточки стоят рядом и делят одну обводку — не цвет стихии. Своя пара подсвечена ярче:
+                нажатие на свою карточку, партнёра или бейдж «пара» открывает бонусы. Места, призы и способности остаются личными. Общего рейтинга пары нет.
               </p>
               <p className="text-xs text-white/55">
-                РЎРѕР±СЂР°С‚СЊ, РїСЂРёРЅСЏС‚СЊ Рё РІС‹Р№С‚Рё РјРѕР¶РЅРѕ С‚РѕР»СЊРєРѕ РІ <code className="text-[0.65rem]">WAITING</code>. Р’РѕСЂ Рё РўСѓРјР°РЅ РЅРµ РІС‹Р±РёСЂР°СЋС‚ РїР°СЂС‚РЅС‘СЂР° С†РµР»СЊСЋ.
-                РЎРЅР°С‡Р°Р»Р° СЃС‡РёС‚Р°РµС‚СЃСЏ Р»РёС‡РЅС‹Р№ РёС‚РѕРі РІРѕРїСЂРѕСЃР°, РїРѕС‚РѕРј Р±РѕРЅСѓСЃС‹ РїР°СЂС‹. РџСЂРѕРїСѓСЃРє РґР»СЏ РєРѕС‚Р»Р° вЂ” С‚Рѕ Р¶Рµ, С‡С‚Рѕ РЅРµРІРµСЂРЅС‹Р№ РѕС‚РІРµС‚. РќР° РѕС‚РґРµР»СЊРЅРѕРј РІРѕРїСЂРѕСЃРµ РјРѕР¶РЅРѕ РІРєР»СЋС‡РёС‚СЊ В«РЎРІСЏР·РєСѓВ», В«Р Р°Р·СЂС‹РІВ» РёР»Рё В«Р­С…РѕВ» вЂ” РѕРЅРё РґРµР№СЃС‚РІСѓСЋС‚ С‚РѕР»СЊРєРѕ РЅР° РїР°СЂСѓ.
+                Собрать, принять и выйти можно только в <code className="text-[0.65rem]">WAITING</code>. Вор и Туман не выбирают партнёра целью.
+                Сначала считается личный итог вопроса, потом бонусы пары. Пропуск для котла — то же, что неверный ответ. На отдельном вопросе можно включить «Связку», «Разрыв» или «Эхо» — они действуют только на пару.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                 {TEAM_BONUSES.map((bonus) => (
@@ -554,36 +548,36 @@ export default function GameMechanicsContent() {
               </div>
             </MechanicsSection>
 
-            <MechanicsSection title="РћРґРЅРѕСЂР°Р·РѕРІС‹Рµ СЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё">
+            <MechanicsSection title="Одноразовые способности">
               <p>
-                РЈ РєР°Р¶РґРѕРіРѕ СѓС‡Р°СЃС‚РЅРёРєР° С€РµСЃС‚СЊ РѕР±С‰РёС… СЃРїРѕСЃРѕР±РЅРѕСЃС‚РµР№. РљР°Р¶РґСѓСЋ РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РѕРґРёРЅ СЂР°Р· Р·Р° РјР°С‚С‡, Р° РЅР° РѕРґРЅРѕРј РІРѕРїСЂРѕСЃРµ СЂР°Р·СЂРµС€РµРЅР°
-                С‚РѕР»СЊРєРѕ РѕРґРЅР° СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ. РРєРѕРЅРєР° РѕС‚РєСЂС‹РІР°РµС‚ РѕРїРёСЃР°РЅРёРµ; РїСЂРёРјРµРЅРµРЅРёРµ РЅСѓР¶РЅРѕ РѕС‚РґРµР»СЊРЅРѕ РїРѕРґС‚РІРµСЂРґРёС‚СЊ РєРЅРѕРїРєРѕР№ В«РђРєС‚РёРІРёСЂРѕРІР°С‚СЊВ». РЈ
-                РёРіСЂРѕРєР° СЃРѕ СЃС‚РёС…РёРµР№ РµСЃС‚СЊ С‡РµС‚РІС‘СЂС‚С‹Р№ СЃР»РѕС‚ СЃРІРѕРµР№ СЃС‚РёС…РёРё (СЃ С‚СЂРµС‚СЊРµРіРѕ РІРѕРїСЂРѕСЃР°) Рё СѓР»СЊС‚Р° СЌС‚РѕР№ СЃС‚РёС…РёРё: РѕРЅР° РІРёРґРЅР° РІСЃРµРіРґР°, РЅРѕ
-                РЅР°Р¶РёРјР°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ СЃ 10 СѓСЂРѕРІРЅСЏ РїРµСЂСЃРѕРЅР°Р¶Р°.
+                У каждого участника шесть общих способностей. Каждую можно использовать один раз за матч, а на одном вопросе разрешена
+                только одна способность. Иконка открывает описание; применение нужно отдельно подтвердить кнопкой «Активировать». У
+                игрока со стихией есть четвёртый слот своей стихии (с третьего вопроса) и ульта этой стихии: она видна всегда, но
+                нажимается только с 10 уровня персонажа.
               </p>
               <p className="text-xs text-white/55">
-                РЎРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РјРѕР¶РЅРѕ Р°РєС‚РёРІРёСЂРѕРІР°С‚СЊ, РїРѕРєР° РІРѕРїСЂРѕСЃ РЅР°С…РѕРґРёС‚СЃСЏ РІ СЃС‚Р°С‚СѓСЃРµ <code className="text-xs">GAME</code>. Р©РёС‚, СѓСЃРєРѕСЂРµРЅРёРµ,
-                РёРЅС„РµСЂРЅРѕ Рё РІРёС…СЂСЊ вЂ” С‚РѕР»СЊРєРѕ РїРѕСЃР»Рµ РІРµСЂРЅРѕРіРѕ РѕС‚РІРµС‚Р°; СЃС‚Р°РІРєР° Рё С‚РІРµСЂРґС‹РЅСЏ вЂ” РїРѕСЃР»Рµ Р»СЋР±РѕРіРѕ СѓР¶Рµ РѕС‚РїСЂР°РІР»РµРЅРЅРѕРіРѕ; РІРѕРґРЅС‹Р№ СЂС‹РІРѕРє вЂ” РїРѕСЃР»Рµ
-                РѕС€РёР±РєРё РёР»Рё РїСЂРѕРїСѓСЃРєР°. РђРєС‚РёРІРЅР°СЏ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РѕС‚РјРµС‡Р°РµС‚СЃСЏ РЅР° РїР°РЅРµР»Рё, РёСЃРїРѕР»СЊР·РѕРІР°РЅРЅР°СЏ РѕСЃС‚Р°С‘С‚СЃСЏ РІРёРґРёРјРѕР№, РЅРѕ РїРѕРІС‚РѕСЂРЅРѕ РЅРµРґРѕСЃС‚СѓРїРЅР°.
+                Способность можно активировать, пока вопрос находится в статусе <code className="text-xs">GAME</code>. Щит, ускорение,
+                инферно и вихрь — только после верного ответа; ставка и твердыня — после любого уже отправленного; водный рывок — после
+                ошибки или пропуска. Активная способность отмечается на панели, использованная остаётся видимой, но повторно недоступна.
               </p>
-              <div className="mt-2 flex min-w-0 flex-col gap-2 rounded-xl border border-white/12 bg-white/5 px-4 py-3 text-xs leading-relaxed text-white/65">
+              <div className="mt-2 flex min-w-0 flex-col gap-2 game-slab rounded-lg px-4 py-3 text-xs leading-relaxed text-white/65">
                 <p>
-                  <strong className="text-foreground">РњР°РЅР°:</strong> СЂРµСЃСѓСЂСЃ С‚РѕР»СЊРєРѕ РЅР° РІСЂРµРјСЏ РјР°С‚С‡Р° (РЅРµ РїРёС€РµС‚СЃСЏ РІ РїСЂРѕС„РёР»СЊ). РЎС‚Р°СЂС‚ вЂ”{" "}
-                  <strong className="text-foreground/85">СѓСЂРѕРІРµРЅСЊ РїРµСЂСЃРѕРЅР°Р¶Р° СЃС‚РёС…РёРё Г— 2</strong> (Р°РІР°С‚Р°СЂ РјР°С‚С‡Р° РЅР°С‡РёРЅР°РµС‚ СЃ 0). РџРѕС‚РѕР»РѕРє вЂ”{" "}
-                  <strong className="text-foreground/85">1250 + 10 Г— СѓСЂРѕРІРµРЅСЊ</strong>, Сѓ Р°РІР°С‚Р°СЂР° РІСЃРµРіРґР°{" "}
-                  <strong className="text-foreground/85">1500</strong>. Р—Р° Р»СЋР±РѕР№ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Р№ РїСЂРёСЂРѕСЃС‚ РѕС‡РєРѕРІ РјР°РЅР° СЂР°СЃС‚С‘С‚ РЅР°{" "}
-                  <strong className="text-foreground/85">35%</strong>; РѕС€РёР±РєРё Рё С€С‚СЂР°С„С‹ РµС‘ РЅРµ СЃРЅРёРјР°СЋС‚.
+                  <strong className="text-white">Мана:</strong> ресурс только на время матча (не пишется в профиль). Старт —{" "}
+                  <strong className="text-white/85">уровень персонажа стихии ? 2</strong> (аватар матча начинает с 0). Потолок —{" "}
+                  <strong className="text-white/85">1250 + 10 ? уровень</strong>, у аватара всегда{" "}
+                  <strong className="text-white/85">1500</strong>. За любой положительный прирост очков мана растёт на{" "}
+                  <strong className="text-white/85">35%</strong>; ошибки и штрафы её не снимают.
                 </p>
                 <p>
-                  <strong className="text-foreground">РЎС‚РѕРёРјРѕСЃС‚СЊ РєР°СЃС‚Р°:</strong> СѓСЃРєРѕСЂРµРЅРёРµ Рё С‰РёС‚ вЂ” 312; СЃС‚Р°РІРєР° Рё РїСЂРёР»РёРІ вЂ” 437; РІРѕСЂ Рё С‚СѓРјР°РЅ вЂ”
-                  500; СЃС‚РёС…РёР№РЅС‹Р№ СЃР»РѕС‚ вЂ” 625; СѓР»СЊС‚Р° вЂ” 1125. РџРѕСЃР»Рµ РєР°Р¶РґРѕРіРѕ СѓСЃРїРµС€РЅРѕРіРѕ РєР°СЃС‚Р° С†РµРЅР°{" "}
-                  <strong className="text-foreground/85">РІСЃРµС… СЃР»РµРґСѓСЋС‰РёС…</strong> СЃРїРѕСЃРѕР±РЅРѕСЃС‚РµР№ СЂР°СЃС‚С‘С‚ РЅР°{" "}
-                  <strong className="text-foreground/85">+8% РѕС‚ Р±Р°Р·С‹</strong> Р·Р° РєР°Р¶РґС‹Р№ СѓР¶Рµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРЅС‹Р№ СЃРєРёР»Р» (Р»РёРЅРµР№РЅРѕ: Г—1.08, Г—1.16вЂ¦).
-                  РџРѕСЌС‚РѕРјСѓ РґРѕСЂРѕРіРёРµ СЃРєРёР»С‹ РІС‹РіРѕРґРЅРµРµ Р±СЂР°С‚СЊ СЂР°РЅСЊС€Рµ.
+                  <strong className="text-white">Стоимость каста:</strong> ускорение и щит — 312; ставка и прилив — 437; вор и туман —
+                  500; стихийный слот — 625; ульта — 1125. После каждого успешного каста цена{" "}
+                  <strong className="text-white/85">всех следующих</strong> способностей растёт на{" "}
+                  <strong className="text-white/85">+8% от базы</strong> за каждый уже использованный скилл (линейно: ?1.08, ?1.16…).
+                  Поэтому дорогие скилы выгоднее брать раньше.
                 </p>
                 <p>
-                  РќР° РїР°РЅРµР»Рё СЃР»РµРІР° вЂ” РєРѕР»Р±Р° Р·Р°РїР°СЃР° (РЅР°Р¶Р°С‚РёРµ РѕС‚РєСЂС‹РІР°РµС‚ РєСЂР°С‚РєСѓСЋ СЃРїСЂР°РІРєСѓ). Р—Р°Р»РёРІРєР° РЅР° РёРєРѕРЅРєРµ РїРѕРєР°Р·С‹РІР°РµС‚, С…РІР°С‚Р°РµС‚ Р»Рё РјР°РЅС‹ РЅР° СЌС‚РѕС‚
-                  СЃРєРёР»Р». Р‘РµР· РјР°РЅС‹ Р°РєС‚РёРІР°С†РёСЏ РЅРµРґРѕСЃС‚СѓРїРЅР°, РґР°Р¶Рµ РµСЃР»Рё СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РµС‰С‘ РЅРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅР°.
+                  На панели слева — колба запаса (нажатие открывает краткую справку). Заливка на иконке показывает, хватает ли маны на этот
+                  скилл. Без маны активация недоступна, даже если способность ещё не использована.
                 </p>
               </div>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-3">
@@ -591,168 +585,168 @@ export default function GameMechanicsContent() {
                   <SkillMechanicsCard key={skill.id} skill={skill} />
                 ))}
               </div>
-              <p className="mt-3 text-sm font-semibold text-white/85">РЎС‚РёС…РёР№РЅС‹Р№ СЃР»РѕС‚</p>
+              <p className="mt-3 text-sm font-semibold text-white/85">Стихийный слот</p>
               <p className="text-xs text-white/55">
-                РўРѕР»СЊРєРѕ СЃРІРѕСЏ СЃС‚РёС…РёСЏ, РѕРґРёРЅ СЂР°Р· Р·Р° РјР°С‚С‡. Р”Рѕ С‚СЂРµС‚СЊРµРіРѕ РІРѕРїСЂРѕСЃР° РєРЅРѕРїРєР° Р·Р°РєСЂС‹С‚Р°. РђРІР°С‚Р°СЂ Рё РёРіСЂРѕРє Р±РµР· СЃС‚РёС…РёРё СЃР»РѕС‚ РЅРµ РїРѕР»СѓС‡Р°СЋС‚.
+                Только своя стихия, один раз за матч. До третьего вопроса кнопка закрыта. Аватар и игрок без стихии слот не получают.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                 {ELEMENTAL_SKILLS.map((skill) => (
                   <SkillMechanicsCard key={skill.id} skill={skill} />
                 ))}
               </div>
-              <p className="mt-3 text-sm font-semibold text-white/85">РЈР»СЊС‚С‹ 10 СѓСЂРѕРІРЅСЏ</p>
+              <p className="mt-3 text-sm font-semibold text-white/85">Ульты 10 уровня</p>
               <p className="text-xs text-white/55">
-                РћРґРЅР° РЅР° СЃС‚РёС…РёСЋ, РѕРґРёРЅ СЂР°Р· Р·Р° РјР°С‚С‡ Рё РЅРµ РІРјРµСЃС‚Рµ СЃ РґСЂСѓРіРѕР№ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊСЋ РЅР° С‚РѕРј Р¶Рµ РІРѕРїСЂРѕСЃРµ. РђРІР°С‚Р°СЂ РёРіСЂС‹ СѓР»СЊС‚Сѓ СЃС‚РёС…РёРё РЅРµ РїРѕР»СѓС‡Р°РµС‚.
-                РќРёР¶Рµ 10 СѓСЂРѕРІРЅСЏ РєРЅРѕРїРєР° РЅР° РїР°РЅРµР»Рё РµСЃС‚СЊ, РЅРѕ Р·Р°РєСЂС‹С‚Р°.
+                Одна на стихию, один раз за матч и не вместе с другой способностью на том же вопросе. Аватар игры ульту стихии не получает.
+                Ниже 10 уровня кнопка на панели есть, но закрыта.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                 {ULTIMATE_SKILLS.map((skill) => (
                   <SkillMechanicsCard key={skill.id} skill={skill} />
                 ))}
               </div>
-              <div className="mt-2 flex min-w-0 flex-col gap-2 rounded-xl border border-white/12 bg-white/5 px-4 py-3 text-xs leading-relaxed text-white/65">
+              <div className="mt-2 flex min-w-0 flex-col gap-2 game-slab rounded-lg px-4 py-3 text-xs leading-relaxed text-white/65">
                 <p>
-                  <strong className="text-foreground">РЎРѕСЂРµРІРЅРѕРІР°С‚РµР»СЊРЅС‹Рµ (PvP):</strong> В«Р’РѕСЂВ» Рё В«РўСѓРјР°РЅВ» РґРѕСЃС‚СѓРїРЅС‹ С‚РѕР»СЊРєРѕ РёРіСЂРѕРєР°Рј{" "}
-                  <strong className="text-foreground/85">РІРЅРµ С‚РѕРї-3</strong> Рё РїСЂРё <strong className="text-foreground/85">4+</strong>{" "}
-                  СѓС‡Р°СЃС‚РЅРёРєР°С…. Р¦РµР»СЊ РІС‹Р±РёСЂР°РµС‚СЃСЏ СЃР»СѓС‡Р°Р№РЅРѕ СЃСЂРµРґРё С‚РѕРї-3, РїР°СЂС‚РЅС‘СЂ РїРѕ РїР°СЂРµ РёР· С†РµР»РµР№ РІС‹С‡С‘СЂРєРёРІР°РµС‚СЃСЏ. В«Р’РѕСЂВ» РєСЂР°РґС‘С‚ РѕС‡РєРё (С‰РёС‚ С†РµР»Рё Р±Р»РѕРєРёСЂСѓРµС‚ РєСЂР°Р¶Сѓ, СЃСѓРјРјР°СЂРЅРѕ РЅРµ Р±РѕР»СЊС€Рµ 8% base,
-                  РѕР±С‰РёР№ СЃС‡С‘С‚ РјР°С‚С‡Р° С†РµР»Рё РЅРµ РЅРёР¶Рµ РЅСѓР»СЏ вЂ” РґР°Р¶Рµ РµСЃР»Рё Р·Р° СЌС‚РѕС‚ РІРѕРїСЂРѕСЃ РѕРЅР° РїРѕР»СѓС‡РёР»Р° 0), В«РўСѓРјР°РЅВ» РіР°СЃРёС‚ СЃС‚РёС…РёСЋ С†РµР»Рё РЅР° РІРѕРїСЂРѕСЃ вЂ” Р°РІР°С‚Р°СЂ РЅРµ Р·Р°С‚СЂР°РіРёРІР°РµС‚СЃСЏ, Рё{" "}
-                  <strong className="text-foreground/85">С‰РёС‚ РѕС‚ С‚СѓРјР°РЅР° РЅРµ СЃРїР°СЃР°РµС‚</strong>. Р•СЃР»Рё С†РµР»СЊ СѓР¶Рµ РѕС‚РІРµС‚РёР»Р°, РµС‘ РѕС‚РІРµС‚
-                  РїРµСЂРµСЃС‡РёС‚С‹РІР°РµС‚СЃСЏ Р±РµР· СЃС‚РёС…РёРё.
+                  <strong className="text-white">Соревновательные (PvP):</strong> «Вор» и «Туман» доступны только игрокам{" "}
+                  <strong className="text-white/85">вне топ-3</strong> и при <strong className="text-white/85">4+</strong>{" "}
+                  участниках. Цель выбирается случайно среди топ-3, партнёр по паре из целей вычёркивается. «Вор» крадёт очки (щит цели блокирует кражу, суммарно не больше 8% base,
+                  общий счёт матча цели не ниже нуля — даже если за этот вопрос она получила 0), «Туман» гасит стихию цели на вопрос — аватар не затрагивается, и{" "}
+                  <strong className="text-white/85">щит от тумана не спасает</strong>. Если цель уже ответила, её ответ
+                  пересчитывается без стихии.
                 </p>
                 <p>
-                  <strong className="text-foreground">РЈСЃРёР»РµРЅРёСЏ:</strong> В«РЎС‚Р°РІРєР°В» РЅР° СЃР»РµРґСѓСЋС‰РµРј РІРѕРїСЂРѕСЃРµ СѓРґРІР°РёРІР°РµС‚ СЃС‚РёС…РёСЋ, СЃРµСЂРёСЋ, Р±РѕРЅСѓСЃС‹
-                  РІРѕРїСЂРѕСЃР°, РїР°СЂРЅС‹Рµ СЌС„С„РµРєС‚С‹ Рё Lucky. РћС‡РєРё Р·Р° СЃРєРѕСЂРѕСЃС‚СЊ РЅРµ РјРµРЅСЏСЋС‚СЃСЏ. В«РЈСЃРєРѕСЂРµРЅРёРµВ» РѕСЃС‚Р°РІР»СЏРµС‚ РІРµСЂРЅС‹Р№ Рё РѕРґРёРЅ Р»РѕР¶РЅС‹Р№ РІР°СЂРёР°РЅС‚.
-                  В«РџСЂРёР»РёРІВ» РЅР°С‡РёСЃР»СЏРµС‚СЃСЏ РІ РєРѕРЅС†Рµ РІРѕРїСЂРѕСЃР° РїРѕ РёС‚РѕРіРѕРІРѕРјСѓ С‡РёСЃР»Сѓ РІРµСЂРЅРѕ РѕС‚РІРµС‚РёРІС€РёС…. РџРµСЂСЃРѕРЅР°Р»СЊРЅС‹Рµ СЌС„С„РµРєС‚С‹ СЃРїРѕСЃРѕР±РЅРѕСЃС‚РµР№ РЅРµ
-                  СЂР°СЃСЃС‹Р»Р°СЋС‚СЃСЏ С‡РµСЂРµР· Socket.IO вЂ” СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРёС…РѕРґРёС‚ РІ <code className="text-[0.65rem]">skill_effects</code>.
+                  <strong className="text-white">Усиления:</strong> «Ставка» на следующем вопросе удваивает стихию, серию, бонусы
+                  вопроса, парные эффекты и Lucky. Очки за скорость не меняются. «Ускорение» оставляет верный и один ложный вариант.
+                  «Прилив» начисляется в конце вопроса по итоговому числу верно ответивших. Персональные эффекты способностей не
+                  рассылаются через Socket.IO — результат приходит в <code className="text-[0.65rem]">skill_effects</code>.
                 </p>
               </div>
             </MechanicsSection>
 
-            <MechanicsSection title="Р РµР·РѕРЅР°РЅСЃС‹">
+            <MechanicsSection title="Резонансы">
               <p>
-                Р•СЃР»Рё СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ СЃРѕРІРїР°РґР°РµС‚ СЃРѕ СЃС‚РёС…РёРµР№ РёРіСЂРѕРєР°, РѕРЅР° РїРѕР»СѓС‡Р°РµС‚ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Р№ СЌС„С„РµРєС‚ вЂ” СЂРµР·РѕРЅР°РЅСЃ. РќР° РїР°РЅРµР»Рё СЃРїРѕСЃРѕР±РЅРѕСЃС‚РµР№ С‚Р°РєР°СЏ
-                РёРєРѕРЅРєР° РѕС‚РјРµС‡РµРЅР° Р·РЅР°С‡РєРѕРј СЃС‚РёС…РёРё. РџРѕРґ С‚СѓРјР°РЅРѕРј СЃС‚РёС…РёСЏ РіР°СЃРЅРµС‚, Рё СЂРµР·РѕРЅР°РЅСЃ РЅРµ СЃСЂР°Р±Р°С‚С‹РІР°РµС‚.
+                Если способность совпадает со стихией игрока, она получает дополнительный эффект — резонанс. На панели способностей такая
+                иконка отмечена значком стихии. Под туманом стихия гаснет, и резонанс не срабатывает.
               </p>
               <ResonanceList />
             </MechanicsSection>
 
-            <MechanicsSection title="РџРµСЂСЃРѕРЅР°Р¶Рё">
+            <MechanicsSection title="Персонажи">
               <p>
-                РЈ РїСЂРѕС„РёР»СЏ С‡РµС‚С‹СЂРµ РїРµСЂСЃРѕРЅР°Р¶Р° вЂ” РїРѕ РѕРґРЅРѕРјСѓ РЅР° СЃС‚РёС…РёСЋ. РћС‡РєРё Рё СѓСЂРѕРІРµРЅСЊ Сѓ РєР°Р¶РґРѕРіРѕ СЃРІРѕРё. РРјСЏ РјРѕР¶РЅРѕ СЃРјРµРЅРёС‚СЊ РЅР° СЃС‚СЂР°РЅРёС†Рµ РїРµСЂСЃРѕРЅР°Р¶Р°, РѕС‡РєРё
-                РѕС‚ СЌС‚РѕРіРѕ РЅРµ РјРµРЅСЏСЋС‚СЃСЏ. РќР° РіР»Р°РІРЅРѕР№ РІРёРґРЅС‹ С‡РµС‚С‹СЂРµ СѓСЂРѕРІРЅСЏ, РєР°СЂС‚РѕС‡РєР° РѕС‚РєСЂС‹РІР°РµС‚ Р»РµСЃС‚РЅРёС†Сѓ СЃРїРѕСЃРѕР±РЅРѕСЃС‚РµР№.
+                У профиля четыре персонажа — по одному на стихию. Очки и уровень у каждого свои. Имя можно сменить на странице персонажа, очки
+                от этого не меняются. На главной видны четыре уровня, карточка открывает лестницу способностей.
               </p>
               <p className="text-xs text-white/55">
-                РЈСЂРѕРІРµРЅСЊ СЃС‡РёС‚Р°РµС‚СЃСЏ РїРѕ РЅР°РєРѕРїР»РµРЅРЅС‹Рј РѕС‡РєР°Рј, РѕС‚ 0 РґРѕ 50, Рё РІ Р±Р°Р·Сѓ РѕС‚РґРµР»СЊРЅРѕ РЅРµ РїРёС€РµС‚СЃСЏ. РџРµСЂРІС‹Рµ РґРІР° СѓСЂРѕРІРЅСЏ СЃС‚РѕСЏС‚ РїРѕ 4 000 РѕС‡РєРѕРІ.
-                Р”Р°Р»СЊС€Рµ РєР°Р¶РґС‹Р№ СЃР»РµРґСѓСЋС‰РёР№ СѓСЂРѕРІРµРЅСЊ РґРѕСЂРѕР¶Рµ РїСЂРµРґС‹РґСѓС‰РµРіРѕ РЅР° 835: СЃ 2 РЅР° 3 РЅСѓР¶РЅРѕ 4 835, СЃ 9 РЅР° 10 вЂ” 10 680. РџРѕСЃР»Рµ 10 СѓСЂРѕРІРЅСЏ РЅРѕРІС‹С…
-                СЃРїРѕСЃРѕР±РЅРѕСЃС‚РµР№ РЅРµС‚, СЂР°СЃС‚С‘С‚ С‚РѕР»СЊРєРѕ С‡РёСЃР»Рѕ вЂ” РґРѕ 50. Р—Р° РєР°Р¶РґС‹Р№ РІРѕРїСЂРѕСЃ СѓСЂРѕРІРµРЅСЊ РґР°С‘С‚ % РѕС‚ base: РІРµСЂРЅС‹Р№ вЂ” РґРѕ +14% РЅР° 50 СѓСЂРѕРІРЅРµ (РЅР° 0 вЂ”
-                0%), РѕС€РёР±РєР° РёР»Рё РїСЂРѕРїСѓСЃРє вЂ” СЃ С€Р°РЅСЃРѕРј 25% РґРѕ +7% РЅР° 50 СѓСЂРѕРІРЅРµ. РќСѓР¶РЅС‹ РІС‹Р±СЂР°РЅРЅР°СЏ СЃС‚РёС…РёСЏ РІ СЃРЅРёРјРєРµ РјР°С‚С‡Р° Рё СѓСЂРѕРІРµРЅСЊ РІС‹С€Рµ РЅСѓР»СЏ. РџРµРїРµР»
-                СЌС‚РѕС‚ Р±РѕРЅСѓСЃ РЅРµ РіР°СЃРёС‚: РѕРЅ РїСЂРёРІСЏР·Р°РЅ Рє РїРµСЂСЃРѕРЅР°Р¶Сѓ РЅР° СЃС‚Р°СЂС‚Рµ, РїРѕСЌС‚РѕРјСѓ РѕСЃС‚Р°С‘С‚СЃСЏ Сѓ Р°РІР°С‚Р°СЂР° Рё РєРѕРіРґР° Р±РѕРµРІСѓСЋ СЃС‚РёС…РёСЋ РЅР° РІРѕРїСЂРѕСЃРµ РіР°СЃСЏС‚ С‚СѓРјР°РЅ
-                РёР»Рё Р±РѕРЅСѓСЃ РІРѕРїСЂРѕСЃР°.
+                Уровень считается по накопленным очкам, от 0 до 50, и в базу отдельно не пишется. Первые два уровня стоят по 4 000 очков.
+                Дальше каждый следующий уровень дороже предыдущего на 835: с 2 на 3 нужно 4 835, с 9 на 10 — 10 680. После 10 уровня новых
+                способностей нет, растёт только число — до 50. За каждый вопрос уровень даёт % от base: верный — до +14% на 50 уровне (на 0 —
+                0%), ошибка или пропуск — с шансом 25% до +7% на 50 уровне. Нужны выбранная стихия в снимке матча и уровень выше нуля. Пепел
+                этот бонус не гасит: он привязан к персонажу на старте, поэтому остаётся у аватара и когда боевую стихию на вопросе гасят туман
+                или бонус вопроса.
               </p>
               <p className="text-xs text-white/55">
-                РћРїС‹С‚ РїСЂРёС…РѕРґРёС‚ РѕРґРёРЅ СЂР°Р· РІ РєРѕРЅС†Рµ РјР°С‚С‡Р° Рё СЂР°РІРµРЅ РёС‚РѕРіРѕРІС‹Рј РѕС‡РєР°Рј Р·Р° РёРіСЂСѓ, РЅРѕ РЅРµ РЅРёР¶Рµ РЅСѓР»СЏ. 1 РјРµСЃС‚Рѕ РґРѕР±Р°РІР»СЏРµС‚ 7%, 2 РјРµСЃС‚Рѕ вЂ” 5%, 3
-                РјРµСЃС‚Рѕ вЂ” 3%. РџСЂРёР·РѕРІРѕРµ РјРµСЃС‚Рѕ, РІРєР»СЋС‡Р°СЏ СЃР»СѓС‡Р°Р№РЅС‹Р№ РїСЂРёР·, РґРѕР±Р°РІР»СЏРµС‚ РµС‰С‘ 3%: РјРЅРѕР¶РёС‚РµР»Рё РїРµСЂРµРјРЅРѕР¶Р°СЋС‚СЃСЏ. РђРІР°С‚Р°СЂ РґРµР»РёС‚ РёС‚РѕРі РЅР° С‡РµС‚С‹СЂРµ
-                РїРµСЂСЃРѕРЅР°Р¶Р° РїРѕСЂРѕРІРЅСѓ, Р±РµР· РЅР°РґР±Р°РІРєРё Р·Р° РјРµСЃС‚Рѕ Рё РїСЂРёР·. Р’РµРґСѓС‰РёР№ РїРѕР»СѓС‡Р°РµС‚ РЅР° РєР°Р¶РґРѕРіРѕ РёР· С‡РµС‚С‹СЂС‘С… РїРµСЂСЃРѕРЅР°Р¶РµР№ РїРѕ 35% РѕС‚ СЃСЂРµРґРЅРµРіРѕ
-                СЂРµР·СѓР»СЊС‚Р°С‚Р° СѓС‡Р°СЃС‚РЅРёРєРѕРІ. РќРµС‚ СЃС‚РёС…РёРё Рё РІС‹ РЅРµ Р°РІР°С‚Р°СЂ вЂ” РѕРїС‹С‚ 0. РќР°Р±Р»СЋРґР°С‚РµР»СЊ Рё С‚РѕС‚, РєРѕРіРѕ СѓР±СЂР°Р»Рё РёР· РёРіСЂС‹ РґРѕ С„РёРЅРёС€Р°, РѕРїС‹С‚ РЅРµ РїРѕР»СѓС‡Р°СЋС‚.
-                РЎС‚РёС…РёСЏ Рё СѓСЂРѕРІРµРЅСЊ РЅР° РјР°С‚С‡ С„РёРєСЃРёСЂСѓСЋС‚СЃСЏ РІ РјРѕРјРµРЅС‚ СЃС‚Р°СЂС‚Р°: СЃРјРµРЅР° РІ РїСЂРѕС„РёР»Рµ РїРѕСЃСЂРµРґРё РёРіСЂС‹ РїРѕРґРµР№СЃС‚РІСѓРµС‚ СЃРѕ СЃР»РµРґСѓСЋС‰РµР№.
+                Опыт приходит один раз в конце матча и равен итоговым очкам за игру, но не ниже нуля. 1 место добавляет 7%, 2 место — 5%, 3
+                место — 3%. Призовое место, включая случайный приз, добавляет ещё 3%: множители перемножаются. Аватар делит итог на четыре
+                персонажа поровну, без надбавки за место и приз. Ведущий получает на каждого из четырёх персонажей по 35% от среднего
+                результата участников. Нет стихии и вы не аватар — опыт 0. Наблюдатель и тот, кого убрали из игры до финиша, опыт не получают.
+                Стихия и уровень на матч фиксируются в момент старта: смена в профиле посреди игры подействует со следующей.
               </p>
               <p className="text-xs text-white/55">
-                РќР° 0 СѓСЂРѕРІРЅРµ Сѓ РІС‹Р±СЂР°РЅРЅРѕР№ СЃС‚РёС…РёРё СЂР°Р±РѕС‚Р°СЋС‚ С‚РѕР»СЊРєРѕ РЅРµРґРѕСЃС‚Р°С‚РєРё. Speed, РѕР±С‹С‡РЅР°СЏ СЃРµСЂРёСЏ Рё Lucky РѕСЃС‚Р°СЋС‚СЃСЏ. РЈ РєР°Р¶РґРѕР№ СЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё РЅР°
-                РєР°СЂС‚РѕС‡РєРµ СЃС‚РёС…РёРё СѓРєР°Р·Р°РЅРѕ, СЃ РєР°РєРѕРіРѕ СѓСЂРѕРІРЅСЏ РѕРЅР° РѕС‚РєСЂС‹РІР°РµС‚СЃСЏ; СЃР»РµРґСѓСЋС‰РёРµ СѓСЂРѕРІРЅРё СѓСЃРёР»РёРІР°СЋС‚ Р±РѕРЅСѓСЃС‹ Рё СЃРјСЏРіС‡Р°СЋС‚ РЅРµРґРѕСЃС‚Р°С‚РєРё. РџСЂРё РІС‹Р±РѕСЂРµ
-                СЃС‚РёС…РёРё РІ РїСЂРѕС„РёР»Рµ Р·Р°РєСЂС‹С‚С‹Рµ СЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё РїРѕРєР°Р·С‹РІР°СЋС‚СЃСЏ СЃРµСЂС‹РјРё.
+                На 0 уровне у выбранной стихии работают только недостатки. Speed, обычная серия и Lucky остаются. У каждой способности на
+                карточке стихии указано, с какого уровня она открывается; следующие уровни усиливают бонусы и смягчают недостатки. При выборе
+                стихии в профиле закрытые способности показываются серыми.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                 <CharacterLadder
-                  title="РћРіРѕРЅСЊ"
+                  title="Огонь"
                   lines={[
-                    "0 вЂ” РѕР¶РѕРі Рё РїРµРїРµР»",
-                    "1 вЂ” Р¶Р°СЂ, СЃРєРѕСЂРѕСЃС‚СЊ Г—1.15",
-                    "2 вЂ” РёСЃРєСЂР°, РїРµСЂРІРѕРјСѓ РІРµСЂРЅРѕРјСѓ +10%",
-                    "3 вЂ” РіРѕСЂРµРЅРёРµ СЃ СЃРµСЂРёРё 3+",
-                    "4 вЂ” Р¶Р°СЂ Г—1.17",
-                    "5 вЂ” РёСЃРєСЂР° +12%",
-                    "6 вЂ” РѕР¶РѕРі СЃР»Р°Р±РµРµ, в€’12%",
-                    "7 вЂ” РіРѕСЂРµРЅРёРµ СѓР¶Рµ СЃ СЃРµСЂРёРё 2+",
-                    "8 вЂ” РїРµРїРµР» СЂРµР¶Рµ, 12%",
-                    "9 вЂ” РѕР¶РѕРі СЂРµР¶Рµ, 9%",
-                    "10 вЂ” СѓР»СЊС‚Р° В«Р¤РµРЅРёРєСЃВ»",
+                    "0 — ожог и пепел",
+                    "1 — жар, скорость ?1.15",
+                    "2 — искра, первому верному +10%",
+                    "3 — горение с серии 3+",
+                    "4 — жар ?1.17",
+                    "5 — искра +12%",
+                    "6 — ожог слабее, ?12%",
+                    "7 — горение уже с серии 2+",
+                    "8 — пепел реже, 12%",
+                    "9 — ожог реже, 9%",
+                    "10 — ульта «Феникс»",
                   ]}
                 />
                 <CharacterLadder
-                  title="Р’РѕРґР°"
+                  title="Вода"
                   lines={[
-                    "0 вЂ” РІРѕРґРѕРІРѕСЂРѕС‚",
-                    "1 вЂ” С‚РµС‡РµРЅРёРµ +5%",
-                    "2 вЂ” СЌРјРїР°С‚РёСЏ +5 Р·Р° РёРіСЂРѕРєР°, РїРѕС‚РѕР»РѕРє 60",
-                    "3 вЂ” РѕС€РёР±РєР° СЃРЅРёРјР°РµС‚ 1 С€Р°Рі СЃРµСЂРёРё, РµСЃР»Рё Р·Р°Р» РІ РѕСЃРЅРѕРІРЅРѕРј РїСЂР°РІ",
-                    "4 вЂ” С‚РµС‡РµРЅРёРµ +7%",
-                    "5 вЂ” РїРѕС‚РѕР»РѕРє СЌРјРїР°С‚РёРё 72",
-                    "6 вЂ” РІРѕРґРѕРІРѕСЂРѕС‚ в€’16%",
-                    "7 вЂ” РІ РїРѕР»РѕРІРёРЅРµ СЃР»СѓС‡Р°РµРІ СЃРµСЂРёСЏ РЅРµ СѓРјРµРЅСЊС€Р°РµС‚СЃСЏ",
-                    "8 вЂ” РІРѕРґРѕРІРѕСЂРѕС‚ СЂРµР¶Рµ, 13%",
-                    "9 вЂ” СЌРјРїР°С‚РёСЏ +6 Р·Р° РёРіСЂРѕРєР°",
-                    "10 вЂ” СѓР»СЊС‚Р° В«РџСЂРёР»РёРІ Р¶РёР·РЅРёВ»",
+                    "0 — водоворот",
+                    "1 — течение +5%",
+                    "2 — эмпатия +5 за игрока, потолок 60",
+                    "3 — ошибка снимает 1 шаг серии, если зал в основном прав",
+                    "4 — течение +7%",
+                    "5 — потолок эмпатии 72",
+                    "6 — водоворот ?16%",
+                    "7 — в половине случаев серия не уменьшается",
+                    "8 — водоворот реже, 13%",
+                    "9 — эмпатия +6 за игрока",
+                    "10 — ульта «Прилив жизни»",
                   ]}
                 />
                 <CharacterLadder
-                  title="Р—РµРјР»СЏ"
+                  title="Земля"
                   lines={[
-                    "0 вЂ” РѕР±РІР°Р»",
-                    "1 вЂ” РєРѕСЂРЅРё: СЃРµСЂРёСЏ 6% Р·Р° С€Р°Рі, РїРѕС‚РѕР»РѕРє 45%",
-                    "2 вЂ” С‚РµСЂРїРµРЅРёРµ, РїРѕСЃР»РµРґРЅРёР№ РІРµСЂРЅС‹Р№ +17%",
-                    "3 вЂ” РјРѕРЅРѕР»РёС‚ РєР°Р¶РґС‹Рµ 3 РІРµСЂРЅС‹С…",
-                    "4 вЂ” РїРѕС‚РѕР»РѕРє СЃРµСЂРёРё 48%",
-                    "5 вЂ” С‚РµСЂРїРµРЅРёРµ +20%",
-                    "6 вЂ” РѕР±РІР°Р» в€’13%",
-                    "7 вЂ” РјРѕРЅРѕР»РёС‚ РєР°Р¶РґС‹Рµ 2 РІРµСЂРЅС‹С…",
-                    "8 вЂ” РѕР±РІР°Р» СЂРµР¶Рµ, 14%",
-                    "9 вЂ” С‚РµСЂРїРµРЅРёРµ +23%",
-                    "10 вЂ” СѓР»СЊС‚Р° В«Р“СЂР°РЅРёС‚В»",
+                    "0 — обвал",
+                    "1 — корни: серия 6% за шаг, потолок 45%",
+                    "2 — терпение, последний верный +17%",
+                    "3 — монолит каждые 3 верных",
+                    "4 — потолок серии 48%",
+                    "5 — терпение +20%",
+                    "6 — обвал ?13%",
+                    "7 — монолит каждые 2 верных",
+                    "8 — обвал реже, 14%",
+                    "9 — терпение +23%",
+                    "10 — ульта «Гранит»",
                   ]}
                 />
                 <CharacterLadder
-                  title="Р’РѕР·РґСѓС…"
+                  title="Воздух"
                   lines={[
-                    "0 вЂ” СЃРєРІРѕР·РЅСЏРє",
-                    "1 вЂ” Р»С‘РіРєРёР№ РІРµС‚РµСЂ: СЃРµСЂРёСЏ 4% Р·Р° С€Р°Рі, РїРѕС‚РѕР»РѕРє 42%",
-                    "2 вЂ” РїРѕСЂС‹РІ, 40% С€Р°РЅСЃ +7%",
-                    "3 вЂ” Lucky 24% РІРјРµСЃС‚Рѕ 12%",
-                    "4 вЂ” СѓСЃРёР»РµРЅРЅС‹Р№ РїРѕСЂС‹РІ, 20% С€Р°РЅСЃ +14%",
-                    "5 вЂ” Lucky РєСЂР°РґС‘С‚ 3% Сѓ Р»РёРґРµСЂР°",
-                    "6 вЂ” РїРѕСЂС‹РІ С‡Р°С‰Рµ, 45%",
-                    "7 вЂ” СЃРєРІРѕР·РЅСЏРє в€’12%",
-                    "8 вЂ” Lucky 28%",
-                    "9 вЂ” СѓСЃРёР»РµРЅРЅС‹Р№ РїРѕСЂС‹РІ С‡Р°С‰Рµ, 25%",
-                    "10 вЂ” СѓР»СЊС‚Р° В«РЎРјРµСЂС‡В»",
+                    "0 — сквозняк",
+                    "1 — лёгкий ветер: серия 4% за шаг, потолок 42%",
+                    "2 — порыв, 40% шанс +7%",
+                    "3 — Lucky 24% вместо 12%",
+                    "4 — усиленный порыв, 20% шанс +14%",
+                    "5 — Lucky крадёт 3% у лидера",
+                    "6 — порыв чаще, 45%",
+                    "7 — сквозняк ?12%",
+                    "8 — Lucky 28%",
+                    "9 — усиленный порыв чаще, 25%",
+                    "10 — ульта «Смерч»",
                   ]}
                 />
               </div>
             </MechanicsSection>
 
-            <MechanicsSection title="РЎС‚РёС…РёРё Рё Р°РІР°С‚Р°СЂ РёРіСЂС‹">
+            <MechanicsSection title="Стихии и аватар игры">
               <p>
-                Р’ Р»РѕР±Р±Рё РґРѕ СЃС‚Р°СЂС‚Р° СЂР°СѓРЅРґР° РјРѕР¶РЅРѕ РІС‹Р±СЂР°С‚СЊ СЃС‚РёС…РёСЋ вЂ” РѕРЅР° СѓРєР°Р·С‹РІР°РµС‚, РєР°РєРѕР№ РїРµСЂСЃРѕРЅР°Р¶ РєРѕРїРёС‚ РѕРїС‹С‚ Рё РєР°РєРёРµ Р±РѕРЅСѓСЃС‹ РјРѕРіСѓС‚ РІРєР»СЋС‡РёС‚СЊСЃСЏ. Р‘РµР·
-                РІС‹Р±РѕСЂР° (<code className="text-xs">element = null</code>) РґРµР№СЃС‚РІСѓРµС‚ С‚РѕР»СЊРєРѕ Р±Р°Р·РѕРІР°СЏ РјРµС…Р°РЅРёРєР°: speed, streak Рё Lucky, РѕРїС‹С‚
-                РїРµСЂСЃРѕРЅР°Р¶Р° РЅРµ РєРѕРїРёС‚СЃСЏ.
+                В лобби до старта раунда можно выбрать стихию — она указывает, какой персонаж копит опыт и какие бонусы могут включиться. Без
+                выбора (<code className="text-xs">element = null</code>) действует только базовая механика: speed, streak и Lucky, опыт
+                персонажа не копится.
               </p>
               <p className="text-xs text-white/55">
-                РџРѕСЃР»Рµ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ СѓС‡Р°СЃС‚РёСЏ СЃРµСЂРІРµСЂ СЃР»СѓС‡Р°Р№РЅРѕ РЅР°Р·РЅР°С‡Р°РµС‚ <strong className="text-foreground/90">Р°РІР°С‚Р°СЂР° РёРіСЂС‹</strong> (
-                <code className="text-xs">element_avatar_id</code>). Р•СЃР»Рё РІС‹ вЂ” Р°РІР°С‚Р°СЂ, РІР°С€Р° СЃС‚РёС…РёСЏ РЅРµ РїСЂРёРјРµРЅСЏРµС‚СЃСЏ вЂ” С‚РѕР»СЊРєРѕ РїСЂР°РІРёР»Р° Р°РІР°С‚Р°СЂР°.
-                РќРµРІРµСЂРЅС‹Р№ РѕС‚РІРµС‚ Рё РїСЂРѕРїСѓСЃРє (РЅРµ РѕС‚РІРµС‚РёР» РґРѕ Р·Р°РєСЂС‹С‚РёСЏ РІРѕРїСЂРѕСЃР°) РґР»СЏ СЃС‚РёС…РёР№ Рё С€С‚СЂР°С„РѕРІ вЂ” РѕРґРЅРѕ Рё С‚Рѕ Р¶Рµ.
+                После подтверждения участия сервер случайно назначает <strong className="text-white/90">аватара игры</strong> (
+                <code className="text-xs">element_avatar_id</code>). Если вы — аватар, ваша стихия не применяется — только правила аватара.
+                Неверный ответ и пропуск (не ответил до закрытия вопроса) для стихий и штрафов — одно и то же.
               </p>
               <p className="text-xs text-white/55">
-                Р•СЃР»Рё Сѓ РІРѕРїСЂРѕСЃР° СЃС‚РѕРёС‚ РјРµС‚РєР° СЃС‚РёС…РёРё, РІРµСЂРЅС‹Р№ РѕС‚РІРµС‚ РёРіСЂРѕРєР° С‚РѕР№ Р¶Рµ СЃС‚РёС…РёРё РґР°С‘С‚ +7% base (В«РЎРІРѕСЏ СЃС‚РёС…РёСЏВ»). РђРІР°С‚Р°СЂ Рё РёРіСЂРѕРє Р±РµР· СЃС‚РёС…РёРё РјРµС‚РєСѓ РЅРµ
-                РїРѕР»СѓС‡Р°СЋС‚, <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code> СЌС‚Рѕ С‡РёСЃР»Рѕ РЅРµ РјРµРЅСЏРµС‚. РўСѓРјР°РЅ Рё В«РїРµСЂРІС‹Р№ С‚РµСЂСЏРµС‚ СЃС‚РёС…РёСЋВ» РјРµС‚РєСѓ РіР°СЃСЏС‚.
+                Если у вопроса стоит метка стихии, верный ответ игрока той же стихии даёт +7% base («Своя стихия»). Аватар и игрок без стихии метку не
+                получают, <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code> это число не меняет. Туман и «первый теряет стихию» метку гасят.
               </p>
               <p className="text-xs text-white/55">
-                В«РСЃРєСЂР°В» (РѕРіРѕРЅСЊ) Рё В«РџРµСЂРІРµРЅСЃС‚РІРѕВ» (Р°РІР°С‚Р°СЂ) РЅР°С‡РёСЃР»СЏСЋС‚СЃСЏ{" "}
-                <strong className="text-foreground/85">РїРµСЂРІРѕРјСѓ РІРµСЂРЅРѕ РѕС‚РІРµС‚РёРІС€РµРјСѓ</strong> РЅР° РІРѕРїСЂРѕСЃРµ вЂ” РЅРµРІРµСЂРЅС‹Рµ РѕС‚РІРµС‚С‹ РґСЂСѓРіРёС… РёРіСЂРѕРєРѕРІ РґРѕ РІР°СЃ
-                РЅРµ РјРµС€Р°СЋС‚. Р­С‚Рѕ РЅРµ РїСѓС‚Р°С‚СЊ СЃ Р±РѕРЅСѓСЃРѕРј РІРѕРїСЂРѕСЃР° В«РџРµСЂРІС‹Р№ С‚РµСЂСЏРµС‚ СЃС‚РёС…РёСЋВ»: С‚Р°Рј СЃС‡РёС‚Р°РµС‚СЃСЏ СЃР°РјС‹Р№ РїРµСЂРІС‹Р№ РєР»РёРє, РґР°Р¶Рµ РµСЃР»Рё РѕС‚РІРµС‚
-                РЅРµРІРµСЂРЅС‹Р№.
+                «Искра» (огонь) и «Первенство» (аватар) начисляются{" "}
+                <strong className="text-white/85">первому верно ответившему</strong> на вопросе — неверные ответы других игроков до вас
+                не мешают. Это не путать с бонусом вопроса «Первый теряет стихию»: там считается самый первый клик, даже если ответ
+                неверный.
               </p>
               <p className="text-xs text-white/55">
-                Р‘РѕРЅСѓСЃ РІРѕРїСЂРѕСЃР° <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code> СѓСЃРёР»РёРІР°РµС‚ РѕРіРѕРЅСЊ, РІРѕРґСѓ, Р·РµРјР»СЋ Рё РІРѕР·РґСѓС… РЅР° РѕРґРЅРѕРј
-                СЂР°СѓРЅРґРµ (РїРѕРґСЂРѕР±РЅР°СЏ С‚Р°Р±Р»РёС†Р° вЂ” РІ СЂР°Р·РґРµР»Рµ В«Р‘РѕРЅСѓСЃС‹ РІРѕРїСЂРѕСЃР°В»). РђРІР°С‚Р°СЂ Рё РёРіСЂРѕРєРё Р±РµР· СЃС‚РёС…РёРё РЅРµ Р·Р°С‚СЂР°РіРёРІР°СЋС‚СЃСЏ.
+                Бонус вопроса <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code> усиливает огонь, воду, землю и воздух на одном
+                раунде (подробная таблица — в разделе «Бонусы вопроса»). Аватар и игроки без стихии не затрагиваются.
               </p>
 
               <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -766,25 +760,25 @@ export default function GameMechanicsContent() {
               </div>
             </MechanicsSection>
 
-            <MechanicsSection title="РЎРµСЂРёСЏ РІРµСЂРЅС‹С… РѕС‚РІРµС‚РѕРІ (СЃС‚СЂРёРє)">
+            <MechanicsSection title="Серия верных ответов (стрик)">
               <p>
-                <Brain className="mr-1.5 inline size-4 align-text-bottom text-(--orb-border-four)" aria-hidden />
-                РЎРµСЂРёСЏ СЃС‡РёС‚Р°РµС‚СЃСЏ РїРѕ Р·Р°РІРµСЂС€С‘РЅРЅС‹Рј РІРѕРїСЂРѕСЃР°Рј: РєР°Р¶РґС‹Р№ РІРµСЂРЅС‹Р№ РѕС‚РІРµС‚ СѓРІРµР»РёС‡РёРІР°РµС‚ streak, РЅРµРІРµСЂРЅС‹Р№ РѕС‚РІРµС‚ РёР»Рё РїСЂРѕРїСѓСЃРє СЃР±СЂР°СЃС‹РІР°РµС‚ РІ 0.
-                РСЃРєР»СЋС‡РµРЅРёСЏ вЂ” В«Р—Р°С‰РёС‚Р°В», СѓР»СЊС‚С‹ В«Р¤РµРЅРёРєСЃВ» Рё В«Р“СЂР°РЅРёС‚В», В«Р—Р°С‰РёС‚РЅС‹Р№ РїСЂРёР»РёРІВ» РІРѕРґС‹, Р° С‚Р°РєР¶Рµ В«РћР¶РѕРіВ», В«РћР±РІР°Р»В», В«РЎРєРІРѕР·РЅСЏРєВ» Рё В«Р Р°Р·Р»РѕРјВ» РЅР°
-                РІРµСЂРЅРѕРј РѕС‚РІРµС‚Рµ (СЃРµСЂРёСЏ РЅРµ СЂР°СЃС‚С‘С‚, Р±РѕРЅСѓСЃ СЃРµСЂРёРё Р·Р° СЌС‚РѕС‚ РІРѕРїСЂРѕСЃ РЅРµ РґР°С‘С‚СЃСЏ). РЈ Р·РµРјР»Рё Рё РІРѕР·РґСѓС…Р° СЃРІРѕСЏ СЃРµСЂРёСЏ РѕС‚РєСЂС‹РІР°РµС‚СЃСЏ СЃ 1 СѓСЂРѕРІРЅСЏ
-                РїРµСЂСЃРѕРЅР°Р¶Р°; РґРѕ СЌС‚РѕРіРѕ Сѓ РІСЃРµС… РѕР±С‹С‡РЅС‹Рµ +5% Р·Р° С€Р°Рі Рё РїРѕС‚РѕР»РѕРє 35%. В«Р—Р°С‰РёС‚РЅС‹Р№ РїСЂРёР»РёРІВ» РїРѕСЏРІР»СЏРµС‚СЃСЏ СЃ 3 СѓСЂРѕРІРЅСЏ: РѕС€РёР±РєР° СЃРЅРёРјР°РµС‚ РѕРґРёРЅ С€Р°Рі,
-                РµСЃР»Рё РІРµСЂРЅРѕ РѕС‚РІРµС‚РёР»Рѕ Р±РѕР»СЊС€Рµ РїРѕР»РѕРІРёРЅС‹ Р·Р°Р»Р°. РЎ 7 СѓСЂРѕРІРЅСЏ РІРѕРґС‹ РІ РїРѕР»РѕРІРёРЅРµ С‚Р°РєРёС… СЃР»СѓС‡Р°РµРІ СЃРµСЂРёСЏ РЅРµ СѓРјРµРЅСЊС€Р°РµС‚СЃСЏ. Р’ РёРЅС‚РµСЂС„РµР№СЃРµ
-                РѕС‚РѕР±СЂР°Р¶Р°РµС‚СЃСЏ РІРёР·СѓР°Р»СЊРЅС‹Р№ СЂР°РЅРі вЂ” С‚Рµ Р¶Рµ РЅР°Р·РІР°РЅРёСЏ Рё С†РІРµС‚Р°, С‡С‚Рѕ РІ РёРіСЂРµ:
+                <Brain className="mr-1.5 inline size-4 align-text-bottom text-(--accent-orb)" aria-hidden />
+                Серия считается по завершённым вопросам: каждый верный ответ увеличивает streak, неверный ответ или пропуск сбрасывает в 0.
+                Исключения — «Защита», ульты «Феникс» и «Гранит», «Защитный прилив» воды, а также «Ожог», «Обвал», «Сквозняк» и «Разлом» на
+                верном ответе (серия не растёт, бонус серии за этот вопрос не даётся). У земли и воздуха своя серия открывается с 1 уровня
+                персонажа; до этого у всех обычные +5% за шаг и потолок 35%. «Защитный прилив» появляется с 3 уровня: ошибка снимает один шаг,
+                если верно ответило больше половины зала. С 7 уровня воды в половине таких случаев серия не уменьшается. В интерфейсе
+                отображается визуальный ранг — те же названия и цвета, что в игре:
               </p>
               <ul className="mt-3 flex flex-col gap-2">
-                <li className="rounded-xl border border-white/12 bg-white/5 px-4 py-3">
+                <li className="game-slab rounded-lg px-4 py-3">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold tracking-[0.16em] text-white/60 uppercase">Warm-up</span>
-                    <span className="inline-flex items-center rounded-full border border-white/15 bg-white/8 px-2 py-0.5 text-[0.65rem] font-semibold tracking-[0.14em] text-white/75">
+                    <span className="inline-flex items-center rounded-md border-2 border-black/70 bg-white/8 px-2 py-0.5 text-[0.65rem] font-bold tracking-[0.14em] text-white/75 shadow-[1px_1px_0_0_#0a0c0b]">
                       START
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-white/65">0 РѕС‚РІРµС‚РѕРІ РёР»Рё 1 РІРµСЂРЅС‹Р№ вЂ” Р±РµР· Р±РѕРЅСѓСЃР° Р·Р° СЃРµСЂРёСЋ</p>
+                  <p className="mt-1 text-xs text-white/65">0 ответов или 1 верный — без бонуса за серию</p>
                 </li>
                 {[...STREAK_TIER_DEFINITIONS].reverse().map((tier) => (
                   <StreakTierCard
@@ -802,65 +796,65 @@ export default function GameMechanicsContent() {
               </ul>
             </MechanicsSection>
 
-            <MechanicsSection title="Р‘РѕРЅСѓСЃ Р·Р° СЃРµСЂРёСЋ">
-              <div className="border-border bg-background flex min-w-0 flex-col gap-2 rounded-xl border p-4">
-                <IconNote icon={<Zap className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                  РќР°С‡РёРЅР°СЏ СЃРѕ 2-РіРѕ РїРѕРґСЂСЏРґ РІРµСЂРЅРѕРіРѕ РѕС‚РІРµС‚Р° Рє РѕС‡РєР°Рј РІРѕРїСЂРѕСЃР° РґРѕР±Р°РІР»СЏРµС‚СЃСЏ РїСЂРѕС†РµРЅС‚: +{STREAK_BONUS_STEP_PERCENT}%, Р·Р°С‚РµРј +10%, +15%
-                  Рё С‚Р°Рє РґР°Р»РµРµ вЂ” С€Р°Рі {STREAK_BONUS_STEP_PERCENT}%, РјР°РєСЃРёРјСѓРј{" "}
-                  <strong className="text-foreground">{STREAK_BONUS_MAX_PERCENT}%</strong>.
+            <MechanicsSection title="Бонус за серию">
+              <div className="game-slab flex min-w-0 flex-col gap-2 rounded-lg p-4">
+                <IconNote icon={<Zap className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
+                  Начиная со 2-го подряд верного ответа к очкам вопроса добавляется процент: +{STREAK_BONUS_STEP_PERCENT}%, затем +10%, +15%
+                  и так далее — шаг {STREAK_BONUS_STEP_PERCENT}%, максимум{" "}
+                  <strong className="text-white">{STREAK_BONUS_MAX_PERCENT}%</strong>.
                 </IconNote>
                 <p>
-                  Р‘РѕРЅСѓСЃ СЃРµСЂРёРё СЃС‡РёС‚Р°РµС‚СЃСЏ РєР°Рє РїСЂРѕС†РµРЅС‚ РѕС‚ РѕС‡РєРѕРІ С‚РµРєСѓС‰РµРіРѕ РѕС‚РІРµС‚Р° Рё СѓР¶Рµ РІС…РѕРґРёС‚ РІ РёС‚РѕРі. РџРѕСЃР»Рµ РѕС‚РІРµС‚Р° РѕРЅ РІРёРґРµРЅ РІ СЂР°Р·Р±РёРІРєРµ{" "}
-                  <code className="text-xs">element_effects</code> (id <code className="text-xs">streak_bonus</code>) вЂ” РІ Р±Р»РѕРєРµ СЂРµР№С‚РёРЅРіР° Рё РІ
-                  С„РёРЅР°Р»СЊРЅРѕР№ СЃС‚Р°С‚РёСЃС‚РёРєРµ.
+                  Бонус серии считается как процент от очков текущего ответа и уже входит в итог. После ответа он виден в разбивке{" "}
+                  <code className="text-xs">element_effects</code> (id <code className="text-xs">streak_bonus</code>) — в блоке рейтинга и в
+                  финальной статистике.
                 </p>
                 <p className="text-xs text-white/55">
-                  РџСЂРёРјРµСЂ: РїСЂРё 5 РІРµСЂРЅС‹С… РїРѕРґСЂСЏРґ вЂ” +{streakBonusPercent(5)}% Рє РѕС‡РєР°Рј С‚РµРєСѓС‰РµРіРѕ РѕС‚РІРµС‚Р°; РїСЂРё 8 Рё Р±РѕР»РµРµ вЂ” РїРѕС‚РѕР»РѕРє{" "}
+                  Пример: при 5 верных подряд — +{streakBonusPercent(5)}% к очкам текущего ответа; при 8 и более — потолок{" "}
                   {STREAK_BONUS_MAX_PERCENT}%
                 </p>
               </div>
             </MechanicsSection>
 
-            <MechanicsSection title={`РЎР»СѓС‡Р°Р№РЅС‹Р№ Р±РѕРЅСѓСЃ +${LUCKY_BONUS_PERCENT}%`}>
-              <div className="min-w-0 rounded-xl border border-dashed border-amber-300/35 bg-amber-500/8 p-4">
+            <MechanicsSection title={`Случайный бонус +${LUCKY_BONUS_PERCENT}%`}>
+              <div className="game-slab min-w-0 rounded-lg border-2 border-dashed border-amber-300/50 p-4">
                 <IconNote className="text-amber-50/95" icon={<Sparkles className="mt-0.5 size-4 text-amber-200" aria-hidden />}>
-                  РџРѕСЃР»Рµ Р·Р°РєСЂС‹С‚РёСЏ РІРѕРїСЂРѕСЃР° СЃСЂРµРґРё РёРіСЂРѕРєРѕРІ СЃ <strong className="font-semibold">РІРµСЂРЅС‹Рј РѕС‚РІРµС‚РѕРј</strong>, РєРѕС‚РѕСЂС‹Рµ{" "}
-                  <strong className="font-semibold">РЅРµ РІ С‚РѕРї-3</strong> СЂРµР№С‚РёРЅРіР°, СЂР°Р·С‹РіСЂС‹РІР°РµС‚СЃСЏ РѕРґРёРЅ СЃР»СѓС‡Р°Р№РЅС‹Р№ Р±РѕРЅСѓСЃ вЂ”{" "}
-                  <strong className="text-amber-200">+{LUCKY_BONUS_PERCENT}%</strong> РѕС‚ Р±Р°Р·РѕРІС‹С… РѕС‡РєРѕРІ РІРѕРїСЂРѕСЃР° (РѕРєСЂСѓРіР»РµРЅРёРµ РІРЅРёР·).
+                  После закрытия вопроса среди игроков с <strong className="font-semibold">верным ответом</strong>, которые{" "}
+                  <strong className="font-semibold">не в топ-3</strong> рейтинга, разыгрывается один случайный бонус —{" "}
+                  <strong className="text-amber-200">+{LUCKY_BONUS_PERCENT}%</strong> от базовых очков вопроса (округление вниз).
                 </IconNote>
                 <p className="mt-2 text-sm text-white/80">
-                  РџРѕР±РµРґРёС‚РµР»СЋ РїРѕСЃР»Рµ Р·Р°РєСЂС‹С‚РёСЏ РІРѕРїСЂРѕСЃР° РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ Р±Р»РѕРє В«РџРѕРІРµР·Р»Рѕ!В» РІ СЂРµР№С‚РёРЅРіРµ; РІСЃРµРј РІ РєРѕРјРЅР°С‚Рµ вЂ” РІСЃРїР»С‹РІР°СЋС‰Р°СЏ РєР°СЂС‚РѕС‡РєР° РїРѕ
-                  СЃРѕР±С‹С‚РёСЋ <code className="text-[0.65rem]">lucky-bonus</code>. РћС‡РєРё СѓР¶Рµ РІРєР»СЋС‡РµРЅС‹ РІ СЃСѓРјРјСѓ РѕС‚РІРµС‚Р°.
+                  Победителю после закрытия вопроса показывается блок «Повезло!» в рейтинге; всем в комнате — всплывающая карточка по
+                  событию <code className="text-[0.65rem]">lucky-bonus</code>. Очки уже включены в сумму ответа.
                 </p>
                 <p className="mt-2 text-xs text-white/55">
-                  РќР° РІРѕРїСЂРѕСЃРµ СЃ Р±РѕРЅСѓСЃРѕРј <code className="text-[0.65rem]">LUCKY_PLUS</code> Рє Р±Р°Р·РѕРІРѕРјСѓ РїСЂРѕС†РµРЅС‚Сѓ Lucky РґРѕР±Р°РІР»СЏРµС‚СЃСЏ РµС‰С‘{" "}
-                  <strong className="text-foreground/85">+5%</strong> base: РѕР±С‹С‡РЅРѕ 17% РІРјРµСЃС‚Рѕ 12%, Сѓ Р°РІР°С‚Р°СЂР° 23% РІРјРµСЃС‚Рѕ 18%. РЈ РІРѕР·РґСѓС…Р° 24%
-                  РІРјРµСЃС‚Рѕ 12% РѕС‚РєСЂС‹РІР°СЋС‚СЃСЏ СЃ 3 СѓСЂРѕРІРЅСЏ РїРµСЂСЃРѕРЅР°Р¶Р°, 28% вЂ” СЃ 8; РґРѕ СЌС‚РѕРіРѕ Lucky РѕР±С‹С‡РЅС‹Р№. РЎ Р±РѕРЅСѓСЃРѕРј РІРѕРїСЂРѕСЃР° СЌС‚Рѕ 29% Рё 33%.
+                  На вопросе с бонусом <code className="text-[0.65rem]">LUCKY_PLUS</code> к базовому проценту Lucky добавляется ещё{" "}
+                  <strong className="text-white/85">+5%</strong> base: обычно 17% вместо 12%, у аватара 23% вместо 18%. У воздуха 24%
+                  вместо 12% открываются с 3 уровня персонажа, 28% — с 8; до этого Lucky обычный. С бонусом вопроса это 29% и 33%.
                 </p>
-                <p className="mt-2 text-xs text-white/55">РРіСЂРѕРєРё РІ С‚РѕРї-3 РІ СЂРѕР·С‹РіСЂС‹С€Рµ РЅРµ СѓС‡Р°СЃС‚РІСѓСЋС‚ вЂ” Сѓ РЅРёС… СѓР¶Рµ СЃРёР»СЊРЅР°СЏ РїРѕР·РёС†РёСЏ РІ С‚Р°Р±Р»РёС†Рµ.</p>
+                <p className="mt-2 text-xs text-white/55">Игроки в топ-3 в розыгрыше не участвуют — у них уже сильная позиция в таблице.</p>
               </div>
             </MechanicsSection>
 
-            <MechanicsSection title="Р‘РѕРЅСѓСЃС‹ РІРѕРїСЂРѕСЃР°">
+            <MechanicsSection title="Бонусы вопроса">
               <p>
-                РџСЂРё СЃРѕР·РґР°РЅРёРё РёР»Рё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРё РєРІРёР·Р° РІРµРґСѓС‰РёР№ РјРѕР¶РµС‚ РЅР°Р·РЅР°С‡РёС‚СЊ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РїСЂР°РІРёР»Р° РЅР° РєРѕРЅРєСЂРµС‚РЅС‹Р№ РІРѕРїСЂРѕСЃ. РњРѕР¶РЅРѕ РІС‹Р±СЂР°С‚СЊ
-                РЅРµСЃРєРѕР»СЊРєРѕ Р±РѕРЅСѓСЃРѕРІ СЃСЂР°Р·Сѓ РёР»Рё РѕСЃС‚Р°РІРёС‚СЊ РІРѕРїСЂРѕСЃ Р±РµР· РЅРёС… вЂ” С‚РѕРіРґР° РґРµР№СЃС‚РІСѓСЋС‚ С‚РѕР»СЊРєРѕ Р±Р°Р·РѕРІС‹Рµ РјРµС…Р°РЅРёРєРё (СЃС‚РёС…РёРё, СЃРµСЂРёСЏ Рё Lucky).
-                Р’ РёРіСЂРµ Р°РєС‚РёРІРЅС‹Рµ Р±РѕРЅСѓСЃС‹ РїРѕРєР°Р·С‹РІР°СЋС‚СЃСЏ РЅР° РєР°СЂС‚РѕС‡РєРµ РІРѕРїСЂРѕСЃР° вЂ” РёРєРѕРЅРєР° Рё РїРѕР»РЅРѕРµ РѕРїРёСЃР°РЅРёРµ РїСЂР°РІРёР»Р°.
+                При создании или редактировании квиза ведущий может назначить дополнительные правила на конкретный вопрос. Можно выбрать
+                несколько бонусов сразу или оставить вопрос без них — тогда действуют только базовые механики (стихии, серия и Lucky).
+                В игре активные бонусы показываются на карточке вопроса — иконка и полное описание правила.
               </p>
               <div className="mt-2 grid grid-cols-1 gap-2 lg:grid-cols-2">
                 <QuestionBonusTimingGroup
-                  title="РџСЂРё Р·Р°РєСЂС‹С‚РёРё РІРѕРїСЂРѕСЃР° (END)"
-                  description="Р”РѕРїРёСЃС‹РІР°СЋС‚СЃСЏ РІ element_effects РїРѕСЃР»Рµ END Рё РІРёРґРЅС‹ РІ my-rank / my-score. LUCKY_PLUS СѓСЃРёР»РёРІР°РµС‚ СЂРѕР·С‹РіСЂС‹С€ Lucky."
+                  title="При закрытии вопроса (END)"
+                  description="Дописываются в element_effects после END и видны в my-rank / my-score. LUCKY_PLUS усиливает розыгрыш Lucky."
                   bonuses={QUESTION_BONUSES_AT_END}
                 />
                 <QuestionBonusTimingGroup
-                  title="РџСЂРё РѕС‚РІРµС‚Рµ РёР»Рё РїСЂРѕРїСѓСЃРєРµ"
-                  description="Р’Р»РёСЏСЋС‚ РЅР° РЅР°С‡РёСЃР»РµРЅРёРµ СЃСЂР°Р·Сѓ. REVERSE_SCORING Рё ALL_ELEMENTS_BOOST РЅРµ РѕС‚РјРµРЅСЏСЋС‚ СЃС‚РёС…РёРё вЂ” РґРѕР±Р°РІР»СЏСЋС‚ РїРѕРїСЂР°РІРєСѓ РёР»Рё РјРµРЅСЏСЋС‚ С‡РёСЃР»Р°."
+                  title="При ответе или пропуске"
+                  description="Влияют на начисление сразу. REVERSE_SCORING и ALL_ELEMENTS_BOOST не отменяют стихии — добавляют поправку или меняют числа."
                   bonuses={QUESTION_BONUSES_ON_ANSWER}
                 />
                 <QuestionBonusTimingGroup
-                  title="РўРѕР»СЊРєРѕ РґР»СЏ РїР°СЂС‹"
-                  description="РЎС‡РёС‚Р°СЋС‚СЃСЏ РїСЂРё Р·Р°РєСЂС‹С‚РёРё РІРѕРїСЂРѕСЃР° РїРѕСЃР»Рµ РїРѕРґСѓС€РєРё Рё СЃРµСЂРёРё РїР°СЂС‹. РЎС‚СЂРѕРєР° РїРѕРїР°РґР°РµС‚ РІ team_effects. РРіСЂРѕРєСѓ Р±РµР· РїР°СЂС‹ Р±РѕРЅСѓСЃ РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏРµС‚."
+                  title="Только для пары"
+                  description="Считаются при закрытии вопроса после подушки и серии пары. Строка попадает в team_effects. Игроку без пары бонус ничего не меняет."
                   bonuses={QUESTION_BONUSES_FOR_TEAMS}
                 />
               </div>
@@ -873,7 +867,7 @@ export default function GameMechanicsContent() {
                     <li
                       key={option.value}
                       className={cn(
-                        "rounded-xl border px-4 py-3",
+                        "rounded-lg border-2 border-black/70 px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]",
                         team && "border-sky-300/40 bg-sky-400/10",
                         isNegative && "border-(--unfaithful)/35 bg-(--unfaithful)/8",
                         !team && !isNegative && "border-(--accent-orb)/35 bg-(--accent-orb)/10",
@@ -895,68 +889,68 @@ export default function GameMechanicsContent() {
                 })}
               </ul>
               <div className="mt-4 flex min-w-0 flex-col gap-2">
-                <p className="text-sm font-semibold text-white/85">ALL_ELEMENTS_BOOST вЂ” СѓСЃРёР»РµРЅРЅС‹Рµ СЃС‚РёС…РёРё</p>
+                <p className="text-sm font-semibold text-white/85">ALL_ELEMENTS_BOOST — усиленные стихии</p>
                 <AllElementsBoostTable />
               </div>
               <div className="mt-4 flex min-w-0 flex-col gap-2">
-                <p className="text-sm font-semibold text-white/85">PROGRESSIVE_BONUS вЂ” РЅР°СЂР°СЃС‚Р°СЋС‰РёР№ Р±РѕРЅСѓСЃ РІРµСЂРЅС‹Рј</p>
+                <p className="text-sm font-semibold text-white/85">PROGRESSIVE_BONUS — нарастающий бонус верным</p>
                 <ProgressiveBonusTable />
               </div>
               <div className="mt-4 flex min-w-0 flex-col gap-2">
-                <p className="text-sm font-semibold text-white/85">SEQUENTIAL_ORDER_BONUS вЂ” РїРѕСЂСЏРґРѕРє РІРµСЂРЅС‹С… (N РёРіСЂРѕРєРѕРІ)</p>
+                <p className="text-sm font-semibold text-white/85">SEQUENTIAL_ORDER_BONUS — порядок верных (N игроков)</p>
                 <SequentialOrderBonusTable />
               </div>
               <p className="text-xs text-white/55">
-                Р‘РѕРЅСѓСЃС‹ РІРѕРїСЂРѕСЃР° СЃРєР»Р°РґС‹РІР°СЋС‚СЃСЏ СЃ РіР»РѕР±Р°Р»СЊРЅС‹РјРё РїСЂР°РІРёР»Р°РјРё. End-Р±РѕРЅСѓСЃС‹ (С‚РѕРї-3, СЃР»Р°Р±РµР№С€РёРµ РґРІР°, Lucky) СЃС‡РёС‚Р°СЋС‚СЃСЏ РѕС‚ СѓР¶Рµ Р·Р°РїРёСЃР°РЅРЅРѕРіРѕ{" "}
-                <code className="text-[0.65rem]">points_awarded</code>. Р‘РѕРЅСѓСЃС‹ РїСЂРё РѕС‚РІРµС‚Рµ (
+                Бонусы вопроса складываются с глобальными правилами. End-бонусы (топ-3, слабейшие два, Lucky) считаются от уже записанного{" "}
+                <code className="text-[0.65rem]">points_awarded</code>. Бонусы при ответе (
                 <code className="text-[0.65rem]">REVERSE_SCORING</code>, <code className="text-[0.65rem]">PROGRESSIVE_BONUS</code>,{" "}
                 <code className="text-[0.65rem]">SEQUENTIAL_ORDER_BONUS</code>, <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code>)
-                РЅР°С‡РёСЃР»СЏСЋС‚СЃСЏ СЃСЂР°Р·Сѓ. Р•СЃР»Рё Р°РєС‚РёРІРµРЅ <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code>, РєР»Р°СЃСЃРёС‡РµСЃРєРѕРµ В«С‚РµСЂРїРµРЅРёРµВ» Р·РµРјР»Рё
-                (РїРѕСЃР»РµРґРЅРёР№ РІРµСЂРЅС‹Р№ РїСЂРё END) РЅРµ РЅР°С‡РёСЃР»СЏРµС‚СЃСЏ вЂ” РІРјРµСЃС‚Рѕ РЅРµРіРѕ Р»СЋР±РѕР№ РІРµСЂРЅС‹Р№ РѕС‚РІРµС‚ Р·РµРјР»Рё РїРѕР»СѓС‡Р°РµС‚ +15% base СЃСЂР°Р·Сѓ РїСЂРё РѕС‚РІРµС‚Рµ.
+                начисляются сразу. Если активен <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code>, классическое «терпение» земли
+                (последний верный при END) не начисляется — вместо него любой верный ответ земли получает +15% base сразу при ответе.
               </p>
             </MechanicsSection>
 
-            <MechanicsSection title="Р’Рѕ РІСЂРµРјСЏ РІРѕРїСЂРѕСЃР°">
+            <MechanicsSection title="Во время вопроса">
               <ul className="space-y-1.5 *:indent-3">
                 <li>
                   <Clock className="mr-1 inline size-3.5 align-text-bottom" aria-hidden />
-                  РўР°Р№РјРµСЂ РІРѕРїСЂРѕСЃР° Р·Р°РґР°С‘С‚СЃСЏ РІ С€Р°Р±Р»РѕРЅРµ РєРІРёР·Р°. РџРѕСЃР»Рµ РёСЃС‚РµС‡РµРЅРёСЏ РІСЂРµРјРµРЅРё РѕС‚РІРµС‚С‹ Р±Р»РѕРєРёСЂСѓСЋС‚СЃСЏ, РІРѕРїСЂРѕСЃ РїРµСЂРµС…РѕРґРёС‚ РІ СЃС‚Р°С‚СѓСЃ{" "}
+                  Таймер вопроса задаётся в шаблоне квиза. После истечения времени ответы блокируются, вопрос переходит в статус{" "}
                   <code className="text-xs">END</code>.
                 </li>
                 <li>
-                  РџРѕРІС‚РѕСЂРЅС‹Р№ РѕС‚РІРµС‚ РЅР° С‚РѕС‚ Р¶Рµ РІРѕРїСЂРѕСЃ РЅРµРІРѕР·РјРѕР¶РµРЅ (409 <code className="text-xs">already_answered</code>).
+                  Повторный ответ на тот же вопрос невозможен (409 <code className="text-xs">already_answered</code>).
                 </li>
                 <li>
-                  РџРѕСЃР»Рµ Р·Р°РєСЂС‹С‚РёСЏ РІРѕРїСЂРѕСЃР° РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ СЃС‚Р°С‚РёСЃС‚РёРєР°: РІРµСЂРЅРѕ / РЅРµРІРµСЂРЅРѕ / РІРѕР·РґРµСЂР¶Р°Р»РёСЃСЊ. РџСЂРѕРїСѓСЃРє РґРѕ END вЂ” РѕС‚РґРµР»СЊРЅР°СЏ РєР°С‚РµРіРѕСЂРёСЏ РІ UI;
-                  РїРѕСЃР»Рµ Р·Р°РєСЂС‹С‚РёСЏ РІРѕРїСЂРѕСЃР° РѕРЅ СЌРєРѕРЅРѕРјРёС‡РµСЃРєРё СЃС‡РёС‚Р°РµС‚СЃСЏ РѕС€РёР±РєРѕР№ (С‚Рµ Р¶Рµ РЅРµРґРѕСЃС‚Р°С‚РєРё Рё СЃР±СЂРѕСЃ СЃРµСЂРёРё), РЅРѕ РІ СЃС‚Р°С‚РёСЃС‚РёРєРµ РѕСЃС‚Р°С‘С‚СЃСЏ РѕС‚РґРµР»СЊРЅРѕР№
-                  РєР°С‚РµРіРѕСЂРёРµР№ В«РІРѕР·РґРµСЂР¶Р°Р»РёСЃСЊВ».
+                  После закрытия вопроса показывается статистика: верно / неверно / воздержались. Пропуск до END — отдельная категория в UI;
+                  после закрытия вопроса он экономически считается ошибкой (те же недостатки и сброс серии), но в статистике остаётся отдельной
+                  категорией «воздержались».
                 </li>
-                <li>РћРґРЅРѕСЂР°Р·РѕРІСѓСЋ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РјРѕР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ, РёР·СѓС‡РёС‚СЊ Рё Р°РєС‚РёРІРёСЂРѕРІР°С‚СЊ РєР°Рє РґРѕ РѕС‚РІРµС‚Р°, С‚Р°Рє Рё РїРѕСЃР»Рµ РЅРµРіРѕ вЂ” РґРѕ Р·Р°РєСЂС‹С‚РёСЏ РІРѕРїСЂРѕСЃР°.</li>
+                <li>Одноразовую способность можно открыть, изучить и активировать как до ответа, так и после него — до закрытия вопроса.</li>
                 <li>
-                  РќР° РєР°СЂС‚РѕС‡РєРµ РІРѕРїСЂРѕСЃР° РІРѕ РІСЂРµРјСЏ С„Р°Р·С‹ <code className="text-xs">GAME</code> РїРѕРєР°Р·С‹РІР°СЋС‚СЃСЏ РЅР°Р·РЅР°С‡РµРЅРЅС‹Рµ Р±РѕРЅСѓСЃС‹ РІРѕРїСЂРѕСЃР° вЂ” СЃ
-                  РёРєРѕРЅРєРѕР№ Рё РїРѕР»РЅС‹Рј РѕРїРёСЃР°РЅРёРµРј РїСЂР°РІРёР»Р°.
+                  На карточке вопроса во время фазы <code className="text-xs">GAME</code> показываются назначенные бонусы вопроса — с
+                  иконкой и полным описанием правила.
                 </li>
               </ul>
             </MechanicsSection>
 
-            <MechanicsSection title="РџРѕРґРєР»СЋС‡РµРЅРёРµ Рё СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ">
+            <MechanicsSection title="Подключение и синхронизация">
               <p>
-                РЎРѕСЃС‚РѕСЏРЅРёРµ РёРіСЂС‹ РїСЂРёС…РѕРґРёС‚ С‡РµСЂРµР· Socket.IO (<code className="text-xs">quiz:event</code>): СЃРјРµРЅР° С„Р°Р·, РЅРѕРІС‹Р№ РІРѕРїСЂРѕСЃ, РєРѕРЅРµС†
-                РІРѕРїСЂРѕСЃР°, РѕС‚РІРµС‚С‹ РґСЂСѓРіРёС… РёРіСЂРѕРєРѕРІ, СЃРѕР±С‹С‚РёРµ <code className="text-xs">lucky-bonus</code>, РІС…РѕРґ Рё РІС‹С…РѕРґ СѓС‡Р°СЃС‚РЅРёРєРѕРІ. Р›РёС‡РЅС‹Рµ Р±РѕРЅСѓСЃС‹
-                СЃРµСЂРёРё Рё СЂР°Р·Р±РёРІРєР° РѕС‡РєРѕРІ вЂ” РІ РѕС‚РІРµС‚Рµ API <code className="text-xs">my-rank</code>. РђРєС‚РёРІР°С†РёРё СЃРїРѕСЃРѕР±РЅРѕСЃС‚РµР№ РґР»СЏ РІРµРґСѓС‰РµРіРѕ Рё
-                РЅР°Р±Р»СЋРґР°С‚РµР»РµР№ вЂ” РІ <code className="text-xs">quiz:staff-event</code> (
+                Состояние игры приходит через Socket.IO (<code className="text-xs">quiz:event</code>): смена фаз, новый вопрос, конец
+                вопроса, ответы других игроков, событие <code className="text-xs">lucky-bonus</code>, вход и выход участников. Личные бонусы
+                серии и разбивка очков — в ответе API <code className="text-xs">my-rank</code>. Активации способностей для ведущего и
+                наблюдателей — в <code className="text-xs">quiz:staff-event</code> (
                 <code className="text-xs">skill-activated</code>).
               </p>
               <p>
-                РљСЂРёС‚РёС‡РЅС‹Рµ СЃРѕР±С‹С‚РёСЏ РґСѓР±Р»РёСЂСѓСЋС‚СЃСЏ СЃ Р·Р°РґРµСЂР¶РєРѕР№ (~2 СЃ) РґР»СЏ В«РґРѕРіРѕРЅР°В» РєР»РёРµРЅС‚РѕРІ РїРѕСЃР»Рµ РѕР±СЂС‹РІР° СЃРІСЏР·Рё. РџСЂРё РїРµСЂРµРїРѕРґРєР»СЋС‡РµРЅРёРё РєР»РёРµРЅС‚ Р·Р°РЅРѕРІРѕ
-                РїРѕРґРіСЂСѓР¶Р°РµС‚ РѕС‚С‡С‘С‚ Рё Р°РєС‚РёРІРЅС‹Р№ РІРѕРїСЂРѕСЃ.
+                Критичные события дублируются с задержкой (~2 с) для «догона» клиентов после обрыва связи. При переподключении клиент заново
+                подгружает отчёт и активный вопрос.
               </p>
             </MechanicsSection>
 
-            <MechanicsSection title="Р”РѕСЃС‚РёР¶РµРЅРёСЏ">
+            <MechanicsSection title="Достижения">
               <p>
-                РљРѕРіРґР° РјР°С‚С‡ РїРµСЂРµС…РѕРґРёС‚ РІ <code className="text-xs">END</code>, СЃРµСЂРІРµСЂ РѕРґРёРЅ СЂР°Р· Р·Р°РїРёСЃС‹РІР°РµС‚ С„Р°РєС‚С‹ РІРµС‡РµСЂР°. Р”РѕСЃС‚РёР¶РµРЅРёРµ РЅРµ РґР°С‘С‚ РѕС‡РєРѕРІ Рё
-                РЅРµ РґРµР»РёС‚ РјРµСЃС‚Рѕ. РљСЂСѓР¶РєРё СЃРёРґСЏС‚ РЅР° СЂР°РјРєРµ РєР°СЂС‚РѕС‡РєРё РёРіСЂРѕРєР°: РЅР° РїРѕРґРёСѓРјРµ, РІ СЃС‚СЂРѕРєРµ СЂРµР№С‚РёРЅРіР°, РІ Р»РёС‡РЅРѕРј РёС‚РѕРіРµ Рё РІ СЃРІРѕС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Рµ.
+                Когда матч переходит в <code className="text-xs">END</code>, сервер один раз записывает факты вечера. Достижение не даёт очков и
+                не делит место. Кружки сидят на рамке карточки игрока: на подиуме, в строке рейтинга, в личном итоге и в своём результате.
               </p>
               <ul className="mt-2 flex flex-col gap-2">
                 {MATCH_TITLE_CATALOG.map((item) => (
@@ -964,8 +958,8 @@ export default function GameMechanicsContent() {
                     key={item.id}
                     className={
                       item.rare
-                        ? "rounded-xl border border-amber-200/70 bg-amber-900/40 px-4 py-3"
-                        : "rounded-xl border border-amber-500/35 bg-amber-950/25 px-4 py-3"
+                        ? "rounded-lg border-2 border-black/70 bg-amber-900/40 px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]"
+                        : "rounded-lg border-2 border-black/70 bg-amber-950/25 px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]"
                     }
                   >
                     <p className="flex items-center gap-2 text-sm font-semibold text-amber-200">
@@ -978,23 +972,23 @@ export default function GameMechanicsContent() {
               </ul>
             </MechanicsSection>
 
-            <MechanicsSection title="РџРѕР»РµР·РЅРѕ РІРµРґСѓС‰РµРјСѓ">
+            <MechanicsSection title="Полезно ведущему">
               <ul className="space-y-1.5 *:indent-3">
                 <li>
-                  <IconNote icon={<Users className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                    Р’ Р»РѕР±Р±Рё РЅР°СЃС‚СЂРѕР№С‚Рµ РїСЂРёР·РѕРІС‹Рµ РјРµСЃС‚Р° РґРѕ СЃС‚Р°СЂС‚Р° вЂ” СЃ РїСѓСЃС‚С‹Рј СЃРїРёСЃРєРѕРј РѕСЃС‚Р°РЅРµС‚СЃСЏ С‚РѕР»СЊРєРѕ СЃР»СѓС‡Р°Р№РЅС‹Р№ РїСЂРёР·.
+                  <IconNote icon={<Users className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
+                    В лобби настройте призовые места до старта — с пустым списком останется только случайный приз.
                   </IconNote>
                 </li>
                 <li>
-                  <IconNote icon={<Gift className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                    РџРѕСЃР»Рµ С„РёРЅРёС€Р° РїСЂРёР·С‘СЂС‹ РїРѕР»СѓС‡Р°СЋС‚ Р»РёС‡РЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІ Р±РѕС‚Р° (РЅСѓР¶РµРЅ С…РѕС‚СЏ Р±С‹ РѕРґРёРЅ Р·Р°С…РѕРґ РІ Mini App).
+                  <IconNote icon={<Gift className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
+                    После финиша призёры получают личное сообщение в бота (нужен хотя бы один заход в Mini App).
                   </IconNote>
                 </li>
                 <li>
-                  <IconNote icon={<ListChecks className="mt-0.5 size-4 text-(--orb-border-four)" aria-hidden />}>
-                    Р’ С€Р°Р±Р»РѕРЅРµ РєРІРёР·Р° РјРѕР¶РЅРѕ РїРѕРјРµС‡Р°С‚СЊ РѕС‚РґРµР»СЊРЅС‹Рµ РІРѕРїСЂРѕСЃС‹ Р±РѕРЅСѓСЃР°РјРё вЂ” С„РёРЅР°Р»СЊРЅС‹Рµ СЂР°СѓРЅРґС‹, В«Р»РѕРІСѓС€РєРёВ» РЅР° СЃС‚РёС…РёРё, РѕР±СЂР°С‚РЅС‹Р№ СЃС‡С‘С‚,
-                    СѓСЃРёР»РµРЅРёРµ РІСЃРµС… СЃС‚РёС…РёР№, СѓСЃРёР»РµРЅРЅС‹Р№ Lucky РёР»Рё РїСЂР°РІРёР»Р° РїР°СЂС‹: СЃРІСЏР·РєСѓ, СЂР°Р·СЂС‹РІ Рё СЌС…Рѕ. РќРѕРІС‹Р№ РІРѕРїСЂРѕСЃ СЃСЂР°Р·Сѓ РІРєР»СЋС‡Р°РµС‚ В«СЃР»Р°Р±РµР№С€РёРµ РґРІР°В»
-                    Рё В«РїРѕСЃР»РµРґРЅРёРµ С‚СЂРёВ» вЂ” РёС… РјРѕР¶РЅРѕ СЃРЅСЏС‚СЊ.
+                  <IconNote icon={<ListChecks className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
+                    В шаблоне квиза можно помечать отдельные вопросы бонусами — финальные раунды, «ловушки» на стихии, обратный счёт,
+                    усиление всех стихий, усиленный Lucky или правила пары: связку, разрыв и эхо. Новый вопрос сразу включает «слабейшие два»
+                    и «последние три» — их можно снять.
                   </IconNote>
                 </li>
               </ul>
