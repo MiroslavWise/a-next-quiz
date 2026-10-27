@@ -70,6 +70,28 @@ function LuckyBonusPointsChip({ points }: { points: number }) {
   )
 }
 
+function QuestionPointsChip({ points }: { points: number }) {
+  const tone = points < 0 ? "negative" : points === 0 ? "zero" : "positive"
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-md border-2 px-2.5 py-1 text-sm font-bold tabular-nums shadow-[2px_2px_0_0_#0a0c0b]",
+        tone === "positive" && "border-amber-300/70 bg-amber-500/20 text-amber-50",
+        tone === "zero" && "border-slate-400/55 bg-slate-500/20 text-slate-100",
+        tone === "negative" && "border-rose-400/70 bg-rose-500/20 text-rose-100",
+      )}
+      aria-label={`Очки за вопрос: ${formatQuizPoints(points)}`}
+    >
+      {formatQuizPoints(points)}
+      <PickaxeIcon
+        points={points}
+        tone={tone === "zero" ? "neutral" : undefined}
+        className="size-3.5 shrink-0"
+      />
+    </span>
+  )
+}
+
 function StreakRing({ streak }: { streak: number }) {
   const broken = streak <= 0
   const progress = broken ? 0.42 : Math.min(1, streak / 8)
@@ -239,6 +261,12 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
         <p className="mt-3 text-sm text-white/80" role="status">
           Пара: <span className="font-semibold text-white">{partnerName}</span>
         </p>
+      ) : null}
+
+      {typeof data.element_effects_index === "number" && data.element_effects_index >= 0 ? (
+        <div className="mt-3" role="status" aria-live="polite">
+          <QuestionPointsChip points={Number(data.question_points ?? 0)} />
+        </div>
       ) : null}
 
       {data.team_effects?.length ? (

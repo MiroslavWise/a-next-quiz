@@ -19,6 +19,11 @@ export interface IRank {
   streak_bonus_index: number
   /** Случайный бонус за закрытый вопрос (0 — не выпал; >0 — выигрыш в розыгрыше) */
   lucky_bonus_points: number
+  /**
+   * Итог `points_awarded` за последний закрытый вопрос с ответом (speed + эффекты).
+   * Может быть отрицательным. `0`, если подходящего END нет. Не путать с `total_points`.
+   */
+  question_points?: number
   /** Полный список эффектов за последний закрытый вопрос с ответом — см. docs/API.md. */
   element_effects?: IElementEffect[]
   /** Индекс вопроса для `element_effects` (последний END с ответом). */
