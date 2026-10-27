@@ -154,3 +154,80 @@ export function gameSkillLockLabel(
   if (flags?.isUltimate) return "Откроется на 10 уровне"
   return STATUS_LABEL.locked
 }
+
+/** Требование к ответу игрока перед кастом (зеркало `validateSkillCast` на бэке). */
+export type SkillAnswerRequirement = "none" | "any" | "correct" | "wrong"
+
+export function skillAnswerRequirement(skillId: SkillId): SkillAnswerRequirement {
+  switch (skillId) {
+    case "BOOST":
+    case "SHIELD":
+    case "ELEM_FIRE":
+    case "ELEM_AIR":
+      return "correct"
+    case "GAMBIT":
+    case "ELEM_EARTH":
+      return "any"
+    case "ELEM_WATER":
+      return "wrong"
+    default:
+      return "none"
+  }
+}
+
+/** Эффект уходит на следующие вопросы — на последнем каст недоступен. */
+export function skillNeedsNextQuestion(skillId: SkillId): boolean {
+  switch (skillId) {
+    case "BOOST":
+    case "SHIELD":
+    case "GAMBIT":
+    case "ELEM_FIRE":
+    case "ELEM_WATER":
+    case "ELEM_AIR":
+    case "ELEM_EARTH":
+      return true
+    default:
+      return false
+  }
+}
+
+export type SkillCastBlockReason = "occupied" | "answer" | "correct" | "wrong" | "last_question"
+
+export interface SkillCastGateInput {
+  skillId: SkillId
+  /** На вопросе уже активна другая способность. */
+  questionOccupied: boolean
+  hasAnswered: boolean
+  /** `null` — результат ещё неизвестен (например already_answered). */
+  lastAnswerIsRight: boolean | null
+  hasNextQuestion: boolean
+}
+
+/** Клиентский гейт до POST: почему каст сейчас недоступен (без маны/PvP/status). */
+export function skillCastBlockReason(input: SkillCastGateInput): SkillCastBlockReason | null {
+  const { skillId, questionOccupied, hasAnswered, lastAnswerIsRight, hasNextQuestion } = input
+  if (questionOccupied) return "occupied"
+  if (skillNeedsNextQuestion(skillId) && !hasNextQuestion) return "last_question"
+  const req = skillAnswerRequirement(skillId)
+  if (req === "none") return null
+  if (!hasAnswered) return "answer"
+  if (lastAnswerIsRight == null) return null
+  if (req === "correct" && !lastAnswerIsRight) return "correct"
+  if (req === "wrong" && lastAnswerIsRight) return "wrong"
+  return null
+}
+
+export function skillCastBlockLabel(reason: SkillCastBlockReason): string {
+  switch (reason) {
+    case "occupied":
+      return "Уже активирована способность на вопросе"
+    case "answer":
+      return "Сначала ответьте"
+    case "correct":
+      return "Нужен верный ответ"
+    case "wrong":
+      return "Нужна ошибка или пропуск"
+    case "last_question":
+      return "Нет следующего вопроса"
+  }
+}

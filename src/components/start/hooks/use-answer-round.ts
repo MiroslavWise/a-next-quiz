@@ -4,7 +4,7 @@ import { useCallback, useMemo, useReducer, useRef, useState } from "react"
 import { type QueryClient } from "@tanstack/react-query"
 
 import { ApiRequestError } from "@/api/errors"
-import { answerQuestion, getPairAnswer } from "@/api/reports"
+import { answerQuestion, getPairAnswer, type IReportMySkillsResponse } from "@/api/reports"
 import { latestSocketEventOfTypes, useSocketEventEffect, type LastSocketEventByType } from "@/hooks/socket-event-by-type"
 import type { QuizEvent } from "@/hooks/useQuizSocketIO"
 import type { CountAnswersUsers, QuizStaffEvent } from "@/hooks/useQuizStaffSocketIO"
@@ -27,6 +27,8 @@ type RoundUiState = {
   selectedAnswerId: string | null
   submittingAnswerId: string | null
   hasAnswered: boolean
+  /** Верность ответа; `null` если ещё нет ответа или результат неизвестен. */
+  lastAnswerIsRight: boolean | null
   partnerAnswerId: string | null
 }
 
@@ -34,13 +36,14 @@ const initialRoundUi: RoundUiState = {
   selectedAnswerId: null,
   submittingAnswerId: null,
   hasAnswered: false,
+  lastAnswerIsRight: null,
   partnerAnswerId: null,
 }
 
 type RoundUiAction =
   | { type: "answerSubmitStart"; answerId: string }
   | { type: "answerSubmitEnd" }
-  | { type: "answerSuccess" }
+  | { type: "answerSuccess"; isRight: boolean | null }
   | { type: "answerErrorClearSelection" }
   | { type: "answerAlreadyAnswered" }
   | { type: "partnerAnswer"; answerId: string }
@@ -52,7 +55,7 @@ function roundUiReducer(state: RoundUiState, action: RoundUiAction): RoundUiStat
     case "answerSubmitEnd":
       return { ...state, submittingAnswerId: null }
     case "answerSuccess":
-      return { ...state, hasAnswered: true }
+      return { ...state, hasAnswered: true, lastAnswerIsRight: action.isRight }
     case "answerErrorClearSelection":
       return { ...state, selectedAnswerId: null }
     case "answerAlreadyAnswered":
@@ -77,6 +80,8 @@ export interface AnswerRound {
   selectedAnswerId: string | null
   submittingAnswerId: string | null
   hasAnswered: boolean
+  /** Верность последнего ответа; `null` если неизвестно. */
+  lastAnswerIsRight: boolean | null
   /** Вариант напарника, когда ответили оба. */
   partnerAnswerId: string | null
   handleAnswer: (answerId: string, index: number) => Promise<void>
@@ -169,7 +174,7 @@ export function useAnswerRound({
 }: IUseAnswerRoundParams): AnswerRound {
   const [answersProgress, setAnswersProgress] = useState<AnswersProgress>(null)
   const [roundUi, dispatchRound] = useReducer(roundUiReducer, initialRoundUi)
-  const { selectedAnswerId, submittingAnswerId, hasAnswered, partnerAnswerId } = roundUi
+  const { selectedAnswerId, submittingAnswerId, hasAnswered, lastAnswerIsRight, partnerAnswerId } = roundUi
   const latestSyncEvent = latestSocketEventOfTypes(lastByType, syncActiveIndexMessageTypes)
   const latestSyncEventRef = useRef(latestSyncEvent)
   const answersProgressSyncGenerationRef = useRef(0)
@@ -230,8 +235,21 @@ export function useAnswerRound({
           answerId,
         })
         if (res) {
-          dispatchRound({ type: "answerSuccess" })
+          dispatchRound({
+            type: "answerSuccess",
+            isRight: typeof res.is_right === "boolean" ? res.is_right : null,
+          })
           if (res.partner_answer_id) dispatchRound({ type: "partnerAnswer", answerId: res.partner_answer_id })
+          if (typeof res.mana === "number" || typeof res.mana_max === "number") {
+            queryClient.setQueriesData<IReportMySkillsResponse>({ queryKey: ["my-skills", reportId] }, (current) => {
+              if (!current) return current
+              return {
+                ...current,
+                mana: typeof res.mana === "number" ? res.mana : current.mana,
+                mana_max: typeof res.mana_max === "number" ? res.mana_max : current.mana_max,
+              }
+            })
+          }
           void queryClient.invalidateQueries({ queryKey: ["rank", reportId] })
           void queryClient.invalidateQueries({ queryKey: ["my-skills", reportId] })
         }
@@ -288,6 +306,7 @@ export function useAnswerRound({
     selectedAnswerId,
     submittingAnswerId,
     hasAnswered,
+    lastAnswerIsRight,
     partnerAnswerId,
     handleAnswer,
     answeredCount,

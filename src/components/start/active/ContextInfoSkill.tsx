@@ -17,6 +17,9 @@ const defaultState: IStateSkill = {
   questionId: "",
   audience: "player",
   activators: [],
+  hasAnswered: false,
+  lastAnswerIsRight: null,
+  hasNextQuestion: true,
 }
 
 const create = createContext<IStateSkill>(defaultState)
@@ -28,6 +31,9 @@ interface IProviderProps extends PropsWithChildren {
   questionId?: string
   audience?: SkillInfoAudience
   bySkillId?: ReadonlyMap<SkillId, number[]>
+  hasAnswered?: boolean
+  lastAnswerIsRight?: boolean | null
+  hasNextQuestion?: boolean
 }
 
 export default function ContextInfoSkill({
@@ -38,6 +44,9 @@ export default function ContextInfoSkill({
   questionId = "",
   audience = "player",
   bySkillId,
+  hasAnswered = false,
+  lastAnswerIsRight = null,
+  hasNextQuestion = true,
 }: IProviderProps) {
   const [value, setValue] = useState<SkillId | null>(null)
 
@@ -64,8 +73,24 @@ export default function ContextInfoSkill({
       questionId,
       audience,
       activators,
+      hasAnswered,
+      lastAnswerIsRight,
+      hasNextQuestion,
     }),
-    [value, open, close, reportId, tgId, activeIndex, questionId, audience, activators],
+    [
+      value,
+      open,
+      close,
+      reportId,
+      tgId,
+      activeIndex,
+      questionId,
+      audience,
+      activators,
+      hasAnswered,
+      lastAnswerIsRight,
+      hasNextQuestion,
+    ],
   )
 
   return <create.Provider children={children} value={state} />
@@ -89,4 +114,7 @@ interface IStateSkill extends IValueSkill {
   questionId: string
   audience: SkillInfoAudience
   activators: number[]
+  hasAnswered: boolean
+  lastAnswerIsRight: boolean | null
+  hasNextQuestion: boolean
 }

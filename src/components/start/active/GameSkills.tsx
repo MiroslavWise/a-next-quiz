@@ -7,7 +7,12 @@ import { Lock, RotateCw } from "lucide-react"
 import { getRank } from "@/api/rank"
 import { getReportMySkills } from "@/api/reports"
 import Button from "@/components/ui/button"
-import { GAME_SKILLS, gameSkillLockLabel } from "@/enum/game-skill"
+import {
+  GAME_SKILLS,
+  gameSkillLockLabel,
+  skillCastBlockLabel,
+  skillCastBlockReason,
+} from "@/enum/game-skill"
 import { GAME_SKILL_RESONANCES, getResonanceAccent, getResonanceIconSrc } from "@/lib/game-elements-catalog"
 import { cn } from "@/lib/utils"
 
@@ -28,7 +33,7 @@ function manaFillRatio(mana: number | undefined, cost: number | undefined) {
 }
 
 function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps) {
-  const { open, value: selectedSkillId } = useContextInfoSkill()
+  const { open, value: selectedSkillId, hasAnswered, lastAnswerIsRight, hasNextQuestion } = useContextInfoSkill()
   const queryKey = ["my-skills", reportId, activeIndex] as const
   const activationPending = useIsMutating({ mutationKey: ["activate-report-skill", reportId, questionId] }) > 0
 
@@ -50,6 +55,8 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
   const playerIsTopThree = typeof rankQuery.data?.rank === "number" && rankQuery.data.rank >= 1 && rankQuery.data.rank <= 3
   const mana = skillsQuery.data?.mana ?? 0
   const manaMax = skillsQuery.data?.mana_max ?? 0
+  const activeSkillId = skillsQuery.data?.active_skill
+  const questionOccupied = !!activeSkillId
 
   return (
     <section className="flex min-h-10 items-center justify-center gap-2" aria-label="Одноразовые способности">
@@ -79,12 +86,21 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
               const cost = state?.mana_cost ?? 0
               const fill = manaFillRatio(mana, cost)
               const canAfford = cost <= 0 || mana >= cost
-              const ready = status === "available" && !isPvpBlocked && canAfford
+              const castBlock = skillCastBlockReason({
+                skillId: definition.id,
+                questionOccupied: questionOccupied && !isActive,
+                hasAnswered,
+                lastAnswerIsRight,
+                hasNextQuestion,
+              })
+              const ready = status === "available" && !isPvpBlocked && canAfford && !castBlock
               const statusText = isPvpBlocked
                 ? "Недоступна: вы в топ-3"
-                : !canAfford && status === "available"
-                  ? `Мана ${mana}/${cost}`
-                  : gameSkillLockLabel(status, { isElemental: state?.is_elemental, isUltimate: state?.is_ultimate })
+                : castBlock && status === "available"
+                  ? skillCastBlockLabel(castBlock)
+                  : !canAfford && status === "available"
+                    ? `Мана ${mana}/${cost}`
+                    : gameSkillLockLabel(status, { isElemental: state?.is_elemental, isUltimate: state?.is_ultimate })
               const lit = isActive || isSelected
               const resonance = state?.resonance ? GAME_SKILL_RESONANCES[definition.id] : undefined
               const resonanceText = resonance ? `. Резонанс: ${resonance.title}` : ""
@@ -106,6 +122,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                     isUsed && "border-white/8 bg-white/4 text-white/35 grayscale",
                     isPvpBlocked && "z-20 border-white/8 bg-white/4 text-white/30 grayscale",
                     !isUsed && !isPvpBlocked && !canAfford && status === "available" && "border-white/10 text-white/55",
+                    !isUsed && !isPvpBlocked && castBlock && status === "available" && "border-white/10 text-white/55",
                   )}
                 >
                   {isPvpBlocked ? (
@@ -139,11 +156,20 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                 const cost = skill.mana_cost ?? 0
                 const fill = manaFillRatio(mana, cost)
                 const canAfford = cost <= 0 || mana >= cost
-                const ready = status === "available" && canAfford
+                const castBlock = skillCastBlockReason({
+                  skillId: skill.id,
+                  questionOccupied: questionOccupied && !isActive,
+                  hasAnswered,
+                  lastAnswerIsRight,
+                  hasNextQuestion,
+                })
+                const ready = status === "available" && canAfford && !castBlock
                 const statusText =
-                  !canAfford && status === "available"
-                    ? `Мана ${mana}/${cost}`
-                    : gameSkillLockLabel(status, { isElemental: skill.is_elemental, isUltimate: skill.is_ultimate })
+                  castBlock && status === "available"
+                    ? skillCastBlockLabel(castBlock)
+                    : !canAfford && status === "available"
+                      ? `Мана ${mana}/${cost}`
+                      : gameSkillLockLabel(status, { isElemental: skill.is_elemental, isUltimate: skill.is_ultimate })
                 const lit = isActive || isSelected
                 return (
                   <SkillIconButton
@@ -162,6 +188,7 @@ function GameSkills({ reportId, tgId, activeIndex, questionId }: GameSkillsProps
                       (isUsed || isLocked) && "border-white/10 bg-white/4 text-white/40 grayscale",
                       isLocked && "z-20",
                       !isUsed && !isLocked && !canAfford && status === "available" && "border-white/10 text-white/55",
+                      !isUsed && !isLocked && castBlock && status === "available" && "border-white/10 text-white/55",
                     )}
                   >
                     {isLocked ? (

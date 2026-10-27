@@ -185,33 +185,37 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
     return <DefaultActiveSkeleton />
 
   return (
-    <ContextInfoSkill
-      reportId={reportId}
-      tgId={tgId}
+    <ActiveQuestionRound
+      key={questionRoundKey}
       activeIndex={activeIndex}
-      questionId={question?.id}
-      audience={isStaff ? "staff" : "player"}
-      bySkillId={bySkillId}
+      lastByType={lastByType}
+      lastStaffByType={lastStaffByType}
+      reportId={reportId}
+      question={question}
+      statusQuestion={typeof statusQuestion === "string" ? statusQuestion : undefined}
+      isObserverLikeLeader={isStaff}
+      isFetchingMyRole={isFetchingMyRole}
+      myRole={myRole}
+      partnerTelegramId={isPlayer ? mateId : undefined}
+      queryClient={queryClient}
+      activeQuestionQueryKey={activeQuestionQueryKey}
     >
-      <ActiveQuestionRound
-        key={questionRoundKey}
-        activeIndex={activeIndex}
-        lastByType={lastByType}
-        lastStaffByType={lastStaffByType}
-        reportId={reportId}
-        question={question}
-        statusQuestion={typeof statusQuestion === "string" ? statusQuestion : undefined}
-        isObserverLikeLeader={isStaff}
-        isFetchingMyRole={isFetchingMyRole}
-        myRole={myRole}
-        partnerTelegramId={isPlayer ? mateId : undefined}
-        queryClient={queryClient}
-        activeQuestionQueryKey={activeQuestionQueryKey}
-      >
-        {(round) => {
-          const showStaffFooter = isLeader || (isObserver && collectingAnswers)
+      {(round) => {
+        const showStaffFooter = isLeader || (isObserver && collectingAnswers)
+        const hasNextQuestion = activeIndex < totalQuestions - 1
 
-          return (
+        return (
+          <ContextInfoSkill
+            reportId={reportId}
+            tgId={tgId}
+            activeIndex={activeIndex}
+            questionId={question?.id}
+            audience={isStaff ? "staff" : "player"}
+            bySkillId={bySkillId}
+            hasAnswered={round.hasAnswered}
+            lastAnswerIsRight={round.lastAnswerIsRight}
+            hasNextQuestion={hasNextQuestion}
+          >
             <div className={isStaff ? GAME_STAFF_SHELL_CLASS : GAME_PLAYER_SHELL_CLASS}>
               <div className={isStaff ? GAME_STAFF_COLUMN_CLASS : GAME_PLAYER_COLUMN_CLASS}>
                 {isStaff ? (
@@ -336,14 +340,14 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                 </Suspense>
               ) : null}
             </div>
-          )
-        }}
-      </ActiveQuestionRound>
-      <ComponentInfoSkill />
-      <Suspense fallback={null}>
-        <LuckyBonusFloat lastByType={lastByType} tgId={tgId} activeIndex={activeIndex} isQuestionEnded={isQuestionEnded} />
-      </Suspense>
-    </ContextInfoSkill>
+            <ComponentInfoSkill />
+            <Suspense fallback={null}>
+              <LuckyBonusFloat lastByType={lastByType} tgId={tgId} activeIndex={activeIndex} isQuestionEnded={isQuestionEnded} />
+            </Suspense>
+          </ContextInfoSkill>
+        )
+      }}
+    </ActiveQuestionRound>
   )
 }
 

@@ -18,7 +18,7 @@ import {
 
 import type { SkillId } from "@/api/reports"
 
-const gameSkillIcons: Record<SkillId, LucideIcon> = {
+const gameSkillIcons = Object.freeze({
   BOOST: Zap,
   SHIELD: ShieldHalf,
   THIEF: HandCoins,
@@ -33,7 +33,7 @@ const gameSkillIcons: Record<SkillId, LucideIcon> = {
   ULT_WATER: Droplets,
   ULT_EARTH: Mountain,
   ULT_AIR: Wind,
-}
+}) satisfies Record<SkillId, LucideIcon>
 
 export function GameSkillIcon({ skillId, className }: { skillId: SkillId; className?: string }) {
   const Icon = gameSkillIcons[skillId]

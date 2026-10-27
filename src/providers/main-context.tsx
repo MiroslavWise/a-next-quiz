@@ -7,6 +7,7 @@ import { Suspense, useCallback, useEffect, useState, type PropsWithChildren, laz
 
 import Button from "@/components/ui/button"
 import ToastHost from "@/components/ui/toast-host"
+import HomeJoinOverlay from "@/views/home/HomeJoinOverlay"
 const ElementsUser = lazy(() => import("@/templates/elements-user"))
 const UpdateInfoUser = lazy(() => import("@/templates/update-info-user"))
 
@@ -18,7 +19,6 @@ import { postCheckDataUser } from "@/api/check-data-user"
 import { useSyncElementTheme } from "@/hooks/use-sync-element-theme"
 import { dispatchUpdateInfo, useUpdateInfo } from "@/stores/update-info"
 import { dispatchAuth, dispatchUnauthenticated, useAuth } from "@/stores/auth"
-import HomeJoinOverlay from "@/views/home/HomeJoinOverlay"
 
 const GlobalVerificationMainContext = ({ children }: PropsWithChildren) => {
   useSyncElementTheme()

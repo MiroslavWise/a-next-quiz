@@ -14,7 +14,14 @@ import { showToast } from "@/stores/toast"
 import { ApiRequestError } from "@/api/errors"
 import { useUserByTgId } from "@/queries/user"
 import { GameSkillIcon } from "@/lib/game-skill-icons"
-import { gameSkillLockLabel, getGameSkillDefinition, isElementalSkillId, isUltimateSkillId } from "@/enum/game-skill"
+import {
+  gameSkillLockLabel,
+  getGameSkillDefinition,
+  isElementalSkillId,
+  isUltimateSkillId,
+  skillCastBlockLabel,
+  skillCastBlockReason,
+} from "@/enum/game-skill"
 import { GAME_SKILL_RESONANCES, getResonanceAccent, getResonanceIconSrc } from "@/lib/game-elements-catalog"
 import { activateReportSkill, getReportMySkills, type IReportMySkillsResponse, type SkillId } from "@/api/reports"
 
@@ -81,7 +88,20 @@ function SkillActivatorRow({ telegramId, viewerTgId }: { telegramId: number; vie
 }
 
 function ComponentInfoSkill() {
-  const { value, enabled, close, reportId, tgId, activeIndex, questionId, audience, activators } = useContextInfoSkill()
+  const {
+    value,
+    enabled,
+    close,
+    reportId,
+    tgId,
+    activeIndex,
+    questionId,
+    audience,
+    activators,
+    hasAnswered,
+    lastAnswerIsRight,
+    hasNextQuestion,
+  } = useContextInfoSkill()
   const isStaff = audience === "staff"
   const queryClient = useQueryClient()
   const queryKey = ["my-skills", reportId, activeIndex] as const
@@ -158,6 +178,19 @@ function ComponentInfoSkill() {
   const resonance = !isStaff && selectedState?.resonance ? GAME_SKILL_RESONANCES[definition.id] : undefined
   const resonanceAccent = resonance ? getResonanceAccent(resonance.element) : ""
   const escalateMult = (100 + 8 * skillCasts) / 100
+  const activeSkillId = skillsQuery.data?.active_skill
+  const questionOccupied = !!activeSkillId && activeSkillId !== value
+  const castBlock =
+    !isStaff && selectedStatus === "available"
+      ? skillCastBlockReason({
+          skillId: definition.id,
+          questionOccupied,
+          hasAnswered,
+          lastAnswerIsRight,
+          hasNextQuestion,
+        })
+      : null
+  const castBlocked = !!castBlock
 
   return (
     <>
@@ -281,6 +314,7 @@ function ComponentInfoSkill() {
                 activationPending ||
                 selectedPvpBlocked ||
                 selectedPvpRankPending ||
+                castBlocked ||
                 !questionId ||
                 !canAfford
               }
@@ -297,11 +331,13 @@ function ComponentInfoSkill() {
                       ? "Недоступно в топ-3"
                       : selectedPvpRankPending
                         ? "Проверяем место…"
-                        : !canAfford
-                          ? "Не хватает маны"
-                          : manaCost > 0
-                            ? `Активировать · ${manaCost}`
-                            : "Активировать"}
+                        : castBlock
+                          ? skillCastBlockLabel(castBlock)
+                          : !canAfford
+                            ? "Не хватает маны"
+                            : manaCost > 0
+                              ? `Активировать · ${manaCost}`
+                              : "Активировать"}
             </Button>
           )}
         </div>
