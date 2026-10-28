@@ -239,7 +239,7 @@ dialog::backdrop {
 }
 
 h1[data-index] {
-  @apply font-mono;
+  @apply font-pixel-display;
   font-size: clamp(5rem, 25vw, 30rem);
 }
 

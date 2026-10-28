@@ -121,7 +121,7 @@ function StreakRing({ streak }: { streak: number }) {
         </svg>
         <span
           className={cn(
-            "relative z-10 font-mono text-sm font-bold tabular-nums",
+            "font-pixel-display relative z-10 text-sm font-bold",
             broken ? "text-unfaithful" : "text-(--accent-orb)",
           )}
         >
@@ -200,7 +200,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
                 >
                   <div className="text-center leading-none">
                     <span className="block text-[0.5rem] font-semibold tracking-[0.16em] text-white/45 uppercase">место</span>
-                    <span className="mt-1 block text-xl font-bold tabular-nums text-(--accent-orb)">{rank != null && rank > 0 ? rank : "—"}</span>
+                    <span className="font-pixel-display mt-1 block text-xl font-bold text-(--accent-orb)">{rank != null && rank > 0 ? rank : "—"}</span>
                   </div>
                 </div>
                 <div className="min-w-0 space-y-0.5">
@@ -225,7 +225,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
         <div className="mt-3 rounded-lg border border-rose-400/35 bg-rose-500/10 px-3.5 py-2.5" role="status" aria-live="polite">
           <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
             <span className="text-[0.65rem] font-semibold tracking-[0.12em] text-white/50 uppercase xl:text-xs">Сумма очков</span>
-            <span className={cn("inline-flex items-center gap-1 text-sm font-bold tabular-nums xl:text-base", quizPointsToneClass(totalPoints))}>
+            <span className={cn("font-pixel-display inline-flex items-center gap-1 text-sm font-bold xl:text-base", quizPointsToneClass(totalPoints))}>
               {formatQuizPoints(totalPoints)}
               <PickaxeIcon points={totalPoints} className="size-3.5 shrink-0" />
             </span>

@@ -95,14 +95,14 @@ function UserScore({ reportId, tgId, isLeader, isObserver, prizes }: IProps) {
             )}
           >
             <span className="text-[0.65rem] font-semibold tracking-[0.2em] text-(--accent-orb)/85 uppercase">Место</span>
-            <span className="mt-1 text-5xl leading-none font-black tabular-nums">{myScore.rank}</span>
+            <span className="font-pixel-display mt-1 text-5xl leading-none font-black">{myScore.rank}</span>
             <span className="mt-2 text-sm font-semibold text-white/85">{placeLabel(myScore.rank)}</span>
           </div>
         </div>
       )}
       <div className="text-center">
         <div className="mt-1 inline-grid grid-cols-[minmax(0,1fr)_1.5rem] items-center gap-1">
-          <p className={cn("text-4xl font-bold tabular-nums", quizPointsToneClass(totalPoints))}>{formatQuizPoints(totalPoints)}</p>
+          <p className={cn("font-pixel-display text-4xl font-bold", quizPointsToneClass(totalPoints))}>{formatQuizPoints(totalPoints)}</p>
           <PickaxeIcon points={totalPoints} className="size-5 shrink-0" />
         </div>
         {isNegativeQuizPoints(totalPoints) ? (

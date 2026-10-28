@@ -153,7 +153,7 @@ function StatusStart({ refetch, questionCount, quizName }: StatusStartProps) {
         <section className={cn(styles.panel, "glass-start-liquid-palette rounded-lg px-4 py-3.5")}>
           <p className="text-[0.65rem] font-bold tracking-[0.18em] text-white/45 uppercase">{total > 0 ? "в колоде" : "колода"}</p>
           {total > 0 ? (
-            <p className="mt-1 font-semibold tracking-tight text-white tabular-nums">
+            <p className="font-pixel-display mt-1 font-semibold tracking-tight text-white">
               <span className={cn(styles.liveCount, "text-2xl")}>{shown}</span>
               <span className={cn(styles.finalCount, "text-2xl")}>{total}</span>
               <span className="text-base text-white/40"> / {total}</span>

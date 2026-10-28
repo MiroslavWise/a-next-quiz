@@ -77,7 +77,7 @@ export function PairMateBanner({
       </div>
       <div className="flex shrink-0 flex-col items-end gap-0.5">
         <span className="text-[0.6rem] font-medium tracking-wide text-white/45 uppercase">вместе</span>
-        <span className={cn("inline-flex items-center gap-1 text-base font-bold tabular-nums", tone)} aria-label={`Очки пары ${formatSignedPoints(total)}`}>
+        <span className={cn("font-pixel-display inline-flex items-center gap-1 text-base font-bold", tone)} aria-label={`Очки пары ${formatSignedPoints(total)}`}>
           {formatSignedPoints(total)}
           <PickaxeIcon points={total} className="size-3.5" />
         </span>

@@ -31,7 +31,7 @@ function CharacterCardView({ card }: { card: ICharacterCard }) {
           <span className="block truncate text-sm font-semibold text-white">{card.name}</span>
           <span className="block text-xs text-white/55">{visual.name}</span>
         </span>
-        <span className="ml-auto text-2xl font-black tabular-nums" style={{ color: visual.accentColor }}>
+        <span className="font-pixel-display ml-auto text-2xl font-black" style={{ color: visual.accentColor }}>
           {card.current_level}
         </span>
       </span>

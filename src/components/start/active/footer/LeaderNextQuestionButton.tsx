@@ -76,7 +76,7 @@ export default function LeaderNextQuestionButton({
         <span className="relative z-10 flex flex-col items-center gap-0.5">
           <span className="text-[0.65rem] font-medium tracking-wide text-amber-100/90 uppercase">Синхронизация</span>
           <span className="flex items-baseline gap-1.5">
-            <span className="text-base font-bold text-white tabular-nums">{secondsLeft}</span>
+            <span className="font-pixel-display text-base font-bold text-white">{secondsLeft}</span>
             <span className="text-xs font-medium text-white/55">сек</span>
           </span>
         </span>

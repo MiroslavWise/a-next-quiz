@@ -58,7 +58,7 @@ function TimerSeconds({ remainingSeconds, totalSeconds }: IProps) {
       <div className="relative z-10 flex flex-col items-center leading-none">
         <span
           className={cn(
-            "font-mono text-3xl font-bold tracking-tight text-white tabular-nums sm:text-4xl",
+            "font-pixel-display text-3xl font-bold tracking-tight text-white sm:text-4xl",
             isPanic && "text-unfaithful",
           )}
         >

@@ -74,7 +74,7 @@ function PodiumUserCard({
       <MatchTitleSeals titles={user.titles} />
       <div className={cn("rounded-2xl px-4 py-3 text-center", rankCardClass(user.rank))}>
         <div className="relative z-10">
-          <span className={cn("inline-flex items-center gap-1.5 text-[0.7rem] font-black tracking-wide", rankAccentClass(user.rank))}>
+          <span className={cn("font-pixel-display inline-flex items-center gap-1.5 text-[0.7rem] font-black tracking-wide", rankAccentClass(user.rank))}>
             <Icon className="size-3.5" aria-hidden />#{user.rank}
           </span>
           <div className="relative mx-auto mt-2 size-9">
@@ -109,7 +109,7 @@ function PodiumUserCard({
               </div>
             ) : null
           })()}
-          <p className="mt-2 inline-flex items-center justify-center gap-1.5 text-sm font-black text-white tabular-nums">
+          <p className="font-pixel-display mt-2 inline-flex items-center justify-center gap-1.5 text-sm font-black text-white">
             <PickaxeIcon points={score} className={cn("size-3.5", rankAccentClass(user.rank))} />
             {score.toLocaleString("ru-RU")}
           </p>

@@ -98,7 +98,7 @@ function PrizeWinnerRow({
         )}
       </div>
 
-      <div className="flex shrink-0 items-center gap-1.5 text-sm font-bold text-white/90 tabular-nums">
+      <div className="font-pixel-display flex shrink-0 items-center gap-1.5 text-sm font-bold text-white/90">
         <PickaxeIcon points={winner.points} className="size-3.5 text-(--accent-orb)" />
         {winner.points.toLocaleString("ru-RU")}
       </div>

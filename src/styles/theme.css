@@ -1,7 +1,16 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: var(--font-medeo-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: var(--font-medeo-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-pixel: var(--font-medeo-pixel), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Display accent: Medeo Pixel Grid (ELSH 40) — таймеры, место, очки, серия */
+@utility font-pixel-display {
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 40;
+  font-variant-numeric: tabular-nums;
 }
 
 @theme inline {
