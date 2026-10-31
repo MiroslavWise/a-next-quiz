@@ -180,8 +180,19 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
   const totalPoints = Number(data.total_points ?? 0)
   const hasNegativeTotal = !isTopThree && isNegativeQuizPoints(totalPoints)
 
+  const showQuestionPoints = typeof data.element_effects_index === "number" && data.element_effects_index >= 0
+
   return (
-    <section className="glass-start-liquid-palette relative w-full rounded-lg px-4 py-3.5 sm:px-5 sm:py-4 xl:px-7 xl:py-5">
+    <section className="glass-start-liquid-palette relative w-full overflow-visible rounded-lg px-4 py-3.5 sm:px-5 sm:py-4 xl:px-7 xl:py-5">
+      {showQuestionPoints ? (
+        <div
+          className="absolute -top-2 -right-2 z-20 sm:-top-2.5 sm:-right-2.5"
+          role="status"
+          aria-live="polite"
+        >
+          <QuestionPointsChip points={Number(data.question_points ?? 0)} />
+        </div>
+      ) : null}
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0 space-y-1">
           {isTopThree ? (
@@ -261,12 +272,6 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
         <p className="mt-3 text-sm text-white/80" role="status">
           Пара: <span className="font-semibold text-white">{partnerName}</span>
         </p>
-      ) : null}
-
-      {typeof data.element_effects_index === "number" && data.element_effects_index >= 0 ? (
-        <div className="mt-3" role="status" aria-live="polite">
-          <QuestionPointsChip points={Number(data.question_points ?? 0)} />
-        </div>
       ) : null}
 
       {data.team_effects?.length ? (

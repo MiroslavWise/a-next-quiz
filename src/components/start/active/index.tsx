@@ -270,11 +270,6 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                     ) : null
                   }
                 />
-                {isQuestionEnded ? (
-                  <Suspense fallback={<ActiveChartsSkeleton />}>
-                    <ActiveCharts reportId={reportId} tgId={tgId} index={activeIndex} />
-                  </Suspense>
-                ) : null}
                 <ComponentsQuestionAnswers
                   tgId={tgId}
                   reportId={reportId}
@@ -295,6 +290,11 @@ function ActiveQuestions({ reportId, tgId, user_id, lastByType, questions, prize
                   partnerAnswerId={isPlayer ? round.partnerAnswerId : null}
                   pairColor={myTeam ? pairColor(myTeam.id) : undefined}
                 />
+                {isQuestionEnded ? (
+                  <Suspense fallback={<ActiveChartsSkeleton />}>
+                    <ActiveCharts reportId={reportId} tgId={tgId} index={activeIndex} />
+                  </Suspense>
+                ) : null}
                 {isPlayer && isQuestionEnded ? (
                   <PlayerResultsSection reportId={reportId} tgId={tgId} activeIndex={activeIndex} />
                 ) : null}
