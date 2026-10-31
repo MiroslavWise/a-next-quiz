@@ -256,7 +256,7 @@ function ComponentInfoSkill() {
             </div>
           ) : null}
           {selectedPvpBlocked ? (
-            <p className="rounded-lg border border-amber-300/30 bg-amber-500/10 px-3 py-2 text-xs leading-relaxed text-amber-100">
+            <p className="game-slab rounded-lg px-3 py-2 text-xs leading-relaxed text-white/85">
               {definition.title} недоступен: сейчас вы занимаете место в топ-3.
             </p>
           ) : null}

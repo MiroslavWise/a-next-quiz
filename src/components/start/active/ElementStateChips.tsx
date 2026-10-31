@@ -21,8 +21,11 @@ function StateChip({ icon, label, hint, accent }: { icon: ReactNode; label: stri
     <li
       title={hint}
       aria-label={`${label}. ${hint}`}
-      className="inline-flex items-center gap-1 rounded-md border-2 border-black/70 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide text-white/90 shadow-[2px_2px_0_0_#0a0c0b]"
-      style={{ borderColor: accent, backgroundColor: `${accent}28` }}
+      className="inline-flex items-center gap-1 rounded-md border-2 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide text-white shadow-[2px_2px_0_0_#0a0c0b]"
+      style={{
+        borderColor: accent,
+        backgroundColor: `color-mix(in srgb, ${accent} 22%, #121418)`,
+      }}
     >
       {icon}
       {label}
@@ -58,7 +61,7 @@ function ElementStateChips({ reportId, activeIndex }: { reportId?: string; activ
       ) : null}
       {state.fire_burning ? (
         <StateChip
-          icon={<Flame className="size-3 motion-safe:animate-pulse" style={{ color: fire.accentColor }} aria-hidden />}
+          icon={<Flame className="size-3" style={{ color: fire.accentColor }} aria-hidden />}
           label="Горение"
           hint="Speed-очки тают быстрее, верный ответ +15% base"
           accent={fire.accentColor}

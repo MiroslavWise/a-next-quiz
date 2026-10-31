@@ -25,16 +25,16 @@ interface MobileLeaderboardAvatarsProps {
 }
 
 function podiumBorderClass(rank: number) {
-  if (rank === 1) return "border-amber-300/75 ring-2 ring-amber-400/35"
-  if (rank === 2) return "border-slate-200/65 ring-2 ring-slate-300/30"
-  if (rank === 3) return "border-orange-300/65 ring-2 ring-orange-400/30"
-  return "border-white/20"
+  if (rank === 1) return "border-2 border-(--accent-orb)"
+  if (rank === 2) return "border-2 border-slate-300"
+  if (rank === 3) return "border-2 border-orange-400"
+  return "border-2 border-black/80"
 }
 
 function avatarBorderClass(rank: number, isPrizePlace: boolean) {
   if (rank <= 3) return podiumBorderClass(rank)
-  if (isPrizePlace) return "border-amber-400/55 ring-1 ring-amber-400/30"
-  return "border-white/20"
+  if (isPrizePlace) return "border-2 border-(--accent-orb)"
+  return "border-2 border-black/80"
 }
 
 function LeaderboardAvatarFace({
@@ -63,7 +63,7 @@ function LeaderboardAvatarFace({
       />
       {isPrizePlace ? (
         <span
-          className="absolute -top-1 -right-1 z-10 flex size-4.5 items-center justify-center rounded-sm border-2 border-black/70 bg-linear-to-br from-amber-400 to-amber-600 shadow-[1px_1px_0_0_#0a0c0b]"
+          className="absolute -top-1 -right-1 z-10 flex size-4.5 items-center justify-center rounded-sm border-2 border-black/80 bg-(--accent-orb) shadow-[1px_1px_0_0_#0a0c0b]"
           aria-hidden
         >
           <Gift className="size-2.5 text-white" aria-hidden />

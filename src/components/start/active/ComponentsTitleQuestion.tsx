@@ -105,11 +105,11 @@ function ComponentsTitleQuestion({
           {showTimer ? <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} /> : null}
           {isHot ? (
             <p
-              className="inline-flex items-center gap-1 rounded-md border-2 border-orange-500/80 bg-orange-500/15 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] text-orange-100 uppercase shadow-[2px_2px_0_0_#0a0c0b]"
+              className="game-slab inline-flex items-center gap-1 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] text-(--accent-orb) uppercase"
               title="Горячий вопрос: очки за скорость ×1.35"
               aria-label="Горячий вопрос: очки за скорость умножаются на 1.35"
             >
-              <Flame className="size-3 text-orange-400 motion-safe:animate-pulse" aria-hidden />
+              <Flame className="size-3 text-(--accent-orb)" aria-hidden />
               Горячий · speed ×1.35
             </p>
           ) : null}
@@ -139,17 +139,11 @@ function ComponentsTitleQuestion({
           }
         >
           {elementsBoosted ? (
-            <span
-              className={cn(
-                "pointer-events-none absolute inset-0 border-2 border-(--accent-orb) motion-safe:animate-pulse",
-                ROUND_CLASS,
-              )}
-              aria-hidden
-            />
+            <span className={cn("pointer-events-none absolute inset-0 border-2 border-(--accent-orb)", ROUND_CLASS)} aria-hidden />
           ) : null}
           <div className={cn("flex w-full flex-col items-center", dots && "pt-2.5")}>
             {elementsBoosted ? (
-              <p className="mt-2.5 inline-flex items-center gap-1 rounded-md border-2 border-black/80 bg-(--accent-orb)/20 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.12em] text-white uppercase shadow-[2px_2px_0_0_#0a0c0b]">
+              <p className="game-slab mt-2.5 inline-flex items-center gap-1 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.12em] text-white uppercase">
                 <Sparkles className="size-3 text-(--accent-orb)" aria-hidden />
                 Стихии усилены
               </p>

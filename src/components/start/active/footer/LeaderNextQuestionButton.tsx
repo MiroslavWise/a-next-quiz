@@ -64,7 +64,7 @@ export default function LeaderNextQuestionButton({
         footerActionSlotClass,
         "relative overflow-hidden text-sm font-semibold",
         isCooldown
-          ? "cursor-wait border-amber-300/45 ring-2 ring-amber-400/30"
+          ? "cursor-wait border-black/80"
           : "disabled:cursor-not-allowed disabled:opacity-50",
       )}
       onClick={onNext}
@@ -74,7 +74,7 @@ export default function LeaderNextQuestionButton({
     >
       {isCooldown ? (
         <span className="relative z-10 flex flex-col items-center gap-0.5">
-          <span className="text-[0.65rem] font-medium tracking-wide text-amber-100/90 uppercase">Синхронизация</span>
+          <span className="text-[0.65rem] font-medium tracking-wide text-white/70 uppercase">Синхронизация</span>
           <span className="flex items-baseline gap-1.5">
             <span className="font-pixel-display text-base font-bold text-white">{secondsLeft}</span>
             <span className="text-xs font-medium text-white/55">сек</span>
@@ -87,18 +87,11 @@ export default function LeaderNextQuestionButton({
       )}
 
       {isCooldown ? (
-        <>
-          <span
-            className="pointer-events-none absolute inset-0 bg-amber-500/10"
-            style={{ opacity: 0.35 + cooldownProgress * 0.25 }}
-            aria-hidden
-          />
-          <span
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-linear-to-r from-amber-300/70 to-amber-200/90"
-            style={{ width: `${cooldownProgress * 100}%` }}
-            aria-hidden
-          />
-        </>
+        <span
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1.5 bg-(--accent-orb)"
+          style={{ width: `${cooldownProgress * 100}%` }}
+          aria-hidden
+        />
       ) : null}
     </button>
   )

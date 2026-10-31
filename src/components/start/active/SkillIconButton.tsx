@@ -10,16 +10,16 @@ import type { SkillId } from "@/api/reports"
 import { useContextInfoSkill } from "./ContextInfoSkill"
 
 const skillIconButtonClass = cn(
-  "relative z-10 size-9 overflow-visible rounded-full border-2 border-white/20 bg-black/35 text-white/80",
-  "hover:border-(--accent-orb)/70 hover:bg-(--accent-orb)/15 hover:text-white",
+  "relative z-10 size-9 overflow-visible rounded-full border-2 border-black/80 bg-[#121418] text-white/85",
+  "hover:border-(--accent-orb) hover:text-white",
   "shadow-[3px_3px_0_0_#0a0c0b]",
 )
 
 const skillIconButtonLitClass =
-  "border-(--accent-orb) bg-(--accent-orb)/25 text-white game-hard-ring"
+  "border-(--accent-orb) bg-[#1a1610] text-white game-hard-ring"
 
 const skillIconButtonReadyClass =
-  "border-(--accent-orb)/70 game-hard-ring-ready"
+  "border-(--accent-orb) game-hard-ring-ready"
 
 export function useCloseSkillInfoOnUnmount() {
   const { close } = useContextInfoSkill()
@@ -81,8 +81,7 @@ export function SkillIconButton({
           className="absolute inset-0 origin-bottom transition-transform duration-300 ease-out"
           style={{
             transform: `scaleY(${fill})`,
-            background:
-              "linear-gradient(180deg, color-mix(in srgb, var(--accent-orb) 55%, transparent) 0%, color-mix(in srgb, var(--accent-orb) 78%, transparent) 100%)",
+            background: "color-mix(in srgb, var(--accent-orb) 72%, #0a0c0b 28%)",
           }}
         />
       </span>

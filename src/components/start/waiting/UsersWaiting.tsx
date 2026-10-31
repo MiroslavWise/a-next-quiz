@@ -348,10 +348,10 @@ function UserWaiting({
   const isSelf = user === tgId
   const shouldPulse = highlighted
   const avatarClass = shouldPulse
-    ? "border-(--accent-orb) ring-2 ring-(--accent-orb)/30 animate-pulse"
+    ? "border-2 border-(--accent-orb)"
     : isObserver
-      ? "border-white/25"
-      : "border-(--accent-orb)/35"
+      ? "border-2 border-black/80"
+      : "border-2 border-(--accent-orb)"
   const canRemoveFromReport = isLeader && !isLoading
   const outgoing = invites.find((invite) => invite.status === "pending" && invite.from === tgId && invite.to === user)
   const incoming = invites.find((invite) => invite.status === "pending" && invite.from === user && invite.to === tgId)
@@ -488,7 +488,7 @@ function UserWaiting({
             {color && isSelfPair ? (
               <span
                 aria-hidden
-                className="pointer-events-none absolute -inset-px animate-pulse rounded-md"
+                className="pointer-events-none absolute -inset-px rounded-md"
                 style={{ boxShadow: `4px 4px 0 0 ${color}` }}
               />
             ) : null}

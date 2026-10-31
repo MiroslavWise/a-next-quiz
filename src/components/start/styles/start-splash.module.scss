@@ -87,14 +87,12 @@
   height: 0.42rem;
   border: 1px solid #0a0c0b;
   border-radius: 0.25rem;
-  background-color: color-mix(in srgb, var(--accent-orb) 35%, transparent);
+  background-color: color-mix(in srgb, var(--accent-orb) 55%, #0a0c0b);
   box-shadow: 1px 1px 0 0 #0a0c0b;
-  animation: shimmer-brutal 1.5s ease-in-out infinite;
 }
 
 .settled .bar {
-  animation: none;
-  background-color: color-mix(in srgb, var(--accent-orb) 55%, transparent);
+  background-color: color-mix(in srgb, var(--accent-orb) 72%, #0a0c0b);
 }
 
 .panel {
@@ -180,17 +178,6 @@
   50% {
     box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--accent-orb) 55%, #0a0c0b);
     border-color: color-mix(in srgb, var(--accent-orb) 85%, white);
-  }
-}
-
-@keyframes shimmer-brutal {
-  0%,
-  100% {
-    background-color: color-mix(in srgb, var(--accent-orb) 28%, transparent);
-  }
-
-  50% {
-    background-color: color-mix(in srgb, var(--accent-orb) 58%, transparent);
   }
 }
 

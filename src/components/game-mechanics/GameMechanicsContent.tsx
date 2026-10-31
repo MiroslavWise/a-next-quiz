@@ -165,7 +165,6 @@ function StreakTierCard({
   containerClass,
   titleClass,
   badgeClass,
-  pulse,
 }: {
   title: string
   badgeText: string
@@ -174,7 +173,6 @@ function StreakTierCard({
   containerClass: string
   titleClass: string
   badgeClass: string
-  pulse: boolean
 }) {
   return (
     <li className={cn("rounded-lg border-2 border-black/70 px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]", containerClass)}>
@@ -190,7 +188,6 @@ function StreakTierCard({
             >
               {badgeText}
             </span>
-            {pulse ? <span className="text-[0.65rem] font-medium tracking-wide text-white/50 uppercase">свечение</span> : null}
           </div>
           <p className="mt-1 text-xs text-white/65">{rangeLabel}</p>
         </div>
@@ -223,11 +220,12 @@ function QuestionBonusTimingGroup({
               key={bonus}
               className={cn(
                 "inline-flex items-center gap-1 rounded-md border-2 border-black/70 px-2 py-0.5 text-[0.65rem] font-bold shadow-[1px_1px_0_0_#0a0c0b]",
-                team && "bg-sky-400/15 text-sky-50",
-                negative && "bg-(--unfaithful)/15 text-rose-50",
-                !team && !negative && "bg-(--accent-orb)/15 text-amber-50",
+                team && "bg-[#07141c] text-sky-50",
+                negative && "bg-[#1a1012] text-rose-50",
+                !team && !negative && "bg-[#121418] text-(--accent-orb)",
               )}
             >
+
               <QuestionBonusIcon bonus={bonus} className="size-3 shrink-0 opacity-90" />
               {getQuestionBonusLabel(bonus)}
             </li>
@@ -765,7 +763,8 @@ export default function GameMechanicsContent() {
                 <Brain className="mr-1.5 inline size-4 align-text-bottom text-(--accent-orb)" aria-hidden />
                 Серия считается по завершённым вопросам: каждый верный ответ увеличивает streak, неверный ответ или пропуск сбрасывает в 0.
                 Исключения — «Защита», ульты «Феникс» и «Гранит», «Защитный прилив» воды, а также «Ожог», «Обвал», «Сквозняк» и «Разлом» на
-                верном ответе (серия не растёт, бонус серии за этот вопрос не даётся). У земли и воздуха своя серия открывается с 1 уровня
+                верном ответе (серия не растёт и не сбрасывается в 0 — остаётся прежней; бонус серии за этот вопрос не даётся). У земли и
+                воздуха своя серия открывается с 1 уровня
                 персонажа; до этого у всех обычные +5% за шаг и потолок 35%. «Защитный прилив» появляется с 3 уровня: ошибка снимает один шаг,
                 если верно ответило больше половины зала. С 7 уровня воды в половине таких случаев серия не уменьшается. В интерфейсе
                 отображается визуальный ранг — те же названия и цвета, что в игре:
@@ -790,7 +789,6 @@ export default function GameMechanicsContent() {
                     containerClass={tier.containerClass}
                     titleClass={tier.titleClass}
                     badgeClass={tier.badgeClass}
-                    pulse={tier.pulse}
                   />
                 ))}
               </ul>
@@ -816,11 +814,11 @@ export default function GameMechanicsContent() {
             </MechanicsSection>
 
             <MechanicsSection title={`Случайный бонус +${LUCKY_BONUS_PERCENT}%`}>
-              <div className="game-slab min-w-0 rounded-lg border-2 border-dashed border-amber-300/50 p-4">
-                <IconNote className="text-amber-50/95" icon={<Sparkles className="mt-0.5 size-4 text-amber-200" aria-hidden />}>
+              <div className="game-slab min-w-0 rounded-lg border-2 border-dashed border-black/80 p-4">
+                <IconNote className="text-white/90" icon={<Sparkles className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
                   После закрытия вопроса среди игроков с <strong className="font-semibold">верным ответом</strong>, которые{" "}
                   <strong className="font-semibold">не в топ-3</strong> рейтинга, разыгрывается один случайный бонус —{" "}
-                  <strong className="text-amber-200">+{LUCKY_BONUS_PERCENT}%</strong> от базовых очков вопроса (округление вниз).
+                  <strong className="text-(--accent-orb)">+{LUCKY_BONUS_PERCENT}%</strong> от базовых очков вопроса (округление вниз).
                 </IconNote>
                 <p className="mt-2 text-sm text-white/80">
                   Победителю после закрытия вопроса показывается блок «Повезло!» в рейтинге; всем в комнате — всплывающая карточка по
@@ -960,11 +958,11 @@ export default function GameMechanicsContent() {
                     key={item.id}
                     className={
                       item.rare
-                        ? "rounded-lg border-2 border-black/70 bg-amber-900/40 px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]"
-                        : "rounded-lg border-2 border-black/70 bg-amber-950/25 px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]"
+                        ? "rounded-lg border-2 border-black/80 bg-[#1a1610] px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]"
+                        : "rounded-lg border-2 border-black/80 bg-[#121418] px-4 py-3 shadow-[3px_3px_0_0_#0a0c0b]"
                     }
                   >
-                    <p className="flex items-center gap-2 text-sm font-semibold text-amber-200">
+                    <p className="flex items-center gap-2 text-sm font-semibold text-(--accent-orb)">
                       <MatchTitleMark id={item.id} className="size-4" />
                       {item.title}
                     </p>

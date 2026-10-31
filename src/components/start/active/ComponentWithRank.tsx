@@ -62,8 +62,8 @@ const STREAK_RING_CIRCUMFERENCE = 2 * Math.PI * STREAK_RING_RADIUS
 
 function LuckyBonusPointsChip({ points }: { points: number }) {
   return (
-    <span className={cn(rankOutcomeChipClass, "border-amber-300/45 bg-amber-500/20 font-bold text-amber-50 tabular-nums")}>
-      <Sparkles className="size-2.5 shrink-0 text-amber-200 opacity-90" aria-hidden />
+    <span className={cn(rankOutcomeChipClass, "border-black/80 bg-[#121418] font-bold text-(--accent-orb) tabular-nums shadow-[2px_2px_0_0_#0a0c0b]")}>
+      <Sparkles className="size-2.5 shrink-0 text-(--accent-orb)" aria-hidden />
       +{points}
       <PickaxeIcon className="size-2.5 shrink-0" />
     </span>
@@ -112,11 +112,6 @@ function StreakRing({ streak }: { streak: number }) {
             strokeLinecap="round"
             strokeDasharray={broken ? "8 10" : STREAK_RING_CIRCUMFERENCE}
             strokeDashoffset={broken ? 0 : dashOffset}
-            style={{
-              filter: broken
-                ? "drop-shadow(0 0 5px color-mix(in srgb, var(--unfaithful) 70%, transparent))"
-                : "drop-shadow(0 0 6px color-mix(in srgb, var(--accent-orb) 70%, transparent))",
-            }}
           />
         </svg>
         <span
@@ -206,7 +201,7 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
           ) : (
               <div className="flex items-center gap-3">
                 <div
-                  className="grid size-12 shrink-0 place-items-center rounded-lg border-2 border-black/70 bg-(--accent-orb)/10 shadow-[3px_3px_0_0_#0a0c0b]"
+                  className="grid size-12 shrink-0 place-items-center rounded-lg border-2 border-black/80 bg-[#121418] shadow-[3px_3px_0_0_#0a0c0b]"
                   title={rank != null && rank > 0 ? `Ваше место: ${rank}` : "Место пока не определено"}
                 >
                   <div className="text-center leading-none">
@@ -233,34 +228,27 @@ function ComponentWithRank({ reportId, tgId, activeIndex }: IComponentWithRankPr
       </div>
 
       {hasNegativeTotal ? (
-        <div className="mt-3 rounded-lg border border-rose-400/35 bg-rose-500/10 px-3.5 py-2.5" role="status" aria-live="polite">
+        <div className="game-slab mt-3 border-2 border-black/80 px-3.5 py-2.5" role="status" aria-live="polite">
           <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
             <span className="text-[0.65rem] font-semibold tracking-[0.12em] text-white/50 uppercase xl:text-xs">Сумма очков</span>
-            <span className={cn("font-pixel-display inline-flex items-center gap-1 text-sm font-bold xl:text-base", quizPointsToneClass(totalPoints))}>
+            <span className={cn("font-pixel-display inline-flex items-center gap-1 text-sm font-bold xl:text-base", quizPointsToneClass(totalPoints, "text-white", "text-unfaithful"))}>
               {formatQuizPoints(totalPoints)}
               <PickaxeIcon points={totalPoints} className="size-3.5 shrink-0" />
             </span>
           </div>
-          <p className="mt-1.5 text-[0.65rem] leading-snug text-rose-200/90 xl:text-xs">
+          <p className="mt-1.5 text-[0.65rem] leading-snug text-unfaithful xl:text-xs">
             Сумма ниже нуля — учтены отрицательные эффекты недостатков стихий.
           </p>
         </div>
       ) : null}
 
       {luckyBonus ? (
-        <div
-          className={cn(
-            rankOutcomeBlockClass,
-            "mt-3 overflow-hidden border-2 border-amber-300/70 bg-linear-to-r from-amber-500/20 via-yellow-500/10 to-amber-400/15 text-white/95 shadow-[4px_4px_0_0_#78350f]",
-          )}
-          role="status"
-          aria-live="polite"
-        >
+        <div className={cn(rankOutcomeBlockClass, "game-slab mt-3 border-2 border-black/80 text-white")} role="status" aria-live="polite">
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0">
-              <p className="text-sm leading-snug font-bold text-amber-50 xl:text-base">Повезло!</p>
-              <p className="mt-0.5 text-xs leading-snug text-white/90 xl:text-sm">
-                Случайный бонус <span className="font-semibold text-amber-200">+{LUCKY_BONUS_PERCENT}%</span> к очкам вопроса
+              <p className="text-sm leading-snug font-bold text-white xl:text-base">Повезло!</p>
+              <p className="mt-0.5 text-xs leading-snug text-white/75 xl:text-sm">
+                Случайный бонус <span className="font-semibold text-(--accent-orb)">+{LUCKY_BONUS_PERCENT}%</span> к очкам вопроса
               </p>
             </div>
             <LuckyBonusPointsChip points={luckyBonus.points} />

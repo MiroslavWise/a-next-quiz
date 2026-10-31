@@ -17,7 +17,7 @@ export const indexToString = (index: number, { glass = false }: { glass?: boolea
   if (glass) {
     return cn(
       `border-(--orb-bg-${name})`,
-      "border-2 bg-white/14 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] backdrop-blur-md",
+      "border-2 bg-[#121418] text-white shadow-[2px_2px_0_0_#0a0c0b]",
     )
   }
   return `border-(--orb-bg-${name}) bg-(--orb-bg-${name})`

@@ -19,7 +19,7 @@ const STATUS_BAR_CLASS: Record<EUsersAnswerStatus, string> = {
   [EUsersAnswerStatus.CORRECT]: "bg-(--faithful) outline outline-1 outline-black/70",
   [EUsersAnswerStatus.WRONG]: "bg-(--unfaithful) outline outline-1 outline-black/70",
   [EUsersAnswerStatus.SKIPPED]: "bg-slate-400 outline outline-1 outline-black/50",
-  [EUsersAnswerStatus.WAITING]: "bg-white/25 outline outline-1 outline-white/20",
+  [EUsersAnswerStatus.WAITING]: "bg-[#2a3038] outline outline-1 outline-black/70",
 }
 
 const STATUS_LABEL: Record<EUsersAnswerStatus, string> = {
@@ -195,14 +195,13 @@ function UserAnswerStatusBars({
                 "relative flex flex-1 cursor-pointer items-center justify-center rounded-[1px] transition-all duration-200",
                 "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40",
                 isWaiting && "cursor-default opacity-60",
-                pulseActive && "animate-pulse",
               )}
             >
               <span
                 className={cn(
                   "w-full rounded-[1px]",
                   STATUS_BAR_CLASS[entry.result],
-                  pulseActive && "opacity-80",
+                  pulseActive && "outline outline-1 outline-white/50",
                 )}
                 style={{
                   position: "absolute",
@@ -222,7 +221,7 @@ function UserAnswerStatusBars({
         createPortal(
           <div
             className={cn(
-              "fixed z-[200] max-w-[10rem] rounded-lg border border-white/15 bg-black/85 px-2.5 py-1.5 text-center shadow-xl backdrop-blur-sm",
+              "game-slab fixed z-[200] max-w-[10rem] px-2.5 py-1.5 text-center",
               tooltip.placement === "top" && "-translate-x-1/2 -translate-y-full",
               tooltip.placement === "bottom" && "-translate-x-1/2 translate-y-0",
             )}

@@ -60,11 +60,11 @@ function AnswererRow({ entry, viewerTgId }: { entry: IAnswerUserEntry; viewerTgI
           <span
             className={cn(
               "inline-flex shrink-0 items-center gap-0.5 rounded-md border-2 border-black/70 px-1.5 py-0.5 text-[0.65rem] font-bold tabular-nums shadow-[2px_2px_0_0_#0a0c0b]",
-              negativeScore ? "bg-rose-500/20 text-rose-100" : "bg-white/10 text-white/90",
+              negativeScore ? "bg-[#1a1012] text-unfaithful" : "bg-[#121418] text-white",
             )}
             title={`Очки за вопрос: ${formatQuizPoints(score)}`}
           >
-            <span className={quizPointsToneClass(score, "text-white/90", "text-rose-100")}>{formatQuizPoints(score)}</span>
+            <span className={quizPointsToneClass(score, "text-white", "text-unfaithful")}>{formatQuizPoints(score)}</span>
             <PickaxeIcon points={score} className="size-2.5 shrink-0" />
           </span>
         </>
@@ -104,23 +104,23 @@ export function AnswerersAvatarStack({
   const toneClass =
     tone === "correct"
       ? cn(
-          "border-2 border-emerald-400 bg-emerald-500/25 shadow-[3px_3px_0_0_#064e3b]",
-          "hover:border-emerald-300 hover:bg-emerald-500/35",
-          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300",
-          expanded && "border-emerald-300 bg-emerald-500/40",
+          "border-2 border-black/80 bg-[#0e1612] text-(--faithful) shadow-[3px_3px_0_0_#0a0c0b]",
+          "hover:outline hover:outline-2 hover:outline-(--faithful)",
+          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--faithful)",
+          expanded && "outline outline-2 outline-(--faithful)",
         )
       : tone === "abstained"
         ? cn(
-            "border-2 border-amber-300 bg-amber-500/20 shadow-[3px_3px_0_0_#78350f]",
-            "hover:border-amber-200 hover:bg-amber-500/30",
-            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300",
-            expanded && "border-amber-200 bg-amber-500/35",
+            "border-2 border-black/80 bg-[#121418] text-(--accent-orb) shadow-[3px_3px_0_0_#0a0c0b]",
+            "hover:outline hover:outline-2 hover:outline-(--accent-orb)",
+            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-orb)",
+            expanded && "outline outline-2 outline-(--accent-orb)",
           )
         : cn(
-            "border-2 border-rose-400 bg-rose-500/25 shadow-[3px_3px_0_0_#881337]",
-            "hover:border-rose-300 hover:bg-rose-500/35",
-            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-300",
-            expanded && "border-rose-300 bg-rose-500/40",
+            "border-2 border-black/80 bg-[#1a1012] text-unfaithful shadow-[3px_3px_0_0_#0a0c0b]",
+            "hover:outline hover:outline-2 hover:outline-(--unfaithful)",
+            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--unfaithful)",
+            expanded && "outline outline-2 outline-(--unfaithful)",
           )
 
   return (

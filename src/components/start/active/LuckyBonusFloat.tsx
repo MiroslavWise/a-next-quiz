@@ -24,31 +24,26 @@ function LuckyBonusFloatCard({ burst, viewerTgId }: LuckyBonusFloatCardProps) {
 
   return (
     <div
-      className={cn(
-        "pointer-events-none w-[min(14rem,calc(100vw-2rem))] overflow-hidden rounded-lg border-2 border-black/80 px-3 py-2 shadow-[4px_4px_0_0_#0a0c0b]",
-        itsMe
-          ? "border-amber-200/55 bg-linear-to-r from-amber-500/40 via-yellow-500/22 to-amber-400/28"
-          : "border-amber-300/42 bg-linear-to-r from-amber-500/28 via-yellow-500/14 to-amber-400/20",
-      )}
+      className="game-slab pointer-events-none w-[min(14rem,calc(100vw-2rem))] overflow-hidden px-3 py-2"
       role="status"
       aria-live="polite"
     >
-      <div className="mb-1.5 flex items-center gap-1.5 leading-none text-amber-50">
-        <Sparkles className="size-3.5 shrink-0 text-amber-200" aria-hidden />
+      <div className="mb-1.5 flex items-center gap-1.5 leading-none text-white">
+        <Sparkles className="size-3.5 shrink-0 text-(--accent-orb)" aria-hidden />
         <span className="text-xs font-bold tracking-wide">{itsMe ? "Вам повезло!" : "Случайный бонус"}</span>
       </div>
       <div className="flex items-center gap-2.5">
         <UserAvatarById
           telegramId={burst.telegramId}
           viewerTgId={viewerTgId}
-          className={cn("size-8 shrink-0 rounded-md border-2", itsMe ? "border-amber-200/70" : "border-amber-300/50")}
+          className={cn("size-8 shrink-0 rounded-md border-2", itsMe ? "border-(--accent-orb)" : "border-black/80")}
           loadingClassName="size-8"
           pseudoFallback={(id) => `Участник ${id}`}
         />
         <div className="min-w-0">
           <p className="truncate text-xs font-semibold text-white">{pseudo}</p>
           <p className="mt-0.5 flex flex-row flex-nowrap items-center gap-1 text-[0.7rem] text-white/85">
-            получил <span className="font-bold text-amber-200 tabular-nums">+{burst.bonus}</span>
+            получил <span className="font-bold text-(--accent-orb) tabular-nums">+{burst.bonus}</span>
             <PickaxeIcon className="size-3" />
           </p>
         </div>

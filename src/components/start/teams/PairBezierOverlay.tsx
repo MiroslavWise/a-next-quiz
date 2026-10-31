@@ -189,7 +189,7 @@ export function PairBezierOverlay({
         ))}
       </defs>
       {paths.map((path, index) => (
-        <g key={path.id} className={path.pulse ? "animate-pulse" : undefined}>
+        <g key={path.id}>
           <path d={path.d} fill="none" stroke={path.color} strokeWidth={6} strokeOpacity={0.28} strokeLinecap="round" />
           <path d={path.d} fill="none" stroke={`url(#${uid}-${index})`} strokeWidth={2} strokeLinecap="round" />
         </g>

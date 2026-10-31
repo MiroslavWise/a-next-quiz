@@ -218,7 +218,14 @@ export const GAME_AVATAR_CARD: GameElementCard = {
       detail: "На каждом 3-м вопросе — главный бонус случайной стихии: Жар (speed ×1.15), Течение (+5%), Корни (серия до 45%) или Порыв (40% → +7%).",
     },
   ],
-  shortcomings: [{ id: "avatar_rift", title: "Разлом", short: "16% → −25%", detail: "16% шанс −25% base; на верном ответе серия не растёт." }],
+  shortcomings: [
+    {
+      id: "avatar_rift",
+      title: "Разлом",
+      short: "11% → −25%",
+      detail: "11% шанс −25% base; на верном ответе серия не растёт и не сбрасывается (остаётся прежней).",
+    },
+  ],
 }
 
 export const GAME_AVATAR_ICON_SRC = GAME_AVATAR_CARD.iconSrc

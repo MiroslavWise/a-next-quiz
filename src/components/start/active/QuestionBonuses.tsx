@@ -77,11 +77,11 @@ function QuestionBonuses({ bonuses, className, style }: IQuestionBonusesProps) {
       {activeBonus ? (
         <span
           className={cn(
-            "absolute bottom-full left-0 z-30 mb-2 flex w-max max-w-xs items-start gap-1.5 rounded-lg border px-2 py-1.5 text-left leading-snug font-medium backdrop-blur-md",
+            "absolute bottom-full left-0 z-30 mb-2 flex w-max max-w-xs items-start gap-1.5 rounded-lg border-2 border-black/80 px-2 py-1.5 text-left leading-snug font-medium shadow-[3px_3px_0_0_#0a0c0b]",
             "text-[0.62rem] lg:gap-2 lg:px-2.5 lg:py-2 lg:text-[0.68rem]",
-            activeTeam && "border-sky-300/50 bg-[#07141c]/95 text-sky-50",
-            negative && "border-(--unfaithful)/45 bg-(--unfaithful)/90 text-rose-50",
-            !activeTeam && !negative && "border-(--accent-orb)/45 bg-[#12161c]/95 text-amber-50",
+            activeTeam && "bg-[#07141c] text-sky-50",
+            negative && "bg-[#1a1012] text-rose-50",
+            !activeTeam && !negative && "bg-[#121418] text-white",
           )}
         >
           <QuestionBonusIcon bonus={activeBonus} className="mt-0.5 size-2.5 shrink-0 opacity-90 lg:size-3" />

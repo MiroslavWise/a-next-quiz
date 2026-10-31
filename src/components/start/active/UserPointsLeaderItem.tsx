@@ -85,8 +85,9 @@ function UserPointsLeaderItem({
       title={isGameAvatar ? "Аватар игры" : undefined}
       className={cn(
         "glass-start-slab relative flex flex-col gap-1 rounded-lg px-2 py-1.5",
-        isPrizePlace && "border-2 border-amber-400/70 bg-amber-500/12 shadow-[4px_4px_0_0_#78350f]",
-        isGameAvatar && !isPrizePlace && "border-2 border-white/70 bg-white/12 shadow-[4px_4px_0_0_#e5e5e5]",
+        isPrizePlace && "border-2 border-black/80 shadow-[4px_4px_0_0_#0a0c0b]",
+        isPrizePlace && "outline outline-2 outline-(--accent-orb)",
+        isGameAvatar && !isPrizePlace && "border-2 border-white/80 shadow-[4px_4px_0_0_#e5e5e5]",
         isGameAvatar && isPrizePlace && "border-white/80",
       )}
     >
@@ -98,7 +99,7 @@ function UserPointsLeaderItem({
       >
         {answerOrder != null ? (
           <span
-            className="absolute -top-0.5 -left-0.5 z-10 flex size-4 items-center justify-center rounded-md border border-white/10 bg-black/45 p-px"
+            className="absolute -top-0.5 -left-0.5 z-10 flex size-4 items-center justify-center rounded-md border-2 border-black/80 bg-[#121418] p-px shadow-[1px_1px_0_0_#0a0c0b]"
             aria-label={isTopThreeAnswer ? `Ответил ${answerOrder}-м по счёту` : "Ответил правильно"}
             title={isTopThreeAnswer ? `Порядок ответа: ${answerOrder}` : "Ответил правильно"}
           >
@@ -111,7 +112,7 @@ function UserPointsLeaderItem({
         ) : null}
         {isPrizePlace ? (
           <span
-            className="absolute -top-px -right-px z-10 flex size-3.25 items-center justify-center overflow-hidden rounded-sm border-2 border-black/70 bg-linear-to-br from-amber-400 to-amber-600 shadow-[1px_1px_0_0_#0a0c0b]"
+            className="absolute -top-px -right-px z-10 flex size-3.25 items-center justify-center overflow-hidden rounded-sm border-2 border-black/80 bg-(--accent-orb) shadow-[1px_1px_0_0_#0a0c0b]"
             aria-label="Призовое место"
             title="Призовое место"
           >
@@ -166,17 +167,17 @@ function UserPointsLeaderItem({
           <div
             className={cn(
               "relative grid shrink-0 grid-cols-[minmax(0,1fr)_0.65rem] items-center gap-0.75 rounded-sm border px-1 py-0.75 text-[0.65rem] leading-none font-semibold",
-              isPrizePlace ? "border-amber-300/35 bg-amber-500/20 text-amber-50" : "border-white/15 bg-white/10 text-white",
-              isNegativeQuizPoints(points) && !isPrizePlace && "border-rose-400/35 bg-rose-500/15 text-rose-100",
+              isPrizePlace ? "border-black/80 bg-[#121418] text-(--accent-orb)" : "border-black/80 bg-[#121418] text-white",
+              isNegativeQuizPoints(points) && !isPrizePlace && "border-black/80 text-unfaithful",
             )}
           >
             {hasPointsDelta && (
               <span
                 className={cn(
-                  "absolute -top-2 -right-1 z-10 inline-flex items-center rounded-full border px-1 py-px text-[0.5rem] leading-none font-bold tabular-nums shadow-sm shadow-black/40",
+                  "absolute -top-2 -right-1 z-10 inline-flex items-center rounded-md border-2 border-black/80 px-1 py-px text-[0.5rem] leading-none font-bold tabular-nums shadow-[1px_1px_0_0_#0a0c0b]",
                   isPositiveDelta
-                    ? "border-emerald-300/50 bg-emerald-500/85 text-emerald-50"
-                    : "border-rose-300/50 bg-rose-500/85 text-rose-50",
+                    ? "bg-(--faithful) text-white"
+                    : "bg-(--unfaithful) text-white",
                 )}
                 aria-label={`За раунд: ${isPositiveDelta ? "+" : ""}${points_delta}`}
                 title={`За раунд: ${isPositiveDelta ? "+" : ""}${points_delta}`}

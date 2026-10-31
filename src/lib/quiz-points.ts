@@ -9,13 +9,13 @@ export function isNegativeQuizPoints(points: number): boolean {
 }
 
 /** Золотая кирка — очки ≥ 0. */
-export const PICKAXE_ICON_POSITIVE_CLASS = "text-[#FFD700] drop-shadow-[0_0_3px_rgba(255,215,0,0.5)]"
+export const PICKAXE_ICON_POSITIVE_CLASS = "text-[#FFD700]"
 
 /** Алокрасная кирка — отрицательные начисления и итог. */
-export const PICKAXE_ICON_NEGATIVE_CLASS = "text-[#FF2400] drop-shadow-[0_0_4px_rgba(255,36,0,0.7)]"
+export const PICKAXE_ICON_NEGATIVE_CLASS = "text-[#FF2400]"
 
 /** Серебряная кирка — нейтральный контекст (например, «до следующего места»). */
-export const PICKAXE_ICON_NEUTRAL_CLASS = "text-slate-300 drop-shadow-[0_0_3px_rgba(203,213,225,0.45)]"
+export const PICKAXE_ICON_NEUTRAL_CLASS = "text-slate-300"
 
 export type PickaxeIconTone = "positive" | "negative" | "neutral"
 

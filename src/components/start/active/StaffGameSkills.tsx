@@ -98,7 +98,7 @@ function StaffSkillSeal({
           style={
             {
               "--wave-max-scale": 2.2,
-              ...(elementAccent ? { "--wave-color": `color-mix(in srgb, ${elementAccent} 55%, transparent)` } : null),
+              ...(elementAccent ? { "--wave-color": elementAccent } : null),
             } as CSSProperties
           }
           aria-hidden

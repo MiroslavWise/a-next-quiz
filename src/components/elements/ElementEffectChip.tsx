@@ -57,8 +57,8 @@ export function ElementEffectChip({
         borderStyle: "solid",
         borderColor: isPenalty ? "color-mix(in srgb, var(--unfaithful) 70%, #0a0c0b)" : visual.accentColor,
         backgroundColor: isPenalty
-          ? "rgb(239 68 68 / 0.14)"
-          : `${visual.accentColor}18`,
+          ? "color-mix(in srgb, var(--unfaithful) 22%, #121418)"
+          : `color-mix(in srgb, ${visual.accentColor} 22%, #121418)`,
       }}
       title={effect.title}
     >

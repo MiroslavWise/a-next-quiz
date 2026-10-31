@@ -81,7 +81,7 @@
   position: relative;
   display: block;
   color: #fff;
-  text-shadow: 0 0 18px color-mix(in srgb, var(--accent-orb) 35%, transparent);
+  text-shadow: none;
 
   &::before,
   &::after {
@@ -126,26 +126,15 @@
   91%,
   100% {
     transform: translate(0) skew(0);
-    filter: none;
-    box-shadow: none;
   }
   92% {
     transform: translate(-5px, 2px) skewX(-1.2deg);
-    filter: blur(0.35px);
-    box-shadow:
-      6px 0 0 -2px color-mix(in srgb, var(--orb-border-one) 35%, transparent),
-      -5px 2px 0 -2px color-mix(in srgb, var(--orb-border-three) 30%, transparent);
   }
   93% {
     transform: translate(4px, -2px) skewX(0.9deg);
-    filter: none;
-    box-shadow:
-      -4px 1px 0 -2px color-mix(in srgb, var(--orb-border-two) 35%, transparent),
-      5px -1px 0 -2px color-mix(in srgb, var(--orb-border-four) 30%, transparent);
   }
   94% {
     transform: translate(0);
-    box-shadow: none;
   }
 }
 

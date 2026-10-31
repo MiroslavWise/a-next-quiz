@@ -19,7 +19,7 @@ function QuestionElementWash({ accent, resonant }: { accent: string; resonant: b
       aria-hidden
       className="pointer-events-none absolute inset-0 rounded-[inherit]"
       style={{
-        background: `radial-gradient(ellipse 78% 62% at 0% 0%, color-mix(in srgb, ${accent} ${resonant ? 28 : 16}%, transparent), transparent 72%)`,
+        background: `linear-gradient(135deg, color-mix(in srgb, ${accent} ${resonant ? 28 : 16}%, #06141a) 0%, transparent 48%)`,
       }}
     />
   )
@@ -37,7 +37,7 @@ function QuestionElementMark({ element, resonant = false, variant = "badge", par
         {part !== "stamp" ? <QuestionElementWash accent={visual.accentColor} resonant={resonant} /> : null}
         {part !== "wash" ? (
           <span
-            className={cn("pointer-events-none absolute z-20 size-(--seal-size)", resonant && "motion-safe:animate-pulse", className)}
+            className={cn("pointer-events-none absolute z-20 size-(--seal-size)", className)}
             style={{
               left: "calc(var(--seal-center) + var(--seal-stroke))",
               top: "calc(var(--seal-center) + var(--seal-stroke))",
@@ -48,11 +48,11 @@ function QuestionElementMark({ element, resonant = false, variant = "badge", par
               role="img"
               title={hint}
               aria-label={hint}
-              className="relative flex size-full items-center justify-center rounded-full border bg-[#06141a]"
+              className="relative flex size-full items-center justify-center rounded-full border-2 bg-[#06141a]"
               style={{
                 borderColor: visual.accentColor,
-                backgroundColor: `color-mix(in srgb, ${visual.accentColor} 24%, #06141a)`,
-                boxShadow: `0 0 0 1px ${visual.accentColor}, 0 0 16px color-mix(in srgb, ${visual.accentColor} 50%, transparent)`,
+                backgroundColor: `color-mix(in srgb, ${visual.accentColor} 28%, #06141a)`,
+                boxShadow: resonant ? `3px 3px 0 0 ${visual.accentColor}` : "3px 3px 0 0 #0a0c0b",
               }}
             >
               <Image src={visual.iconSrc} alt="" width={16} height={16} className="size-4 object-contain" />

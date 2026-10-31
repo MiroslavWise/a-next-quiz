@@ -11,23 +11,25 @@
   &::after {
     content: "";
     position: absolute;
-    inset: 6%;
+    inset: 0;
     border-radius: 9999px;
-    background-color: color-mix(in srgb, var(--unfaithful) 35%, transparent);
+    border: 2px solid color-mix(in srgb, var(--unfaithful) 85%, white 15%);
+    background: transparent;
+    box-shadow: none;
     pointer-events: none;
     will-change: transform, opacity;
-    animation: heartBeatWave 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+    animation: hardRingExpand 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   }
 
   &::after {
-    animation-delay: 0.15s;
+    animation-delay: 0.12s;
   }
 }
 
-/** Разовые расходящиеся волны (активация способности и т.п.). */
+/** Разовые расходящиеся кольца (активация способности и т.п.). */
 .waveBurst {
   --wave-max-scale: 2.4;
-  --wave-color: color-mix(in srgb, var(--accent-orb) 55%, transparent);
+  --wave-color: color-mix(in srgb, var(--accent-orb) 80%, white 20%);
 
   position: absolute;
   inset: 0;
@@ -42,21 +44,23 @@
     position: absolute;
     inset: 0;
     border-radius: 9999px;
-    background-color: var(--wave-color);
+    border: 2px solid var(--wave-color);
+    background: transparent;
+    box-shadow: none;
     pointer-events: none;
     will-change: transform, opacity;
-    animation: heartBeatWave 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+    animation: hardRingExpand 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   }
 
   &::after {
-    animation-delay: 0.15s;
+    animation-delay: 0.12s;
   }
 }
 
-@keyframes heartBeatWave {
+@keyframes hardRingExpand {
   0% {
     transform: scale(1);
-    opacity: 0.6;
+    opacity: 1;
   }
   100% {
     transform: scale(var(--wave-max-scale, 2.8));

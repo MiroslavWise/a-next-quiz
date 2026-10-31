@@ -127,7 +127,7 @@ function DataPointsLeader({
             <span className="truncate">Таблица лидеров</span>
             {isBackgroundRefreshing && (
               <span
-                className="inline-flex size-1.5 shrink-0 animate-pulse rounded-full bg-emerald-300 outline outline-1 outline-black/70"
+                className="inline-flex size-1.5 shrink-0 rounded-sm bg-(--accent-orb) outline outline-1 outline-black/80"
                 aria-label="Обновляем таблицу лидеров"
                 title="Обновляем таблицу лидеров"
               />

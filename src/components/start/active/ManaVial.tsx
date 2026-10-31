@@ -59,8 +59,8 @@ export function ManaVial({ mana, manaMax, className }: ManaVialProps) {
       >
         <div
           className={cn(
-            "relative h-10 w-7 overflow-hidden rounded-md border-2 border-black/80 bg-black/35 shadow-[2px_2px_0_0_#0a0c0b]",
-            pulse && "outline outline-(--accent-orb)",
+            "relative h-10 w-7 overflow-hidden rounded-md border-2 border-black/80 bg-[#0c1012] shadow-[2px_2px_0_0_#0a0c0b]",
+            pulse && "outline outline-2 outline-(--accent-orb)",
           )}
           role="meter"
           aria-valuemin={0}
@@ -72,11 +72,9 @@ export function ManaVial({ mana, manaMax, className }: ManaVialProps) {
             className="absolute inset-x-0 bottom-0 transition-[height] duration-300 ease-out"
             style={{
               height: `${Math.round(fill * 100)}%`,
-              background:
-                "linear-gradient(180deg, color-mix(in srgb, var(--accent-orb) 88%, white 12%) 0%, color-mix(in srgb, var(--accent-orb) 55%, transparent) 100%)",
+              background: "color-mix(in srgb, var(--accent-orb) 78%, #0a0c0b 22%)",
             }}
           />
-          <div className="pointer-events-none absolute inset-x-1 top-1 h-2 rounded-sm bg-white/15" />
         </div>
         <span className="text-[0.65rem] leading-none font-medium tabular-nums text-white/75">{safeMana}</span>
       </button>
