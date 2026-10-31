@@ -59,7 +59,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         title: "Ожог",
         short: "12% → −13%",
         detail:
-          "12% шанс −13% base; при ответе в первые 5 секунд −7%. На верном — серия не растёт.",
+          "12% шанс −13% base; при ответе в первые 5 секунд −7%. На верном — пауза серии (значение сохраняется), бонус серии от текущей длины.",
         unlockLevel: 0,
       },
       {
@@ -144,7 +144,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "earth_collapse",
         title: "Обвал",
         short: "17% → −15%",
-        detail: "17% шанс −15% base; на верном ответе серия не растёт.",
+        detail: "17% шанс −15% base; на верном — пауза серии, бонус от текущей длины.",
         unlockLevel: 0,
       },
     ],
@@ -188,7 +188,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "air_draft",
         title: "Сквозняк",
         short: "18% → −14%",
-        detail: "18% шанс −14% base; на верном ответе серия не растёт.",
+        detail: "18% шанс −14% base; на верном — пауза серии, бонус от текущей длины.",
         unlockLevel: 0,
       },
     ],
@@ -223,7 +223,7 @@ export const GAME_AVATAR_CARD: GameElementCard = {
       id: "avatar_rift",
       title: "Разлом",
       short: "11% → −25%",
-      detail: "11% шанс −25% base; на верном ответе серия не растёт и не сбрасывается (остаётся прежней).",
+      detail: "11% шанс −25% base; на верном — пауза серии (не сбрасывается), бонус от текущей длины.",
     },
   ],
 }
