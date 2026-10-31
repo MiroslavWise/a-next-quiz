@@ -75,7 +75,7 @@ function QuestionPointsChip({ points }: { points: number }) {
   return (
     <span
       className={cn(
-        "game-slab inline-flex items-center gap-1.5 rounded-md border-2 border-black/80 px-2.5 py-1 text-sm font-bold tabular-nums shadow-[3px_3px_0_0_#0a0c0b]",
+        "game-slab inline-flex items-center gap-1.5 px-2.5 py-1 text-sm font-bold tabular-nums",
         tone === "positive" && "text-(--accent-orb)",
         tone === "zero" && "text-white/75",
         tone === "negative" && "text-unfaithful",
