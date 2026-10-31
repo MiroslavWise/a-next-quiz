@@ -3,7 +3,7 @@
 import type { ReactNode } from "react"
 import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
-import { Flame, Mountain } from "lucide-react"
+import { Flame, Mountain, Shield } from "lucide-react"
 
 import { getReportMySkills, type ElementPhase } from "@/api/reports"
 import { EUserElement } from "@/enum/element"
@@ -38,7 +38,9 @@ function ElementStateChips({ reportId, activeIndex }: { reportId?: string; activ
   })
 
   const state = data?.element_state
-  if (!state || (!state.fire_burning && !state.earth_monolith && !state.avatar_phase)) return null
+  if (!state || (!state.fire_burning && !state.earth_monolith && !state.avatar_phase && !state.comeback_active)) {
+    return null
+  }
 
   const fire = GAME_ELEMENT_VISUAL_BY_ID[EUserElement.FIRE]
   const earth = GAME_ELEMENT_VISUAL_BY_ID[EUserElement.EARTH]
@@ -46,6 +48,14 @@ function ElementStateChips({ reportId, activeIndex }: { reportId?: string; activ
 
   return (
     <ul className="flex flex-wrap items-center justify-center gap-1.5" aria-label="Состояние стихии на вопросе">
+      {state.comeback_active ? (
+        <StateChip
+          icon={<Shield className="size-3" style={{ color: "#6EE7B7" }} aria-hidden />}
+          label="Комбек"
+          hint="Шансовые штрафы стихий отключены, пока отрыв от лидера велик"
+          accent="#6EE7B7"
+        />
+      ) : null}
       {state.fire_burning ? (
         <StateChip
           icon={<Flame className="size-3 motion-safe:animate-pulse" style={{ color: fire.accentColor }} aria-hidden />}

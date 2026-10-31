@@ -15,6 +15,8 @@ export interface IQuestion {
   element?: EUserElement | null
   /** Фаза стихии аватара на каждом 3-м вопросе (active-index, Socket.IO `data.question.avatar_phase`). */
   avatar_phase?: "FIRE" | "WATER" | "EARTH" | "AIR" | null
+  /** «Горячий» вопрос: speed ×1.35 (active-index / WS). */
+  hot?: boolean
   /** Публичный URL картинки вопроса (`GET /questions`, `GET /questions/{id}`) */
   imageUrl?: string | null
   image_url?: string | null

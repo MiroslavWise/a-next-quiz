@@ -156,6 +156,10 @@ export interface IReportAnswerPatchResponse {
   mana_max?: number
   /** Прирост маны за этот ответ (если был). */
   mana_gained?: number
+  /** Идемпотентный повтор того же ответа. */
+  already_answered?: boolean
+  /** Принятый вариант ответа. */
+  accepted_answer_id?: string
   /** Эффекты стихии сразу после ответа (жар, искра, streak и т.д.). */
   element_effects?: IElementEffect[]
   /** Эффекты активированной одноразовой способности. */
@@ -240,6 +244,8 @@ export interface IElementState {
   fire_burning: boolean
   earth_monolith: boolean
   avatar_phase: ElementPhase | null
+  /** Режим «Плотный хвост»: шансовые штрафы стихий отключены. */
+  comeback_active?: boolean
 }
 
 export interface ISkillEffect {

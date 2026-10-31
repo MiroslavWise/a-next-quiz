@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react"
+import { Flame, Sparkles } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import type { CSSProperties, ReactNode } from "react"
 
@@ -82,6 +82,7 @@ function ComponentsTitleQuestion({
   showMeta = true,
   bonuses,
   element,
+  hot,
   dots,
   staffSkills,
 }: IProps) {
@@ -92,6 +93,7 @@ function ComponentsTitleQuestion({
   const resonant = showMeta && !!elementVisual && !isGameAvatar && profileElement === elementVisual.id
   const { remainingSeconds, totalSeconds } = useQuestionCountdown({ start, time, enabled: showTimer && !ended })
   const elementsBoosted = !ended && !!bonuses?.includes(QuestionBonus.ALL_ELEMENTS_BOOST)
+  const isHot = !ended && !!hot
 
   const titleText = title ?? "Ожидаем текст вопроса..."
 
@@ -101,6 +103,16 @@ function ComponentsTitleQuestion({
         <>
           {showMeta ? <RoundMeta reportId={reportId} tgId={tgId} activeIndex={activeIndex} /> : null}
           {showTimer ? <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} /> : null}
+          {isHot ? (
+            <p
+              className="inline-flex items-center gap-1 rounded-md border-2 border-orange-500/80 bg-orange-500/15 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] text-orange-100 uppercase shadow-[2px_2px_0_0_#0a0c0b]"
+              title="Горячий вопрос: очки за скорость ×1.35"
+              aria-label="Горячий вопрос: очки за скорость умножаются на 1.35"
+            >
+              <Flame className="size-3 text-orange-400 motion-safe:animate-pulse" aria-hidden />
+              Горячий · speed ×1.35
+            </p>
+          ) : null}
           {showMeta ? <ElementStateChips reportId={reportId} activeIndex={activeIndex} /> : null}
         </>
       )}

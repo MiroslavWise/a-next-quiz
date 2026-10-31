@@ -36,6 +36,12 @@ export interface IRank {
   partner_telegram_id?: number
   /** Сумма очков пары по всем закрытым вопросам. Может быть отрицательной. */
   pair_points?: number
+  /** Режим «Плотный хвост»: штрафы стихий отключены. */
+  comeback_active?: boolean
+  /** Отрыв от лидера (leader − me), ≥ 0. */
+  comeback_leader_gap?: number
+  /** Порог комбека для текущего вопроса. */
+  comeback_threshold?: number
 }
 
 export const getRank = async (reportId: string) => {

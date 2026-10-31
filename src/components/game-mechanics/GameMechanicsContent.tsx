@@ -693,14 +693,14 @@ export default function GameMechanicsContent() {
                   lines={[
                     "0 — обвал",
                     "1 — корни: серия 6% за шаг, потолок 45%",
-                    "2 — терпение, последний верный +17%",
+                    "2 — терпение, последний верный в первые 80% таймера +17%",
                     "3 — монолит каждые 3 верных",
                     "4 — потолок серии 48%",
-                    "5 — терпение +20%",
+                    "5 — терпение +20% (тот же time-gate)",
                     "6 — обвал −13%",
                     "7 — монолит каждые 2 верных",
                     "8 — обвал реже, 14%",
-                    "9 — терпение +23%",
+                    "9 — терпение +23% (тот же time-gate)",
                     "10 — ульта «Гранит»",
                   ]}
                 />
@@ -906,7 +906,8 @@ export default function GameMechanicsContent() {
                 <code className="text-[0.65rem]">REVERSE_SCORING</code>, <code className="text-[0.65rem]">PROGRESSIVE_BONUS</code>,{" "}
                 <code className="text-[0.65rem]">SEQUENTIAL_ORDER_BONUS</code>, <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code>)
                 начисляются сразу. Если активен <code className="text-[0.65rem]">ALL_ELEMENTS_BOOST</code>, классическое «терпение» земли
-                (последний верный при END) не начисляется — вместо него любой верный ответ земли получает +15% base сразу при ответе.
+                (последний верный при END) не начисляется — вместо него любой верный ответ земли в первые 80% таймера получает +15% base сразу при
+                ответе.
               </p>
             </MechanicsSection>
 
@@ -918,7 +919,8 @@ export default function GameMechanicsContent() {
                   <code className="text-xs">END</code>.
                 </li>
                 <li>
-                  Повторный ответ на тот же вопрос невозможен (409 <code className="text-xs">already_answered</code>).
+                  Повтор с тем же вариантом идемпотентен (200, <code className="text-xs">already_answered</code>); другой
+                  вариант — 409 <code className="text-xs">answer_mismatch</code>.
                 </li>
                 <li>
                   После закрытия вопроса показывается статистика: верно / неверно / воздержались. Пропуск до END — отдельная категория в UI;

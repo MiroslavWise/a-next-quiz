@@ -119,7 +119,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
     tagline: "Терпение и серия",
     archetype: "Стабильная, выносливая",
     description: "Сильная серия и награда за последний верный ответ.",
-    uiHint: "Копи серию — она растёт мощнее. Ответь последним, но верно — получи бонус терпения.",
+    uiHint: "Копи серию — она растёт мощнее. Ответь последним в первые 80% таймера — получи бонус терпения.",
     iconSrc: "/element/earth.svg",
     accentColor: "#1C8C47",
     bonuses: [
@@ -128,7 +128,7 @@ export const GAME_ELEMENT_CARDS: GameElementCard[] = [
         id: "earth_patience",
         title: "Терпение",
         short: "+17% base",
-        detail: "Верный ответ последним: +17% от base points вопроса.",
+        detail: "Верный ответ последним в первые 80% таймера: +17% от base points вопроса.",
         unlockLevel: 2,
       },
       {

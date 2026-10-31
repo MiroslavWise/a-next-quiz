@@ -240,21 +240,28 @@ export function useAnswerRound({
             isRight: typeof res.is_right === "boolean" ? res.is_right : null,
           })
           if (res.partner_answer_id) dispatchRound({ type: "partnerAnswer", answerId: res.partner_answer_id })
-          if (typeof res.mana === "number" || typeof res.mana_max === "number") {
-            queryClient.setQueriesData<IReportMySkillsResponse>({ queryKey: ["my-skills", reportId] }, (current) => {
-              if (!current) return current
-              return {
-                ...current,
-                mana: typeof res.mana === "number" ? res.mana : current.mana,
-                mana_max: typeof res.mana_max === "number" ? res.mana_max : current.mana_max,
-              }
-            })
+          // Идемпотентный повтор: ману/ранг не трогаем повторно.
+          if (!res.already_answered) {
+            if (typeof res.mana === "number" || typeof res.mana_max === "number") {
+              queryClient.setQueriesData<IReportMySkillsResponse>({ queryKey: ["my-skills", reportId] }, (current) => {
+                if (!current) return current
+                return {
+                  ...current,
+                  mana: typeof res.mana === "number" ? res.mana : current.mana,
+                  mana_max: typeof res.mana_max === "number" ? res.mana_max : current.mana_max,
+                }
+              })
+            }
+            void queryClient.invalidateQueries({ queryKey: ["rank", reportId] })
+            void queryClient.invalidateQueries({ queryKey: ["my-skills", reportId] })
           }
-          void queryClient.invalidateQueries({ queryKey: ["rank", reportId] })
-          void queryClient.invalidateQueries({ queryKey: ["my-skills", reportId] })
         }
       } catch (error) {
-        if (ApiRequestError.is(error) && error.code === "already_answered") {
+        // Legacy 409 already_answered / answer_mismatch — зафиксировать ответ без сброса выбора.
+        if (
+          ApiRequestError.is(error) &&
+          (error.code === "already_answered" || error.code === "answer_mismatch")
+        ) {
           dispatchRound({ type: "answerAlreadyAnswered" })
           queryClient.invalidateQueries({ queryKey: activeQuestionQueryKey, exact: true })
           return
