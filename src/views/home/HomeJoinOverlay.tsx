@@ -1,5 +1,8 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
+
 import { cn } from "@/lib/utils"
 
 import styles from "./home-join-overlay.module.scss"
@@ -18,10 +21,18 @@ export default function HomeJoinOverlay({
   status = "Ищем комнату…",
   className,
 }: HomeJoinOverlayProps) {
-  return (
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
+  return createPortal(
     <div
       className={cn(
-        "game-dot-grid fixed inset-0 z-100 flex min-h-dvh w-full flex-col items-center justify-center gap-6 px-4",
+        "game-dot-grid fixed inset-0 z-[110] flex min-h-dvh w-full flex-col items-center justify-center gap-6 bg-background px-4",
         className,
       )}
       role="status"
@@ -40,6 +51,7 @@ export default function HomeJoinOverlay({
           <span className={styles.fill} />
         </div>
       </section>
-    </div>
+    </div>,
+    document.body,
   )
 }

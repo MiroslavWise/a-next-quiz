@@ -75,10 +75,10 @@ function QuestionPointsChip({ points }: { points: number }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md border-2 px-2.5 py-1 text-sm font-bold tabular-nums shadow-[2px_2px_0_0_#0a0c0b]",
-        tone === "positive" && "border-amber-300/70 bg-amber-500/20 text-amber-50",
-        tone === "zero" && "border-slate-400/55 bg-slate-500/20 text-slate-100",
-        tone === "negative" && "border-rose-400/70 bg-rose-500/20 text-rose-100",
+        "game-slab inline-flex items-center gap-1.5 rounded-md border-2 border-black/80 px-2.5 py-1 text-sm font-bold tabular-nums shadow-[3px_3px_0_0_#0a0c0b]",
+        tone === "positive" && "text-(--accent-orb)",
+        tone === "zero" && "text-white/75",
+        tone === "negative" && "text-unfaithful",
       )}
       aria-label={`Очки за вопрос: ${formatQuizPoints(points)}`}
     >
