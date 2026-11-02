@@ -17,6 +17,8 @@ export interface IQuestion {
   avatar_phase?: "FIRE" | "WATER" | "EARTH" | "AIR" | null
   /** «Горячий» вопрос: speed ×1.35 (active-index / WS). */
   hot?: boolean
+  /** Решающий раунд (последний вопрос при 8+): base ×1.5. Может совпадать с hot. */
+  decisive?: boolean
   /** Публичный URL картинки вопроса (`GET /questions`, `GET /questions/{id}`) */
   imageUrl?: string | null
   image_url?: string | null

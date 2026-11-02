@@ -53,6 +53,8 @@ export interface ICharacterAward {
   level_after?: number
   top_percent?: number
   prize_percent?: number
+  /** Остаток маны → XP (1:1) при GAME→END. */
+  mana_xp?: number
   unlocked?: string[]
   shares?: ICharacterAwardShare[]
 }

@@ -3,7 +3,7 @@
 import type { ReactNode } from "react"
 import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
-import { Flame, Mountain, Shield } from "lucide-react"
+import { Flame, Mountain, Shield, Sparkles } from "lucide-react"
 
 import { getReportMySkills, type ElementPhase } from "@/api/reports"
 import { EUserElement } from "@/enum/element"
@@ -41,17 +41,41 @@ function ElementStateChips({ reportId, activeIndex }: { reportId?: string; activ
   })
 
   const state = data?.element_state
-  if (!state || (!state.fire_burning && !state.earth_monolith && !state.avatar_phase && !state.comeback_active)) {
+  const diversity = data?.element_diversity
+  const showDiversity = !!diversity && diversity.percent > 0
+  const showState =
+    !!state && (!!state.fire_burning || !!state.earth_monolith || !!state.avatar_phase || !!state.comeback_active)
+
+  if (!showState && !showDiversity) {
     return null
   }
 
   const fire = GAME_ELEMENT_VISUAL_BY_ID[EUserElement.FIRE]
   const earth = GAME_ELEMENT_VISUAL_BY_ID[EUserElement.EARTH]
-  const phase = state.avatar_phase ? GAME_ELEMENT_VISUAL_BY_ID[state.avatar_phase as EUserElement] : null
+  const phase = state?.avatar_phase ? GAME_ELEMENT_VISUAL_BY_ID[state.avatar_phase as EUserElement] : null
+  const diversityEl = diversity?.element
+    ? GAME_ELEMENT_VISUAL_BY_ID[diversity.element as EUserElement]
+    : null
+  const diversityAccent = diversityEl?.accentColor ?? "#f5c16c"
+  const diversityHint = [
+    `Верный ответ: +${diversity?.percent ?? 0}% base`,
+    diversity?.lucky_bonus ? `Lucky +${diversity.lucky_bonus}%` : null,
+    "Чем реже твоя стихия в зале — тем выше бонус",
+  ]
+    .filter(Boolean)
+    .join(". ")
 
   return (
     <ul className="flex flex-wrap items-center justify-center gap-1.5" aria-label="Состояние стихии на вопросе">
-      {state.comeback_active ? (
+      {showDiversity ? (
+        <StateChip
+          icon={<Sparkles className="size-3" style={{ color: diversityAccent }} aria-hidden />}
+          label={`Редкость · +${diversity.percent}%`}
+          hint={diversityHint}
+          accent={diversityAccent}
+        />
+      ) : null}
+      {state?.comeback_active ? (
         <StateChip
           icon={<Shield className="size-3" style={{ color: "#6EE7B7" }} aria-hidden />}
           label="Комбек"
@@ -59,7 +83,7 @@ function ElementStateChips({ reportId, activeIndex }: { reportId?: string; activ
           accent="#6EE7B7"
         />
       ) : null}
-      {state.fire_burning ? (
+      {state?.fire_burning ? (
         <StateChip
           icon={<Flame className="size-3" style={{ color: fire.accentColor }} aria-hidden />}
           label="Горение"
@@ -67,7 +91,7 @@ function ElementStateChips({ reportId, activeIndex }: { reportId?: string; activ
           accent={fire.accentColor}
         />
       ) : null}
-      {state.earth_monolith ? (
+      {state?.earth_monolith ? (
         <StateChip
           icon={<Mountain className="size-3" style={{ color: earth.accentColor }} aria-hidden />}
           label="Монолит"
@@ -75,7 +99,7 @@ function ElementStateChips({ reportId, activeIndex }: { reportId?: string; activ
           accent={earth.accentColor}
         />
       ) : null}
-      {state.avatar_phase && phase ? (
+      {state?.avatar_phase && phase ? (
         <StateChip
           icon={<Image src={phase.iconSrc} alt="" width={12} height={12} className="size-3 object-contain" />}
           label={`Фаза: ${phase.name}`}

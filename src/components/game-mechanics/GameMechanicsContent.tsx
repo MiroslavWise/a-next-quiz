@@ -756,6 +756,23 @@ export default function GameMechanicsContent() {
               <div className="mt-3">
                 <ElementMechanicsCard card={GAME_AVATAR_CARD} />
               </div>
+              <p className="mt-3 text-xs text-white/55">
+                По снимку стихий зала строится лестница редкости: самая частая — без бонуса, реже —{" "}
+                <strong className="text-white/85">+3% / +5% / +8%</strong> base на каждый верный и{" "}
+                <strong className="text-white/85">+1 / +2 / +3</strong> к Lucky. В эффектах —{" "}
+                <code className="text-[0.65rem]">element_rarity</code>, в матче — чип «Редкость». Аватар и игроки без стихии не
+                участвуют.
+              </p>
+              <p className="mt-2 text-xs text-white/55">
+                В квизах от 8 вопросов последний раунд — <strong className="text-white/85">решающий</strong> (
+                <code className="text-[0.65rem]">decisive</code>): base ×1.5. Может совпасть с горячим вопросом (speed ×1.35 поверх).
+              </p>
+              <p className="mt-2 text-xs text-white/55">
+                Остаток маны в конце матча переводится в опыт персонажа <strong className="text-white/85">1:1</strong>.
+              </p>
+              <p className="mt-2 text-xs text-white/55">
+                При равных очках место решается так: больше верных → меньше пропусков → быстрее сумма верных ответов → меньший telegram id.
+              </p>
             </MechanicsSection>
 
             <MechanicsSection title="Серия верных ответов (стрик)">
@@ -817,7 +834,8 @@ export default function GameMechanicsContent() {
               <div className="game-slab min-w-0 rounded-lg border-2 border-dashed border-black/80 p-4">
                 <IconNote className="text-white/90" icon={<Sparkles className="mt-0.5 size-4 text-(--accent-orb)" aria-hidden />}>
                   После закрытия вопроса среди игроков с <strong className="font-semibold">верным ответом</strong>, которые{" "}
-                  <strong className="font-semibold">не в топ-3</strong> рейтинга, разыгрывается один случайный бонус —{" "}
+                  <strong className="font-semibold">вне топ-N</strong> (
+                  <code className="text-[0.65rem]">N = max(3, floor(участников / 4))</code>), разыгрывается один случайный бонус —{" "}
                   <strong className="text-(--accent-orb)">+{LUCKY_BONUS_PERCENT}%</strong> от базовых очков вопроса (округление вниз).
                 </IconNote>
                 <p className="mt-2 text-sm text-white/80">
@@ -829,7 +847,9 @@ export default function GameMechanicsContent() {
                   <strong className="text-white/85">+5%</strong> base: обычно 17% вместо 12%, у аватара 23% вместо 18%. У воздуха 24%
                   вместо 12% открываются с 3 уровня персонажа, 28% — с 8; до этого Lucky обычный. С бонусом вопроса это 29% и 33%.
                 </p>
-                <p className="mt-2 text-xs text-white/55">Игроки в топ-3 в розыгрыше не участвуют — у них уже сильная позиция в таблице.</p>
+                <p className="mt-2 text-xs text-white/55">
+                  Для 4–11 участников N = 3, для 16 — топ-4, для 24 — топ-6. Редкая стихия матча даёт +2% к проценту Lucky победителю.
+                </p>
               </div>
             </MechanicsSection>
 

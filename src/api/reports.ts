@@ -288,6 +288,13 @@ export interface IReportMySkillsResponse {
   skill_casts?: number
   skills: ISkillState[]
   element_state?: IElementState
+  /** Лестница редкости стихии матча (из снимка character_levels, без БД). */
+  element_diversity?: {
+    percent: number
+    lucky_bonus: number
+    element: string
+    counts: Partial<Record<"FIRE" | "WATER" | "EARTH" | "AIR", number>>
+  }
   visible_answer_ids?: string[]
 }
 

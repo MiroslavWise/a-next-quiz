@@ -30,8 +30,24 @@ function buildEndQuestionRefreshDedupKey(message: Record<string, unknown>): stri
 /** Один refetch на `end-question`, даже если хук подключён в нескольких компонентах. */
 let lastEndQuestionRefreshKey: string | null = null
 
+/** Сохраняет серверный порядок (points → верные → пропуски → elapsed → telegram_id). */
 export function sortReportUserPointsDesc(points: IReportUserPoints[] | undefined): IReportUserPoints[] {
-  return (points ?? []).toSorted((a, b) => reportUserTotalPoints(b) - reportUserTotalPoints(a))
+  const list = points ?? []
+  // user-points уже отсортирован на бэке; повторная сортировка только по очкам ломает тай-брейки.
+  if (list.length <= 1) return [...list]
+  let alreadyOrdered = true
+  for (let i = 1; i < list.length; i++) {
+    if (reportUserTotalPoints(list[i - 1]!) < reportUserTotalPoints(list[i]!)) {
+      alreadyOrdered = false
+      break
+    }
+  }
+  if (alreadyOrdered) return [...list]
+  return list.toSorted((a, b) => {
+    const d = reportUserTotalPoints(b) - reportUserTotalPoints(a)
+    if (d !== 0) return d
+    return String(a.telegram_id).localeCompare(String(b.telegram_id), undefined, { numeric: true })
+  })
 }
 
 function resetEndQuestionRefreshDedup() {

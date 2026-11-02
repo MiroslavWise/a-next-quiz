@@ -20,7 +20,14 @@ export default function CharacterAwardBlock({ award }: { award?: ICharacterAward
   if (award.kind === "none") {
     return (
       <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80" role="status">
-        Выбери стихию в профиле, чтобы копить опыт персонажа.
+        {award.mana_xp ? (
+          <p>
+            Без стихии: остаток маны дал <span className="tabular-nums font-semibold text-white">+{formatXp(award.mana_xp)}</span> опыта
+            (поровну на 4 персонажа).
+          </p>
+        ) : (
+          <p>Выбери стихию в профиле, чтобы копить опыт персонажа.</p>
+        )}
       </div>
     )
   }
@@ -33,6 +40,7 @@ export default function CharacterAwardBlock({ award }: { award?: ICharacterAward
         <p className="mt-1">
           {isLeader ? "Опыт начислен всем 4 персонажам" : "Опыт разделён на 4 персонажа"}
           {award.shares?.[0] ? ` — по ${formatXp(award.shares[0].points_gained)} каждому` : ""}.
+          {award.mana_xp ? ` Из маны: +${formatXp(award.mana_xp)}.` : ""}
         </p>
         <Link href="/characters" className="mt-2 inline-flex text-xs font-medium text-(--accent-orb) underline-offset-2 hover:underline">
           Открыть персонажей
@@ -46,6 +54,7 @@ export default function CharacterAwardBlock({ award }: { award?: ICharacterAward
   const notes = [
     award.top_percent ? `+${award.top_percent}% за топ-${award.top_percent === 7 ? 1 : award.top_percent === 5 ? 2 : 3}` : "",
     award.prize_percent ? `+${award.prize_percent}% за приз` : "",
+    award.mana_xp ? `+${formatXp(award.mana_xp)} из маны` : "",
   ].filter(Boolean)
 
   return (

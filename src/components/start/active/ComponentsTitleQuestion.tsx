@@ -1,4 +1,4 @@
-import { Flame, Sparkles } from "lucide-react"
+import { Flame, Sparkles, Swords } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import type { CSSProperties, ReactNode } from "react"
 
@@ -83,6 +83,7 @@ function ComponentsTitleQuestion({
   bonuses,
   element,
   hot,
+  decisive,
   dots,
   staffSkills,
 }: IProps) {
@@ -94,6 +95,7 @@ function ComponentsTitleQuestion({
   const { remainingSeconds, totalSeconds } = useQuestionCountdown({ start, time, enabled: showTimer && !ended })
   const elementsBoosted = !ended && !!bonuses?.includes(QuestionBonus.ALL_ELEMENTS_BOOST)
   const isHot = !ended && !!hot
+  const isDecisive = !ended && !!decisive
 
   const titleText = title ?? "Ожидаем текст вопроса..."
 
@@ -103,15 +105,29 @@ function ComponentsTitleQuestion({
         <>
           {showMeta ? <RoundMeta reportId={reportId} tgId={tgId} activeIndex={activeIndex} /> : null}
           {showTimer ? <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} /> : null}
-          {isHot ? (
-            <p
-              className="game-slab inline-flex items-center gap-1 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] text-(--accent-orb) uppercase"
-              title="Горячий вопрос: очки за скорость ×1.35"
-              aria-label="Горячий вопрос: очки за скорость умножаются на 1.35"
-            >
-              <Flame className="size-3 text-(--accent-orb)" aria-hidden />
-              Горячий · speed ×1.35
-            </p>
+          {isDecisive || isHot ? (
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              {isDecisive ? (
+                <p
+                  className="game-slab inline-flex items-center gap-1 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] text-(--accent-orb) uppercase"
+                  title="Решающий раунд: базовые очки вопроса ×1.5"
+                  aria-label="Решающий раунд: базовые очки вопроса умножаются на 1.5"
+                >
+                  <Swords className="size-3 text-(--accent-orb)" aria-hidden />
+                  Решающий · base ×1.5
+                </p>
+              ) : null}
+              {isHot ? (
+                <p
+                  className="game-slab inline-flex items-center gap-1 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] text-(--accent-orb) uppercase"
+                  title="Горячий вопрос: очки за скорость ×1.35"
+                  aria-label="Горячий вопрос: очки за скорость умножаются на 1.35"
+                >
+                  <Flame className="size-3 text-(--accent-orb)" aria-hidden />
+                  Горячий · speed ×1.35
+                </p>
+              ) : null}
+            </div>
           ) : null}
           {showMeta ? <ElementStateChips reportId={reportId} activeIndex={activeIndex} /> : null}
         </>
