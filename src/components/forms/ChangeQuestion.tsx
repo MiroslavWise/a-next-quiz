@@ -15,7 +15,7 @@ import QuestionElementField from "./QuestionElementField"
 import { QuestionBonusesField } from "./QuestionBonusesField"
 import QuestionTimePointsFields from "./QuestionTimePointsFields"
 import { IMAGE_UPLOAD_MAX_BYTES, isAllowedImageUpload } from "./lib/optional-image-upload"
-import { getColor } from "./lib/colors"
+import { ANSWER_OPTION_SLOTS, getColor } from "./lib/colors"
 import { Time } from "@/enum/time"
 import type { IAnswer } from "@/interface/answer"
 import { Points } from "@/enum/points"
@@ -61,7 +61,7 @@ function ChangeQuestion({ question, answers }: IProps) {
           text: answer.description,
           isCorrect: answer.check,
         })),
-        ...Array.from({ length: 4 - answers.length }).map(() => ({
+        ...Array.from({ length: Math.max(0, ANSWER_OPTION_SLOTS - answers.length) }).map(() => ({
           id: "",
           text: "",
           isCorrect: false,

@@ -61,7 +61,7 @@ export function DefaultActiveSkeleton() {
       </div>
       <Skeleton className="h-20 w-full rounded-lg border border-white/10 bg-white/8" />
       <ul className="flex w-full flex-col gap-2">
-        {Array.from({ length: 4 }).map((_, i) => (
+        {Array.from({ length: 6 }).map((_, i) => (
           <li key={i} className="w-full">
             <Skeleton className="h-13 w-full rounded-lg border border-white/10 bg-white/8 sm:h-14" />
           </li>

@@ -41,7 +41,7 @@ export default function AdminQuizQuestionChangeClient({
         </header>
 
         <div className="flex w-full flex-col gap-4">
-          {Array.from({ length: 4 }).map((_, idx) => (
+          {Array.from({ length: 6 }).map((_, idx) => (
             <Skeleton key={idx} className="h-11 w-full rounded-xl" />
           ))}
         </div>

@@ -142,7 +142,7 @@ function AnswerOptionsList({
     <Suspense
       fallback={
         <ul className={cn("flex w-full flex-col gap-2")}>
-          {Array.from({ length: 4 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <li
               key={i}
               className="glass-start-slab relative w-full rounded-lg px-3.5 py-3 text-sm font-medium text-transparent opacity-90 sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"

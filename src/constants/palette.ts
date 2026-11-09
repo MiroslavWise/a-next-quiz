@@ -1,7 +1,7 @@
 import { EUserElement } from "@/enum/element"
 
-/** Четыре orb-цвета ответов / акцентов UI. */
-export type ElementOrbColors = readonly [string, string, string, string]
+/** Шесть orb-цветов ответов / акцентов UI. */
+export type ElementOrbColors = readonly [string, string, string, string, string, string]
 
 export type ElementThemeId = "none" | EUserElement | "AVATAR"
 
@@ -31,7 +31,7 @@ export const ELEMENT_THEMES: Record<ElementThemeId, ElementTheme> = {
     highlight: "#E2E8F0",
     surface: "#121418",
     deep: "#2a3038",
-    orbs: ["#8B9AAB", "#A3AEC0", "#C2CAD6", "#6E7D8F"],
+    orbs: ["#8B9AAB", "#A3AEC0", "#C2CAD6", "#6E7D8F", "#4E5D6C", "#D7DEE6"],
   },
   [EUserElement.FIRE]: {
     id: EUserElement.FIRE,
@@ -41,7 +41,7 @@ export const ELEMENT_THEMES: Record<ElementThemeId, ElementTheme> = {
     highlight: "#FF6B6B",
     surface: "#180809",
     deep: "#4A1115",
-    orbs: ["#7F1D1D", "#B91C1C", "#991B1B", "#DC2626"],
+    orbs: ["#7F1D1D", "#B91C1C", "#991B1B", "#DC2626", "#F87171", "#9F1239"],
   },
   [EUserElement.WATER]: {
     id: EUserElement.WATER,
@@ -51,7 +51,7 @@ export const ELEMENT_THEMES: Record<ElementThemeId, ElementTheme> = {
     highlight: "#67E8F9",
     surface: "#06141a",
     deep: "#0e3a44",
-    orbs: ["#06B6D4", "#67E8F9", "#22D3EE", "#0891B2"],
+    orbs: ["#06B6D4", "#67E8F9", "#22D3EE", "#0891B2", "#0E7490", "#A5F3FC"],
   },
   [EUserElement.EARTH]: {
     id: EUserElement.EARTH,
@@ -61,7 +61,7 @@ export const ELEMENT_THEMES: Record<ElementThemeId, ElementTheme> = {
     highlight: "#4ADE80",
     surface: "#0b1610",
     deep: "#143322",
-    orbs: ["#1C8C47", "#4ADE80", "#22C55E", "#15803D"],
+    orbs: ["#1C8C47", "#4ADE80", "#22C55E", "#15803D", "#166534", "#86EFAC"],
   },
   [EUserElement.AIR]: {
     id: EUserElement.AIR,
@@ -71,7 +71,7 @@ export const ELEMENT_THEMES: Record<ElementThemeId, ElementTheme> = {
     highlight: "#C8FFF4",
     surface: "#0c1616",
     deep: "#1a3330",
-    orbs: ["#76E3D6", "#C8FFF4", "#5EEAD4", "#2DD4BF"],
+    orbs: ["#76E3D6", "#C8FFF4", "#5EEAD4", "#2DD4BF", "#0F766E", "#99F6E4"],
   },
   AVATAR: {
     id: "AVATAR",
@@ -81,7 +81,7 @@ export const ELEMENT_THEMES: Record<ElementThemeId, ElementTheme> = {
     highlight: "#FFFFFF",
     surface: "#121214",
     deep: "#2a2a2e",
-    orbs: ["#F5F5F5", "#FFFFFF", "#EDE4F5", "#C9C9D1"],
+    orbs: ["#F5F5F5", "#FFFFFF", "#EDE4F5", "#C9C9D1", "#B4A8C9", "#8E8E99"],
   },
 }
 

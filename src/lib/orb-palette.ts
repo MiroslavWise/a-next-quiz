@@ -2,8 +2,15 @@
 
 import { elementThemeById, type ElementThemeId } from "@/constants/palette"
 
-const ORB_BG_VARS = ["--orb-bg-one", "--orb-bg-two", "--orb-bg-three", "--orb-bg-four"] as const
-const ORB_BORDER_VARS = ["--orb-border-one", "--orb-border-two", "--orb-border-three", "--orb-border-four"] as const
+const ORB_BG_VARS = ["--orb-bg-one", "--orb-bg-two", "--orb-bg-three", "--orb-bg-four", "--orb-bg-five", "--orb-bg-six"] as const
+const ORB_BORDER_VARS = [
+  "--orb-border-one",
+  "--orb-border-two",
+  "--orb-border-three",
+  "--orb-border-four",
+  "--orb-border-five",
+  "--orb-border-six",
+] as const
 
 export function applyElementTheme(themeId: ElementThemeId): void {
   if (typeof document === "undefined") return

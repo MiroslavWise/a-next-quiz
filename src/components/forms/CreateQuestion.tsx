@@ -20,7 +20,7 @@ import {
   type CreateQuestionFormDataWithAnswers,
   type IBodyCreateAnswer,
 } from "@/schemas/create-question"
-import { getColor } from "./lib/colors"
+import { ANSWER_OPTION_SLOTS, getColor } from "./lib/colors"
 import { Time } from "@/enum/time"
 import { postCreateAnswers } from "@/api/answers"
 import { Points } from "@/enum/points"
@@ -48,7 +48,7 @@ function CreateQuestion({ quizId }: { quizId: string }) {
       points: Points.HIGH,
       bonuses: [...DEFAULT_CREATE_QUESTION_BONUSES],
       element: null,
-      answers: Array.from({ length: 4 }).map(() => ({
+      answers: Array.from({ length: ANSWER_OPTION_SLOTS }).map(() => ({
         id: "",
         text: "",
         isCorrect: false,

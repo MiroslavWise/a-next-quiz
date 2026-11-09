@@ -5,6 +5,8 @@ const obj = {
   1: "two",
   2: "three",
   3: "four",
+  4: "five",
+  5: "six",
 } as const
 
 function isOrbIndex(index: number): index is keyof typeof obj {
