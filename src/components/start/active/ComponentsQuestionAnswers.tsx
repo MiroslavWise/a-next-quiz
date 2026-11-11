@@ -145,7 +145,7 @@ function AnswerOptionsList({
           {Array.from({ length: 6 }).map((_, i) => (
             <li
               key={i}
-              className="glass-start-slab relative w-full rounded-lg px-3.5 py-3 text-sm font-medium text-transparent opacity-90 sm:px-5 sm:py-3.5 sm:text-base lg:text-lg"
+              className="glass-start-slab relative w-full rounded-lg px-3.5 py-3 text-sm font-medium text-transparent opacity-90 sm:px-5 sm:py-3.5 sm:text-base lg:text-lg xl:text-4xl"
               aria-hidden
             >
               --||--
