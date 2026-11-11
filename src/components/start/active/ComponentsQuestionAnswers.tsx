@@ -154,7 +154,7 @@ function AnswerOptionsList({
         </ul>
       }
     >
-      <ul className="flex w-full flex-col gap-2">
+      <ul className={cn("w-full flex-col grid-cols-2 gap-2 xl:gap-3", renderedAnswers.length % 2 ? "flex" : "grid")}>
         {renderedAnswers.map((answer) => {
           const isCorrect = !!answer?.check
           const isSelected = selectedAnswerId === answer.id

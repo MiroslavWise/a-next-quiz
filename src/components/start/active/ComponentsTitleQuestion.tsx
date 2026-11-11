@@ -1,6 +1,6 @@
 import { Flame, Sparkles, Swords } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
-import type { CSSProperties, ReactNode } from "react"
+import { useMemo, type CSSProperties, type ReactNode } from "react"
 
 import ImageThumb from "./ImageThumb"
 import TimerSeconds from "./TimerSeconds"
@@ -45,6 +45,20 @@ const SEAL_VARS = {
 
 const SEAL_FILL_MASK =
   "radial-gradient(circle at calc(var(--seal-center) + var(--seal-stroke)) calc(var(--seal-center) + var(--seal-stroke)), transparent calc(var(--seal-notch) - 0.5px), #000 var(--seal-notch))"
+
+const DECISIVE_BADGE = {
+  Icon: Swords,
+  label: "Решающий · base ×1.5",
+  title: "Решающий раунд: базовые очки вопроса ×1.5",
+  ariaLabel: "Решающий раунд: базовые очки вопроса умножаются на 1.5",
+} as const
+
+const HOT_BADGE = {
+  Icon: Flame,
+  label: "Горячий · speed ×1.35",
+  title: "Горячий вопрос: очки за скорость ×1.35",
+  ariaLabel: "Горячий вопрос: очки за скорость умножаются на 1.35",
+} as const
 
 function RoundMeta({ reportId, tgId, activeIndex }: { reportId?: string; tgId?: number; activeIndex?: number }) {
   const element = useAuth((s) => s.user?.element)
@@ -99,38 +113,37 @@ function ComponentsTitleQuestion({
 
   const titleText = title ?? "Ожидаем текст вопроса..."
 
+  const badges = useMemo(() => {
+    if (!isDecisive && !isHot) return []
+    const array = []
+
+    if (isDecisive) array.push(DECISIVE_BADGE)
+    if (isHot) array.push(HOT_BADGE)
+
+    return array
+  }, [isDecisive, isHot])
+
   return (
-    <div className={cn("flex w-full flex-col items-center gap-3",
-      !(isDecisive || isHot) && "pt-3"
-    )}>
+    <div className={cn("flex w-full flex-col items-center gap-3", !badges.length && "pt-3")}>
       {!ended && (
         <>
           {showMeta ? <RoundMeta reportId={reportId} tgId={tgId} activeIndex={activeIndex} /> : null}
           {showTimer ? <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={totalSeconds} /> : null}
-          {isDecisive || isHot ? (
+          {!!badges.length && (
             <div className="flex flex-wrap items-center justify-center gap-1.5">
-              {isDecisive ? (
+              {badges.map(({ label, title, ariaLabel, Icon }) => (
                 <p
-                  className="game-slab inline-flex items-center gap-1 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] text-(--accent-orb) uppercase"
-                  title="Решающий раунд: базовые очки вопроса ×1.5"
-                  aria-label="Решающий раунд: базовые очки вопроса умножаются на 1.5"
+                  key={label}
+                  className="game-slab inline-flex items-center gap-1 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] uppercase text-(--accent-orb)"
+                  title={title}
+                  aria-label={ariaLabel}
                 >
-                  <Swords className="size-3 text-(--accent-orb)" aria-hidden />
-                  Решающий · base ×1.5
+                  <Icon className="size-3 text-(--accent-orb)" aria-hidden />
+                  {label}
                 </p>
-              ) : null}
-              {isHot ? (
-                <p
-                  className="game-slab inline-flex items-center gap-1 px-2.5 py-0.5 text-[0.65rem] font-bold tracking-[0.08em] text-(--accent-orb) uppercase"
-                  title="Горячий вопрос: очки за скорость ×1.35"
-                  aria-label="Горячий вопрос: очки за скорость умножаются на 1.35"
-                >
-                  <Flame className="size-3 text-(--accent-orb)" aria-hidden />
-                  Горячий · speed ×1.35
-                </p>
-              ) : null}
+              ))}
             </div>
-          ) : null}
+          )}
           {showMeta ? <ElementStateChips reportId={reportId} activeIndex={activeIndex} /> : null}
         </>
       )}
