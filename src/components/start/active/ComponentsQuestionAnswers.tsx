@@ -141,7 +141,7 @@ function AnswerOptionsList({
   return (
     <Suspense
       fallback={
-        <ul className={cn("flex w-full flex-col gap-2")}>
+        <ul className={cn("flex w-full flex-col gap-2 py-0.75 my-0.75 border-y border-gray-100")}>
           {Array.from({ length: 6 }).map((_, i) => (
             <li
               key={i}
@@ -154,7 +154,7 @@ function AnswerOptionsList({
         </ul>
       }
     >
-      <ul className={cn("w-full flex-col grid-cols-2 gap-2 xl:gap-3", renderedAnswers.length % 2 ? "flex" : "grid")}>
+      <ul className={cn("w-full flex-col grid-cols-2 gap-2 xl:gap-3 py-0.75 my-0.75 border-y border-gray-100", renderedAnswers.length % 2 ? "flex" : "flex xl:grid")}>
         {renderedAnswers.map((answer) => {
           const isCorrect = !!answer?.check
           const isSelected = selectedAnswerId === answer.id
