@@ -17,10 +17,10 @@ function RandomPrizeLobbyBanner() {
         </span>
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-bold tracking-tight text-white sm:text-[0.95rem]">Случайный приз</h2>
+            <h2 className="font-bold tracking-tight text-white text-sm sm:text-[0.95rem] xl:text-2xl">Случайный приз</h2>
             <Sparkles className="size-3.5 shrink-0 text-(--accent-orb)" aria-hidden />
           </div>
-          <p className="text-[0.68rem] leading-snug text-white/60 sm:text-xs">
+          <p className="text-[0.68rem] leading-snug text-white/60 sm:text-xs xl:text-base">
             После игры среди участников,{" "}
             <strong className="font-medium text-white/82">не занявших призовые места</strong> в рейтинге и ответивших
             верно{" "}

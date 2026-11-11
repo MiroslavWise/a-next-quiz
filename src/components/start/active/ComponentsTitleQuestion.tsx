@@ -100,7 +100,9 @@ function ComponentsTitleQuestion({
   const titleText = title ?? "Ожидаем текст вопроса..."
 
   return (
-    <div className="flex w-full flex-col items-center gap-3">
+    <div className={cn("flex w-full flex-col items-center gap-3",
+      !(isDecisive || isHot) && "pt-3"
+    )}>
       {!ended && (
         <>
           {showMeta ? <RoundMeta reportId={reportId} tgId={tgId} activeIndex={activeIndex} /> : null}
@@ -168,7 +170,7 @@ function ComponentsTitleQuestion({
             <div className={cn("relative z-1 flex w-full flex-col items-center justify-center gap-2 p-3.5 sm:p-4")}>
               {!!thumbUrl && <ImageThumb thumbUrl={thumbUrl!} titleText={titleText} />}
               <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-0.5 py-1">
-                <p className="max-w-[92%] text-base leading-snug font-medium text-balance whitespace-pre-wrap text-white sm:text-lg lg:text-xl lg:leading-normal">
+                <p className="max-w-[92%] leading-snug font-medium text-balance whitespace-pre-wrap text-white text-base sm:text-lg lg:text-xl lg:leading-normal xl:text-5xl">
                   {titleText}
                 </p>
               </div>

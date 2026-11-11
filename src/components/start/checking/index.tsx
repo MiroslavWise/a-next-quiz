@@ -152,10 +152,10 @@ function StatusChecking({ tgId, data, lastByType }: IProps) {
           <TimerSeconds remainingSeconds={remainingSeconds} totalSeconds={CHECKING_WINDOW_SECONDS} />
           <div className="glass-start-liquid-palette relative isolate flex w-full flex-col rounded-xl text-white">
             <div className="relative flex w-full flex-col gap-3 p-3.5 sm:p-4">
-              <h2 className="text-center text-xl leading-snug font-bold text-balance text-white sm:text-2xl">
+              <h2 className="text-center leading-snug font-bold text-balance text-white text-xl sm:text-2xl xl:text-3xl">
                 {data?.quiz?.name ?? "Готовимся к старту"}
               </h2>
-              <p className="text-center text-sm leading-relaxed text-pretty text-white/65">
+              <p className="text-center leading-relaxed text-pretty text-white/65 text-sm xl:text-base">
                 {canConfirm
                   ? "Нажмите «Участвую», чтобы остаться в игре. Кто не подтвердит — выбывает."
                   : isLeader

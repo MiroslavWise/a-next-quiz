@@ -63,7 +63,7 @@ function ItemButtonAnswer({
     >
       {showBurst ? <span className="answer-burst" aria-hidden /> : null}
       <span className="relative z-10 flex items-center gap-3">
-        <span className="min-w-0 flex-1">{description}</span>
+        <span className="min-w-0 flex-1 xl:text-4xl">{description}</span>
         {showPartner ? (
           <span
             className="shrink-0 rounded-full border px-1.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase"

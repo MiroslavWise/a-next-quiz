@@ -46,13 +46,13 @@ function ItemSubAnswer({
       <div
         className={cn(
           "relative overflow-hidden select-none",
-          showLiveTally && "flex items-center gap-3",
+          showLiveTally && "flex items-center gap-3", 
           answerOptionGlassBase,
           results ? endTintClass : null,
         )}
       >
         {showCountBar && <GetCount fraction={getCount(id)} />}
-        <span className="relative z-1 min-w-0 flex-1">{description}</span>
+        <span className="relative z-1 min-w-0 flex-1 xl:text-4xl">{description}</span>
         {showLiveTally ? (
           <span
             className="relative z-1 inline-flex min-w-6 shrink-0 items-center justify-center rounded-md bg-black/40 px-1.5 py-0.5 text-xs font-semibold text-white tabular-nums"
