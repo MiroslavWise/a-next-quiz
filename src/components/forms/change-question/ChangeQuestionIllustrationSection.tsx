@@ -1,4 +1,4 @@
-import type { RefObject } from "react"
+import type { ReactNode, RefObject } from "react"
 
 import Button from "../../ui/button"
 import { Field, FieldDescription, FieldLabel } from "../../ui/field"
@@ -16,6 +16,11 @@ type Props = {
   setRemoveImage: (v: boolean) => void
   setImageFile: (f: File | null) => void
   applyReplaceFile: (file: File | undefined) => void
+  label?: ReactNode
+  uploadAriaLabel?: string
+  removePendingMessage?: string
+  replaceHint?: string
+  emptyDescription?: ReactNode
 }
 
 export function ChangeQuestionIllustrationSection({
@@ -28,12 +33,19 @@ export function ChangeQuestionIllustrationSection({
   setRemoveImage,
   setImageFile,
   applyReplaceFile,
+  label = (
+    <>
+      Иллюстрация к вопросу <span className="text-muted-foreground font-normal">(необязательно)</span>
+    </>
+  ),
+  uploadAriaLabel = "Загрузить или заменить изображение к вопросу",
+  removePendingMessage = "Текущая иллюстрация будет удалена после сохранения.",
+  replaceHint = "Новый файл заменит текущую иллюстрацию после сохранения. ",
+  emptyDescription = "Можно добавить одну картинку к формулировке вопроса.",
 }: Props) {
   return (
     <Field className="space-y-3">
-      <FieldLabel className="text-foreground text-sm font-medium">
-        Иллюстрация к вопросу <span className="text-muted-foreground font-normal">(необязательно)</span>
-      </FieldLabel>
+      <FieldLabel className="text-foreground text-sm font-medium">{label}</FieldLabel>
       {showCurrentServerImage ? (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="border-border/80 bg-muted/20 size-24 shrink-0 overflow-hidden rounded-xl border">
@@ -66,7 +78,7 @@ export function ChangeQuestionIllustrationSection({
       ) : null}
       {initialImageUrl && removeImage && !imageFile ? (
         <div className="text-foreground rounded-xl border border-dashed border-amber-500/40 bg-amber-500/5 px-3 py-2.5 text-sm">
-          <p className="text-muted-foreground">Текущая иллюстрация будет удалена после сохранения.</p>
+          <p className="text-muted-foreground">{removePendingMessage}</p>
           <Button type="button" variant="link" className="text-foreground h-auto px-0 pt-1" onClick={() => setRemoveImage(false)}>
             Отменить удаление
           </Button>
@@ -75,7 +87,7 @@ export function ChangeQuestionIllustrationSection({
       {showUploader ? (
         <OptionalImageUploadField
           hideLabel
-          label="Загрузить или заменить изображение к вопросу"
+          label={uploadAriaLabel}
           value={imageFile}
           onChange={(f) => {
             setImageFile(f)
@@ -83,13 +95,13 @@ export function ChangeQuestionIllustrationSection({
           }}
           description={
             <>
-              {initialImageUrl && !removeImage ? "Новый файл заменит текущую иллюстрацию после сохранения. " : null}
+              {initialImageUrl && !removeImage ? replaceHint : null}
               JPG, PNG, WebP или AVIF, до 2 МБ.
             </>
           }
         />
       ) : null}
-      {!initialImageUrl ? <FieldDescription>Можно добавить одну картинку к формулировке вопроса.</FieldDescription> : null}
+      {!initialImageUrl ? <FieldDescription>{emptyDescription}</FieldDescription> : null}
     </Field>
   )
 }

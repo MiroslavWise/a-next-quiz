@@ -1,6 +1,7 @@
 "use client"
 
 import type { DispatchWithoutAction } from "react"
+import Link from "next/link"
 import { postEvent, type PopupButton } from "@tma.js/sdk"
 import { EllipsisVertical, PencilLine, Play, Trash } from "lucide-react"
 
@@ -58,9 +59,11 @@ function MenuQuiz({ id, name, handleStart }: IProps) {
             <Play className="size-4" />
             Начать квиз
           </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            <PencilLine className="size-4" />
-            Редактировать
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/quiz/${id}/change`}>
+              <PencilLine className="size-4" />
+              Редактировать
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         {isAdmin ? (

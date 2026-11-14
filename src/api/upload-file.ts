@@ -83,3 +83,14 @@ export const deleteUploadImageQuestion = async (questionId: string) => {
       throw new Error("Failed to delete question image")
     })
 }
+
+export const deleteUploadImageQuiz = async (quizId: string) => {
+  return api
+    .delete(`/upload-image/quiz/${quizId}`, {
+      headers: getApiHeaders(),
+    })
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) return res.data
+      throw new Error("Failed to delete quiz image")
+    })
+}

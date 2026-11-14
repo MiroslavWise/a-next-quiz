@@ -45,6 +45,17 @@ export const postQuiz = (data: CreateQuizFormData) => {
     })
 }
 
+export const patchQuiz = (quizId: string, body: Partial<CreateQuizFormData>) => {
+  return api
+    .patch(`/quizes/${quizId}`, body, {
+      headers: getApiHeaders(),
+    })
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) return res.data as IQuiz
+      throw new Error("Failed to patch quiz")
+    })
+}
+
 export const deleteQuiz = (quizId: string) => {
   return api
     .delete(`/quizes/${quizId}`, {
